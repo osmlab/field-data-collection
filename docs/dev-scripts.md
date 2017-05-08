@@ -1,11 +1,11 @@
-# npm scripts
+# Development scripts
 
 ### Clean the project
 
 Clears caches, deletes node_modules directory and reinstalls dependencies.
 
 ```
-npm run clean
+yarn run clean
 ```
 
 ### Start an android simulator and show logs
@@ -13,11 +13,11 @@ npm run clean
 Make sure to have a virtual device running via Android Studio first.
 
 ```
-npm run android
+yarn run android
 ```
 
 ### Start an ios simulator and show logs
 
 ```
-npm run ios
+yarn run ios
 ```

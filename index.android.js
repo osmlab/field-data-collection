@@ -15,8 +15,7 @@ const Surveyor = TabNavigator({
   tabBarOptions: {
     showIcon: false,
     style: {
-      backgroundColor: 'white',
-      border-top: '1px solid #333333'
+      backgroundColor: 'white'
     }
   }
 });

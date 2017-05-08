@@ -18,7 +18,7 @@ A mobile application built with react native for collecting data in the field.
 ## Documentation
 
 - [Installation on MacOS](docs/install-macos.md)
-- [npm scripts](docs/npm-scripts.md)
+- [Development scripts](docs/dev-scripts.md)
 
 ## Contributing
 
