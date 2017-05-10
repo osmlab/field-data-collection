@@ -1,3 +1,5 @@
+import './global';
+
 import { TabNavigator, TabBarBottom } from 'react-navigation';
 import { AppRegistry } from 'react-native';
 
