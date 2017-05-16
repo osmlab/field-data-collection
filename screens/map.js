@@ -4,6 +4,7 @@ import Mapbox, { MapView } from 'react-native-mapbox-gl';
 import osmp2p from '../osm-p2p';
 
 Mapbox.setAccessToken('pk.eyJ1Ijoic2V0aHZpbmNlbnQiLCJhIjoiSXZZXzZnUSJ9.Nr_zKa-4Ztcmc1Ypl0k5nw');
+var AsyncStorage = require('react-native').AsyncStorage
 
 class MapScreen extends React.Component {
   constructor () {
@@ -18,12 +19,15 @@ class MapScreen extends React.Component {
       userTrackingMode: Mapbox.userTrackingMode.none
     };
 
-    this.db = osmp2p();
-    this.db.create({ id: 'A', lat: 64.5, lon: -147.6 }, (err, key, node) => {
+    var db = osmp2p();
+
+    db.create({ type: 'node', lat: 64.6, lon: -147.8 }, (err, key, node) => {
       if (err) return console.error('error', err)
-      console.log('key', key, 'node', node)
-      this.db.get(key, function (err, val) {
-        console.log('err', err, 'val', val)
+      console.log('created key', key, 'node', node)
+
+      db.query([[64,65], [-148,-147]], function (err, pts) {
+        if (err) console.error(err)
+        console.log('pts', pts)
       })
     });
   }
@@ -61,7 +65,3 @@ const styles = StyleSheet.create({
 });
 
 export default MapScreen;
-
-/*
-
-*/

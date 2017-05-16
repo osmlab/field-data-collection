@@ -1,4 +1,3 @@
-
 const babel = require('babel-core');
 
 /**
@@ -17,7 +16,7 @@ const babelRC = {
         crypto: 'crypto-browserify',
         dns: 'node-libs-browser/mock/dns',
         domain: 'domain-browser',
-        fs: 'node-libs-browser/mock/empty',
+        fs: 'react-native-level-fs',
         http: 'stream-http',
         https: 'https-browserify',
         net: 'node-libs-browser/mock/net',
@@ -36,13 +35,7 @@ const babelRC = {
         tty: 'tty-browserify',
         vm: 'vm-browserify',
         zlib: 'browserify-zlib',
-
-        // You can add your own, much like webpack aliases:
-        'corporate-lib': 'corporate-lib-react-native',
-
-        // You can also mock any libraries that you don't need to support on
-        // React Native, but have to be present for 3rd party code to work:
-        'some-third-party-dependency': 'node-libs-browser/mock/empty',
+        pbkdf2: 'pbkdf2/browser'
       },
       throwForNonStringLiteral: true,
     }],
