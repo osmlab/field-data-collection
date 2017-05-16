@@ -4,7 +4,6 @@ import Mapbox, { MapView } from 'react-native-mapbox-gl';
 import osmp2p from '../osm-p2p';
 
 Mapbox.setAccessToken('pk.eyJ1Ijoic2V0aHZpbmNlbnQiLCJhIjoiSXZZXzZnUSJ9.Nr_zKa-4Ztcmc1Ypl0k5nw');
-var AsyncStorage = require('react-native').AsyncStorage
 
 class MapScreen extends React.Component {
   constructor () {
