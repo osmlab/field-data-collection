@@ -155,7 +155,7 @@ async@^2.0.1, async@^2.3.0:
 
 asyncstorage-down@sethvincent/asyncstorage-down:
   version "3.1.1"
-  resolved "https://codeload.github.com/sethvincent/asyncstorage-down/tar.gz/9c9bdee865df88ffaeb17a84d3a7cf7be79539bd"
+  resolved "https://codeload.github.com/sethvincent/asyncstorage-down/tar.gz/cce2927b6790281fd63b6942a7c602e33e478211"
   dependencies:
     abstract-leveldown "2.6.1"
     argsarray "0.0.1"

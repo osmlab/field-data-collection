@@ -2,6 +2,7 @@ const levelup = require('levelup');
 const asyncstorage = require('asyncstorage-down');
 const hyperlog = require('hyperlog');
 const osmdb = require('osm-p2p-db');
+const createStore = require('./lib/asyncstorage-chunk-store')
 
 function osmp2p () {
   const logdb = levelup('db', { db: asyncstorage });
@@ -10,7 +11,7 @@ function osmp2p () {
   return osmdb({
     log: log,
     db: levelup('index', { db: asyncstorage }),
-    store: {}
+    store: createStore(1024, 'chunks')
   });
 };
 
