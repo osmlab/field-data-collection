@@ -1,13 +1,7 @@
 # field-data-collection
 
-[![travis][travis-image]][travis-url]
-[![standard][standard-image]][standard-url]
 [![conduct][conduct]][conduct-url]
 
-[travis-image]: https://img.shields.io/travis/osmlab/field-data-collection.svg?style=flat-square
-[travis-url]: https://travis-ci.org/osmlab/field-data-collection
-[standard-image]: https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat-square
-[standard-url]: http://npm.im/standard
 [conduct]: https://img.shields.io/badge/code%20of%20conduct-contributor%20covenant-green.svg?style=flat-square
 [conduct-url]: CONDUCT.md
 
