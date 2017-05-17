@@ -23,10 +23,6 @@ Schools](https://www.gfdrr.org/global-program-for-safer-schools) program.
   // Can observations be made without knowing who users are?
   "anonymous": true,
 
-  // Can observations not associated with existing features be created?
-  // TODO need a better name for this
-  "create": true,
-
   // Are observations created for this survey editable?
   "editable": true,
 
@@ -101,7 +97,8 @@ Schools](https://www.gfdrr.org/global-program-for-safer-schools) program.
     }
   ],
 
-  // feature types that can be created
+  // feature types that can be created (if this is empty or absent, features can
+  // only be edited)
   "observation_types": [
     // aliases to previous-defined feature types
     "amenity=school",
