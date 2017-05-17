@@ -62,7 +62,7 @@ Schools](https://www.gfdrr.org/global-program-for-safer-schools) program.
       "coordinator": "http://birch.local:8000/"
     },
     "p2p": {
-      "hash": "ca5cade"
+      "hash": "ca5cade5"
     }
   },
 
