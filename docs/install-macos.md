@@ -5,13 +5,13 @@
 ### Install react-native-cli and yarn (if not already installed)
 
 ```
-npm i -g react-native-cli yarn
+npm install -g react-native-cli yarn
 ```
 
 ### Clone the repo
 
 ```
-git clone git@github.com:osmlab/field-data-collection.git
+git clone https://github.com/osmlab/field-data-collection.git
 ```
 
 ### Change directory into the repo
@@ -23,7 +23,7 @@ cd field-data-collection
 ### Install dependencies
 
 ```
-yarn install
+yarn
 ```
 
 ## Android
@@ -46,6 +46,36 @@ Access logs:
 
 ```
 react-native log-android
+```
+
+### Run the project on a real device
+
+Enable USB debugging, plug in, and check that `adb` can see the device:
+
+```bash
+$ adb devices
+List of devices attached
+0123456789ABCDEF	device
+```
+
+Build the app; the resulting APK should automatically be copied to the device:
+
+```bash
+$ react-native run-android
+```
+
+(Newer versions of `react-native` allow specific devices to be targeted using `--deviceId 0123456789ABCDEF`.)
+
+If it fails to install the app on the device, the APK can be copied manually:
+
+```bash
+$ adb install android/app/build/outputs/apk/app-debug.apk
+```
+
+Access logs:
+
+```bash
+$ react-native log-android
 ```
 
 ## iOS
