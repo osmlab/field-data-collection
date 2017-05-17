@@ -87,7 +87,7 @@ Schools](https://www.gfdrr.org/global-program-for-safer-schools) program.
       "maxzoom": 22,
       "minzoom": 0,
       "tiles": [
-        "http://d34o1q5y1d9is8.cloudfront.net/hillshade/{z}/{x}/{y}.png"
+        "http://something.cloudfront.net/hillshade/{z}/{x}/{y}.png"
       ]
     }
   ],
