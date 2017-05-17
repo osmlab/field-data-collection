@@ -1,0 +1,14 @@
+{
+    "key": "building:material",
+    "type": "combo",
+    "label": "Building material",
+    "strings": {
+        "options": [
+            "cement_block",
+            "plaster",
+            "brick",
+            "wood",
+            "concrete"
+        ]
+    }
+}

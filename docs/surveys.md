@@ -5,8 +5,11 @@ Schools](https://www.gfdrr.org/global-program-for-safer-schools) program.
 
 ```javascript
 {
-  "schema_version": "0.0.1", // survey schema version
-  "version": "0.0.1", // survey version
+  // survey schema version
+  "schema_version": "0.0.1",
+
+  // survey version
+  "version": "0.0.1",
 
   // English language display name for this survey.
   "name": "Safer Schools",
@@ -27,33 +30,92 @@ Schools](https://www.gfdrr.org/global-program-for-safer-schools) program.
   // Are observations created for this survey editable?
   "editable": true,
 
-  // List of associated presets
-  // This is an object because a) order doesn't matter, b) keys provide a list
-  // (which translates well to YAML), and c) additional metadata is sometimes
-  // necessary.
-  // TODO some of these are top-level feature types (school, building), some are
-  // "mix-ins" that merely add fields to top-level feature types (building,
-  // building:condition, etc.)
-  "presets": {
-    // iD presets, as-is
-    "@osm/amenity/school": true,
-    "@osm/building": true,
-    // TODO building_condition instead? (tag is building:condition)
-    "@osm/building/condition": true,
-    "@osm/building/material": true,
-    "@osm/leisure/pitch": true,
-    "@osm/roof/material": true,
+  // feature types that a) we know about, b) can modify, c) can associate
+  // observations with
+  "feature_types": [
+    {
+      "id": "amenity=school",
 
-    "students": { // custom preset
-      "private": true // exclude this from data submitted to OSM
+      // TODO alternately "amenity": "school" (would remove ability to infer
+      // preset name)
+      "key": "amenity",
+      "value": "school",
+
+      // (this could even be inferred from <key>/<value>)
+      "preset": "@osm/amenity/school",
+
+      // additional fields
+      "include": [
+        {
+          // custom type
+          "type": "students",
+
+          // exclude this from data submitted to OSM
+          "private": true
+        },
+        {
+          "type": "notes",
+          "private": true
+        }
+      ],
+
+      // related feature types that can be suggested for creation or association
+      // of new observations (edits)
+      "related": [
+        "building=school"
+      ],
+    },
+    {
+      "id": "building=school",
+      "key": "building",
+      "value": "school",
+
+      // (this could even be inferred from <key>/<value>)
+      "preset": "@osm/building/school"
+
+      // additional fields not included in the preset by default
+      "include": [
+        "building:condition",
+        "building:material",
+        "roof:material",
+        {
+          "type": "notes",
+          "private": true
+        }
+      ]
+    },
+    {
+      "id": "leisure=pitch",
+      "key": "leisure",
+      "value": "pitch"
+
+      // (this could even be inferred from <key>/<value>)
+      "preset": "@osm/leisure/pitch",
+      "name": "Playing Field", // override preset name
+      "include": [
+        {
+          "type": "notes",
+          "private": true
+        }
+      ]
     }
-  },
+  ],
 
-  // Features with these tags can have observations associated with them
-  "features": {
-    "amenity": "school",
-    "leisure": "pitch"
-  },
+  // feature types that can be created
+  "observation_types": [
+    // aliases to previous-defined feature types
+    "amenity=school",
+    "building=school",
+    {
+      "key": "environment",
+      "value": "standing_water"
+
+      // (this could even be inferred from <key>/<value>)
+      // TODO alternately key/value could be loaded from this
+      "preset": "environment/standing_water",
+      "private": true
+    }
+  ],
 
   "sync": {
     "mode": "server", // standalone | peer | server
@@ -69,7 +131,17 @@ Schools](https://www.gfdrr.org/global-program-for-safer-schools) program.
   // TODO do these need content-types / target uses associated with them so that
   // the app knows what to do?
   "attachments": [
-    "https://s3.amazonaws.com/surveyor-assets/armenia.mbtiles"
+    {
+      "type": "mbtiles",
+      "source": "https://s3.amazonaws.com/surveyor-assets/armenia.mbtiles"
+    },
+    {
+      // ID that can be referenced in feature_types or observation_types when
+      // specifying attachments to collect
+      "id": "sample-form",
+      "type": "xform",
+      "source": "https://s3.amazonaws.com/surveyor-assets/sample-form.xml"
+    }
   ],
 
   "imagery": [

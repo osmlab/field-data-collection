@@ -1,0 +1,13 @@
+{
+    "key": "surface",
+    "strings": {
+        "options": [
+            "asphalt",
+            "unpaved",
+            "paved",
+            "ground",
+            "gravel",
+            "dirt"
+        ]
+    }
+}

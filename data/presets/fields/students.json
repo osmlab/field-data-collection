@@ -1,0 +1,5 @@
+{
+    "key": "students",
+    "type": "number",
+    "label": "Number of students"
+}
