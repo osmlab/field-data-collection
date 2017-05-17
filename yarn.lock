@@ -1333,10 +1333,10 @@ debug@2.6.3:
     ms "0.7.2"
 
 debug@^2.1.1, debug@^2.2.0:
-  version "2.6.6"
-  resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.6.tgz#a9fa6fbe9ca43cf1e79f73b75c0189cbb7d6db5a"
+  version "2.6.7"
+  resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.7.tgz#92bad1f6d05bbb6bba22cca88bcd0ec894c2861e"
   dependencies:
-    ms "0.7.3"
+    ms "2.0.0"
 
 debug@~2.2.0:
   version "2.2.0"
@@ -2467,20 +2467,20 @@ level-sublevel@^6.6.1:
     xtend "~4.0.0"
 
 level@^1.4.0:
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/level/-/level-1.6.0.tgz#3fcbae9163a091668b8ec7a9efd1d2feef1e6621"
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/level/-/level-1.7.0.tgz#43464a3a8ba73b2f3de56a24292805146da213a1"
   dependencies:
     level-packager "~1.2.0"
-    leveldown "~1.6.0"
+    leveldown "~1.7.0"
 
-leveldown@~1.6.0:
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/leveldown/-/leveldown-1.6.0.tgz#e6ec906d2995a8bffd02499f39e95988cd2b230f"
+leveldown@~1.7.0:
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/leveldown/-/leveldown-1.7.0.tgz#fdae843ec139b6bd7150ff98df43863611320476"
   dependencies:
     abstract-leveldown "~2.6.1"
     bindings "~1.2.1"
     fast-future "~1.0.2"
-    nan "~2.5.1"
+    nan "~2.6.1"
     prebuild-install "^2.1.0"
 
 levelup@^0.18.2:
@@ -2719,13 +2719,13 @@ mime-db@~1.23.0:
   version "1.23.0"
   resolved "https://registry.yarnpkg.com/mime-db/-/mime-db-1.23.0.tgz#a31b4070adaea27d732ea333740a64d0ec9a6659"
 
-mime-types@2.1.11, mime-types@~2.1.9:
+mime-types@2.1.11, mime-types@~2.1.7:
   version "2.1.11"
   resolved "https://registry.yarnpkg.com/mime-types/-/mime-types-2.1.11.tgz#c259c471bda808a85d6cd193b430a5fae4473b3c"
   dependencies:
     mime-db "~1.23.0"
 
-mime-types@^2.1.12, mime-types@~2.1.11, mime-types@~2.1.15, mime-types@~2.1.6, mime-types@~2.1.7:
+mime-types@^2.1.12, mime-types@~2.1.11, mime-types@~2.1.15, mime-types@~2.1.6, mime-types@~2.1.9:
   version "2.1.15"
   resolved "https://registry.yarnpkg.com/mime-types/-/mime-types-2.1.15.tgz#a4ebf5064094569237b8cf70046776d09fc92aed"
   dependencies:
@@ -2795,9 +2795,9 @@ ms@0.7.2:
   version "0.7.2"
   resolved "https://registry.yarnpkg.com/ms/-/ms-0.7.2.tgz#ae25cf2512b3885a1d95d7f037868d8431124765"
 
-ms@0.7.3:
-  version "0.7.3"
-  resolved "https://registry.yarnpkg.com/ms/-/ms-0.7.3.tgz#708155a5e44e33f5fd0fc53e81d0d40a91be1fff"
+ms@2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/ms/-/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
 
 multimatch@^2.1.0:
   version "2.1.0"
@@ -2829,9 +2829,9 @@ mutexify@^1.0.1, mutexify@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/mutexify/-/mutexify-1.1.0.tgz#bbe017743e544227ee58034cd10f159921f1844d"
 
-nan@~2.5.1:
-  version "2.5.1"
-  resolved "https://registry.yarnpkg.com/nan/-/nan-2.5.1.tgz#d5b01691253326a97a2bbee9e61c55d8d60351e2"
+nan@~2.6.1:
+  version "2.6.2"
+  resolved "https://registry.yarnpkg.com/nan/-/nan-2.6.2.tgz#e4ff34e6c95fdfb5aecc08de6596f43605a7db45"
 
 negotiator@0.5.3:
   version "0.5.3"
@@ -3259,8 +3259,8 @@ pull-live@^1.0.1:
     pull-stream "^3.4.0"
 
 pull-pushable@^2.0.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/pull-pushable/-/pull-pushable-2.1.0.tgz#aa6c37cde7d54347c49762b4c8b467e814e52fbc"
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/pull-pushable/-/pull-pushable-2.1.1.tgz#86666abbe3f5402f1f7ead03eefd69b785eca5b8"
 
 pull-stream-to-stream@~1.2.4:
   version "1.2.6"
@@ -3383,6 +3383,10 @@ react-native-level-fs@^3.0.0:
   dependencies:
     level-filesystem "^1.0.1"
     levelup "^0.18.2"
+
+react-native-localization@^0.1.30:
+  version "0.1.30"
+  resolved "https://registry.yarnpkg.com/react-native-localization/-/react-native-localization-0.1.30.tgz#7e831ec9cf6b74d658f11bd49092221bdbccd5a9"
 
 "react-native-mapbox-gl@github:alseageo/react-native-mapbox-gl#queryRenderedFeatures-android":
   version "5.2.0"

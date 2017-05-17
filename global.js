@@ -8,6 +8,8 @@ global.location = {
   protocol: 'file:',
 };
 
+global.document = {};
+
 // Don't do this in production. You're going to want to patch in
 // https://github.com/mvayngrib/react-native-randombytes or similar.
 global.crypto = {
