@@ -164,9 +164,10 @@ Schools](https://www.gfdrr.org/global-program-for-safer-schools) program.
   ],
 
   "meta": {
-    // TODO borrow from npm's author semantics
+    // these can also be objects containing name, email, url, similar to how
+    // package.json handles people
     "coordinator": "Seth Fitzsimmons <seth@mojodna.net>",
-    "organization": "Pacific Atlas"
+    "organization": "OpenStreetMap (https://openstreetmap.org/)"
     // ...other metadata
   },
 }
