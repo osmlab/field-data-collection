@@ -74,13 +74,19 @@ Schools](https://www.gfdrr.org/global-program-for-safer-schools) program.
 
       // additional fields not included in the preset by default
       "include": [
-        // TODO custom options per field
         "building:condition",
         "building:material",
         "roof:material",
         {
           "type": "notes",
           "private": true
+
+          // provide / override options for this field
+          "options": [
+            "slate",
+            "thatch",
+            "turf"
+          ]
         }
       ]
     },
@@ -89,7 +95,14 @@ Schools](https://www.gfdrr.org/global-program-for-safer-schools) program.
       "key": "leisure",
       "value": "pitch"
 
-      // TODO custom options
+      // provide / override options for fields associated with the preset
+      "options": {
+        "sport": [
+          "softball",
+          "baseball",
+          "t-ball"
+        ]
+      }
 
       "name": "Playing Field", // override preset name
       "include": [
