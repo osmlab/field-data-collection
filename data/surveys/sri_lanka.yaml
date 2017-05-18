@@ -1,0 +1,87 @@
+schema_version: 0.0.1
+version: 0.0.1
+
+name: Sri Lanka Building Survey
+description: |
+  Collection of exposure information for buildings in the flood-prone Attanagalu
+  Oya river basin.
+
+# derived from
+# https://wiki.openstreetmap.org/wiki/Sri_Lanka_Tagging_Guidelines#Building_Characteristics
+feature_types:
+  # generic building
+  - id: building
+    key: building
+    options:
+      # Per-survey alternative to options/building.json
+      # TODO break these out as individual feature types that could be
+      # created/modified
+      building:
+        - residential
+        - commercial
+        - industrial
+        - hospital
+        - school
+        - place_of_worship
+        - government
+        - utility
+        - construction
+        - roof_without_wall
+        - abandoned
+    include:
+      - type: building:material
+        # Per-survey alternative to / override of options in fields/building/material.json
+        # select
+        #   tags['building:material'] "building:material",
+        #   count(*) "count"
+        # from planet
+        # where tags['building:material'] is not null
+        # group by tags['building:material']
+        # order by count(*) desc
+        options:
+          - plaster
+          - exposed_brick
+          - exposed_cement_block
+          - tin_sheet
+          - clay_wall/mud
+          - cadjan/palmyrah
+      - type: roof:material
+        # select
+        #   tags['roof:material'] "roof:material",
+        #   count(*) "count"
+        # from planet
+        # where tags['roof:material'] is not null
+        # group by tags['roof:material']
+        # order by count(*) desc
+        options:
+          - clay/ciment_tile
+          - asbestos
+          - concrete
+          - permanent_zinc_sheet
+          - tin_sheet/temporary_zinc
+          - cadjan/palmyrah/straw
+      # select
+      #   tags['building:foundation_height'] "building:foundation_height",
+      #   count(*) "count"
+      # from planet
+      # where tags['building:foundation_height'] is not null
+      # group by tags['building:foundation_height']
+      # order by count(*) desc
+      - building:foundation_height
+      - building:levels
+      - roof:face
+      # select
+      #   tags['roof:shape'] "roof:shape",
+      #   count(*) "count"
+      # from planet
+      # where tags['roof:shape'] is not null
+      # group by tags['roof:shape']
+      # order by count(*) desc
+      - roof:shape
+
+observation_types:
+  - building
+
+meta:
+  coordinator: Robert Banick
+  organization: GFDRR

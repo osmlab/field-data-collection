@@ -1,0 +1,21 @@
+{
+    "key": "roof:shape",
+    "type": "combo",
+    "label": "Roof shape",
+    "strings": {
+        "options": [
+            "flat",
+            "skillion",
+            "gabled",
+            "half-hipped",
+            "hipped",
+            "pyramidal",
+            "gambrel",
+            "mansard",
+            "dome",
+            "onion",
+            "round",
+            "saltbox"
+        ]
+    }
+}
