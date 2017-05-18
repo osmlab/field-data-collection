@@ -7,6 +7,8 @@ import MapScreen from './screens/map';
 import ObservationsScreen from './screens/observations';
 import i18n from './i18n';
 
+console.log('i18n.map', i18n.map)
+
 const Surveyor = TabNavigator({
   Map: { screen: MapScreen },
   Observations: { screen: ObservationsScreen }
