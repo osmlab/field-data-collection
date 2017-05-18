@@ -32,13 +32,11 @@ Schools](https://www.gfdrr.org/global-program-for-safer-schools) program.
     {
       "id": "amenity=school",
 
-      // TODO alternately "amenity": "school" (would remove ability to infer
-      // preset name)
       "key": "amenity",
       "value": "school",
 
-      // (this could even be inferred from <key>/<value>)
-      "preset": "@osm/amenity/school",
+      // optional preset name (is derived from key/value)
+      "preset": "amenity/school",
 
       // additional fields
       "include": [
@@ -69,9 +67,6 @@ Schools](https://www.gfdrr.org/global-program-for-safer-schools) program.
       "key": "building",
       "value": "school",
 
-      // (this could even be inferred from <key>/<value>)
-      "preset": "@osm/building/school"
-
       // additional fields not included in the preset by default
       "include": [
         // TODO custom options per field
@@ -91,8 +86,6 @@ Schools](https://www.gfdrr.org/global-program-for-safer-schools) program.
 
       // TODO custom options
 
-      // (this could even be inferred from <key>/<value>)
-      "preset": "@osm/leisure/pitch",
       "name": "Playing Field", // override preset name
       "include": [
         {
@@ -114,8 +107,6 @@ Schools](https://www.gfdrr.org/global-program-for-safer-schools) program.
       "value": "standing_water"
 
       // (this could even be inferred from <key>/<value>)
-      // TODO alternately key/value could be loaded from this
-      "preset": "environment/standing_water",
       "private": true
     }
   ],
