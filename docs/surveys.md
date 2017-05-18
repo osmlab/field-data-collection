@@ -26,7 +26,7 @@ Schools](https://www.gfdrr.org/global-program-for-safer-schools) program.
   // Are observations created for this survey editable?
   "editable": true,
 
-  // feature types that a) we know about, b) can modify, c) can associate
+  // feature types that we a) know about, b) can modify, c) can associate
   // observations with
   "feature_types": [
     {
