@@ -1,5 +1,8 @@
 # Survey Definitions
 
+See [`sri_lanka.yaml`](../data/surveys/sri_lanka.yaml) for a concrete example,
+formatted as YAML.
+
 Theoretical survey to support GFDRR's [Safer
 Schools](https://www.gfdrr.org/global-program-for-safer-schools) program.
 
