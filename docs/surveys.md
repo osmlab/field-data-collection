@@ -38,6 +38,11 @@ Schools](https://www.gfdrr.org/global-program-for-safer-schools) program.
       // optional preset name (is derived from key/value)
       "preset": "amenity/school",
 
+      // fields to exclude from the default preset (amenity/school, in this case)
+      "exclude": [
+        "operator"
+      ],
+
       // additional fields
       "include": [
         {
