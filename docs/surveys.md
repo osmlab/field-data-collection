@@ -74,6 +74,7 @@ Schools](https://www.gfdrr.org/global-program-for-safer-schools) program.
 
       // additional fields not included in the preset by default
       "include": [
+        // TODO custom options per field
         "building:condition",
         "building:material",
         "roof:material",
@@ -87,6 +88,8 @@ Schools](https://www.gfdrr.org/global-program-for-safer-schools) program.
       "id": "leisure=pitch",
       "key": "leisure",
       "value": "pitch"
+
+      // TODO custom options
 
       // (this could even be inferred from <key>/<value>)
       "preset": "@osm/leisure/pitch",
