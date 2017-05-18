@@ -22,12 +22,13 @@ feature_types:
         - industrial
         - hospital
         - school
-        - place_of_worship
-        - government
         - utility
         - construction
         - roof_without_wall
         - abandoned
+    # fields to exclude from the default preset
+    exclude:
+      - address
     include:
       - type: building:material
         # Per-survey alternative to / override of options in fields/building/material.json
@@ -68,7 +69,6 @@ feature_types:
       # group by tags['building:foundation_height']
       # order by count(*) desc
       - building:foundation_height
-      - building:levels
       - roof:face
       # select
       #   tags['roof:shape'] "roof:shape",
@@ -78,9 +78,63 @@ feature_types:
       # group by tags['roof:shape']
       # order by count(*) desc
       - roof:shape
+  - id: amenity=place_of_worship
+    key: amenity
+    value: place_of_worship
+    extends: building
+  - id: building=residential
+    key: building
+    value: residential
+    extends: building
+  - id: building=commercial
+    key: building
+    value: commercial
+    extends: building
+  - id: building=industrial
+    key: building
+    value: industrial
+    extends: building
+  - id: building=hospital
+    key: building
+    value: hospital
+    extends: building
+  - id: building=school
+    key: building
+    value: school
+    extends: building
+  - id: building=utility
+    key: building
+    value: utility
+    extends: building
+  - id: building=construction
+    key: building
+    value: construction
+    extends: building
+  - id: building=roof_without_wall
+    key: building
+    value: roof_without_wall
+    extends: building
+  - id: building=abandoned
+    key: building
+    value: abandoned
+    extends: building
+  - id: office=government
+    key: office
+    value: government
+    extends: building
 
 observation_types:
-  - building
+  - amenity=place_of_worship
+  - building=residential
+  - building=commercial
+  - building=industrial
+  - building=hospital
+  - building=school
+  - building=utility
+  - building=construction
+  - building=roof_without_wall
+  - building=abandoned
+  - office=government
 
 meta:
   coordinator: Robert Banick
