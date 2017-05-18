@@ -51,6 +51,9 @@ Schools](https://www.gfdrr.org/global-program-for-safer-schools) program.
         },
         {
           "type": "notes",
+
+          // override the default key name (from the field configuration)
+          "key": "gfdrr:notes",
           "private": true
         }
       ],
