@@ -125,8 +125,7 @@ Schools](https://www.gfdrr.org/global-program-for-safer-schools) program.
     }
   },
 
-  // TODO do these need content-types / target uses associated with them so that
-  // the app knows what to do?
+  // TODO document the list of types that Surveyor understands
   "attachments": [
     {
       "type": "mbtiles",
