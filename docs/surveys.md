@@ -71,14 +71,14 @@ Schools](https://www.gfdrr.org/global-program-for-safer-schools) program.
       ],
     },
     {
-      // contrived example to show off extends
+      // contrived example to show off extend
       "id": "amenity=dayschool",
       "key": "amenity",
       "value": "dayschool",
 
       // inherit all fields / options from another feature type (or types, if an
       // array)
-      "extends": "amenity=school"
+      "extend": "amenity=school"
     },
     {
       "id": "building=school",

@@ -81,47 +81,49 @@ feature_types:
   - id: amenity=place_of_worship
     key: amenity
     value: place_of_worship
-    extends: building
+    extend: building
   - id: building=residential
     key: building
     value: residential
-    extends: building
+    extend: building
   - id: building=commercial
     key: building
     value: commercial
-    extends: building
+    extend: building
+    exclude:
+      - smoking
   - id: building=industrial
     key: building
     value: industrial
-    extends: building
+    extend: building
   - id: building=hospital
     key: building
     value: hospital
-    extends: building
+    extend: building
   - id: building=school
     key: building
     value: school
-    extends: building
+    extend: building
   - id: building=utility
     key: building
     value: utility
-    extends: building
+    extend: building
   - id: building=construction
     key: building
     value: construction
-    extends: building
+    extend: building
   - id: building=roof_without_wall
     key: building
     value: roof_without_wall
-    extends: building
+    extend: building
   - id: building=abandoned
     key: building
     value: abandoned
-    extends: building
+    extend: building
   - id: office=government
     key: office
     value: government
-    extends: building
+    extend: building
 
 observation_types:
   - amenity=place_of_worship
