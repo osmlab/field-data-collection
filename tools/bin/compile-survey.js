@@ -213,8 +213,7 @@ const resolveSurvey = (surveyDefinition, callback) => {
               const included = ftDef.include.map(i => i.type || i);
 
               // locally included fields should override what the parent excludes
-              toRemove.push(...def.exclude.filter(e => !included.includes(e))
-              );
+              toRemove.push(...def.exclude.filter(e => !included.includes(e)));
             } else {
               toRemove.push(...def.exclude);
             }
