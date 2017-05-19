@@ -115,7 +115,6 @@ const resolveFields = (fields, callback) => {
 };
 
 const resolveFeatureType = (featureType, callback) => {
-  // console.warn("featureType:", featureType);
   const { key, value } = featureType;
 
   const presetName = [key, value].filter(x => x != null).join("/");
