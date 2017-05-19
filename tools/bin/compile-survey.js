@@ -103,6 +103,11 @@ const resolveField = (field, callback) => {
       fieldDefn.strings.options = field.options;
     }
 
+    // set private option
+    if (field.private != null) {
+      fieldDefn.private = field.private;
+    }
+
     return callback(null, fieldDefn);
   });
 };
