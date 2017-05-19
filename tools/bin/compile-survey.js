@@ -154,7 +154,7 @@ const resolveFeatureType = (featureType, callback) => {
           return callback(err);
         }
 
-        preset.fields.concat(fields);
+        preset.fields.push(...fields);
 
         // populate custom options
         if (options != null) {
@@ -196,37 +196,36 @@ const resolveSurvey = (surveyDefinition, callback) => {
         const defs = [];
 
         if (Array.isArray(ft.extend)) {
-          defs.concat(feature_types.filter(x => ft.extend.includes(x.id)));
+          defs.push(...feature_types.filter(x => ft.extend.includes(x.id)));
         } else {
           defs.push(feature_types.find(x => x.id == ft.extend));
         }
 
         let localFields = ft.fields;
-        let inheritedFields = [];
+        const inheritedFields = [];
 
         defs.forEach(def => {
           if (def.exclude != null) {
-            let toRemove = [];
+            const toRemove = [];
 
             if (ftDef.include != null) {
               // resolve the list of included fields to their type
               const included = ftDef.include.map(i => i.type || i);
 
               // locally included fields should override what the parent excludes
-              toRemove = toRemove.concat(
-                def.exclude.filter(e => !included.includes(e))
+              toRemove.push(...def.exclude.filter(e => !included.includes(e))
               );
             } else {
-              toRemove = toRemove.concat(def.exclude);
+              toRemove.push(...def.exclude);
             }
 
             // remove excluded fields
             localFields = localFields.filter(f => !toRemove.includes(f.type));
           }
 
-          // concat inherited fields
+          // add inherited fields
           const superType = featureTypes.find(x => x.id == def.id);
-          inheritedFields = inheritedFields.concat(superType.fields);
+          inheritedFields.push(...superType.fields);
         });
 
         // append + dedupe local fields (both custom + from presets)
