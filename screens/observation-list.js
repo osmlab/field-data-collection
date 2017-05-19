@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Button, Text } from 'react-native';
 
-class ObservationsScreen extends React.Component {
+class ObservationListScreen extends React.Component {
   constructor () {
     super();
     this.navigationOptions = { tabBarLabel: 'Map' };
@@ -24,4 +24,4 @@ const styles = StyleSheet.create({
   observations: {}
 });
 
-export default ObservationsScreen;
+export default ObservationListScreen;
