@@ -1,0 +1,10 @@
+{
+  "name": "surveyor-tools",
+  "version": "0.0.0",
+  "license": "ISC",
+  "dependencies": {
+    "async": "^2.4.0",
+    "js-yaml": "^3.8.4",
+    "lodash.uniqby": "^4.7.0"
+  }
+}
