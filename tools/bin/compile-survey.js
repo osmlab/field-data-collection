@@ -227,8 +227,12 @@ const resolveSurvey = (surveyDefinition, callback) => {
           inheritedFields.push(...superType.fields);
         });
 
-        // append + dedupe local fields (both custom + from presets)
-        ft.fields = uniqBy(inheritedFields.concat(localFields), "key");
+        // append + dedupe local fields (both custom + from presets), preferring
+        // custom fields
+        ft.fields = uniqBy(
+          inheritedFields.concat(localFields).reverse(),
+          "key"
+        ).reverse();
 
         // clean up after ourselves
         delete ft.extend;
