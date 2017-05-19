@@ -1,0 +1,12 @@
+{
+    "key": "building:condition",
+    "type": "combo",
+    "label": "Building condition",
+    "strings": {
+        "options": [
+            "good",
+            "average",
+            "poor"
+        ]
+    }
+}

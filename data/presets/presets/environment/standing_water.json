@@ -1,0 +1,16 @@
+{
+    "fields": [
+        "vector",
+        "notes"
+    ],
+    "geometry": [
+        "point",
+    ],
+    "terms": [
+        "puddle"
+    ],
+    "tags": {
+        "environment": "standing_water"
+    },
+    "name": "Standing Water"
+}

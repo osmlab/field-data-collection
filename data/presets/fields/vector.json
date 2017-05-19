@@ -1,0 +1,11 @@
+{
+    "key": "vector",
+    "type": "combo",
+    "label": "Disease Vector",
+    "strings": {
+        "options": [
+            "mosquito",
+            "spider"
+        ]
+    }
+}

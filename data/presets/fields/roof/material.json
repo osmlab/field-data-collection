@@ -1,0 +1,12 @@
+{
+    "key": "roof:material",
+    "type": "combo",
+    "label": "Roof material",
+    "strings": {
+        "options": [
+            "roof_tiles",
+            "tile",
+            "concrete"
+        ]
+    }
+}

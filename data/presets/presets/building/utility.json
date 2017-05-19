@@ -1,0 +1,14 @@
+{
+    "icon": "building",
+    "fields": [
+        "address",
+        "levels"
+    ],
+    "geometry": [
+        "area"
+    ],
+    "tags": {
+        "building": "utility"
+    },
+    "name": "Utility Building"
+}
