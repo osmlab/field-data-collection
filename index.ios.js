@@ -5,6 +5,9 @@ import { AppRegistry } from 'react-native';
 
 import MapScreen from './screens/map';
 import ObservationsScreen from './screens/observations';
+import locale from './locale/';
+
+console.log('locale.map', locale.map)
 
 const Surveyor = TabNavigator({
   Map: { screen: MapScreen },
