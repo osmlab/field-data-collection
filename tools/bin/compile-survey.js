@@ -5,6 +5,7 @@ const fs = require("fs");
 const path = require("path");
 
 const async = require("async");
+require("epipebomb")();
 const uniqBy = require("lodash.uniqby");
 const yaml = require("js-yaml");
 
