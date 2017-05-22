@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Button, Text } from 'react-native';
 
-class AboutScreen extends React.Component {
+class ObservationCategoryScreen extends React.Component {
   constructor () {
     super();
   }
@@ -12,7 +12,7 @@ class AboutScreen extends React.Component {
     return (
       <View>
         <Text>
-        This is the screen for loading a survey
+          This is the screen for choosing the category of an observation
         </Text>
       </View>
     );
@@ -21,4 +21,4 @@ class AboutScreen extends React.Component {
 
 const styles = StyleSheet.create({});
 
-export default AboutScreen;
+export default ObservationCategoryScreen;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Button, Text } from 'react-native';
 
-class AboutScreen extends React.Component {
+class ObservationCreateScreen extends React.Component {
   constructor () {
     super();
   }
@@ -10,15 +10,17 @@ class AboutScreen extends React.Component {
     const { navigate } = this.props.navigation;
 
     return (
-      <View>
+      <View style={styles.form}>
         <Text>
-        This is the screen for loading a survey
+        This is the observation form
         </Text>
       </View>
     );
   }
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  form: {}
+});
 
-export default AboutScreen;
+export default ObservationCreateScreen;

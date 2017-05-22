@@ -5,6 +5,8 @@ import osmp2p from '../osm-p2p';
 
 Mapbox.setAccessToken('pk.eyJ1Ijoic2V0aHZpbmNlbnQiLCJhIjoiSXZZXzZnUSJ9.Nr_zKa-4Ztcmc1Ypl0k5nw');
 
+import Header from '../components/header';
+
 class MapScreen extends React.Component {
   constructor () {
     super();
@@ -18,34 +20,36 @@ class MapScreen extends React.Component {
       userTrackingMode: Mapbox.userTrackingMode.none
     };
 
-    var db = osmp2p();
-
-    db.create({ type: 'node', lat: 64.6, lon: -147.8 }, (err, key, node) => {
-      if (err) return console.error('error', err)
-      console.log('created key', key, 'node', node)
-
-      db.query([[64,65], [-148,-147]], function (err, pts) {
-        if (err) console.error(err)
-        console.log('pts', pts)
-      })
-    });
+    // var db = osmp2p();
+    //
+    // db.create({ type: 'node', lat: 64.6, lon: -147.8 }, (err, key, node) => {
+    //   if (err) return console.error('error', err)
+    //   console.log('created key', key, 'node', node)
+    //
+    //   db.query([[64,65], [-148,-147]], function (err, pts) {
+    //     if (err) console.error(err)
+    //     console.log('pts', pts)
+    //   })
+    // });
   }
 
   render () {
     const { navigate } = this.props.navigation;
     return (
       <View style={styles.container}>
+        <Header />
+
         <MapView
           ref={map => { this._map = map; }}
           style={styles.map}
           initialCenterCoordinate={this.state.center}
           initialZoomLevel={this.state.zoom}
           initialDirection={0}
-          rotateEnabled
+          rotateEnabled={false}
           scrollEnabled
           zoomEnabled
           showsUserLocation={false}
-          styleURL={Mapbox.mapStyles.dark}
+          styleURL={Mapbox.mapStyles.light}
           userTrackingMode={this.state.userTrackingMode}
         />
       </View>

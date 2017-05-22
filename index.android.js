@@ -4,14 +4,16 @@ import { TabNavigator, TabBarBottom } from 'react-navigation';
 import { AppRegistry } from 'react-native';
 
 import MapScreen from './screens/map';
-import ObservationsScreen from './screens/observations';
+import ObservationCreateScreen from './screens/observation-create';
+import AccountScreen from './screens/account'
 import locale from './locale/';
 
 console.log('locale.map', locale.map)
 
 const Surveyor = TabNavigator({
   Map: { screen: MapScreen },
-  Observations: { screen: ObservationsScreen }
+  CreateObservation: { screen: ObservationCreateScreen },
+  Account: { screen: AccountScreen }
 }, {
   tabBarComponent: TabBarBottom,
   tabBarPosition: 'bottom',
