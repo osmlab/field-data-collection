@@ -14,8 +14,6 @@ feature_types:
     key: building
     options:
       # Per-survey alternative to options/building.json
-      # TODO break these out as individual feature types that could be
-      # created/modified
       building:
         - residential
         - commercial
