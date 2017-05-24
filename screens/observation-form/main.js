@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Button, Text } from 'react-native';
 
-class ObservationCreateScreen extends React.Component {
+class ObservationFormMainScreen extends React.Component {
   constructor () {
     super();
   }
@@ -10,17 +10,15 @@ class ObservationCreateScreen extends React.Component {
     const { navigate } = this.props.navigation;
 
     return (
-      <View style={styles.form}>
+      <View>
         <Text>
-        This is the observation form
+          This is the screen for choosing the category of an observation
         </Text>
       </View>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  form: {}
-});
+const styles = StyleSheet.create({});
 
-export default ObservationCreateScreen;
+export default ObservationFormMainScreen;

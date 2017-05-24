@@ -1,9 +1,11 @@
 import { StackNavigator } from 'react-navigation';
 
-import CategoryScreen from './category';
+import CategoriesScreen from './categories';
 
 const CreateObservationNavigator = StackNavigator({
-  Category: { screen: CategoryScreen }
+  Categories: { screen: CategoriesScreen }
+}, {
+  headerMode: 'none'
 });
 
 export default CreateObservationNavigator;

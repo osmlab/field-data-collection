@@ -4,9 +4,9 @@ import Mapbox, { MapView } from 'react-native-mapbox-gl';
 
 Mapbox.setAccessToken('pk.eyJ1Ijoic2V0aHZpbmNlbnQiLCJhIjoiSXZZXzZnUSJ9.Nr_zKa-4Ztcmc1Ypl0k5nw');
 
-import Header from '../components/header';
+import Header from '../../components/header';
 
-class MapScreen extends React.Component {
+class ObservationMapScreen extends React.Component {
   constructor () {
     super();
     this.navigationOptions = { tabBarLabel: 'Map' };
@@ -25,9 +25,10 @@ class MapScreen extends React.Component {
     return (
       <View style={styles.container}>
         <Header
-          button='map'
+          button='list'
           onTogglePress={() => {
-            navigate('Map')
+            console.log('heyo')
+            navigate('ObservationList')
           }}
         />
 
@@ -59,4 +60,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default MapScreen
+export default ObservationMapScreen
