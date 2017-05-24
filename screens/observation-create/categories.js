@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Button, Text, ListView } from 'react-native';
+import { StyleSheet, View, Button, Text, ListView, TouchableHighlight } from 'react-native';
 
 import baseStyles from '../../styles/index'
 
@@ -17,6 +17,11 @@ class CategoriesScreen extends React.Component {
         { name: 'Blast Fishing' },
         { name: 'Schools' },
         { name: 'Buildings' },
+        { name: 'Hazards' },
+        { name: 'Oil spills' },
+        { name: 'Blast Fishing' },
+        { name: 'Schools' },
+        { name: 'Buildings' },
         { name: 'Hazards' }
       ]),
     };
@@ -27,7 +32,7 @@ class CategoriesScreen extends React.Component {
 
     return (
       <View style={baseStyles.container}>
-        <Text style={styles.title}>
+        <Text style={baseStyles.title}>
           What do you want to add?
         </Text>
 
@@ -36,20 +41,22 @@ class CategoriesScreen extends React.Component {
           dataSource={this.state.categories}
           noScroll={true}
           renderRow={(item) => {
+            function onCategoryPress () {
+              navigate('AddObservation', { category: item })
+            }
+
             return (
-              <View style={styles.gridItem}>
-                <Text onPress={(e) => { console.log('')}}>{item.name}</Text>
-              </View>
+              <TouchableHighlight onPress={onCategoryPress}>
+                <View style={styles.gridItem}>
+                  <Text>{item.name}</Text>
+                </View>
+              </TouchableHighlight>
             );
           }}
         />
 
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 }}>
-          <Button
-            onPress={() => {}}
-            title='View More'
-            accessibilityLabel='View More'
-          />
+        <View style={styles.moreItemsButton}>
+          <Text style={{}} onPress={() => {}}>View More</Text>
         </View>
       </View>
     );
@@ -58,9 +65,8 @@ class CategoriesScreen extends React.Component {
 
 const styles = StyleSheet.create({
   gridContainer: {
-    flex: 1,
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
     flexDirection: 'row',
     flexWrap: 'wrap',
     marginTop: 20
@@ -69,13 +75,14 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ccc',
     padding: 5,
-    marginBottom: 10,
+    margin: 5,
     width: 80,
     height: 80,
   },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold'
+  moreItemsButton: {
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
+    marginTop: 20,
   }
 });
 

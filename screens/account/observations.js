@@ -1,11 +1,9 @@
 import React from 'react';
 import { StyleSheet, View, Button, Text, ListView } from 'react-native';
 
-import Header from '../../components/header';
+import baseStyles from '../../styles/index';
 
-import baseStyles from '../../styles/index'
-
-class ObservationListScreen extends React.Component {
+class AccountScreen extends React.Component {
   constructor () {
     super();
 
@@ -46,24 +44,34 @@ class ObservationListScreen extends React.Component {
   render () {
     const { navigate } = this.props.navigation;
 
+    function onSettingsPress () {
+      console.log('onSettingsPress')
+      navigate('Settings')
+    }
+
     return (
       <View style={{ flex: 1 }}>
-        <Header
-          button='map'
-          onTogglePress={() => {
-            navigate('ObservationMap')
-          }}
-        />
-
         <View style={baseStyles.container}>
+          <Text style={baseStyles.title}>
+            Your Observations
+          </Text>
+
+          <View style={styles.settingsButton} >
+            <Text style={styles.settingsButtonText} onPress={onSettingsPress}>
+              ⚙
+            </Text>
+          </View>
+
           <ListView
-            contentContainerStyle={{}}
+            contentContainerStyle={styles.content}
             dataSource={this.state.observations}
+            noScroll={true}
             renderRow={(item) => {
               return (
                 <View style={styles.observation}>
+                  <View></View>
                   <Text style={styles.muted}>{item.category} | {item.surveyName}</Text>
-                  <Text style={styles.title}>{item.observationName}</Text>
+                  <Text style={styles.observationTitle}>{item.observationName}</Text>
                   <Text style={styles.muted}>Last updated: {item.updated}</Text>
                   <Text>Lat/Long: {item.lnglat}</Text>
                 </View>
@@ -82,16 +90,26 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
     borderWidth: 1,
     padding: 10,
-    marginBottom: 5,
-    flex: 1
+    marginBottom: 5
   },
   muted: {
     color: '#bbb'
   },
-  title: {
+  observationTitle: {
     fontSize: 15,
     fontWeight: 'bold'
+  },
+  content: {
+    marginTop: 20
+  },
+  settingsButton: {
+    position: 'absolute',
+    top: 20,
+    right: 20
+  },
+  settingsButtonText: {
+    fontSize: 15
   }
 });
 
-export default ObservationListScreen;
+export default AccountScreen;
