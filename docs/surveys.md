@@ -118,6 +118,13 @@ Schools](https://www.gfdrr.org/global-program-for-safer-schools) program.
           "private": true
         }
       ]
+    },
+    {
+      // private observation type that can have further observations associated with it (??)
+      "id": "environment=standing_water",
+      "preset": "environment/standing_water",
+
+      "private": true
     }
   ],
 
@@ -127,13 +134,7 @@ Schools](https://www.gfdrr.org/global-program-for-safer-schools) program.
     // aliases to previous-defined feature types
     "amenity=school",
     "building=school",
-    {
-      "key": "environment",
-      "value": "standing_water"
-
-      // (this could even be inferred from <key>/<value>)
-      "private": true
-    }
+    "environment=standing_water"
   ],
 
   "sync": {
