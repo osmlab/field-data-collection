@@ -11,7 +11,7 @@ description: |
 feature_types:
   # generic building
   - id: building
-    key: building
+    preset: building
     options:
       # Per-survey alternative to options/building.json
       building:
@@ -77,50 +77,39 @@ feature_types:
       # order by count(*) desc
       - roof:shape
   - id: amenity=place_of_worship
-    key: amenity
-    value: place_of_worship
+    preset: amenity/place_of_worship
     extend: building
   - id: building=residential
-    key: building
-    value: residential
+    preset: building/residential
     extend: building
   - id: building=commercial
-    key: building
-    value: commercial
+    preset: building/commercial
     extend: building
     exclude:
       - smoking
   - id: building=industrial
-    key: building
-    value: industrial
+    preset: building/industrial
     extend: building
   - id: building=hospital
-    key: building
-    value: hospital
+    preset: building/hospital
     extend: building
   - id: building=school
-    key: building
-    value: school
+    preset: building/school
     extend: building
   - id: building=utility
-    key: building
-    value: utility
+    preset: building/utility
     extend: building
   - id: building=construction
-    key: building
-    value: construction
+    preset: building/construction
     extend: building
   - id: building=roof_without_wall
-    key: building
-    value: roof_without_wall
+    preset: building/roof_without_wall
     extend: building
   - id: building=abandoned
-    key: building
-    value: abandoned
+    preset: building/abandoned
     extend: building
   - id: office=government
-    key: office
-    value: government
+    preset: office/government
     extend: building
 
 observation_types:

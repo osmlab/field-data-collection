@@ -35,10 +35,7 @@ Schools](https://www.gfdrr.org/global-program-for-safer-schools) program.
     {
       "id": "amenity=school",
 
-      "key": "amenity",
-      "value": "school",
-
-      // optional preset name (is derived from key/value)
+      // preset name
       "preset": "amenity/school",
 
       // fields to exclude from the default preset (amenity/school, in this case)
@@ -73,8 +70,7 @@ Schools](https://www.gfdrr.org/global-program-for-safer-schools) program.
     {
       // contrived example to show off extend
       "id": "amenity=dayschool",
-      "key": "amenity",
-      "value": "dayschool",
+      "preset": "amenity/dayschool",
 
       // inherit all fields / options from another feature type (or types, if an
       // array)
@@ -82,8 +78,7 @@ Schools](https://www.gfdrr.org/global-program-for-safer-schools) program.
     },
     {
       "id": "building=school",
-      "key": "building",
-      "value": "school",
+      "preset": "building/school",
 
       // additional fields not included in the preset by default
       "include": [
@@ -105,8 +100,7 @@ Schools](https://www.gfdrr.org/global-program-for-safer-schools) program.
     },
     {
       "id": "leisure=pitch",
-      "key": "leisure",
-      "value": "pitch"
+      "preset": "leisure/pitch",
 
       // provide / override options for fields associated with the preset
       "options": {
