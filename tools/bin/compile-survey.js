@@ -244,11 +244,7 @@ const resolveSurvey = (surveyDefinition, callback) => {
       return ft;
     });
 
-    const { observation_types } = surveyDefinition;
-
-    const observationTypes = featureTypes.filter(type =>
-      observation_types.includes(type.id)
-    );
+    const observationTypes = surveyDefinition.observation_types;
 
     const {
       attachments,
