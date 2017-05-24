@@ -121,9 +121,9 @@ const resolveFields = (fields, callback) => {
 };
 
 const resolveFeatureType = (featureType, callback) => {
-  const { key, value } = featureType;
+  const { key, preset, value } = featureType;
 
-  const presetName = [key, value].filter(x => x != null).join("/");
+  const presetName = preset || [key, value].filter(x => x != null).join("/");
 
   return loadPreset(presetName, (err, preset) => {
     if (err) {
