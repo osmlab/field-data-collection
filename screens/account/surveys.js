@@ -4,7 +4,7 @@ import { NavigationActions } from 'react-navigation'
 
 import baseStyles from '../../styles/index';
 
-class MainSettingsScreen extends React.Component {
+class SurveysScreen extends React.Component {
   constructor () {
     super();
   }
@@ -22,27 +22,27 @@ class MainSettingsScreen extends React.Component {
         <View style={baseStyles.container}>
           <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
             <Text style={{fontSize:30, marginTop: -10, marginRight: 5}} onPress={onBackPress}>←</Text>
-            <Text style={[baseStyles.title]}>Settings</Text>
+            <Text style={[baseStyles.title]}>Surveys</Text>
           </View>
 
           <View style={{ marginTop:20, marginBottom: 20 }}>
             <Text style={styles.subtitle}>
-              Enter your information for your edits to be associated to you.
+              Some text about surveys to read.
             </Text>
           </View>
         </View>
 
         <View style={{flex:1}}>
-          <Button
-            style={{flex:1}}
-            onPress={() => navigate('About')}
-            title="About"
-          />
-          <Button
-            style={{flex:1}}
-            onPress={() => navigate('Surveys')}
-            title="Surveys"
-          />
+        <Button
+          style={{flex:1}}
+          onPress={() => {}}
+          title="Survey 1"
+        />
+        <Button
+          style={{flex:1}}
+          onPress={() => {}}
+          title="Survey 2"
+        />
         </View>
       </View>
     );
@@ -55,4 +55,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default MainSettingsScreen;
+export default SurveysScreen;
