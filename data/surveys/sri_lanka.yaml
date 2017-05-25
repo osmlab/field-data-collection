@@ -2,7 +2,7 @@ schema_version: 0.0.1
 version: 0.0.1
 
 name: Sri Lanka Building Survey
-description: |
+description: >
   Collection of exposure information for buildings in the flood-prone Attanagalu
   Oya river basin.
 
