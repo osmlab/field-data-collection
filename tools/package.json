@@ -6,6 +6,7 @@
     "async": "^2.4.0",
     "epipebomb": "^1.0.0",
     "js-yaml": "^3.8.4",
+    "lodash.uniq": "^4.5.0",
     "lodash.uniqby": "^4.7.0"
   }
 }
