@@ -73,7 +73,7 @@ const loadPreset = (presetName, callback) => {
 };
 
 const resolvePreset = (preset, callback) => {
-  return async.map(preset.fields, loadField, (err, fields) => {
+  return async.map(preset.fields, resolveField, (err, fields) => {
     if (err) {
       return callback(err);
     }
