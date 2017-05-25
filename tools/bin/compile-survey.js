@@ -53,8 +53,7 @@ const parse = (path, type, callback) => {
     try {
       return callback(null, getParser(type)(body));
     } catch (err) {
-      console.warn(err.stack);
-      return callback(err);
+      return callback(new SyntaxError(`${err.message} in ${path}`));
     }
   });
 };
