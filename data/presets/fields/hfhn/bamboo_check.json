@@ -1,0 +1,12 @@
+{
+    "key": "hfhn:bamboo_check",
+    "type": "combo",
+    "label": "Check all bamboo to wall and floor attachments",
+    "placeholder": "Pass, fail...",
+    "strings": {
+        "options": {
+            "yes": "Pass (yes)",
+            "no": "Fail (no)"
+        }
+    }
+}

@@ -1,0 +1,12 @@
+{
+    "key": "hfhn:bamboo_weave",
+    "type": "combo",
+    "label": "Inspect bamboo weave installation",
+    "placeholder": "Pass, fail...",
+    "strings": {
+        "options": {
+            "yes": "Pass (yes)",
+            "no": "Fail (no)"
+        }
+    }
+}

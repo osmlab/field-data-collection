@@ -1,0 +1,12 @@
+{
+    "key": "hfhn:roofing_sheet_attachments",
+    "type": "combo",
+    "label": "Inspect roofing sheet attachments, overlaps, and penetrations",
+    "placeholder": "Pass, fail...",
+    "strings": {
+        "options": {
+            "yes": "Pass (yes)",
+            "no": "Fail (no)"
+        }
+    }
+}

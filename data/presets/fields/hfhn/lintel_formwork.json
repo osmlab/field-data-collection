@@ -1,0 +1,12 @@
+{
+    "key": "hfhn:lintel_formwork",
+    "type": "combo",
+    "label": "Check lintel formwork",
+    "placeholder": "Pass, fail...",
+    "strings": {
+        "options": {
+            "yes": "Pass (yes)",
+            "no": "Fail (no)"
+        }
+    }
+}

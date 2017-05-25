@@ -1,0 +1,12 @@
+{
+    "key": "hfhn:foundation_check",
+    "type": "combo",
+    "label": "Check foundation final dimensions, elevation, and quality of workmanship",
+    "placeholder": "Pass, fail...",
+    "strings": {
+        "options": {
+            "yes": "Pass (yes)",
+            "no": "Fail (no)"
+        }
+    }
+}

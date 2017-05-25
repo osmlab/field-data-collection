@@ -1,0 +1,12 @@
+{
+    "key": "hfhn:roofing_sheet",
+    "type": "combo",
+    "label": "Go over roofing sheet install",
+    "placeholder": "Pass, fail...",
+    "strings": {
+        "options": {
+            "yes": "Pass (yes)",
+            "no": "Fail (no)"
+        }
+    }
+}

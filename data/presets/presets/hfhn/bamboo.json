@@ -1,0 +1,21 @@
+{
+    "fields": [
+        "hfhn:bamboo_check",
+        "hfhn:bamboo_check_notes",
+        "hfhn:bamboo_attachments",
+        "hfhn:bamboo_attachments_notes",
+        "hfhn:bamboo_weave",
+        "hfhn:bamboo_weave_notes",
+        "hfhn:roofing_sheet",
+        "hfhn:roofing_sheet_notes"
+    ],
+    "geometry": [
+        "point",
+        "area"
+    ],
+    "tags": {
+        "hfhn:inspection": "bamboo"
+    },
+    "name": "Bamboo",
+    "private": true
+}

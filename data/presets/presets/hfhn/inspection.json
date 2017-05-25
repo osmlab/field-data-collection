@@ -1,0 +1,21 @@
+{
+    "fields": [
+        "hfhn:inspection_date",
+        "hfhn:supervisor",
+        "hfhn:id_number",
+        "hfhn:village",
+        "hfhn:municipality",
+        "hfhn:lot_number",
+        "hfhn:shelter_type",
+        "hfhn:number_of_inspections"
+    ],
+    "geometry": [
+        "point",
+        "area"
+    ],
+    "tags": {
+        "hfhn:inspection": "*"
+    },
+    "name": "Inspection",
+    "private": true
+}

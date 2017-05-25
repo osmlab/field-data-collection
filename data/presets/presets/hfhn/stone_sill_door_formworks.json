@@ -1,0 +1,15 @@
+{
+    "fields": [
+        "hfhn:wire_mortar_stone_3",
+        "hfhn:wire_mortar_stone_3_notes",
+    ],
+    "geometry": [
+        "point",
+        "area"
+    ],
+    "tags": {
+        "hfhn:inspection": "stone_sill_door_formworks"
+    },
+    "name": "Stone Sill Door Formworks",
+    "private": true
+}

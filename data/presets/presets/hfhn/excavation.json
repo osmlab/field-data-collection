@@ -1,0 +1,19 @@
+{
+    "fields": [
+        "hfhn:trench_pit_location",
+        "hfhn:trench_pit_location_notes",
+        "hfhn:trench_pit_excavation",
+        "hfhn:trench_pit_excavation_notes",
+        "hfhn:concrete_ratio",
+        "hfhn:concrete_ratio_notes"
+    ],
+    "geometry": [
+        "point",
+        "area"
+    ],
+    "tags": {
+        "hfhn:inspection": "excavation"
+    },
+    "name": "Excavation and footing preparations",
+    "private": true
+}

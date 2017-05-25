@@ -1,0 +1,12 @@
+{
+    "key": "hfhn:brick_wall_dimensions",
+    "type": "combo",
+    "label": "Confirm brick wall dimensions, plumb, level, elevations, and quality of workmanship",
+    "placeholder": "Pass, fail...",
+    "strings": {
+        "options": {
+            "yes": "Pass (yes)",
+            "no": "Fail (no)"
+        }
+    }
+}

@@ -1,0 +1,12 @@
+{
+    "key": "hfhn:lintel_reinforcement",
+    "type": "combo",
+    "label": "Confirm lintel reinforcement schedule, placement, and provisions for roof",
+    "placeholder": "Pass, fail...",
+    "strings": {
+        "options": {
+            "yes": "Pass (yes)",
+            "no": "Fail (no)"
+        }
+    }
+}

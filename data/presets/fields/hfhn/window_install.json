@@ -1,0 +1,12 @@
+{
+    "key": "hfhn:window_install",
+    "type": "combo",
+    "label": "Check window unit install, confirm plumb, level, square, and primer coat",
+    "placeholder": "Pass, fail...",
+    "strings": {
+        "options": {
+            "yes": "Pass (yes)",
+            "no": "Fail (no)"
+        }
+    }
+}

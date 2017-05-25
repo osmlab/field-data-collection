@@ -1,0 +1,12 @@
+{
+    "key": "hfhn:reinforcement_assembly",
+    "type": "combo",
+    "label": "Check reinforcement assembly for accuracy based on plans",
+    "placeholder": "Pass, fail...",
+    "strings": {
+        "options": {
+            "yes": "Pass (yes)",
+            "no": "Fail (no)"
+        }
+    }
+}

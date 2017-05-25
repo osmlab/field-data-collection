@@ -6,6 +6,7 @@ const path = require("path");
 
 const async = require("async");
 require("epipebomb")();
+const uniq = require("lodash.uniq");
 const uniqBy = require("lodash.uniqby");
 const yaml = require("js-yaml");
 
@@ -139,11 +140,12 @@ const resolveFeatureType = (featureType, callback) => {
         return callback(err);
       }
 
-      const { extend, id, include, name, options } = featureType;
+      const { extend, id, include, name, options, related } = featureType;
 
       // overrides
       preset.id = id;
       preset.name = name || preset.name;
+      preset.related = related || [];
 
       // stash extension info for post-processing
       if (extend != null) {
@@ -190,6 +192,7 @@ const resolveSurvey = (surveyDefinition, callback) => {
       return callback(err);
     }
 
+    // post-process feature types
     featureTypes = featureTypes.map(ft => {
       if (ft.extend != null) {
         // the original definition of this feature type
@@ -205,6 +208,9 @@ const resolveSurvey = (surveyDefinition, callback) => {
 
         let localFields = ft.fields;
         const inheritedFields = [];
+
+        const relatedTypes = ft.related;
+        const inhertedRelatedTypes = [];
 
         defs.forEach(def => {
           if (def.exclude != null) {
@@ -227,6 +233,7 @@ const resolveSurvey = (surveyDefinition, callback) => {
           // add inherited fields
           const superType = featureTypes.find(x => x.id == def.id);
           inheritedFields.push(...superType.fields);
+          inhertedRelatedTypes.push(...superType.related);
         });
 
         // append + dedupe local fields (both custom + from presets), preferring
@@ -235,6 +242,9 @@ const resolveSurvey = (surveyDefinition, callback) => {
           inheritedFields.concat(localFields).reverse(),
           "key"
         ).reverse();
+
+        // append + dedupe related fields
+        ft.related = uniq(inhertedRelatedTypes.concat(relatedTypes));
 
         // clean up after ourselves
         delete ft.extend;

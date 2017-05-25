@@ -1,0 +1,15 @@
+{
+    "fields": [
+        "hfhn:wire_mortar_brick_2",
+        "hfhn:wire_mortar_brick_2_notes"
+    ],
+    "geometry": [
+        "point",
+        "area"
+    ],
+    "tags": {
+        "hfhn:inspection": "brick_foundation_ring_beam"
+    },
+    "name": "Brick Foundation Ring Beam",
+    "private": true
+}
