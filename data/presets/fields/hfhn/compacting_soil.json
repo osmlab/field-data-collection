@@ -1,0 +1,12 @@
+{
+    "key": "hfhn:compacting_soil",
+    "type": "combo",
+    "label": "Confirm compacted soiling is at proper elevation",
+    "placeholder": "Pass, fail...",
+    "strings": {
+        "options": {
+            "yes": "Pass (yes)",
+            "no": "Fail (no)"
+        }
+    }
+}

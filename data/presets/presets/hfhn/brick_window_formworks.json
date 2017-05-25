@@ -1,0 +1,13 @@
+{
+    "fields": [
+    ],
+    "geometry": [
+        "point",
+        "area"
+    ],
+    "tags": {
+        "hfhn:inspection": "brick_window_formworks"
+    },
+    "name": "Brick Window Formworks",
+    "private": true
+}

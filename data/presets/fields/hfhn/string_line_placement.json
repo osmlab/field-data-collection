@@ -1,0 +1,12 @@
+{
+    "key": "hfhn:string_line_placement",
+    "type": "combo",
+    "label": "Confirm string line placement and scheduled elevations",
+    "placeholder": "Pass, fail...",
+    "strings": {
+        "options": {
+            "yes": "Pass (yes)",
+            "no": "Fail (no)"
+        }
+    }
+}

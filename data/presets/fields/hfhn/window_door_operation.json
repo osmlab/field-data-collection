@@ -1,0 +1,12 @@
+{
+    "key": "hfhn:window_door_operation",
+    "type": "combo",
+    "label": "Check window and door operation",
+    "placeholder": "Pass, fail...",
+    "strings": {
+        "options": {
+            "yes": "Pass (yes)",
+            "no": "Fail (no)"
+        }
+    }
+}

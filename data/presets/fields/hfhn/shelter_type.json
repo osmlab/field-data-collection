@@ -1,0 +1,13 @@
+{
+    "key": "hfhn:shelter_type",
+    "type": "combo",
+    "label": "Shelter Type",
+    "placeholder": "Type...",
+    "strings": {
+        "options": {
+            "ceb_and_bamboo": "CEB and Bamboo (Incremental)",
+            "stone_and_bamboo": "Stone and Bamboo (Incremental)",
+            "stone_ceb_and_bamboo": "Stone, CEB, and Bamboo (Non-Incremental)"
+        }
+    }
+}

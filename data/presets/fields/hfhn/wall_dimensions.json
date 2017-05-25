@@ -1,0 +1,12 @@
+{
+    "key": "hfhn:wall_dimensions",
+    "type": "combo",
+    "label": "Confirm wall dimensions, plumb, level, and quality of workmanship",
+    "placeholder": "Pass, fail...",
+    "strings": {
+        "options": {
+            "yes": "Pass (yes)",
+            "no": "Fail (no)"
+        }
+    }
+}

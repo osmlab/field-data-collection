@@ -1,0 +1,12 @@
+{
+    "key": "hfhn:doors_and_openings",
+    "type": "combo",
+    "label": "Confirm door locations and rough openings",
+    "placeholder": "Pass, fail...",
+    "strings": {
+        "options": {
+            "yes": "Pass (yes)",
+            "no": "Fail (no)"
+        }
+    }
+}

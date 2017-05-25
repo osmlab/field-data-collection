@@ -1,0 +1,13 @@
+{
+    "fields": [
+    ],
+    "geometry": [
+        "point",
+        "area"
+    ],
+    "tags": {
+        "hfhn:inspection": "stone_window_formworks"
+    },
+    "name": "Stone Window Formworks",
+    "private": true
+}

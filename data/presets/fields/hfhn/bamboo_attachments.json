@@ -1,0 +1,12 @@
+{
+    "key": "hfhn:bamboo_attachments",
+    "type": "combo",
+    "label": "Check all bamboo to bamboo attachments (roof, kitchen)",
+    "placeholder": "Pass, fail...",
+    "strings": {
+        "options": {
+            "yes": "Pass (yes)",
+            "no": "Fail (no)"
+        }
+    }
+}

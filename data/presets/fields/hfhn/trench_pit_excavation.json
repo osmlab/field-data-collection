@@ -1,0 +1,12 @@
+{
+    "key": "hfhn:trench_pit_location",
+    "type": "combo",
+    "label": "Trench and pit are excavated to stable ground, free of ground water and compacted soiling is in place",
+    "placeholder": "Pass, fail...",
+    "strings": {
+        "options": {
+            "yes": "Pass (yes)",
+            "no": "Fail (no)"
+        }
+    }
+}

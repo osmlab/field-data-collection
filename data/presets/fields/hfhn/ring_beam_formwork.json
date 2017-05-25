@@ -1,0 +1,12 @@
+{
+    "key": "hfhn:ring_beam_formwork",
+    "type": "combo",
+    "label": "Inspect ring beam formwork dimensions",
+    "placeholder": "Pass, fail...",
+    "strings": {
+        "options": {
+            "yes": "Pass (yes)",
+            "no": "Fail (no)"
+        }
+    }
+}

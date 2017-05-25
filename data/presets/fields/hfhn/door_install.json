@@ -1,0 +1,12 @@
+{
+    "key": "hfhn:door_install",
+    "type": "combo",
+    "label": "Check door unit install, confirm plumb, level and square, and primer coat",
+    "placeholder": "Pass, fail...",
+    "strings": {
+        "options": {
+            "yes": "Pass (yes)",
+            "no": "Fail (no)"
+        }
+    }
+}

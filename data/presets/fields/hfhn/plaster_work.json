@@ -1,0 +1,12 @@
+{
+    "key": "hfhn:plaster_work",
+    "type": "combo",
+    "label": "Inspect plaster work for quality and strength",
+    "placeholder": "Pass, fail...",
+    "strings": {
+        "options": {
+            "yes": "Pass (yes)",
+            "no": "Fail (no)"
+        }
+    }
+}

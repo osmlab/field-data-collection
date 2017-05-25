@@ -1,0 +1,12 @@
+{
+    "key": "hfhn:sill_reinforcement_assembly",
+    "type": "combo",
+    "label": "Confirm sill reinforcement assembly and location in formworks",
+    "placeholder": "Pass, fail...",
+    "strings": {
+        "options": {
+            "yes": "Pass (yes)",
+            "no": "Fail (no)"
+        }
+    }
+}

@@ -1,0 +1,12 @@
+{
+    "key": "hfhn:concrete_mix_3",
+    "type": "combo",
+    "label": "Confirm concrete mix of 1:2:3",
+    "placeholder": "Pass, fail...",
+    "strings": {
+        "options": {
+            "yes": "Pass (yes)",
+            "no": "Fail (no)"
+        }
+    }
+}
