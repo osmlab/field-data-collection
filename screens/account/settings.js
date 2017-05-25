@@ -12,7 +12,7 @@ class MainSettingsScreen extends React.Component {
   render () {
     const { navigate } = this.props.navigation;
 
-    function onBackPress () {
+    const onBackPress = () => {
       const backAction = NavigationActions.back()
       this.props.navigation.dispatch(backAction)
     }

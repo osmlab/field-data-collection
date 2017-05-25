@@ -52,8 +52,9 @@ class AddObservationScreen extends React.Component {
         <View style={{marginTop:20}}>
           <Text style={[styles.sectionTitle]}>Basic info</Text>
 
+          {/* TODO: replace with actual fields */}
           <View style={styles.fieldset}>
-            <TouchableHighlight onPress={() => {}}>
+            <TouchableHighlight onPress={() => navigate('FieldsetForm', { fieldset: { title: 'Basic info' } })}>
               <View style={styles.field}>
                 <View>
                   <Text style={styles.fieldLabel}>Label</Text>
@@ -64,7 +65,7 @@ class AddObservationScreen extends React.Component {
                 </View>
               </View>
             </TouchableHighlight>
-            <TouchableHighlight onPress={() => {}}>
+            <TouchableHighlight onPress={() => navigate('FieldsetForm', { fieldset: { title: 'Basic info' } })}>
               <View style={styles.field}>
                 <View>
                   <Text style={styles.fieldLabel}>Label</Text>
@@ -75,7 +76,7 @@ class AddObservationScreen extends React.Component {
                 </View>
               </View>
             </TouchableHighlight>
-            <TouchableHighlight onPress={() => {}}>
+            <TouchableHighlight onPress={() => navigate('FieldsetForm', { fieldset: { title: 'Basic info' } })}>
               <View style={styles.field}>
                 <View>
                   <Text style={styles.fieldLabel}>Label</Text>
@@ -86,7 +87,7 @@ class AddObservationScreen extends React.Component {
                 </View>
               </View>
             </TouchableHighlight>
-            <TouchableHighlight onPress={() => {}}>
+            <TouchableHighlight onPress={() => navigate('FieldsetForm', { fieldset: { title: 'Basic info' } })}>
               <View style={styles.field}>
                 <View>
                   <Text style={styles.fieldLabel}>Label</Text>

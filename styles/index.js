@@ -4,7 +4,7 @@ const baseStyles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    justifyContent: 'space-around',
+    justifyContent: 'flex-start',
     padding: 20
   },
   title: {
