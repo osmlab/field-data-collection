@@ -3,10 +3,10 @@
     "type": "combo",
     "label": "Roof material",
     "strings": {
-        "options": [
-            "roof_tiles",
-            "tile",
-            "concrete"
-        ]
+        "options": {
+            "roof_tiles": "Roof tiles",
+            "tile": "Tile",
+            "concrete": "Concrete"
+        }
     }
 }

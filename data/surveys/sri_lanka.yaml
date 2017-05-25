@@ -38,12 +38,12 @@ feature_types:
         # group by tags['building:material']
         # order by count(*) desc
         options:
-          - plaster
-          - exposed_brick
-          - exposed_cement_block
-          - tin_sheet
-          - clay_wall/mud
-          - cadjan/palmyrah
+          plaster: Plaster
+          exposed_brick: Exposed brick
+          exposed_cement_block: Exposed cement block
+          tin_sheet: Tin sheet
+          clay_wall/mud: Clay / mud
+          cadjan/palmyrah: Cadjan / Palmyrah
       - type: roof:material
         # select
         #   tags['roof:material'] "roof:material",
@@ -53,12 +53,12 @@ feature_types:
         # group by tags['roof:material']
         # order by count(*) desc
         options:
-          - clay/ciment_tile
-          - asbestos
-          - concrete
-          - permanent_zinc_sheet
-          - tin_sheet/temporary_zinc
-          - cadjan/palmyrah/straw
+          clay/ciment_tile: Clay / ciment tile
+          asbestos: Asbestos
+          concrete: Concrete
+          permanent_zinc_sheet: Permanent zinc sheet
+          tin_sheet/temporary_zinc: Tin / temporary zinc sheet
+          cadjan/palmyrah/straw: Cadjan / palmyrah / straw
       # select
       #   tags['building:foundation_height'] "building:foundation_height",
       #   count(*) "count"

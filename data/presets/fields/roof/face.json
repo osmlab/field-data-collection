@@ -3,10 +3,10 @@
     "type": "combo",
     "label": "Number of faces for the main roof",
     "strings": {
-        "options": [
-            "1 face (lean-to)",
-            "2 faces (pitched)",
-            "4 faces (hipped)"
-        ]
+        "options": {
+            "1": "1 face (lean-to)",
+            "2": "2 faces (pitched)",
+            "4": "4 faces (hipped)"
+        }
     }
 }

@@ -3,19 +3,19 @@
     "type": "combo",
     "label": "Roof shape",
     "strings": {
-        "options": [
-            "flat",
-            "skillion",
-            "gabled",
-            "half-hipped",
-            "hipped",
-            "pyramidal",
-            "gambrel",
-            "mansard",
-            "dome",
-            "onion",
-            "round",
-            "saltbox"
-        ]
+        "options": {
+            "flat": "Flat",
+            "skillion": "Skillion",
+            "gabled": "Gabled",
+            "half-hipped": "Half-hipped",
+            "hipped": "Hipped",
+            "pyramidal": "Pyramidal",
+            "gambrel": "Gambrel",
+            "mansard": "Mansard",
+            "dome": "Dome",
+            "onion": "Onion",
+            "round": "Round",
+            "saltbox": "Saltbox"
+        }
     }
 }

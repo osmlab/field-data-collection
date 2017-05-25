@@ -3,19 +3,13 @@
     "type": "combo",
     "label": "Foundation Height",
     "strings": {
-        "options": [
-            "less_than_1",
-            "1 to 1.5",
-            "1",
-            "1_to_1.5",
-            "1.5",
-            "Less than 1",
-            "1.5 to 3",
-            "1.5_to_3",
-            "less_than1",
-            "less than 1",
-            "more_than_3",
-            "more than 3"
-        ]
+        "options": {
+            "less_than_1": "Less than 1ft",
+            "1 to 1.5": "1 - 1.5ft",
+            "1": "1 foot",
+            "1.5": "1.5ft",
+            "1.5_to_3": "1.5 - 3ft",
+            "more_than_3": "More than 3ft"
+        }
     }
 }
