@@ -24,14 +24,9 @@ class AddObservationScreen extends React.Component {
 
     return (
       <View style={baseStyles.container}>
-        <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'flex-start' }}>
-          <View style={{}} onPress={onBackPress}>
-            <Text style={{fontSize:30}}>←</Text>
-          </View>
-
-          <Text style={[baseStyles.title]}>
-            Adding: {category.name}
-          </Text>
+        <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
+          <Text style={{fontSize:30, marginTop: -10, marginRight: 5}} onPress={onBackPress}>←</Text>
+          <Text style={[baseStyles.title]}>Adding: {category.name}</Text>
         </View>
 
         <View style={{ marginTop:20, marginBottom: 20, flexDirection:'row', flexWrap:'wrap' }}>
