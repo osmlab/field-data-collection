@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "clean:cache": "rm -rf $TMPDIR/react-* && watchman watch-del-all",
-    "clean:modules": "rm -rf node_modules && npm cache clean && yarn cache clean && rm yarn.lock && yarn",
+    "clean:modules": "rm -rf node_modules && rm yarn.lock && yarn",
     "clean": "npm run clean:cache && npm run clean:modules",
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "ios": "react-native run-ios && react-native log-ios",
