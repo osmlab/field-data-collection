@@ -30,9 +30,15 @@ yarn
 
 Install Android Studio.
 
-### Follow the react-native getting started guide for android:
+[Follow the react-native getting started guide for
+Android.](http://facebook.github.io/react-native/docs/getting-started.html)
 
-http://facebook.github.io/react-native/docs/getting-started.html
+Install additional packages (this can also be done from the GUI):
+
+```bash
+# for react-native-localization
+sdkmanager "build-tools;25.0.0"
+```
 
 ### Run the project in a simulator
 

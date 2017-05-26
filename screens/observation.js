@@ -1,19 +1,18 @@
 import React from 'react';
 import { StyleSheet, View, Button, Text } from 'react-native';
 
-class ObservationsScreen extends React.Component {
+class ObservationScreen extends React.Component {
   constructor () {
     super();
-    this.navigationOptions = { tabBarLabel: 'Map' };
   }
 
   render () {
     const { navigate } = this.props.navigation;
 
     return (
-      <View style={styles.observations}>
+      <View style={styles.observation}>
         <Text>
-        This is a list of observations
+        This is an observation
         </Text>
       </View>
     );
@@ -21,7 +20,7 @@ class ObservationsScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  observations: {}
+  observation: {}
 });
 
-export default ObservationsScreen;
+export default ObservationScreen;
