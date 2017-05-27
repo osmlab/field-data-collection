@@ -1,10 +1,11 @@
-import React from 'react';
-import { StyleSheet, View, Button, Text } from 'react-native';
+import React, { Component } from 'react';
+import { StyleSheet, View, Button } from 'react-native';
 import { NavigationActions } from 'react-navigation'
 
-import baseStyles from '../../styles/index';
+import { Text, Wrapper } from '../../components';
+import { baseStyles } from '../../styles';
 
-class MainSettingsScreen extends React.Component {
+class MainSettingsScreen extends Component {
   constructor () {
     super();
   }
@@ -18,18 +19,16 @@ class MainSettingsScreen extends React.Component {
     }
 
     return (
-      <View style={{flex:1}}>
-        <View style={baseStyles.container}>
-          <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
-            <Text style={{fontSize:30, marginTop: -10, marginRight: 5}} onPress={onBackPress}>←</Text>
-            <Text style={[baseStyles.title]}>Settings</Text>
-          </View>
+      <Wrapper>
+        <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
+          <Text style={{fontSize:30, marginTop: -10, marginRight: 5}} onPress={onBackPress}>←</Text>
+          <Text style={[baseStyles.title]}>Settings</Text>
+        </View>
 
-          <View style={{ marginTop:20, marginBottom: 20 }}>
-            <Text style={styles.subtitle}>
-              Enter your information for your edits to be associated to you.
-            </Text>
-          </View>
+        <View style={{ marginTop:20, marginBottom: 20 }}>
+          <Text style={styles.subtitle}>
+            Enter your information for your edits to be associated to you.
+          </Text>
         </View>
 
         <View style={{flex:1}}>
@@ -44,7 +43,7 @@ class MainSettingsScreen extends React.Component {
             title="Surveys"
           />
         </View>
-      </View>
+      </Wrapper>
     );
   }
 }

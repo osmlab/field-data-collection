@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { Text, TextInput, View } from 'react-native';
+import { TextInput, View } from 'react-native';
+
+import Text from './text';
 
 export default function searchBox (props) {
   const onChangeText = props.onChangeText;

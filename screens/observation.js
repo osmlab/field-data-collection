@@ -1,7 +1,10 @@
-import React from 'react';
-import { StyleSheet, View, Button, Text } from 'react-native';
+import React, { Component } from 'react';
+import { StyleSheet, View, Button } from 'react-native';
 
-class ObservationScreen extends React.Component {
+import { Text, Wrapper } from '../../components';
+import { baseStyles } from '../../styles';
+
+class ObservationScreen extends Component {
   constructor () {
     super();
   }
@@ -10,17 +13,15 @@ class ObservationScreen extends React.Component {
     const { navigate } = this.props.navigation;
 
     return (
-      <View style={styles.observation}>
+      <Wrapper>
         <Text>
-        This is an observation
+          This is an observation
         </Text>
-      </View>
+      </Wrapper>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  observation: {}
-});
+const styles = StyleSheet.create({});
 
 export default ObservationScreen;

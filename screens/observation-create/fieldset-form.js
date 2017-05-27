@@ -1,10 +1,11 @@
-import React from 'react';
-import { StyleSheet, View, Button, Text, TextInput, TouchableHighlight } from 'react-native';
+import React, { Component } from 'react';
+import { StyleSheet, View, Button, TextInput, TouchableHighlight } from 'react-native';
 import { NavigationActions } from 'react-navigation'
 
-import baseStyles from '../../styles/index';
+import { Text, Wrapper } from '../../components';
+import { baseStyles } from '../../styles';
 
-class FieldsetFormScreen extends React.Component {
+class FieldsetFormScreen extends Component {
   constructor (params) {
     super();
 
@@ -24,7 +25,7 @@ class FieldsetFormScreen extends React.Component {
     }
 
     return (
-      <View style={baseStyles.container}>
+      <Wrapper>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
             <Text style={baseStyles.title}>
               {fieldset.title}
@@ -48,7 +49,7 @@ class FieldsetFormScreen extends React.Component {
             onChangeText={(val) => console.log('field value', val)}
           />
         </View>
-      </View>
+      </Wrapper>
     );
   }
 }

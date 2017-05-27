@@ -1,9 +1,10 @@
-import React from 'react';
-import { StyleSheet, View, Button, Text } from 'react-native';
+import React, { Component } from 'react';
+import { StyleSheet, View, Button } from 'react-native';
 
-import baseStyles from '../../styles';
+import { Text, Wrapper } from '../../components';
+import { baseStyles } from '../../styles';
 
-class AddSurveyScreen extends React.Component {
+class AddSurveyScreen extends Component {
   constructor () {
     super();
   }
@@ -12,7 +13,7 @@ class AddSurveyScreen extends React.Component {
     const { navigate } = this.props.navigation;
 
     return (
-      <View style={{ flex: 1 }}>
+      <Wrapper>
         <View style={baseStyles.container}>
           <View onPress={() => {}}>
             <Text> ← </Text>
@@ -24,7 +25,7 @@ class AddSurveyScreen extends React.Component {
 
 
         </View>
-      </View>
+      </Wrapper>
     );
   }
 }

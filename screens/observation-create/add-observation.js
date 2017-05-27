@@ -1,10 +1,11 @@
-import React from 'react';
-import { StyleSheet, View, Button, Text, TouchableHighlight } from 'react-native';
+import React, { Component } from 'react';
+import { StyleSheet, View, Button, TouchableHighlight } from 'react-native';
 import { NavigationActions } from 'react-navigation'
 
-import baseStyles from '../../styles/index';
+import { Text, Wrapper } from '../../components';
+import { baseStyles } from '../../styles';
 
-class AddObservationScreen extends React.Component {
+class AddObservationScreen extends Component {
   constructor (params) {
     super();
 
@@ -20,7 +21,7 @@ class AddObservationScreen extends React.Component {
     const { category } = this.state;
 
     return (
-      <View style={baseStyles.container}>
+      <Wrapper>
         <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
           <Text style={{fontSize:30, marginTop: -10, marginRight: 5}} onPress={this.onBackPress}>←</Text>
           <Text style={[baseStyles.title]}>Adding: {category.name}</Text>
@@ -92,7 +93,7 @@ class AddObservationScreen extends React.Component {
             </TouchableHighlight>
           </View>
         </View>
-      </View>
+      </Wrapper>
     );
   }
 }

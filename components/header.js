@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Text, TextInput, View } from 'react-native';
+import { TextInput, View, TouchableHighlight } from 'react-native';
 
+import Text from './text';
 import SearchBox from './search-box';
 
 export default function Header (props) {
@@ -10,8 +11,8 @@ export default function Header (props) {
 
   return (
     <View style={{ padding: 10, height: 60, borderBottomWidth: 1, borderColor: '#ccc', backgroundColor: 'white' }}>
-      <View style={{ flex:1, flexDirection:'column', justifyContent: 'center', height: 30 }}>
-        <View style={{ flexDirection:'row' }}>
+      <View style={{ flex: 1, height: 30 }}>
+        <View style={{ flex: 1, flexDirection:'row', alignItems: 'center' }}>
           <SearchBox onChangeText={onChangeText} />
           <MapListToggle {...props} />
         </View>
@@ -21,9 +22,8 @@ export default function Header (props) {
 }
 
 function MapListToggle (props) {
-  console.log('MapListToggle', props)
   return (
-    <View style={{ flex: 0.3, height: 30, alignItems: 'center', justifyContent: 'center' }}>
+    <View style={{ flex: 0.3, height: 30, justifyContent: 'center' }}>
       <Text style={{ textAlign: 'center' }} onPress={props.onTogglePress}>{props.button}</Text>
     </View>
   );

@@ -1,10 +1,11 @@
-import React from 'react';
-import { StyleSheet, View, Button, Text } from 'react-native';
+import React, { Component } from 'react';
+import { StyleSheet, View, Button } from 'react-native';
 import { NavigationActions } from 'react-navigation'
 
-import baseStyles from '../../styles/index';
+import { Text, Wrapper } from '../../components';
+import { baseStyles } from '../../styles';
 
-class SurveysScreen extends React.Component {
+class SurveysScreen extends Component {
   constructor () {
     super();
   }
@@ -18,33 +19,31 @@ class SurveysScreen extends React.Component {
     }
 
     return (
-      <View style={{flex:1}}>
-        <View style={baseStyles.container}>
-          <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
-            <Text style={{fontSize:30, marginTop: -10, marginRight: 5}} onPress={onBackPress}>←</Text>
-            <Text style={[baseStyles.title]}>Surveys</Text>
-          </View>
+      <Wrapper>
+        <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
+          <Text style={{fontSize:30, marginTop: -10, marginRight: 5}} onPress={onBackPress}>←</Text>
+          <Text style={[baseStyles.title]}>Surveys</Text>
+        </View>
 
-          <View style={{ marginTop:20, marginBottom: 20 }}>
-            <Text style={styles.subtitle}>
-              Some text about surveys to read.
-            </Text>
-          </View>
+        <View style={{ marginTop:20, marginBottom: 20 }}>
+          <Text style={styles.subtitle}>
+            Some text about surveys to read.
+          </Text>
         </View>
 
         <View style={{flex:1}}>
-        <Button
-          style={{flex:1}}
-          onPress={() => {}}
-          title="Survey 1"
-        />
-        <Button
-          style={{flex:1}}
-          onPress={() => {}}
-          title="Survey 2"
-        />
+          <Button
+            style={{flex:1}}
+            onPress={() => {}}
+            title="Survey 1"
+          />
+          <Button
+            style={{flex:1}}
+            onPress={() => {}}
+            title="Survey 2"
+          />
         </View>
-      </View>
+      </Wrapper>
     );
   }
 }

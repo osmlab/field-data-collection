@@ -1,9 +1,10 @@
-import React from 'react';
-import { StyleSheet, View, Button, Text, ListView, TouchableHighlight } from 'react-native';
+import React, { Component } from 'react';
+import { StyleSheet, View, Button, ListView, TouchableHighlight } from 'react-native';
 
-import baseStyles from '../../styles/index'
+import { Text, Wrapper } from '../../components';
+import { baseStyles } from '../../styles';
 
-class CategoriesScreen extends React.Component {
+class CategoriesScreen extends Component {
   constructor () {
     super();
 
@@ -31,7 +32,7 @@ class CategoriesScreen extends React.Component {
     const { navigate } = this.props.navigation;
 
     return (
-      <View style={baseStyles.container}>
+      <Wrapper>
         <Text style={baseStyles.title}>
           What do you want to add?
         </Text>
@@ -58,7 +59,7 @@ class CategoriesScreen extends React.Component {
         <View style={styles.moreItemsButton}>
           <Text style={{}} onPress={() => {}}>View More</Text>
         </View>
-      </View>
+      </Wrapper>
     );
   }
 }

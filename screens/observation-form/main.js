@@ -1,7 +1,10 @@
-import React from 'react';
-import { StyleSheet, View, Button, Text } from 'react-native';
+import React, { Component } from 'react';
+import { StyleSheet, View, Button } from 'react-native';
 
-class ObservationFormMainScreen extends React.Component {
+import { Text, Wrapper } from '../../components';
+import { baseStyles } from '../../styles';
+
+class ObservationFormMainScreen extends Component {
   constructor () {
     super();
   }
@@ -10,11 +13,11 @@ class ObservationFormMainScreen extends React.Component {
     const { navigate } = this.props.navigation;
 
     return (
-      <View>
+      <Wrapper>
         <Text>
           This is the screen for choosing the category of an observation
         </Text>
-      </View>
+      </Wrapper>
     );
   }
 }

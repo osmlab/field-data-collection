@@ -1,9 +1,10 @@
-import React from 'react';
-import { StyleSheet, View, Button, Text, ListView } from 'react-native';
+import React, { Component } from 'react';
+import { StyleSheet, View, Button, ListView } from 'react-native';
 
-import baseStyles from '../../styles/index';
+import { Text, Wrapper } from '../../components';
+import { baseStyles } from '../../styles';
 
-class AccountScreen extends React.Component {
+class AccountScreen extends Component {
   constructor () {
     super();
 
@@ -50,7 +51,7 @@ class AccountScreen extends React.Component {
     }
 
     return (
-      <View style={baseStyles.container}>
+      <Wrapper>
         <Text style={baseStyles.title}>
           Your Observations
         </Text>
@@ -77,7 +78,7 @@ class AccountScreen extends React.Component {
             );
           }}
         />
-      </View>
+      </Wrapper>
     );
   }
 }

@@ -1,11 +1,10 @@
-import React from 'react';
-import { StyleSheet, View, Button, Text, ListView } from 'react-native';
+import React, { Component } from 'react';
+import { StyleSheet, View, Button, ListView } from 'react-native';
 
-import Header from '../../components/header';
+import { Text, Header, Wrapper } from '../../components';
+import { baseStyles } from '../../styles'
 
-import baseStyles from '../../styles/index'
-
-class ObservationListScreen extends React.Component {
+class ObservationListScreen extends Component {
   constructor () {
     super();
 
@@ -47,31 +46,33 @@ class ObservationListScreen extends React.Component {
     const { navigate } = this.props.navigation;
 
     return (
-      <View style={{ flex: 1 }}>
-        <Header
-          button='map'
-          onTogglePress={() => {
-            navigate('ObservationMap')
-          }}
-        />
-
-        <View style={baseStyles.container}>
-          <ListView
-            contentContainerStyle={{}}
-            dataSource={this.state.observations}
-            renderRow={(item) => {
-              return (
-                <View style={styles.observation}>
-                  <Text style={styles.muted}>{item.category} | {item.surveyName}</Text>
-                  <Text style={styles.title}>{item.observationName}</Text>
-                  <Text style={styles.muted}>Last updated: {item.updated}</Text>
-                  <Text>Lat/Long: {item.lnglat}</Text>
-                </View>
-              );
+      <Wrapper style={{ padding: 0 }}>
+        <View style={{ flex: 1 }}>
+          <Header
+            button='map'
+            onTogglePress={() => {
+              navigate('ObservationMap')
             }}
           />
+
+          <View style={baseStyles.container}>
+            <ListView
+              contentContainerStyle={{}}
+              dataSource={this.state.observations}
+              renderRow={(item) => {
+                return (
+                  <View style={styles.observation}>
+                    <Text style={styles.muted}>{item.category} | {item.surveyName}</Text>
+                    <Text style={styles.title}>{item.observationName}</Text>
+                    <Text style={styles.muted}>Last updated: {item.updated}</Text>
+                    <Text>Lat/Long: {item.lnglat}</Text>
+                  </View>
+                );
+              }}
+            />
+          </View>
         </View>
-      </View>
+      </Wrapper>
     );
   }
 }

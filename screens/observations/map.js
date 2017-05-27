@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { StyleSheet, View, Button } from 'react-native';
 import Mapbox, { MapView } from 'react-native-mapbox-gl';
 
+import { Text, Header, Wrapper } from '../../components';
+import { baseStyles } from '../../styles'
+
 Mapbox.setAccessToken('pk.eyJ1Ijoic2V0aHZpbmNlbnQiLCJhIjoiSXZZXzZnUSJ9.Nr_zKa-4Ztcmc1Ypl0k5nw');
 
-import Header from '../../components/header';
-
-class ObservationMapScreen extends React.Component {
+class ObservationMapScreen extends Component {
   constructor () {
     super();
     this.navigationOptions = { tabBarLabel: 'Map' };
@@ -22,12 +23,13 @@ class ObservationMapScreen extends React.Component {
 
   render () {
     const { navigate } = this.props.navigation;
+
     return (
-      <View style={styles.container}>
+      <Wrapper style={{ padding: 0 }}>
         <Header
           button='list'
           onTogglePress={() => {
-            console.log('heyo')
+            console.log('toggggggggggggggggggggggggggggggggg')
             navigate('ObservationList')
           }}
         />
@@ -45,16 +47,12 @@ class ObservationMapScreen extends React.Component {
           styleURL={Mapbox.mapStyles.light}
           userTrackingMode={this.state.userTrackingMode}
         />
-      </View>
+      </Wrapper>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'stretch'
-  },
   map: {
     flex: 1
   }
