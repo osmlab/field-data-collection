@@ -1,34 +1,42 @@
-import React, { Component } from 'react';
-import { StyleSheet, View, Button, ListView, TouchableHighlight } from 'react-native';
+import React, { Component } from "react";
+import {
+  StyleSheet,
+  View,
+  Button,
+  ListView,
+  TouchableHighlight
+} from "react-native";
 
-import { Text, Wrapper } from '../../components';
-import { baseStyles } from '../../styles';
+import { Text, Wrapper } from "../../components";
+import { baseStyles } from "../../styles";
 
 class CategoriesScreen extends Component {
-  constructor () {
+  constructor() {
     super();
 
     const ds = new ListView.DataSource({
-      rowHasChanged: (r1, r2) => { r1 !== r2 }
+      rowHasChanged: (r1, r2) => {
+        r1 !== r2;
+      }
     });
 
     this.state = {
       categories: ds.cloneWithRows([
-        { name: 'Oil spills' },
-        { name: 'Blast Fishing' },
-        { name: 'Schools' },
-        { name: 'Buildings' },
-        { name: 'Hazards' },
-        { name: 'Oil spills' },
-        { name: 'Blast Fishing' },
-        { name: 'Schools' },
-        { name: 'Buildings' },
-        { name: 'Hazards' }
-      ]),
+        { name: "Oil spills" },
+        { name: "Blast Fishing" },
+        { name: "Schools" },
+        { name: "Buildings" },
+        { name: "Hazards" },
+        { name: "Oil spills" },
+        { name: "Blast Fishing" },
+        { name: "Schools" },
+        { name: "Buildings" },
+        { name: "Hazards" }
+      ])
     };
   }
 
-  render () {
+  render() {
     const { navigate } = this.props.navigation;
 
     return (
@@ -41,9 +49,9 @@ class CategoriesScreen extends Component {
           contentContainerStyle={styles.gridContainer}
           dataSource={this.state.categories}
           noScroll={true}
-          renderRow={(item) => {
-            function onCategoryPress () {
-              navigate('AddObservation', { category: item })
+          renderRow={item => {
+            function onCategoryPress() {
+              navigate("AddObservation", { category: item });
             }
 
             return (
@@ -66,24 +74,24 @@ class CategoriesScreen extends Component {
 
 const styles = StyleSheet.create({
   gridContainer: {
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
+    flexDirection: "row",
+    flexWrap: "wrap",
     marginTop: 20
   },
   gridItem: {
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: "#ccc",
     padding: 5,
     margin: 5,
     width: 80,
-    height: 80,
+    height: 80
   },
   moreItemsButton: {
     borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
-    marginTop: 20,
+    borderBottomColor: "#ccc",
+    marginTop: 20
   }
 });
 

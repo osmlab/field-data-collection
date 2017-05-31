@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import { Text as BaseText, StyleSheet } from 'react-native';
+import React, { Component } from "react";
+import { Text as BaseText, StyleSheet } from "react-native";
 
-import { baseText } from '../styles';
+import { baseText } from "../styles";
 
 /*
 * Wrapper around base <Text> view from react-native to have base styles inherited
@@ -9,17 +9,21 @@ import { baseText } from '../styles';
 */
 
 class Text extends Component {
-  setNativeProps (nativeProps) {
+  setNativeProps(nativeProps) {
     this._root.setNativeProps(nativeProps);
   }
 
-  render () {
-    const setRef = (component) => {
-      this._root = component
-    }
+  render() {
+    const setRef = component => {
+      this._root = component;
+    };
 
     return (
-      <BaseText {...this.props} ref={setRef} style={[styles.baseText, this.props.style]}>
+      <BaseText
+        {...this.props}
+        ref={setRef}
+        style={[styles.baseText, this.props.style]}
+      >
         {this.props.children}
       </BaseText>
     );

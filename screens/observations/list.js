@@ -1,57 +1,59 @@
-import React, { Component } from 'react';
-import { StyleSheet, View, Button, ListView } from 'react-native';
+import React, { Component } from "react";
+import { StyleSheet, View, Button, ListView } from "react-native";
 
-import { Text, Header, Wrapper } from '../../components';
-import { baseStyles } from '../../styles'
+import { Text, Header, Wrapper } from "../../components";
+import { baseStyles } from "../../styles";
 
 class ObservationListScreen extends Component {
-  constructor () {
+  constructor() {
     super();
 
     const ds = new ListView.DataSource({
-      rowHasChanged: (r1, r2) => { r1 !== r2 }
+      rowHasChanged: (r1, r2) => {
+        r1 !== r2;
+      }
     });
 
     this.state = {
       observations: ds.cloneWithRows([
         {
-          category: 'Oil spill',
-          surveyName: 'Survey name',
-          observationName: 'Name of observation',
-          updated: 'Sep. 2, 2016',
+          category: "Oil spill",
+          surveyName: "Survey name",
+          observationName: "Name of observation",
+          updated: "Sep. 2, 2016",
           lnglat: [47, -122],
           complete: 0.70
         },
         {
-          category: 'Oil spill',
-          surveyName: 'Survey name',
-          observationName: 'Name of observation',
-          updated: 'Sep. 2, 2016',
+          category: "Oil spill",
+          surveyName: "Survey name",
+          observationName: "Name of observation",
+          updated: "Sep. 2, 2016",
           lnglat: [47, -122],
           complete: 0.70
         },
         {
-          category: 'Oil spill',
-          surveyName: 'Survey name',
-          observationName: 'Name of observation',
-          updated: 'Sep. 2, 2016',
+          category: "Oil spill",
+          surveyName: "Survey name",
+          observationName: "Name of observation",
+          updated: "Sep. 2, 2016",
           lnglat: [47, -122],
           complete: 0.70
         }
-      ]),
+      ])
     };
   }
 
-  render () {
+  render() {
     const { navigate } = this.props.navigation;
 
     return (
       <Wrapper style={{ padding: 0 }}>
         <View style={{ flex: 1 }}>
           <Header
-            button='map'
+            button="map"
             onTogglePress={() => {
-              navigate('ObservationMap')
+              navigate("ObservationMap");
             }}
           />
 
@@ -59,12 +61,16 @@ class ObservationListScreen extends Component {
             <ListView
               contentContainerStyle={{}}
               dataSource={this.state.observations}
-              renderRow={(item) => {
+              renderRow={item => {
                 return (
                   <View style={styles.observation}>
-                    <Text style={styles.muted}>{item.category} | {item.surveyName}</Text>
+                    <Text style={styles.muted}>
+                      {item.category} | {item.surveyName}
+                    </Text>
                     <Text style={styles.title}>{item.observationName}</Text>
-                    <Text style={styles.muted}>Last updated: {item.updated}</Text>
+                    <Text style={styles.muted}>
+                      Last updated: {item.updated}
+                    </Text>
                     <Text>Lat/Long: {item.lnglat}</Text>
                   </View>
                 );
@@ -79,19 +85,19 @@ class ObservationListScreen extends Component {
 
 const styles = StyleSheet.create({
   observation: {
-    backgroundColor: 'white',
-    borderColor: '#ccc',
+    backgroundColor: "white",
+    borderColor: "#ccc",
     borderWidth: 1,
     padding: 10,
     marginBottom: 5,
     flex: 1
   },
   muted: {
-    color: '#bbb'
+    color: "#bbb"
   },
   title: {
     fontSize: 15,
-    fontWeight: 'bold'
+    fontWeight: "bold"
   }
 });
 

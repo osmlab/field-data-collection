@@ -1,6 +1,6 @@
-import { StackNavigator } from 'react-navigation';
+import { StackNavigator } from "react-navigation";
 
-import ObservationFormMainScreen from './category';
+import ObservationFormMainScreen from "./category";
 
 const ObservationFormNavigator = StackNavigator({
   ObservationFormMain: { screen: ObservationFormMainScreen }
