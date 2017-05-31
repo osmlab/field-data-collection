@@ -6,12 +6,13 @@ import { Text, Wrapper } from "../../components";
 import { baseStyles } from "../../styles";
 
 class AddObservationScreen extends Component {
-  constructor(params) {
-    super();
+  componentWillMount() {
+    console.log("props:", this.props);
+    const { navigation: { state: { params: { category } } } } = this.props;
 
-    this.state = {
-      category: params.navigation.state.params.category
-    };
+    this.setState({
+      category
+    });
   }
 
   onBackPress = () => this.props.navigation.dispatch(NavigationActions.back());

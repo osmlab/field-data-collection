@@ -1,39 +1,51 @@
 import React, { Component } from "react";
-import {
-  StyleSheet,
-  View,
-  Button,
-  ListView,
-  TouchableHighlight
-} from "react-native";
+import { StyleSheet, View, ListView, TouchableHighlight } from "react-native";
 
 import { Text, Wrapper } from "../../components";
 import { baseStyles } from "../../styles";
+import survey from "../../config/survey.json";
+
+const observationTypes = survey.observationTypes.map(t =>
+  survey.featureTypes.find(x => x.id === t)
+);
+
+const styles = StyleSheet.create({
+  gridContainer: {
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
+    flexDirection: "row",
+    flexWrap: "wrap",
+    marginTop: 20
+  },
+  gridItem: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    padding: 5,
+    margin: 5,
+    width: 80,
+    height: 80
+  },
+  moreItemsButton: {
+    borderBottomWidth: 1,
+    borderBottomColor: "#ccc",
+    marginTop: 20
+  }
+});
 
 class CategoriesScreen extends Component {
-  constructor() {
-    super();
-
+  componentWillMount() {
     const ds = new ListView.DataSource({
-      rowHasChanged: (r1, r2) => {
-        r1 !== r2;
-      }
+      rowHasChanged: (r1, r2) => r1 !== r2
     });
 
-    this.state = {
-      categories: ds.cloneWithRows([
-        { name: "Oil spills" },
-        { name: "Blast Fishing" },
-        { name: "Schools" },
-        { name: "Buildings" },
-        { name: "Hazards" },
-        { name: "Oil spills" },
-        { name: "Blast Fishing" },
-        { name: "Schools" },
-        { name: "Buildings" },
-        { name: "Hazards" }
-      ])
-    };
+    this.setState({
+      categories: ds.cloneWithRows(
+        observationTypes.map(t => ({
+          id: t.id,
+          name: t.name
+        }))
+      )
+    });
   }
 
   render() {
@@ -71,28 +83,5 @@ class CategoriesScreen extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  gridContainer: {
-    justifyContent: "flex-start",
-    alignItems: "flex-start",
-    flexDirection: "row",
-    flexWrap: "wrap",
-    marginTop: 20
-  },
-  gridItem: {
-    borderWidth: 1,
-    borderColor: "#ccc",
-    padding: 5,
-    margin: 5,
-    width: 80,
-    height: 80
-  },
-  moreItemsButton: {
-    borderBottomWidth: 1,
-    borderBottomColor: "#ccc",
-    marginTop: 20
-  }
-});
 
 export default CategoriesScreen;
