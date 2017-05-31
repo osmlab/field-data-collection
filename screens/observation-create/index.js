@@ -1,15 +1,18 @@
-import { StackNavigator } from 'react-navigation';
+import { StackNavigator } from "react-navigation";
 
-import CategoriesScreen from './categories';
-import AddObservationScreen from './add-observation';
-import FieldsetFormScreen from './fieldset-form';
+import CategoriesScreen from "./categories";
+import AddObservationScreen from "./add-observation";
+import FieldsetFormScreen from "./fieldset-form";
 
-const CreateObservationNavigator = StackNavigator({
-  Categories: { screen: CategoriesScreen },
-  AddObservation: { screen: AddObservationScreen },
-  FieldsetForm: { screen: FieldsetFormScreen }
-}, {
-  headerMode: 'none'
-});
+const CreateObservationNavigator = StackNavigator(
+  {
+    Categories: { screen: CategoriesScreen },
+    AddObservation: { screen: AddObservationScreen },
+    FieldsetForm: { screen: FieldsetFormScreen }
+  },
+  {
+    headerMode: "none"
+  }
+);
 
 export default CreateObservationNavigator;

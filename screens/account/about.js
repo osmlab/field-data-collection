@@ -1,21 +1,21 @@
-import React, { Component } from 'react';
-import { StyleSheet, View, Button } from 'react-native';
+import React, { Component } from "react";
+import { StyleSheet, View, Button } from "react-native";
 
-import { Text, Wrapper } from '../../components';
-import { baseStyles } from '../../styles';
+import { Text, Wrapper } from "../../components";
+import { baseStyles } from "../../styles";
 
 class AboutScreen extends Component {
-  constructor () {
+  constructor() {
     super();
   }
 
-  render () {
+  render() {
     const { navigate } = this.props.navigation;
 
     return (
       <Wrapper>
         <Text>
-        This is the screen for loading a survey
+          This is the screen for loading a survey
         </Text>
       </Wrapper>
     );

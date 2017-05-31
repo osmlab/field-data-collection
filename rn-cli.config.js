@@ -1,8 +1,6 @@
-
-const blacklist = require('react-native/packager/blacklist');
+const blacklist = require("react-native/packager/blacklist");
 
 module.exports = {
-
   /**
    * Add search paths to the packager. Equivalent to the
    * `--projectRoots` command line argument.
@@ -49,9 +47,7 @@ module.exports = {
    * blacklist will stop the packager from traversing into them.
    */
   getBlacklistRE() {
-    const additionalBlacklist = [
-      /ignore-this-directory\/.*/,
-    ];
+    const additionalBlacklist = [/ignore-this-directory\/.*/];
     return blacklist(additionalBlacklist);
   },
 
@@ -67,6 +63,6 @@ module.exports = {
    * Equivalent to the `--transformer` command line argument.
    */
   getTransformModulePath() {
-    return require.resolve('./transformer');
-  },
+    return require.resolve("./transformer");
+  }
 };

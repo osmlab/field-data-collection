@@ -1,14 +1,17 @@
-import { StackNavigator } from 'react-navigation';
+import { StackNavigator } from "react-navigation";
 
-import ObservationMapScreen from './map';
-import ObservationListScreen from './list';
+import ObservationMapScreen from "./map";
+import ObservationListScreen from "./list";
 
-const ObservationsNavigator = StackNavigator({
-  ObservationMap: { screen: ObservationMapScreen },
-  ObservationList: { screen: ObservationListScreen }
-}, {
-  headerMode: 'none',
-  animationEnabled: false,
-});
+const ObservationsNavigator = StackNavigator(
+  {
+    ObservationMap: { screen: ObservationMapScreen },
+    ObservationList: { screen: ObservationListScreen }
+  },
+  {
+    headerMode: "none",
+    animationEnabled: false
+  }
+);
 
 export default ObservationsNavigator;

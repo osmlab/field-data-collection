@@ -1,53 +1,55 @@
-import React, { Component } from 'react';
-import { StyleSheet, View, Button, ListView } from 'react-native';
+import React, { Component } from "react";
+import { StyleSheet, View, Button, ListView } from "react-native";
 
-import { Text, Wrapper } from '../../components';
-import { baseStyles } from '../../styles';
+import { Text, Wrapper } from "../../components";
+import { baseStyles } from "../../styles";
 
 class AccountScreen extends Component {
-  constructor () {
+  constructor() {
     super();
 
     const ds = new ListView.DataSource({
-      rowHasChanged: (r1, r2) => { r1 !== r2 }
+      rowHasChanged: (r1, r2) => {
+        r1 !== r2;
+      }
     });
 
     this.state = {
       observations: ds.cloneWithRows([
         {
-          category: 'Oil spill',
-          surveyName: 'Survey name',
-          observationName: 'Name of observation',
-          updated: 'Sep. 2, 2016',
+          category: "Oil spill",
+          surveyName: "Survey name",
+          observationName: "Name of observation",
+          updated: "Sep. 2, 2016",
           lnglat: [47, -122],
           complete: 0.70
         },
         {
-          category: 'Oil spill',
-          surveyName: 'Survey name',
-          observationName: 'Name of observation',
-          updated: 'Sep. 2, 2016',
+          category: "Oil spill",
+          surveyName: "Survey name",
+          observationName: "Name of observation",
+          updated: "Sep. 2, 2016",
           lnglat: [47, -122],
           complete: 0.70
         },
         {
-          category: 'Oil spill',
-          surveyName: 'Survey name',
-          observationName: 'Name of observation',
-          updated: 'Sep. 2, 2016',
+          category: "Oil spill",
+          surveyName: "Survey name",
+          observationName: "Name of observation",
+          updated: "Sep. 2, 2016",
           lnglat: [47, -122],
           complete: 0.70
         }
-      ]),
+      ])
     };
   }
 
-  render () {
+  render() {
     const { navigate } = this.props.navigation;
 
-    function onSettingsPress () {
-      console.log('onSettingsPress')
-      navigate('Settings')
+    function onSettingsPress() {
+      console.log("onSettingsPress");
+      navigate("Settings");
     }
 
     return (
@@ -56,7 +58,7 @@ class AccountScreen extends Component {
           Your Observations
         </Text>
 
-        <View style={styles.settingsButton} >
+        <View style={styles.settingsButton}>
           <Text style={styles.settingsButtonText} onPress={onSettingsPress}>
             ⚙
           </Text>
@@ -66,12 +68,16 @@ class AccountScreen extends Component {
           contentContainerStyle={styles.content}
           dataSource={this.state.observations}
           noScroll={true}
-          renderRow={(item) => {
+          renderRow={item => {
             return (
               <View style={styles.observation}>
-                <View></View>
-                <Text style={styles.muted}>{item.category} | {item.surveyName}</Text>
-                <Text style={styles.observationTitle}>{item.observationName}</Text>
+                <View />
+                <Text style={styles.muted}>
+                  {item.category} | {item.surveyName}
+                </Text>
+                <Text style={styles.observationTitle}>
+                  {item.observationName}
+                </Text>
                 <Text style={styles.muted}>Last updated: {item.updated}</Text>
                 <Text>Lat/Long: {item.lnglat}</Text>
               </View>
@@ -85,24 +91,24 @@ class AccountScreen extends Component {
 
 const styles = StyleSheet.create({
   observation: {
-    backgroundColor: 'white',
-    borderColor: '#ccc',
+    backgroundColor: "white",
+    borderColor: "#ccc",
     borderWidth: 1,
     padding: 10,
     marginBottom: 5
   },
   muted: {
-    color: '#bbb'
+    color: "#bbb"
   },
   observationTitle: {
     fontSize: 15,
-    fontWeight: 'bold'
+    fontWeight: "bold"
   },
   content: {
     marginTop: 20
   },
   settingsButton: {
-    position: 'absolute',
+    position: "absolute",
     top: 20,
     right: 20
   },

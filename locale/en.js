@@ -1,3 +1,3 @@
 export default {
-  map: 'map'
-}
+  map: "map"
+};
