@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { ScrollView, StyleSheet } from "react-native";
+import { ScrollView } from "react-native";
 
 import { baseStyles } from "../styles";
 
