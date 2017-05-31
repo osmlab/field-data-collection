@@ -8,7 +8,8 @@
     "clean": "npm run clean:cache && npm run clean:modules",
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "ios": "react-native run-ios && react-native log-ios",
-    "android": "react-native run-android && react-native log-android"
+    "android": "react-native run-android && react-native log-android",
+    "precommit": "lint-staged"
   },
   "dependencies": {
     "asyncstorage-down": "sethvincent/asyncstorage-down",
@@ -26,6 +27,19 @@
     "react-navigation": "^1.0.0-beta.9"
   },
   "devDependencies": {
-    "babel-preset-react-native": "1.9.1"
+    "babel-preset-react-native": "1.9.1",
+    "husky": "^0.13.4",
+    "lint-staged": "^3.5.1",
+    "prettier": "^1.3.1"
+  },
+  "lint-staged": {
+    "*.js": [
+      "prettier --write",
+      "git add"
+    ],
+    "*.jsx": [
+      "prettier --write",
+      "git add"
+    ]
   }
 }
