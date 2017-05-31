@@ -3,6 +3,7 @@ import { StyleSheet, View, TouchableHighlight } from "react-native";
 import { NavigationActions } from "react-navigation";
 
 import { Text, Wrapper } from "../../components";
+import { getFieldType } from "../../components/fields";
 import { baseStyles } from "../../styles";
 import survey from "../../config/survey.json";
 
@@ -16,101 +17,8 @@ const styles = StyleSheet.create({
     borderRadius: 2,
     borderWidth: 1,
     borderColor: "#ccc"
-  },
-  field: {
-    borderBottomWidth: 1,
-    borderBottomColor: "#ccc",
-    backgroundColor: "white",
-    padding: 5,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center"
-  },
-  fieldLabel: {
-    fontSize: 10
-  },
-  fieldValue: {
-    color: "#aaa"
-  },
-  fieldArrow: {}
+  }
 });
-
-// TODO extract
-class Field extends Component {
-  setNativeProps(nativeProps) {
-    this._root.setNativeProps(nativeProps);
-  }
-}
-
-class ComboField extends Field {
-  render() {
-    const { label } = this.props;
-
-    return (
-      <View ref={x => (this._root = x)} style={styles.field}>
-        <View>
-          <Text style={styles.fieldLabel}>{label}</Text>
-          <Text style={styles.fieldValue}>(options)</Text>
-        </View>
-        <View style={styles.fieldArrow}>
-          <Text>＞</Text>
-        </View>
-      </View>
-    );
-  }
-}
-
-class NumberField extends Field {
-  render() {
-    const { label, placeholder } = this.props;
-
-    return (
-      <View ref={x => (this._root = x)} style={styles.field}>
-        <View>
-          <Text style={styles.fieldLabel}>{label}</Text>
-          <Text style={styles.fieldValue}>{placeholder}</Text>
-        </View>
-        <View style={styles.fieldArrow}>
-          <Text>＞</Text>
-        </View>
-      </View>
-    );
-  }
-}
-
-class TextField extends Field {
-  render() {
-    const { label } = this.props;
-
-    return (
-      <View ref={x => (this._root = x)} style={styles.field}>
-        <View>
-          <Text style={styles.fieldLabel}>{label}</Text>
-          <Text style={styles.fieldValue}>(text)</Text>
-        </View>
-        <View style={styles.fieldArrow}>
-          <Text>＞</Text>
-        </View>
-      </View>
-    );
-  }
-}
-
-const getFieldType = type => {
-  switch (type) {
-    case "combo":
-      return ComboField;
-
-    case "number":
-      return NumberField;
-
-    case "text":
-      return TextField;
-
-    default:
-      throw new Error(`Unsupported field type: ${type}`);
-  }
-};
 
 class AddObservationScreen extends Component {
   componentWillMount() {
