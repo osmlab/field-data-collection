@@ -90,8 +90,12 @@ if (argv.length === 0) {
 
   process.stdin.on("data", chunk => stdin.push(chunk));
   process.stdin.on("end", () => {
-    process.stdout.write(formatAsMarkdown(JSON.parse(Buffer.concat(stdin).toString())));
+    process.stdout.write(
+      formatAsMarkdown(JSON.parse(Buffer.concat(stdin).toString()))
+    );
   });
 } else {
-  process.stdout.write(formatAsMarkdown(JSON.parse(fs.readFileSync(path.resolve(argv[0])))));
+  process.stdout.write(
+    formatAsMarkdown(JSON.parse(fs.readFileSync(path.resolve(argv[0]))))
+  );
 }
