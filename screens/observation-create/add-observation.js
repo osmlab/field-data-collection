@@ -1,25 +1,153 @@
 import React, { Component } from "react";
-import { StyleSheet, View, Button, TouchableHighlight } from "react-native";
+import { StyleSheet, View, TouchableHighlight } from "react-native";
 import { NavigationActions } from "react-navigation";
 
 import { Text, Wrapper } from "../../components";
 import { baseStyles } from "../../styles";
+import survey from "../../config/survey.json";
+
+const styles = StyleSheet.create({
+  sectionTitle: {
+    fontSize: 17,
+    fontWeight: "bold",
+    marginBottom: 5
+  },
+  fieldset: {
+    borderRadius: 2,
+    borderWidth: 1,
+    borderColor: "#ccc"
+  },
+  field: {
+    borderBottomWidth: 1,
+    borderBottomColor: "#ccc",
+    backgroundColor: "white",
+    padding: 5,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center"
+  },
+  fieldLabel: {
+    fontSize: 10
+  },
+  fieldValue: {
+    color: "#aaa"
+  },
+  fieldArrow: {}
+});
+
+// TODO extract
+class Field extends Component {
+  setNativeProps(nativeProps) {
+    this._root.setNativeProps(nativeProps);
+  }
+}
+
+class ComboField extends Field {
+  render() {
+    const { label } = this.props;
+
+    return (
+      <View ref={x => (this._root = x)} style={styles.field}>
+        <View>
+          <Text style={styles.fieldLabel}>{label}</Text>
+          <Text style={styles.fieldValue}>(options)</Text>
+        </View>
+        <View style={styles.fieldArrow}>
+          <Text>＞</Text>
+        </View>
+      </View>
+    );
+  }
+}
+
+class NumberField extends Field {
+  render() {
+    const { label, placeholder } = this.props;
+
+    return (
+      <View ref={x => (this._root = x)} style={styles.field}>
+        <View>
+          <Text style={styles.fieldLabel}>{label}</Text>
+          <Text style={styles.fieldValue}>{placeholder}</Text>
+        </View>
+        <View style={styles.fieldArrow}>
+          <Text>＞</Text>
+        </View>
+      </View>
+    );
+  }
+}
+
+class TextField extends Field {
+  render() {
+    const { label } = this.props;
+
+    return (
+      <View ref={x => (this._root = x)} style={styles.field}>
+        <View>
+          <Text style={styles.fieldLabel}>{label}</Text>
+          <Text style={styles.fieldValue}>(text)</Text>
+        </View>
+        <View style={styles.fieldArrow}>
+          <Text>＞</Text>
+        </View>
+      </View>
+    );
+  }
+}
+
+const getFieldType = type => {
+  switch (type) {
+    case "combo":
+      return ComboField;
+
+    case "number":
+      return NumberField;
+
+    case "text":
+      return TextField;
+
+    default:
+      throw new Error(`Unsupported field type: ${type}`);
+  }
+};
 
 class AddObservationScreen extends Component {
   componentWillMount() {
     console.log("props:", this.props);
-    const { navigation: { state: { params: { category } } } } = this.props;
+    const {
+      navigation: { state: { params: { observationType } } }
+    } = this.props;
+
+    const type = survey.featureTypes.find(x => x.id === observationType);
+
+    console.log("type:", type);
 
     this.setState({
-      category
+      type
     });
   }
 
   onBackPress = () => this.props.navigation.dispatch(NavigationActions.back());
 
-  render() {
+  renderField(field, key) {
     const { navigate } = this.props.navigation;
-    const { category } = this.state;
+
+    const Field = getFieldType(field.type);
+
+    return (
+      <TouchableHighlight
+        key={key}
+        onPress={() =>
+          navigate("FieldsetForm", { fieldset: { title: "Basic info" } })}
+      >
+        <Field {...field} />
+      </TouchableHighlight>
+    );
+  }
+
+  render() {
+    const { type: { fields, name } } = this.state;
 
     return (
       <Wrapper>
@@ -36,7 +164,7 @@ class AddObservationScreen extends Component {
           >
             ←
           </Text>
-          <Text style={[baseStyles.title]}>Adding: {category.name}</Text>
+          <Text style={[baseStyles.title]}>Adding: {name}</Text>
         </View>
 
         <View
@@ -78,98 +206,13 @@ class AddObservationScreen extends Component {
         <View style={{ marginTop: 20 }}>
           <Text style={[styles.sectionTitle]}>Basic info</Text>
 
-          {/* TODO: replace with actual fields */}
           <View style={styles.fieldset}>
-            <TouchableHighlight
-              onPress={() =>
-                navigate("FieldsetForm", { fieldset: { title: "Basic info" } })}
-            >
-              <View style={styles.field}>
-                <View>
-                  <Text style={styles.fieldLabel}>Label</Text>
-                  <Text style={styles.fieldValue}>Default value</Text>
-                </View>
-                <View style={styles.fieldArrow}>
-                  <Text>＞</Text>
-                </View>
-              </View>
-            </TouchableHighlight>
-            <TouchableHighlight
-              onPress={() =>
-                navigate("FieldsetForm", { fieldset: { title: "Basic info" } })}
-            >
-              <View style={styles.field}>
-                <View>
-                  <Text style={styles.fieldLabel}>Label</Text>
-                  <Text style={styles.fieldValue}>Default value</Text>
-                </View>
-                <View style={styles.fieldArrow}>
-                  <Text>＞</Text>
-                </View>
-              </View>
-            </TouchableHighlight>
-            <TouchableHighlight
-              onPress={() =>
-                navigate("FieldsetForm", { fieldset: { title: "Basic info" } })}
-            >
-              <View style={styles.field}>
-                <View>
-                  <Text style={styles.fieldLabel}>Label</Text>
-                  <Text style={styles.fieldValue}>Default value</Text>
-                </View>
-                <View style={styles.fieldArrow}>
-                  <Text>＞</Text>
-                </View>
-              </View>
-            </TouchableHighlight>
-            <TouchableHighlight
-              onPress={() =>
-                navigate("FieldsetForm", { fieldset: { title: "Basic info" } })}
-            >
-              <View style={styles.field}>
-                <View>
-                  <Text style={styles.fieldLabel}>Label</Text>
-                  <Text style={styles.fieldValue}>Default value</Text>
-                </View>
-                <View style={styles.fieldArrow}>
-                  <Text>＞</Text>
-                </View>
-              </View>
-            </TouchableHighlight>
+            {fields.map(this.renderField, this)}
           </View>
         </View>
       </Wrapper>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  sectionTitle: {
-    fontSize: 17,
-    fontWeight: "bold",
-    marginBottom: 5
-  },
-  fieldset: {
-    borderRadius: 2,
-    borderWidth: 1,
-    borderColor: "#ccc"
-  },
-  field: {
-    borderBottomWidth: 1,
-    borderBottomColor: "#ccc",
-    backgroundColor: "white",
-    padding: 5,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center"
-  },
-  fieldLabel: {
-    fontSize: 10
-  },
-  fieldValue: {
-    color: "#aaa"
-  },
-  fieldArrow: {}
-});
 
 export default AddObservationScreen;

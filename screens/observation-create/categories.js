@@ -63,7 +63,7 @@ class CategoriesScreen extends Component {
           noScroll={true}
           renderRow={item => {
             function onCategoryPress() {
-              navigate("AddObservation", { category: item });
+              navigate("AddObservation", { observationType: item.id });
             }
 
             return (

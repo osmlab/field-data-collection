@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, StyleSheet } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 
 import { baseStyles } from "../styles";
 
@@ -18,13 +18,13 @@ class Wrapper extends Component {
     };
 
     return (
-      <View
+      <ScrollView
         {...this.props}
         ref={setRef}
         style={[baseStyles.wrapper, this.props.style]}
       >
         {this.props.children}
-      </View>
+      </ScrollView>
     );
   }
 }
