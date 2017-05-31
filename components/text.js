@@ -9,10 +9,6 @@ import { baseText } from '../styles';
 */
 
 class Text extends Component {
-  constructor (props) {
-    super(props);
-  }
-
   setNativeProps (nativeProps) {
     this._root.setNativeProps(nativeProps);
   }
@@ -23,7 +19,7 @@ class Text extends Component {
     }
 
     return (
-      <BaseText ref={setRef} style={[styles.baseText, this.props.style]} onPress={this.props.onPress}>
+      <BaseText {...this.props} ref={setRef} style={[styles.baseText, this.props.style]}>
         {this.props.children}
       </BaseText>
     );

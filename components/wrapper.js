@@ -8,10 +8,6 @@ import { baseStyles } from '../styles';
 */
 
 class Wrapper extends Component {
-  constructor (props) {
-    super(props);
-  }
-
   setNativeProps (nativeProps) {
     this._root.setNativeProps(nativeProps);
   }
@@ -22,9 +18,7 @@ class Wrapper extends Component {
     }
 
     return (
-      <View ref={setRef} style={[baseStyles.wrapper, this.props.style]} onPress={() => {
-        console.log('wututuututututututut')
-      }}>
+      <View {...this.props} ref={setRef} style={[baseStyles.wrapper, this.props.style]}>
         {this.props.children}
       </View>
     );
