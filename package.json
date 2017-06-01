@@ -24,7 +24,10 @@
     "react-native-level-fs": "^3.0.0",
     "react-native-localization": "^0.1.30",
     "react-native-mapbox-gl": "github:alseageo/react-native-mapbox-gl#queryRenderedFeatures-android",
-    "react-navigation": "^1.0.0-beta.9"
+    "react-navigation": "^1.0.0-beta.9",
+    "react-redux": "^5.0.5",
+    "redux": "^3.6.0",
+    "redux-logger": "^3.0.6"
   },
   "devDependencies": {
     "babel-preset-react-native": "1.9.1",

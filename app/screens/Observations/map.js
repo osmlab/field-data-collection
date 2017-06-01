@@ -1,26 +1,36 @@
 import React, { Component } from "react";
-import { StyleSheet, View, Button } from "react-native";
+import { StyleSheet, View } from "react-native";
 import Mapbox, { MapView } from "react-native-mapbox-gl";
 
-import { Text, Header, Wrapper } from "../../components";
+import { Header } from "../../components";
 import { baseStyles } from "../../styles";
 
 Mapbox.setAccessToken(
   "pk.eyJ1Ijoic2V0aHZpbmNlbnQiLCJhIjoiSXZZXzZnUSJ9.Nr_zKa-4Ztcmc1Ypl0k5nw"
 );
 
+const styles = StyleSheet.create({
+  map: {
+    flex: 1
+  }
+});
+
 class ObservationMapScreen extends Component {
   constructor() {
     super();
+
     this.navigationOptions = { tabBarLabel: "Map" };
-    this.state = {
+  }
+
+  componentWillMount() {
+    this.setState({
       center: {
         latitude: 40.72052634,
         longitude: -73.97686958312988
       },
       zoom: 11,
       userTrackingMode: Mapbox.userTrackingMode.none
-    };
+    });
   }
 
   render() {
@@ -54,11 +64,5 @@ class ObservationMapScreen extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  map: {
-    flex: 1
-  }
-});
 
 export default ObservationMapScreen;

@@ -1,17 +1,11 @@
 import React, { Component } from "react";
-import { StyleSheet, View, Button } from "react-native";
+import { View } from "react-native";
 
 import { Text, Wrapper } from "../../components";
 import { baseStyles } from "../../styles";
 
 class AddSurveyScreen extends Component {
-  constructor() {
-    super();
-  }
-
   render() {
-    const { navigate } = this.props.navigation;
-
     return (
       <Wrapper>
         <View style={baseStyles.container}>
@@ -28,7 +22,5 @@ class AddSurveyScreen extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({});
 
 export default AddSurveyScreen;

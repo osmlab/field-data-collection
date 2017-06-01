@@ -5,11 +5,13 @@ import { NavigationActions } from "react-navigation";
 import { Text, Wrapper } from "../../components";
 import { baseStyles } from "../../styles";
 
-class MainSettingsScreen extends Component {
-  constructor() {
-    super();
+const styles = StyleSheet.create({
+  subtitle: {
+    fontSize: 17
   }
+});
 
+class MainSettingsScreen extends Component {
   render() {
     const { navigate } = this.props.navigation;
 
@@ -58,11 +60,5 @@ class MainSettingsScreen extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  subtitle: {
-    fontSize: 17
-  }
-});
 
 export default MainSettingsScreen;
