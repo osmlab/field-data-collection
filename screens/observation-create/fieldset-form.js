@@ -1,11 +1,5 @@
 import React, { Component } from "react";
-import {
-  StyleSheet,
-  View,
-  Button,
-  TextInput,
-  TouchableHighlight
-} from "react-native";
+import { View, TextInput } from "react-native";
 import { NavigationActions } from "react-navigation";
 
 import { Text, Wrapper } from "../../components";
@@ -20,15 +14,11 @@ class FieldsetFormScreen extends Component {
     };
   }
 
+  onClosePress = () => this.props.navigation.dispatch(NavigationActions.back());
+
   render() {
-    const { navigate } = this.props.navigation;
     const { fieldset } = this.state;
     let input;
-
-    const onClosePress = () => {
-      const backAction = NavigationActions.back();
-      this.props.navigation.dispatch(backAction);
-    };
 
     return (
       <Wrapper>
@@ -42,7 +32,7 @@ class FieldsetFormScreen extends Component {
           <Text style={baseStyles.title}>
             {fieldset.title}
           </Text>
-          <Text style={{ fontSize: 25 }} onPress={onClosePress}>
+          <Text style={{ fontSize: 25 }} onPress={this.onClosePress}>
             ⅹ
           </Text>
         </View>
@@ -74,7 +64,5 @@ class FieldsetFormScreen extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({});
 
 export default FieldsetFormScreen;
