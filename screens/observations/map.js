@@ -27,11 +27,10 @@ class ObservationMapScreen extends Component {
     const { navigate } = this.props.navigation;
 
     return (
-      <Wrapper style={{ padding: 0 }}>
+      <View style={[baseStyles.wrapper, { padding: 0 }]}>
         <Header
           button="list"
           onTogglePress={() => {
-            console.log("toggggggggggggggggggggggggggggggggg");
             navigate("ObservationList");
           }}
         />
@@ -51,7 +50,7 @@ class ObservationMapScreen extends Component {
           styleURL={Mapbox.mapStyles.light}
           userTrackingMode={this.state.userTrackingMode}
         />
-      </Wrapper>
+      </View>
     );
   }
 }
