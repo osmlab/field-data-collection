@@ -6,12 +6,12 @@ import { Text, Wrapper } from "../../components";
 import { baseStyles } from "../../styles";
 
 class FieldsetFormScreen extends Component {
-  constructor(params) {
-    super();
+  componentWillMount() {
+    const { navigation: { state: { params: { fieldset } } } } = this.props;
 
-    this.state = {
-      fieldset: params.navigation.state.params.fieldset
-    };
+    this.setState({
+      fieldset
+    });
   }
 
   onClosePress = () => this.props.navigation.dispatch(NavigationActions.back());
