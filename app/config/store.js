@@ -12,7 +12,8 @@ const middleware = () => {
 const store = compose(autoRehydrate())(createStore)(reducers, middleware());
 
 persistStore(store, {
-  storage: AsyncStorage
+  storage: AsyncStorage,
+  whitelist: ["surveys"]
 });
 
 export default store;
