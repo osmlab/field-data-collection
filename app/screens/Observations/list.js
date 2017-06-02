@@ -1,17 +1,33 @@
 import React, { Component } from "react";
-import { StyleSheet, View, Button, ListView } from "react-native";
+import { StyleSheet, View, ListView } from "react-native";
 
 import { Text, Header, Wrapper } from "../../components";
 import { baseStyles } from "../../styles";
+
+const styles = StyleSheet.create({
+  observation: {
+    backgroundColor: "white",
+    borderColor: "#ccc",
+    borderWidth: 1,
+    padding: 10,
+    marginBottom: 5,
+    flex: 1
+  },
+  muted: {
+    color: "#bbb"
+  },
+  title: {
+    fontSize: 15,
+    fontWeight: "bold"
+  }
+});
 
 class ObservationListScreen extends Component {
   constructor() {
     super();
 
     const ds = new ListView.DataSource({
-      rowHasChanged: (r1, r2) => {
-        r1 !== r2;
-      }
+      rowHasChanged: (r1, r2) => r1 !== r2
     });
 
     this.state = {
@@ -82,23 +98,5 @@ class ObservationListScreen extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  observation: {
-    backgroundColor: "white",
-    borderColor: "#ccc",
-    borderWidth: 1,
-    padding: 10,
-    marginBottom: 5,
-    flex: 1
-  },
-  muted: {
-    color: "#bbb"
-  },
-  title: {
-    fontSize: 15,
-    fontWeight: "bold"
-  }
-});
 
 export default ObservationListScreen;

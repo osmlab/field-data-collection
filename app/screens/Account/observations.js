@@ -1,20 +1,44 @@
 import React, { Component } from "react";
-import { StyleSheet, View, Button, ListView } from "react-native";
+import { StyleSheet, View, ListView } from "react-native";
 
 import { Text, Wrapper } from "../../components";
 import { baseStyles } from "../../styles";
 
-class AccountScreen extends Component {
-  constructor() {
-    super();
+const styles = StyleSheet.create({
+  observation: {
+    backgroundColor: "white",
+    borderColor: "#ccc",
+    borderWidth: 1,
+    padding: 10,
+    marginBottom: 5
+  },
+  muted: {
+    color: "#bbb"
+  },
+  observationTitle: {
+    fontSize: 15,
+    fontWeight: "bold"
+  },
+  content: {
+    marginTop: 20
+  },
+  settingsButton: {
+    position: "absolute",
+    top: 20,
+    right: 20
+  },
+  settingsButtonText: {
+    fontSize: 15
+  }
+});
 
+class AccountScreen extends Component {
+  componentWillMount() {
     const ds = new ListView.DataSource({
-      rowHasChanged: (r1, r2) => {
-        r1 !== r2;
-      }
+      rowHasChanged: (r1, r2) => r1 !== r2
     });
 
-    this.state = {
+    this.setState({
       observations: ds.cloneWithRows([
         {
           category: "Oil spill",
@@ -41,7 +65,7 @@ class AccountScreen extends Component {
           complete: 0.70
         }
       ])
-    };
+    });
   }
 
   render() {
@@ -88,33 +112,5 @@ class AccountScreen extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  observation: {
-    backgroundColor: "white",
-    borderColor: "#ccc",
-    borderWidth: 1,
-    padding: 10,
-    marginBottom: 5
-  },
-  muted: {
-    color: "#bbb"
-  },
-  observationTitle: {
-    fontSize: 15,
-    fontWeight: "bold"
-  },
-  content: {
-    marginTop: 20
-  },
-  settingsButton: {
-    position: "absolute",
-    top: 20,
-    right: 20
-  },
-  settingsButtonText: {
-    fontSize: 15
-  }
-});
 
 export default AccountScreen;

@@ -38,16 +38,18 @@ class AddObservationScreen extends Component {
 
   onBackPress = () => this.props.navigation.dispatch(NavigationActions.back());
 
-  renderField(field, key) {
+  renderField(field, index) {
     const { navigate } = this.props.navigation;
 
     const Field = getFieldType(field.type);
 
     return (
       <TouchableHighlight
-        key={key}
+        key={index}
         onPress={() =>
-          navigate("FieldsetForm", { fieldset: { title: "Basic info" } })}
+          navigate("FieldsetForm", {
+            fieldset: { title: "Basic info", index }
+          })}
       >
         <Field {...field} />
       </TouchableHighlight>
