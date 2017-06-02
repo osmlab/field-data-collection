@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { StyleSheet, View, TouchableHighlight } from "react-native";
 import { NavigationActions } from "react-navigation";
+import { connect } from "react-redux";
 
 import { Text, Wrapper } from "../../components";
 import { getFieldType } from "../../components/fields";
 import { baseStyles } from "../../styles";
-import survey from "../../config/survey.json";
 
 const styles = StyleSheet.create({
   sectionTitle: {
@@ -21,21 +21,6 @@ const styles = StyleSheet.create({
 });
 
 class AddObservationScreen extends Component {
-  componentWillMount() {
-    console.log("props:", this.props);
-    const {
-      navigation: { state: { params: { observationType } } }
-    } = this.props;
-
-    const type = survey.featureTypes.find(x => x.id === observationType);
-
-    console.log("type:", type);
-
-    this.setState({
-      type
-    });
-  }
-
   onBackPress = () => this.props.navigation.dispatch(NavigationActions.back());
 
   renderField(field, index) {
@@ -57,7 +42,7 @@ class AddObservationScreen extends Component {
   }
 
   render() {
-    const { type: { fields, name } } = this.state;
+    const { type: { fields, name } } = this.props;
 
     return (
       <Wrapper>
@@ -125,4 +110,16 @@ class AddObservationScreen extends Component {
   }
 }
 
-export default AddObservationScreen;
+const mapStateToProps = (state, ownProps) => {
+  const survey = state.surveys[0];
+
+  const { navigation: { state: { params: { observationType } } } } = ownProps;
+
+  const type = survey.featureTypes.find(x => x.id === observationType);
+
+  return {
+    type
+  };
+};
+
+export default connect(mapStateToProps)(AddObservationScreen);

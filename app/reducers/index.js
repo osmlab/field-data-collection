@@ -6,10 +6,12 @@ import {
   reducer as createObservation
 } from "../screens/CreateObservation/navigator";
 import { reducer as observations } from "../screens/Observations/navigator";
+import surveys from "./surveys";
 
 export default combineReducers({
   account,
   app,
   createObservation,
-  observations
+  observations,
+  surveys
 });

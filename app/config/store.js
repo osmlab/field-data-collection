@@ -1,5 +1,7 @@
-import { applyMiddleware, createStore } from "redux";
+import { AsyncStorage } from "react-native";
+import { applyMiddleware, compose, createStore } from "redux";
 import { createLogger } from "redux-logger";
+import { persistStore, autoRehydrate } from "redux-persist";
 
 import reducers from "../reducers";
 
@@ -7,4 +9,11 @@ const middleware = () => {
   return applyMiddleware(createLogger());
 };
 
-export default createStore(reducers, middleware());
+const store = compose(autoRehydrate())(createStore)(reducers, middleware());
+
+persistStore(store, {
+  storage: AsyncStorage,
+  whitelist: ["surveys"]
+});
+
+export default store;

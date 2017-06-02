@@ -1,13 +1,9 @@
 import React, { Component } from "react";
 import { StyleSheet, View, ListView, TouchableHighlight } from "react-native";
+import { connect } from "react-redux";
 
 import { Text, Wrapper } from "../../components";
 import { baseStyles } from "../../styles";
-import survey from "../../config/survey.json";
-
-const observationTypes = survey.observationTypes.map(t =>
-  survey.featureTypes.find(x => x.id === t)
-);
 
 const styles = StyleSheet.create({
   gridContainer: {
@@ -34,6 +30,8 @@ const styles = StyleSheet.create({
 
 class CategoriesScreen extends Component {
   componentWillMount() {
+    const { observationTypes } = this.props;
+
     const ds = new ListView.DataSource({
       rowHasChanged: (r1, r2) => r1 !== r2
     });
@@ -84,4 +82,16 @@ class CategoriesScreen extends Component {
   }
 }
 
-export default CategoriesScreen;
+const mapStateToProps = state => {
+  const survey = state.surveys[0];
+
+  const observationTypes = survey.observationTypes.map(t =>
+    survey.featureTypes.find(x => x.id === t)
+  );
+
+  return {
+    observationTypes
+  };
+};
+
+export default connect(mapStateToProps)(CategoriesScreen);
