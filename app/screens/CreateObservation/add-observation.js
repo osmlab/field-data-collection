@@ -1,5 +1,11 @@
 import React, { Component } from "react";
-import { StyleSheet, View, TouchableHighlight } from "react-native";
+import {
+  StyleSheet,
+  View,
+  TouchableHighlight,
+  TouchableOpacity
+} from "react-native";
+import Mapbox, { MapView } from "react-native-mapbox-gl";
 import { NavigationActions } from "react-navigation";
 import { connect } from "react-redux";
 
@@ -8,6 +14,10 @@ import { getFieldType } from "../../components/fields";
 import { baseStyles } from "../../styles";
 
 const styles = StyleSheet.create({
+  mapButton: {
+    zIndex: 1000,
+    padding: 10
+  },
   sectionTitle: {
     fontSize: 17,
     fontWeight: "bold",
@@ -39,6 +49,11 @@ class AddObservationScreen extends Component {
         <Field {...field} />
       </TouchableHighlight>
     );
+  }
+
+  addLocation() {
+    const { navigate } = this.props.navigation;
+    navigate("Location");
   }
 
   render() {
@@ -85,17 +100,29 @@ class AddObservationScreen extends Component {
           </Text>
         </View>
 
-        {/* TODO: map */}
-        <View
-          style={{
-            height: 200,
-            backgroundColor: "white",
-            justifyContent: "flex-end"
-          }}
-        >
-          <Text style={[styles.sectionTitle, { padding: 20 }]}>
-            Add Location
-          </Text>
+        <View>
+          <MapView
+            ref={map => {
+              this._map = map;
+            }}
+            style={styles.map}
+            initialDirection={0}
+            rotateEnabled={false}
+            scrollEnabled={false}
+            zoomEnabled={false}
+            showsUserLocation={true}
+            styleURL={Mapbox.mapStyles.light}
+            attributionButtonIsHidden={false}
+          >
+            <TouchableOpacity
+              onPress={this.addLocation.bind(this)}
+              style={styles.mapButton}
+            >
+              <Text style={[styles.sectionTitle, { padding: 20 }]}>
+                Add Location
+              </Text>
+            </TouchableOpacity>
+          </MapView>
         </View>
 
         <View style={{ marginTop: 20 }}>
