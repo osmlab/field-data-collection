@@ -45,7 +45,7 @@ const babelRC = {
   ]
 };
 
-function transform(src, filename, options) {
+module.exports.transform = function transform(src, filename, options) {
   const babelConfig = Object.assign({}, babelRC, {
     filename,
     sourceFileName: filename
@@ -57,15 +57,4 @@ function transform(src, filename, options) {
     map: result.map,
     filename: filename
   };
-}
-
-module.exports = function(data, callback) {
-  let result;
-  try {
-    result = transform(data.sourceCode, data.filename, data.options);
-  } catch (e) {
-    callback(e);
-    return;
-  }
-  callback(null, result);
 };
