@@ -113,6 +113,7 @@ If it fails to install the app on the device, the APK can be copied manually:
 
 ```bash
 $ adb install android/app/build/outputs/apk/app-debug.apk
+$ adb reverse tcp:8081 tcp:8081
 ```
 
 Access logs:
