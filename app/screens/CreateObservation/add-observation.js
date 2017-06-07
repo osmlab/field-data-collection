@@ -14,10 +14,6 @@ import { getFieldType } from "../../components/fields";
 import { baseStyles } from "../../styles";
 
 const styles = StyleSheet.create({
-  mapButton: {
-    zIndex: 1000,
-    padding: 10
-  },
   sectionTitle: {
     fontSize: 17,
     fontWeight: "bold",
@@ -100,30 +96,11 @@ class AddObservationScreen extends Component {
           </Text>
         </View>
 
-        <View>
-          <MapView
-            ref={map => {
-              this._map = map;
-            }}
-            style={styles.map}
-            initialDirection={0}
-            rotateEnabled={false}
-            scrollEnabled={false}
-            zoomEnabled={false}
-            showsUserLocation={true}
-            styleURL={Mapbox.mapStyles.light}
-            attributionButtonIsHidden={false}
-          >
-            <TouchableOpacity
-              onPress={this.addLocation.bind(this)}
-              style={styles.mapButton}
-            >
-              <Text style={[styles.sectionTitle, { padding: 20 }]}>
-                Add Location
-              </Text>
-            </TouchableOpacity>
-          </MapView>
-        </View>
+        <TouchableOpacity onPress={this.addLocation.bind(this)}>
+          <Text style={[styles.sectionTitle, { padding: 20, zIndex: 6000 }]}>
+            Add Location
+          </Text>
+        </TouchableOpacity>
 
         <View style={{ marginTop: 20 }}>
           <Text style={[styles.sectionTitle]}>Basic info</Text>
