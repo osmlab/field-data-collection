@@ -28,21 +28,58 @@ yarn
 
 ## Android
 
-Install Android Studio.
+Install [Android Studio](https://developer.android.com/studio/index.html).
 
-[Follow the react-native getting started guide for
-Android.](http://facebook.github.io/react-native/docs/getting-started.html)
-
-Install additional packages (this can also be done from the GUI):
+Set `ANDROID_HOME` and update your `PATH` (this can/should be done in appropriate .dotfiles):
 
 ```bash
+export ANDROID_HOME=$HOME/Library/Android/sdk
+export PATH=$PATH:$ANDROID_HOME/tools/bin:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools
+```
+
+Install additional packages (this can also be done from the SDK Manager GUI):
+
+```bash
+sdkmanager "platforms;android-23"
+sdkmanager "build-tools;23.0.1"
+
 # for react-native-localization
 sdkmanager "build-tools;25.0.0"
 ```
 
 ### Run the project in a simulator
 
-Create and run a virtual device in android studio: https://developer.android.com/studio/run/managing-avds.html
+Create and run a virtual device in Android Studio:
+https://developer.android.com/studio/run/managing-avds.html If you don't already have an Android
+project, you'll need to create one in order to access the AVD Manager GUI.
+
+If the emulator starts and quits before showing a phone and you're running Docker, quit Docker (it's
+hogging the CPU virtualization feature that allows AVDs to be speedy).
+
+You may also be able to create appropriate AVDs from the command line using something similar to:
+
+```bash
+# TODO create something that matches:
+# Available Android Virtual Devices:
+#     Name: Nexus_5X_API_22
+#   Device: Nexus 5X (Google)
+#     Path: /Users/seth/.android/avd/Nexus_5X_API_22.avd
+#   Target:
+#           Based on: Android 5.1 (Lollipop) Tag/ABI: default/x86_64
+#     Skin: nexus_5x
+#   Sdcard: 100M
+avdmanager create avd -n Surveyor -k "system-images;android-22;default;x86_64"
+```
+
+To start the emulator from the command line (it probably won't work), run:
+
+```bash
+# TODO this probably won't work, due to
+# https://stackoverflow.com/questions/42554337/cannot-launch-avd-in-emulatorqt-library-not-found
+emulator -avd Surveyor
+```
+
+With a running [virtual] device, run the following the start the app:
 
 ```
 react-native run-android
