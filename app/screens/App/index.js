@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { BackAndroid } from "react-native";
+import { BackHandler } from "react-native";
 import { addNavigationHelpers, NavigationActions } from "react-navigation";
 import { connect } from "react-redux";
 
@@ -13,11 +13,11 @@ const mapStateToProps = state => {
 
 class App extends Component {
   componentWillMount() {
-    BackAndroid.addEventListener("hardwareBackPress", this.onBackPress);
+    BackHandler.addEventListener("hardwareBackPress", this.onBackPress);
   }
 
   componentWillUmount() {
-    BackAndroid.removeEventListener("hardwareBackPress", this.onBackPress);
+    BackHandler.removeEventListener("hardwareBackPress", this.onBackPress);
   }
 
   shouldCloseApp(nav) {
