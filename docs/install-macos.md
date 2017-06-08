@@ -8,6 +8,14 @@
 npm install -g react-native-cli yarn
 ```
 
+### Install watchman
+
+Install `watchman` using [homebrew](https://brew.sh/).
+
+```
+brew install watchman
+```
+
 ### Clone the repo
 
 ```
