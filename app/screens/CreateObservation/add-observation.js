@@ -31,15 +31,16 @@ class AddObservationScreen extends Component {
 
   renderField(field, index) {
     const { navigate } = this.props.navigation;
+    const { type: { fields, name } } = this.props;
 
     const Field = getFieldType(field.type);
-
+    console.log("AddObservationScreen fields", fields);
     return (
       <TouchableHighlight
         key={index}
         onPress={() =>
           navigate("FieldsetForm", {
-            fieldset: { title: "Basic info", index }
+            fieldset: { title: name, index, fields }
           })}
       >
         <Field {...field} />

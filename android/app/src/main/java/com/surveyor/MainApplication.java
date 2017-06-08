@@ -13,6 +13,7 @@ import java.util.List;
 
 import com.mapbox.reactnativemapboxgl.ReactNativeMapboxGLPackage;
 import com.babisoft.ReactNativeLocalization.ReactNativeLocalizationPackage;
+import com.github.xinthink.rnmk.ReactMaterialKitPackage;
 
 public class MainApplication extends Application implements ReactApplication {
 
