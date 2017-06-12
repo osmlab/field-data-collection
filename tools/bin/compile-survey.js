@@ -16,11 +16,12 @@ if (argv.length === 0) {
 }
 
 const surveyConfig = path.resolve(argv.shift());
-const BASE_PATH = path.dirname(surveyConfig);
-const PRESET_PATH = path.resolve(BASE_PATH, "..", "presets", "presets");
-const FIELD_PATH = path.resolve(BASE_PATH, "..", "presets", "fields");
-// TODO resolve options
-const OPTIONS_PATH = path.resolve(BASE_PATH, "..", "presets", "options");
+const BASE_PATH = path.join(
+  path.dirname(surveyConfig),
+  path.basename(surveyConfig, path.extname(surveyConfig))
+);
+const PRESET_PATH = path.resolve(BASE_PATH, "presets", "presets");
+const FIELD_PATH = path.resolve(BASE_PATH, "presets", "fields");
 
 let surveyDefinition;
 

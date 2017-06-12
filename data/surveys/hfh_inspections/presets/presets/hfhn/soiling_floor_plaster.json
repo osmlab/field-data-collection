@@ -1,0 +1,25 @@
+{
+    "fields": [
+        "hfhn:inspection_date",
+        "hfhn:supervisor",
+        "hfhn:id_number",
+        "hfhn:village",
+        "hfhn:municipality",
+        "hfhn:lot_number",
+        "hfhn:shelter_type",
+        "hfhn:number_of_inspections",
+        "hfhn:compacting_soil",
+        "hfhn:compacting_soil_notes",
+        "hfhn:plaster_work",
+        "hfhn:plaster_work_notes"
+    ],
+    "geometry": [
+        "point",
+        "area"
+    ],
+    "tags": {
+        "hfhn:inspection": "soiling_floor_plaster"
+    },
+    "name": "Soiling Floor Plaster",
+    "private": true
+}

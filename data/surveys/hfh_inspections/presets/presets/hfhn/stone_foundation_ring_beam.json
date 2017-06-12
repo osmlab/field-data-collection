@@ -1,0 +1,33 @@
+{
+    "fields": [
+        "hfhn:inspection_date",
+        "hfhn:supervisor",
+        "hfhn:id_number",
+        "hfhn:village",
+        "hfhn:municipality",
+        "hfhn:lot_number",
+        "hfhn:shelter_type",
+        "hfhn:number_of_inspections",
+        "hfhn:foundation_check",
+        "hfhn:foundation_check_notes",
+        "hfhn:ring_beam_formwork",
+        "hfhn:ring_beam_formwork_notes",
+        "hfhn:reinforcement_assembly",
+        "hfhn:reinforcement_assembly_notes",
+        "hfhn:doors_and_openings",
+        "hfhn:doors_and_openings_notes",
+        "hfhn:concrete_mix",
+        "hfhn:concrete_mix_notes",
+        "hfhn:wire_mortar_stone_2",
+        "hfhn:wire_mortar_stone_2_notes"
+    ],
+    "geometry": [
+        "point",
+        "area"
+    ],
+    "tags": {
+        "hfhn:inspection": "stone_foundation_ring_beam"
+    },
+    "name": "Stone Foundation Ring Beam",
+    "private": true
+}
