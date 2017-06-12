@@ -1,6 +1,4 @@
 #!/usr/bin/env node
-"use strict";
-
 const fs = require("fs");
 const path = require("path");
 
@@ -82,8 +80,6 @@ const formatAsMarkdown = survey => {
 
   return markdown.join("\n");
 };
-
-let survey;
 
 if (argv.length === 0) {
   const stdin = [];
