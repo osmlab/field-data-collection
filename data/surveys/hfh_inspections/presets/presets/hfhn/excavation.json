@@ -1,0 +1,27 @@
+{
+    "fields": [
+        "hfhn:inspection_date",
+        "hfhn:supervisor",
+        "hfhn:id_number",
+        "hfhn:village",
+        "hfhn:municipality",
+        "hfhn:lot_number",
+        "hfhn:shelter_type",
+        "hfhn:number_of_inspections",
+        "hfhn:trench_pit_location",
+        "hfhn:trench_pit_location_notes",
+        "hfhn:trench_pit_excavation",
+        "hfhn:trench_pit_excavation_notes",
+        "hfhn:concrete_ratio",
+        "hfhn:concrete_ratio_notes"
+    ],
+    "geometry": [
+        "point",
+        "area"
+    ],
+    "tags": {
+        "hfhn:inspection": "excavation"
+    },
+    "name": "Excavation and footing preparations",
+    "private": true
+}

@@ -1,0 +1,22 @@
+{
+    "icon": "home",
+    "fields": [
+        "building",
+        "building:levels",
+        "building:material",
+        "roof:material",
+        "building:foundation_height",
+        "roof:face",
+        "roof:shape"
+    ],
+    "geometry": [
+        "point",
+        "area"
+    ],
+    "tags": {
+        "building": "*"
+    },
+    "matchScore": 0.6,
+    "terms": [],
+    "name": "Building"
+}

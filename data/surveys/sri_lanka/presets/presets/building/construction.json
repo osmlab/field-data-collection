@@ -1,0 +1,19 @@
+{
+    "icon": "building",
+    "fields": [
+        "building:levels",
+        "building:material",
+        "roof:material",
+        "building:foundation_height",
+        "roof:face",
+        "roof:shape"
+    ],
+    "geometry": [
+        "area"
+    ],
+    "tags": {
+        "building": "construction"
+    },
+    "matchScore": 0.5,
+    "name": "Building Under Construction"
+}

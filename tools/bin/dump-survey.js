@@ -1,6 +1,4 @@
 #!/usr/bin/env node
-"use strict";
-
 const fs = require("fs");
 const path = require("path");
 
@@ -44,20 +42,28 @@ const formatAsMarkdown = survey => {
 
       markdown.push(`* \`${field.key}\``);
 
-      if (field.strings != null) {
+      if (field.strings != null && field.strings.options != null) {
         markdown.push("");
         markdown.push("##### Options");
         markdown.push("");
 
-        markdown = Object.keys(
-          field.strings.options
-        ).reduce((markdown, option) => {
-          markdown.push(
-            `* [ ] ${field.strings.options[option]} (\`${option}\`)`
-          );
+        if (Array.isArray(field.strings.options)) {
+          markdown = field.strings.options.reduce((markdown, option) => {
+            markdown.push(`* [ ] \`${option}\``);
 
-          return markdown;
-        }, markdown);
+            return markdown;
+          }, markdown);
+        } else {
+          markdown = Object.keys(
+            field.strings.options
+          ).reduce((markdown, option) => {
+            markdown.push(
+              `* [ ] ${field.strings.options[option]} (\`${option}\`)`
+            );
+
+            return markdown;
+          }, markdown);
+        }
       }
 
       markdown.push("");
@@ -82,8 +88,6 @@ const formatAsMarkdown = survey => {
 
   return markdown.join("\n");
 };
-
-let survey;
 
 if (argv.length === 0) {
   const stdin = [];

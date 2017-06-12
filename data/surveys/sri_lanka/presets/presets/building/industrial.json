@@ -1,0 +1,19 @@
+{
+    "icon": "industry",
+    "fields": [
+        "building:levels",
+        "building:material",
+        "roof:material",
+        "building:foundation_height",
+        "roof:face",
+        "roof:shape"
+    ],
+    "geometry": [
+        "area"
+    ],
+    "tags": {
+        "building": "industrial"
+    },
+    "matchScore": 0.5,
+    "name": "Industrial Building"
+}

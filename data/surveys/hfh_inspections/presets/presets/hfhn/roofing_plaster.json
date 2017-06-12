@@ -1,0 +1,27 @@
+{
+    "fields": [
+        "hfhn:inspection_date",
+        "hfhn:supervisor",
+        "hfhn:id_number",
+        "hfhn:village",
+        "hfhn:municipality",
+        "hfhn:lot_number",
+        "hfhn:shelter_type",
+        "hfhn:number_of_inspections",
+        "hfhn:window_door_operation",
+        "hfhn:window_door_operation_notes",
+        "hfhn:roofing_sheet_attachments",
+        "hfhn:roofing_sheet_attachments_notes",
+        "hfhn:bamboo_plaster",
+        "hfhn:bamboo_plaster_notes"
+    ],
+    "geometry": [
+        "point",
+        "area"
+    ],
+    "tags": {
+        "hfhn:inspection": "roofing_plaster"
+    },
+    "name": "Roofing Plaster",
+    "private": true
+}

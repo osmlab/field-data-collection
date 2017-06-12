@@ -1,0 +1,12 @@
+{
+    "key": "hfhn:supervisor",
+    "type": "combo",
+    "label": "Supervisor",
+    "placeholder": "Name...",
+    "strings": {
+        "options": {
+            "a": "Supervisor A",
+            "b": "Supervisor B"
+        }
+    }
+}

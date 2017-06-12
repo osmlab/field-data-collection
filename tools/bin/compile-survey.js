@@ -1,6 +1,4 @@
 #!/usr/bin/env node
-"use strict";
-
 const fs = require("fs");
 const path = require("path");
 
@@ -18,10 +16,12 @@ if (argv.length === 0) {
 }
 
 const surveyConfig = path.resolve(argv.shift());
-const BASE_PATH = path.dirname(surveyConfig);
-const PRESET_PATH = path.resolve(BASE_PATH, "..", "presets", "presets");
-const FIELD_PATH = path.resolve(BASE_PATH, "..", "presets", "fields");
-const OPTION_PATH = path.resolve(BASE_PATH, "..", "presets", "options");
+const BASE_PATH = path.join(
+  path.dirname(surveyConfig),
+  path.basename(surveyConfig, path.extname(surveyConfig))
+);
+const PRESET_PATH = path.resolve(BASE_PATH, "presets", "presets");
+const FIELD_PATH = path.resolve(BASE_PATH, "presets", "fields");
 
 let surveyDefinition;
 
@@ -41,7 +41,7 @@ const getParser = type => {
       return yaml.safeLoad;
 
     default:
-      throw new Exception(`Unsupported type: ${type}`);
+      throw new Error(`Unsupported type: ${type}`);
   }
 };
 
@@ -73,21 +73,6 @@ const loadPreset = (presetName, callback) => {
   );
 };
 
-const resolvePreset = (preset, callback) => {
-  return async.map(preset.fields, resolveField, (err, fields) => {
-    if (err) {
-      return callback(err);
-    }
-
-    return callback(
-      null,
-      Object.assign(preset, {
-        fields
-      })
-    );
-  });
-};
-
 const resolveField = (field, callback) => {
   if (typeof field === "string") {
     return loadField(field.replace(/:/g, "/"), callback);
@@ -109,6 +94,21 @@ const resolveField = (field, callback) => {
     }
 
     return callback(null, fieldDefn);
+  });
+};
+
+const resolvePreset = (preset, callback) => {
+  return async.map(preset.fields, resolveField, (err, fields) => {
+    if (err) {
+      return callback(err);
+    }
+
+    return callback(
+      null,
+      Object.assign(preset, {
+        fields
+      })
+    );
   });
 };
 
@@ -196,14 +196,14 @@ const resolveSurvey = (surveyDefinition, callback) => {
     featureTypes = featureTypes.map(ft => {
       if (ft.extend != null) {
         // the original definition of this feature type
-        const ftDef = feature_types.find(x => x.id == ft.id);
+        const ftDef = feature_types.find(x => x.id === ft.id);
         // definitions to extend
         const defs = [];
 
         if (Array.isArray(ft.extend)) {
           defs.push(...feature_types.filter(x => ft.extend.includes(x.id)));
         } else {
-          defs.push(feature_types.find(x => x.id == ft.extend));
+          defs.push(feature_types.find(x => x.id === ft.extend));
         }
 
         let localFields = ft.fields;
@@ -231,7 +231,7 @@ const resolveSurvey = (surveyDefinition, callback) => {
           }
 
           // add inherited fields
-          const superType = featureTypes.find(x => x.id == def.id);
+          const superType = featureTypes.find(x => x.id === def.id);
           inheritedFields.push(...superType.fields);
           inhertedRelatedTypes.push(...superType.related);
         });
