@@ -41,7 +41,7 @@
   },
   "lint-staged": {
     "*.js": [
-      "git-exec-and-restage prettier --write -- "
+      "git-exec-and-restage prettier --write --"
     ]
   }
 }
