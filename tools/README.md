@@ -7,3 +7,19 @@ Surveyor-related data.
 
 Compiles YAML survey definitions and loads associated presets, fields, and
 options.
+
+```
+./bin/compile-survey /path/to/survey.yaml
+```
+
+## `server`
+
+A server for importing data into the app during development.
+
+Usage:
+
+```
+./bin/server
+```
+
+The server listens at http://127.0.0.1:3000

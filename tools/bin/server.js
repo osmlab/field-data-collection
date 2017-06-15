@@ -10,10 +10,14 @@ var mkdirp = require("mkdirp");
 var websocket = require("websocket-stream");
 var hyperlog = require("hyperlog");
 
+/*
+* A server for importing data into the app during development
+*/
+
 var dir = path.join(__dirname, "tmp", "db");
 
 fs.stat(dir, function(err, stats) {
-  if (err) {
+  if (err && err.code === "ENOENT") {
     mkdirp.sync(dir);
     createDB(dir, importData(start));
   } else {
@@ -25,6 +29,7 @@ function createDB(dir, callback) {
   var db = level(path.join(dir, "obs.db"));
   var osm = osmdb(path.join(dir, "osm.db"));
   var obs = obsdb({ db: db, log: osm.log });
+
   osm.ready(function() {
     callback(osm);
   });
@@ -38,11 +43,6 @@ function importData(callback) {
 
 function start(osm) {
   var server = http.createServer();
-  server.on("request", function(req) {
-    console.log("req", req.url);
-  });
-
-  var log = hyperlog(level(path.join(__dirname, "tmp", "db")));
 
   var wss = websocket.createServer(
     {
@@ -53,7 +53,7 @@ function start(osm) {
   );
 
   function handleSocket(socket) {
-    console.log("handleSocket");
+    console.log("sync with mobile app started");
 
     var stream = osm.log.replicate();
     socket.pipe(stream).pipe(socket);
@@ -61,11 +61,14 @@ function start(osm) {
 
     socket.on("end", function() {
       console.log("done");
-      osm.log.createReadStream().on("data", console.log);
+
+      osm.log.createReadStream().on("data", function(data) {
+        console.log("data", data);
+      });
     });
   }
 
-  server.listen(3131, function() {
-    console.log("server listening at http://127.0.0.1:3131");
+  server.listen(3000, function() {
+    console.log("server listening at http://127.0.0.1:3000");
   });
 }
