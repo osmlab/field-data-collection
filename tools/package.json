@@ -4,17 +4,18 @@
   "license": "ISC",
   "dependencies": {
     "async": "^2.4.0",
+    "end-of-stream": "^1.4.0",
     "epipebomb": "^1.0.0",
     "js-yaml": "^3.8.4",
-    "level-party": "^3.0.4",
     "lodash.uniq": "^4.5.0",
     "lodash.uniqby": "^4.7.0",
     "osm-p2p": "^2.0.0",
-    "osm-p2p-db-importer": "sethvincent/osm-p2p-db-importer",
+    "osm-p2p-db-importer": "^1.0.0",
     "osm-p2p-observations": "^2.0.0"
   },
   "bin": {
     "compile-survey": "bin/compile-survey.js",
-    "dump-survey": "bin/dump-survey.js"
+    "dump-survey": "bin/dump-survey.js",
+    "server": "bin/server.js"
   }
 }

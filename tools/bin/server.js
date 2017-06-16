@@ -3,12 +3,13 @@
 const fs = require("fs");
 const path = require("path");
 const http = require("http");
-const level = require("level-party");
+const level = require("level");
 const osmdb = require("osm-p2p");
 const obsdb = require("osm-p2p-observations");
 const mkdirp = require("mkdirp");
 const websocket = require("websocket-stream");
 const importer = require("osm-p2p-db-importer");
+const eos = require("end-of-stream");
 
 /*
 * A server for importing data into the app during development
@@ -52,10 +53,6 @@ function start(osm) {
 
   osm.ready(function() {
     console.log("ready");
-
-    osm.log.createReadStream().on("data", function(data) {
-      console.log("data", data);
-    });
   });
 
   var wss = websocket.createServer(
@@ -68,18 +65,21 @@ function start(osm) {
 
   function handleSocket(socket) {
     console.log("sync with mobile app started");
+    let pending = 2;
 
     var stream = osm.log.replicate();
     socket.pipe(stream).pipe(socket);
     stream.on("data", console.log);
 
-    socket.on("end", function() {
-      console.log("done importing");
+    eos(stream, done);
+    eos(socket, done);
 
-      osm.log.createReadStream().on("data", function(data) {
-        console.log("data", data);
-      });
-    });
+    function done(err) {
+      if (err) throw err;
+      if (--pending === 0) {
+        console.log("done importing");
+      }
+    }
   }
 
   server.listen(3000, function() {
