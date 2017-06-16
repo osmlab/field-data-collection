@@ -1,18 +1,9 @@
 import React, { Component } from "react";
-import { View, TextInput, StyleSheet } from "react-native";
+import { View, TextInput } from "react-native";
 import { NavigationActions } from "react-navigation";
 
-import { Text, Wrapper, getFieldInput } from "../../components";
+import { Text, Wrapper } from "../../components";
 import { baseStyles } from "../../styles";
-
-const styles = StyleSheet.create({
-  sectionTitle: {
-    fontSize: 17,
-    fontWeight: "bold",
-    marginBottom: 5
-  },
-  fieldset: {}
-});
 
 class FieldsetFormScreen extends Component {
   componentWillMount() {
@@ -23,18 +14,10 @@ class FieldsetFormScreen extends Component {
     });
   }
 
-  renderField(field, index) {
-    const { navigate } = this.props.navigation;
-    const { fields } = this.props;
-    const Field = getFieldInput(field.type);
-    return <Field {...field} />;
-  }
-
   onClosePress = () => this.props.navigation.dispatch(NavigationActions.back());
 
   render() {
     const { fieldset } = this.state;
-    const fields = fieldset.fields;
     let input;
 
     return (
@@ -53,8 +36,11 @@ class FieldsetFormScreen extends Component {
             ⅹ
           </Text>
         </View>
+        <Text>Question 1/4</Text>
 
-        <View style={{}}>
+        <View style={{ marginTop: 20 }}>
+          <Text style={{ fontWeight: "bold", fontSize: 17 }}>Label</Text>
+          <Text style={{ color: "#aaa" }}>Help text</Text>
           <TextInput
             ref={c => (input = c)}
             style={{
@@ -73,9 +59,6 @@ class FieldsetFormScreen extends Component {
             onSubmitEditing={() => input.blur()}
             onChangeText={val => console.log("field value", val)}
           />
-        </View>
-        <View style={styles.fieldset}>
-          {fields.map(this.renderField, this)}
         </View>
       </Wrapper>
     );
