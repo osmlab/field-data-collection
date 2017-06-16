@@ -79,7 +79,6 @@ class ObservationListScreen extends Component {
               contentContainerStyle={{}}
               dataSource={this.state.observations}
               renderRow={item => {
-                console.log("obs list item", item.observationName);
                 return (
                   <View>
                     <View

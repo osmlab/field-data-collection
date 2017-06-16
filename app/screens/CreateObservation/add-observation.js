@@ -34,7 +34,7 @@ class AddObservationScreen extends Component {
     const { type: { fields, name } } = this.props;
 
     const Field = getFieldType(field.type);
-    console.log("AddObservationScreen fields", fields);
+
     return (
       <TouchableHighlight
         key={index}

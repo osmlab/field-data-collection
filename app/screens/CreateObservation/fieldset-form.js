@@ -33,8 +33,6 @@ class FieldsetFormScreen extends Component {
   onClosePress = () => this.props.navigation.dispatch(NavigationActions.back());
 
   render() {
-    console.log("render this.props", this.props);
-    console.log("render this.state", this.state);
     const { fieldset } = this.state;
     const fields = fieldset.fields;
     let input;
