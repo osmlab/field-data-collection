@@ -63,7 +63,7 @@ class ObservationMapScreen extends Component {
           scrollEnabled
           zoomEnabled
           showsUserLocation={false}
-          styleURL={Mapbox.mapStyles.light}
+          styleURL="https://openmaptiles.github.io/osm-bright-gl-style/style-cdn.json"
           userTrackingMode={this.state.userTrackingMode}
         />
       </View>

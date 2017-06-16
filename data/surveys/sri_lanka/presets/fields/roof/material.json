@@ -1,0 +1,15 @@
+{
+    "key": "roof:material",
+    "type": "combo",
+    "label": "Roof material",
+    "strings": {
+        "options": {
+            "clay/ciment_tile": "Clay / ciment tile",
+            "asbestos": "Asbestos",
+            "concrete": "Concrete",
+            "permanent_zinc_sheet": "Permanent zinc sheet",
+            "tin_sheet/temporary_zinc": "Tin / temporary zinc sheet",
+            "cadjan/palmyrah/straw": "Cadjan / palmyrah / straw"
+        }
+    }
+}

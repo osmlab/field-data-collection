@@ -1,0 +1,18 @@
+{
+    "icon": "building",
+    "fields": [
+        "building:levels",
+        "building:material",
+        "roof:material",
+        "building:foundation_height",
+        "roof:face",
+        "roof:shape"
+    ],
+    "geometry": [
+        "area"
+    ],
+    "tags": {
+        "building": "roof_without_wall"
+    },
+    "name": "Structure with open sides"
+}

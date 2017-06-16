@@ -1,0 +1,35 @@
+{
+    "fields": [
+        "hfhn:inspection_date",
+        "hfhn:supervisor",
+        "hfhn:id_number",
+        "hfhn:village",
+        "hfhn:municipality",
+        "hfhn:lot_number",
+        "hfhn:shelter_type",
+        "hfhn:number_of_inspections",
+        "hfhn:door_install",
+        "hfhn:door_install_notes",
+        "hfhn:wall_dimensions",
+        "hfhn:wall_dimensions_notes",
+        "hfhn:sill_formwork",
+        "hfhn:sill_formwork_notes",
+        "hfhn:window_openings",
+        "hfhn:window_openings_notes",
+        "hfhn:sill_reinforcement_assembly",
+        "hfhn:sill_reinforcement_assembly_notes",
+        "hfhn:concrete_mix_2",
+        "hfhn:concrete_mix_2_notes",
+        "hfhn:wire_mortar_brick_3",
+        "hfhn:wire_mortar_brick_3_notes"
+    ],
+    "geometry": [
+        "point",
+        "area"
+    ],
+    "tags": {
+        "hfhn:inspection": "brick_sill_door_formworks"
+    },
+    "name": "Brick Sill Door Formworks",
+    "private": true
+}

@@ -10,15 +10,10 @@ feature_types:
   # Generic inspection
   - id: inspection
     preset: hfhn/inspection
-    options:
-      supervisor:
-        - Supervisor A
-        - Supervisor B
 
   # Excavation and footing preparations
   - id: excavation
     preset: hfhn/excavation
-    extend: inspection
     # subsequent inspection phases
     related:
       - brick_pre_foundation
@@ -32,21 +27,13 @@ feature_types:
       - soiling_floor_plaster
       - roofing_plaster
 
-  # abstract feature for Pre-foundation
-  - id: pre_foundation
-    preset: hfhn/pre_foundation
-    extend: inspection
+  # Brick Pre-Foundation
+  - id: brick_pre_foundation
+    preset: hfhn/brick_pre_foundation
     # subsequent inspection phases
     related:
       - soiling_floor_plaster
       - roofing_plaster
-
-  # Brick Pre-Foundation
-  - id: brick_pre_foundation
-    preset: hfhn/brick_pre_foundation
-    extend: pre_foundation
-    # subsequent inspection phases
-    related:
       - brick_foundation_ring_beam
       - brick_sill_door_formworks
       - brick_sill_window_formworks
@@ -54,88 +41,69 @@ feature_types:
   # Stone Pre-Foundation
   - id: stone_pre_foundation
     preset: hfhn/stone_pre_foundation
-    extend: pre_foundation
-    # subsequent inspection phases
-    related:
-      - stone_foundation_ring_beam
-      - stone_sill_door_formworks
-      - stone_sill_window_formworks
-
-  # abstract feature for Foundation Ring Beam
-  - id: foundation_ring_beam
-    preset: hfhn/foundation_ring_beam
-    extend: inspection
     # subsequent inspection phases
     related:
       - soiling_floor_plaster
       - roofing_plaster
+      - stone_foundation_ring_beam
+      - stone_sill_door_formworks
+      - stone_sill_window_formworks
 
   # Brick Foundation Ring Beam
   - id: brick_foundation_ring_beam
     preset: hfhn/brick_foundation_ring_beam
-    extend: foundation_ring_beam
     # subsequent inspection phases
     related:
+      - soiling_floor_plaster
+      - roofing_plaster
       - brick_sill_door_formworks
       - brick_sill_window_formworks
 
   # Stone Foundation Ring Beam
   - id: stone_foundation_ring_beam
     preset: hfhn/stone_foundation_ring_beam
-    extend: foundation_ring_beam
-    # subsequent inspection phases
-    related:
-      - stone_sill_door_formworks
-      - stone_sill_window_formworks
-
-  # abstract feature for Sill Door Formworks
-  - id: sill_door_formworks
-    preset: hfhn/sill_door_formworks
-    extend: inspection
     # subsequent inspection phases
     related:
       - soiling_floor_plaster
       - roofing_plaster
+      - stone_sill_door_formworks
+      - stone_sill_window_formworks
 
   # Brick Sill Door Formworks
   - id: brick_sill_door_formworks
-    preset: hfhn/sill_door_formworks
-    extend: sill_door_formworks
+    preset: hfhn/brick_sill_door_formworks
     # subsequent inspection phases
     related:
+      - soiling_floor_plaster
+      - roofing_plaster
       - brick_sill_window_formworks
 
   # Stone Sill Door formworks
   - id: stone_sill_door_formworks
-    preset: hfhn/sill_door_formworks
-    extend: sill_door_formworks
-    # subsequent inspection phases
-    related:
-      - stone_sill_window_formworks
-
-  # abstract feature for Sill Window Formworks
-  - id: sill_window_formworks
-    preset: hfhn/sill_window_formworks
-    extend: inspection
+    preset: hfhn/stone_sill_door_formworks
     # subsequent inspection phases
     related:
       - soiling_floor_plaster
       - roofing_plaster
+      - stone_sill_window_formworks
 
   # Brick Sill Window Formworks
   - id: brick_sill_window_formworks
-    preset: hfhn/sill_window_formworks
-    extend: sill_window_formworks
+    preset: hfhn/brick_sill_window_formworks
+    related:
+      - soiling_floor_plaster
+      - roofing_plaster
 
   # Stone Will Window Formworks
   - id: stone_sill_window_formworks
-    preset: hfhn/sill_window_formworks
-    extend: sill_window_formworks
+    preset: hfhn/stone_sill_window_formworks
+    related:
+      - soiling_floor_plaster
+      - roofing_plaster
 
   # Soiling Floor Plaster
   - id: soiling_floor_plaster
     preset: hfhn/soiling_floor_plaster
-    extend: inspection
     # subsequent inspection phases
     related:
       - roofing_plaster
@@ -143,11 +111,9 @@ feature_types:
   # Roofing Plaster
   - id: roofing_plaster
     preset: hfhn/roofing_plaster
-    extend: inspection
 
 observation_types:
   - excavation
-  - pre_foundation
   - brick_pre_foundation
   - stone_pre_foundation
   - brick_foundation_ring_beam

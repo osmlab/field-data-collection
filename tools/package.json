@@ -1,6 +1,6 @@
 {
-  "name": "surveyor-tools",
-  "version": "0.0.0",
+  "name": "@mojodna/observe-tools",
+  "version": "0.0.1",
   "license": "ISC",
   "dependencies": {
     "async": "^2.4.0",
@@ -12,5 +12,9 @@
     "osm-p2p": "^2.0.0",
     "osm-p2p-db-importer": "sethvincent/osm-p2p-db-importer",
     "osm-p2p-observations": "^2.0.0"
+  },
+  "bin": {
+    "compile-survey": "bin/compile-survey.js",
+    "dump-survey": "bin/dump-survey.js"
   }
 }

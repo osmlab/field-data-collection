@@ -1,0 +1,26 @@
+{
+    "icon": "school",
+    "fields": [
+        "building:levels",
+        "building:material",
+        "roof:material",
+        "building:foundation_height",
+        "roof:face",
+        "roof:shape",
+        "operator"
+    ],
+    "geometry": [
+        "point",
+        "area"
+    ],
+    "terms": [
+        "academy",
+        "elementary school",
+        "middle school",
+        "high school"
+    ],
+    "tags": {
+        "amenity": "school"
+    },
+    "name": "School Grounds"
+}
