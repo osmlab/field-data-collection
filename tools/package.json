@@ -1,5 +1,5 @@
 {
-  "name": "surveyor-tools",
+  "name": "@mojodna/observe-tools",
   "version": "0.0.0",
   "license": "ISC",
   "dependencies": {
@@ -8,5 +8,9 @@
     "js-yaml": "^3.8.4",
     "lodash.uniq": "^4.5.0",
     "lodash.uniqby": "^4.7.0"
+  },
+  "bin": {
+    "compile-survey": "bin/compile-survey.js",
+    "dump-survey": "bin/dump-survey.js"
   }
 }
