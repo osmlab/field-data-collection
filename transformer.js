@@ -37,7 +37,8 @@ const babelRC = {
           tty: "tty-browserify",
           vm: "vm-browserify",
           zlib: "browserify-zlib",
-          pbkdf2: "pbkdf2/browser"
+          pbkdf2: "pbkdf2/browser",
+          "websocket-stream": "websocket-stream/stream"
         },
         throwForNonStringLiteral: true
       }

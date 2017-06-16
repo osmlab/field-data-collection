@@ -6,6 +6,7 @@ import Interactable from "react-native-interactable";
 
 import { Header, Text } from "../../components";
 import { baseStyles } from "../../styles";
+import osmp2p from "../../lib/osm-p2p";
 
 const Screen = Dimensions.get("window");
 const SideMenuWidth = 280;
@@ -73,6 +74,7 @@ class ObservationMapScreen extends Component {
   constructor() {
     super();
 
+    this.osm = osmp2p();
     this.navigationOptions = { tabBarLabel: "Map" };
   }
 
@@ -93,6 +95,10 @@ class ObservationMapScreen extends Component {
 
   onClosePress() {
     this.refs["menuInstance"].setVelocity({ x: 3000 });
+  }
+
+  componentDidMount() {
+    console.log("map", this._map);
   }
 
   render() {
@@ -142,7 +148,7 @@ class ObservationMapScreen extends Component {
           scrollEnabled
           zoomEnabled
           showsUserLocation={false}
-          styleURL={Mapbox.mapStyles.light}
+          styleURL="https://openmaptiles.github.io/osm-bright-gl-style/style-cdn.json"
           userTrackingMode={this.state.userTrackingMode}
         />
       </View>
