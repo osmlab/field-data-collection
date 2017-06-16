@@ -1,48 +1,62 @@
 #!/usr/bin/env node
 
-var fs = require("fs");
-var path = require("path");
-var http = require("http");
-var level = require("level");
-var osmdb = require("osm-p2p");
-var obsdb = require("osm-p2p-observations");
-var mkdirp = require("mkdirp");
-var websocket = require("websocket-stream");
-var hyperlog = require("hyperlog");
+const fs = require("fs");
+const path = require("path");
+const http = require("http");
+const level = require("level-party");
+const osmdb = require("osm-p2p");
+const obsdb = require("osm-p2p-observations");
+const mkdirp = require("mkdirp");
+const websocket = require("websocket-stream");
+const importer = require("osm-p2p-db-importer");
 
 /*
 * A server for importing data into the app during development
 */
 
-var dir = path.join(__dirname, "tmp", "db");
+var dir = path.join(__dirname, "tmp", "db", "osm");
 
 fs.stat(dir, function(err, stats) {
+  console.log(err);
   if (err && err.code === "ENOENT") {
     mkdirp.sync(dir);
-    createDB(dir, importData(start));
+
+    importData(function(err) {
+      if (err) throw err;
+      console.log("import finished");
+      var db = createDB(dir);
+      start(db);
+    });
   } else {
-    createDB(dir, start);
+    var db = createDB(dir);
+    start(db);
   }
 });
 
 function createDB(dir, callback) {
-  var db = level(path.join(dir, "obs.db"));
-  var osm = osmdb(path.join(dir, "osm.db"));
+  var db = level(path.join(dir, "obs"));
+  var osm = osmdb(dir);
   var obs = obsdb({ db: db, log: osm.log });
-
-  osm.ready(function() {
-    callback(osm);
-  });
+  return osm;
 }
 
 function importData(callback) {
-  return function(osm) {
-    callback(osm);
-  };
+  console.log("import started");
+  var file = path.join(__dirname, "..", "example-data.xml");
+  var xml = fs.createReadStream(file);
+  importer(path.join(dir), xml, callback);
 }
 
 function start(osm) {
   var server = http.createServer();
+
+  osm.ready(function() {
+    console.log("ready");
+
+    osm.log.createReadStream().on("data", function(data) {
+      console.log("data", data);
+    });
+  });
 
   var wss = websocket.createServer(
     {
@@ -60,7 +74,7 @@ function start(osm) {
     stream.on("data", console.log);
 
     socket.on("end", function() {
-      console.log("done");
+      console.log("done importing");
 
       osm.log.createReadStream().on("data", function(data) {
         console.log("data", data);
