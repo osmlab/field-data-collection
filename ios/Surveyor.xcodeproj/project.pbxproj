@@ -38,6 +38,7 @@
 		47050CAE6DEA475BAA3939DF /* libInteractable.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C42201003FE43B39CFE2467 /* libInteractable.a */; };
 		3CAE24E199234F0AB2352AA9 /* libReactNativeLocalization.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C1C0DDEE2C7456BB1BE0E8B /* libReactNativeLocalization.a */; };
 		9144ED39E1E849EC8102A174 /* libRCTMapboxGL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FFEFFB7F62A4D45BFDD8B51 /* libRCTMapboxGL.a */; };
+		FE3D2430279B48BDAB722AA0 /* libUdpSockets.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C0942C44DC7246BD98AB2EC2 /* libUdpSockets.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -263,6 +264,8 @@
 		9C1C0DDEE2C7456BB1BE0E8B /* libReactNativeLocalization.a */ = {isa = PBXFileReference; name = "libReactNativeLocalization.a"; path = "libReactNativeLocalization.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 		E799F954175B49B8B46A8ABE /* RCTMapboxGL.xcodeproj */ = {isa = PBXFileReference; name = "RCTMapboxGL.xcodeproj"; path = "../node_modules/react-native-mapbox-gl/ios/RCTMapboxGL.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		5FFEFFB7F62A4D45BFDD8B51 /* libRCTMapboxGL.a */ = {isa = PBXFileReference; name = "libRCTMapboxGL.a"; path = "libRCTMapboxGL.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		3BDD59C2ED264EA882DB3431 /* UdpSockets.xcodeproj */ = {isa = PBXFileReference; name = "UdpSockets.xcodeproj"; path = "../node_modules/react-native-udp/ios/UdpSockets.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		C0942C44DC7246BD98AB2EC2 /* libUdpSockets.a */ = {isa = PBXFileReference; name = "libUdpSockets.a"; path = "libUdpSockets.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -292,6 +295,7 @@
 				47050CAE6DEA475BAA3939DF /* libInteractable.a in Frameworks */,
 				3CAE24E199234F0AB2352AA9 /* libReactNativeLocalization.a in Frameworks */,
 				9144ED39E1E849EC8102A174 /* libRCTMapboxGL.a in Frameworks */,
+				FE3D2430279B48BDAB722AA0 /* libUdpSockets.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -461,6 +465,7 @@
 				AC3F5766E6FA4CB3B90FE812 /* Interactable.xcodeproj */,
 				68978AB0B8A042E4898B145A /* ReactNativeLocalization.xcodeproj */,
 				E799F954175B49B8B46A8ABE /* RCTMapboxGL.xcodeproj */,
+				3BDD59C2ED264EA882DB3431 /* UdpSockets.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -997,6 +1002,7 @@
 					"$(SRCROOT)/../node_modules/react-native-interactable/ios/Interactable",
 					"$(SRCROOT)/../node_modules/react-native-localization",
 					"$(SRCROOT)/../node_modules/react-native-mapbox-gl/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-udp/ios/**",
 				);
 			};
 			name = Debug;
@@ -1026,6 +1032,7 @@
 					"$(SRCROOT)/../node_modules/react-native-interactable/ios/Interactable",
 					"$(SRCROOT)/../node_modules/react-native-localization",
 					"$(SRCROOT)/../node_modules/react-native-mapbox-gl/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-udp/ios/**",
 				);
 			};
 			name = Release;
@@ -1050,6 +1057,7 @@
 					"$(SRCROOT)/../node_modules/react-native-interactable/ios/Interactable",
 					"$(SRCROOT)/../node_modules/react-native-localization",
 					"$(SRCROOT)/../node_modules/react-native-mapbox-gl/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-udp/ios/**",
 				);
 			};
 			name = Debug;
@@ -1073,6 +1081,7 @@
 					"$(SRCROOT)/../node_modules/react-native-interactable/ios/Interactable",
 					"$(SRCROOT)/../node_modules/react-native-localization",
 					"$(SRCROOT)/../node_modules/react-native-mapbox-gl/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-udp/ios/**",
 				);
 			};
 			name = Release;
@@ -1111,6 +1120,7 @@
 					"$(SRCROOT)/../node_modules/react-native-interactable/ios/Interactable",
 					"$(SRCROOT)/../node_modules/react-native-localization",
 					"$(SRCROOT)/../node_modules/react-native-mapbox-gl/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-udp/ios/**",
 				);
 			};
 			name = Debug;
@@ -1149,6 +1159,7 @@
 					"$(SRCROOT)/../node_modules/react-native-interactable/ios/Interactable",
 					"$(SRCROOT)/../node_modules/react-native-localization",
 					"$(SRCROOT)/../node_modules/react-native-mapbox-gl/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-udp/ios/**",
 				);
 			};
 			name = Release;
@@ -1174,8 +1185,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 			};
 			name = Debug;
@@ -1200,8 +1209,6 @@
 				TVOS_DEPLOYMENT_TARGET = 10.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 			};
