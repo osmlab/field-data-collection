@@ -1,0 +1,31 @@
+{
+    "fields": [
+        "hfhn:inspection_date",
+        "hfhn:supervisor",
+        "hfhn:id_number",
+        "hfhn:village",
+        "hfhn:municipality",
+        "hfhn:lot_number",
+        "hfhn:shelter_type",
+        "hfhn:number_of_inspections",
+        "hfhn:window_install",
+        "hfhn:window_install_notes",
+        "hfhn:brick_wall_dimensions",
+        "hfhn:brick_wall_dimensions_notes",
+        "hfhn:lintel_reinforcement",
+        "hfhn:lintel_reinforcement_notes",
+        "hfhn:lintel_formwork",
+        "hfhn:lintel_formwork_notes",
+        "hfhn:concrete_mix_3",
+        "hfhn:concrete_mix_3_notes"
+    ],
+    "geometry": [
+        "point",
+        "area"
+    ],
+    "tags": {
+        "hfhn:inspection": "stone_window_formworks"
+    },
+    "name": "Stone Window Formworks",
+    "private": true
+}

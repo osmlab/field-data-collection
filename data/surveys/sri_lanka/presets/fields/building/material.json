@@ -1,0 +1,15 @@
+{
+    "key": "building:material",
+    "type": "combo",
+    "label": "Building material",
+    "strings": {
+        "options": {
+            "plaster": "Plaster",
+            "exposed_brick": "Exposed brick",
+            "exposed_cement_block": "Exposed cement block",
+            "tin_sheet": "Tin sheet",
+            "clay_wall/mud": "Clay / mud",
+            "cadjan/palmyrah": "Cadjan / Palmyrah"
+        }
+    }
+}

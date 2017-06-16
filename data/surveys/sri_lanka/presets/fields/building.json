@@ -1,0 +1,18 @@
+{
+    "key": "building",
+    "type": "combo",
+    "label": "Building",
+    "strings": {
+        "options": {
+            "residential": "Residential",
+            "commercial": "Commercial",
+            "industrial": "industrial",
+            "hospital": "hospital",
+            "school": "School",
+            "utility": "Utility",
+            "construction": "Under construction",
+            "roof_without_wall": "Roof without wall",
+            "abandoned": "Abandoned"
+        }
+    }
+}

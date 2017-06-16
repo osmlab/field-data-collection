@@ -21,7 +21,7 @@ export default function Header(props) {
     >
       <View style={{ flex: 1, height: 30 }}>
         <View style={{ flex: 1, flexDirection: "row", alignItems: "center" }}>
-          <SearchBox onChangeText={onChangeText} />
+          <Text>Field Data Collection</Text>
           <MapListToggle {...props} />
         </View>
       </View>
@@ -32,8 +32,8 @@ export default function Header(props) {
 function MapListToggle(props) {
   return (
     <View style={{ flex: 0.3, height: 30, justifyContent: "center" }}>
-      <Text style={{ textAlign: "center" }} onPress={props.onTogglePress}>
-        {props.button}
+      <Text style={{ textAlign: "right" }} onPress={props.onTogglePress}>
+        🍔
       </Text>
     </View>
   );

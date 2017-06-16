@@ -1,0 +1,25 @@
+{
+    "fields": [
+        "hfhn:inspection_date",
+        "hfhn:supervisor",
+        "hfhn:id_number",
+        "hfhn:village",
+        "hfhn:municipality",
+        "hfhn:lot_number",
+        "hfhn:shelter_type",
+        "hfhn:number_of_inspections",
+        "hfhn:string_line_placement",
+        "hfhn:string_line_placement_notes",
+        "hfhn:wire_mortar_brick",
+        "hfhn:wire_mortar_brick_notes"
+    ],
+    "geometry": [
+        "point",
+        "area"
+    ],
+    "tags": {
+        "hfhn:inspection": "brick_pre_foundation"
+    },
+    "name": "Brick Pre-foundation",
+    "private": true
+}

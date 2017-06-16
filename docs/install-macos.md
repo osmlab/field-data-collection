@@ -8,6 +8,14 @@
 npm install -g react-native-cli yarn
 ```
 
+### Install watchman
+
+Install `watchman` using [homebrew](https://brew.sh/).
+
+```
+brew install watchman
+```
+
 ### Clone the repo
 
 ```
@@ -113,6 +121,7 @@ If it fails to install the app on the device, the APK can be copied manually:
 
 ```bash
 $ adb install android/app/build/outputs/apk/app-debug.apk
+$ adb reverse tcp:8081 tcp:8081
 ```
 
 Access logs:

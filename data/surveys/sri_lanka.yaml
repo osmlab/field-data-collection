@@ -9,108 +9,30 @@ description: >
 # derived from
 # https://wiki.openstreetmap.org/wiki/Sri_Lanka_Tagging_Guidelines#Building_Characteristics
 feature_types:
-  # generic building
   - id: building
     preset: building
-    options:
-      # Per-survey alternative to options/building.json
-      building:
-        - residential
-        - commercial
-        - industrial
-        - hospital
-        - school
-        - utility
-        - construction
-        - roof_without_wall
-        - abandoned
-    # fields to exclude from the default preset
-    exclude:
-      - address
-    include:
-      - type: building:material
-        # Per-survey alternative to / override of options in fields/building/material.json
-        # select
-        #   tags['building:material'] "building:material",
-        #   count(*) "count"
-        # from planet
-        # where tags['building:material'] is not null
-        # group by tags['building:material']
-        # order by count(*) desc
-        options:
-          plaster: Plaster
-          exposed_brick: Exposed brick
-          exposed_cement_block: Exposed cement block
-          tin_sheet: Tin sheet
-          clay_wall/mud: Clay / mud
-          cadjan/palmyrah: Cadjan / Palmyrah
-      - type: roof:material
-        # select
-        #   tags['roof:material'] "roof:material",
-        #   count(*) "count"
-        # from planet
-        # where tags['roof:material'] is not null
-        # group by tags['roof:material']
-        # order by count(*) desc
-        options:
-          clay/ciment_tile: Clay / ciment tile
-          asbestos: Asbestos
-          concrete: Concrete
-          permanent_zinc_sheet: Permanent zinc sheet
-          tin_sheet/temporary_zinc: Tin / temporary zinc sheet
-          cadjan/palmyrah/straw: Cadjan / palmyrah / straw
-      # select
-      #   tags['building:foundation_height'] "building:foundation_height",
-      #   count(*) "count"
-      # from planet
-      # where tags['building:foundation_height'] is not null
-      # group by tags['building:foundation_height']
-      # order by count(*) desc
-      - building:foundation_height
-      - roof:face
-      # select
-      #   tags['roof:shape'] "roof:shape",
-      #   count(*) "count"
-      # from planet
-      # where tags['roof:shape'] is not null
-      # group by tags['roof:shape']
-      # order by count(*) desc
-      - roof:shape
   - id: amenity=place_of_worship
     preset: amenity/place_of_worship
-    extend: building
   - id: building=residential
     preset: building/residential
-    extend: building
   - id: building=commercial
     preset: building/commercial
-    extend: building
-    exclude:
-      - smoking
   - id: building=industrial
     preset: building/industrial
-    extend: building
   - id: building=hospital
     preset: building/hospital
-    extend: building
-  - id: building=school
-    preset: building/school
-    extend: building
+  - id: amenity=school
+    preset: amenity/school
   - id: building=utility
     preset: building/utility
-    extend: building
   - id: building=construction
     preset: building/construction
-    extend: building
   - id: building=roof_without_wall
     preset: building/roof_without_wall
-    extend: building
   - id: building=abandoned
     preset: building/abandoned
-    extend: building
   - id: office=government
     preset: office/government
-    extend: building
 
 observation_types:
   - amenity=place_of_worship
@@ -118,7 +40,7 @@ observation_types:
   - building=commercial
   - building=industrial
   - building=hospital
-  - building=school
+  - amenity=school
   - building=utility
   - building=construction
   - building=roof_without_wall
