@@ -38,7 +38,7 @@ class ObservationListScreen extends Component {
           observationName: "Name of observation",
           updated: "Sep. 2, 2016",
           lnglat: [47, -122],
-          complete: 0.70
+          complete: 0.7
         },
         {
           category: "Oil spill",
@@ -46,7 +46,7 @@ class ObservationListScreen extends Component {
           observationName: "Name of observation",
           updated: "Sep. 2, 2016",
           lnglat: [47, -122],
-          complete: 0.70
+          complete: 0.7
         },
         {
           category: "Oil spill",
@@ -54,7 +54,7 @@ class ObservationListScreen extends Component {
           observationName: "Name of observation",
           updated: "Sep. 2, 2016",
           lnglat: [47, -122],
-          complete: 0.70
+          complete: 0.7
         }
       ])
     };
@@ -73,21 +73,35 @@ class ObservationListScreen extends Component {
             }}
           />
 
-          <View style={baseStyles.container}>
+          <View style={[baseStyles.container]}>
             <ListView
               contentContainerStyle={{}}
               dataSource={this.state.observations}
               renderRow={item => {
                 return (
-                  <View style={styles.observation}>
-                    <Text style={styles.muted}>
-                      {item.category} | {item.surveyName}
-                    </Text>
-                    <Text style={styles.title}>{item.observationName}</Text>
-                    <Text style={styles.muted}>
-                      Last updated: {item.updated}
-                    </Text>
-                    <Text>Lat/Long: {item.lnglat}</Text>
+                  <View>
+                    <View
+                      style={{
+                        padding: 10,
+                        margin: 5,
+                        borderRadius: 2,
+                        elevation: 1
+                      }}
+                    >
+                      <Text>
+                        {item.observationName}
+                      </Text>
+
+                      {/*<Text style={styles.muted}>
+                        {item.category} | {item.surveyName}
+                      </Text>*/}
+
+                      <Text style={styles.muted}>
+                        Last updated: {item.updated}
+                      </Text>
+
+                      <Text>Lat/Long: {item.lnglat}</Text>
+                    </View>
                   </View>
                 );
               }}
