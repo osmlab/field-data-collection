@@ -2,8 +2,11 @@ rootProject.name = 'Surveyor'
 
 include ':app'
 
+include ':react-native-interactable'
+project(':react-native-interactable').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-interactable/android')
+
 include ':reactnativemapboxgl'
 project(':reactnativemapboxgl').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-mapbox-gl/android')
 
-include ':react-native-localization', ':app'
+include ':react-native-localization'
 project(':react-native-localization').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-localization/android')
