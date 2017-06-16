@@ -14,7 +14,6 @@ import java.util.List;
 import com.wix.interactable.Interactable;
 import com.mapbox.reactnativemapboxgl.ReactNativeMapboxGLPackage;
 import com.babisoft.ReactNativeLocalization.ReactNativeLocalizationPackage;
-import com.github.xinthink.rnmk.ReactMaterialKitPackage;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -30,8 +29,7 @@ public class MainApplication extends Application implements ReactApplication {
         new MainReactPackage(),
         new Interactable(),
         new ReactNativeMapboxGLPackage(),
-        new ReactNativeLocalizationPackage(),
-        new ReactMaterialKitPackage()
+        new ReactNativeLocalizationPackage()
       );
     }
   };

@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { StyleSheet, View, ListView } from "react-native";
-import { getTheme } from "react-native-material-kit";
 
 import { Text, Header, Wrapper } from "../../components";
 import { baseStyles } from "../../styles";

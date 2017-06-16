@@ -139,7 +139,6 @@ dependencies {
     compile "com.facebook.react:react-native:+"  // From node_modules
     compile project(':reactnativemapboxgl')
     compile project(':react-native-localization')
-    compile project(':RNMaterialKit')
 }
 
 // Run this once to be able to run the application with BUCK

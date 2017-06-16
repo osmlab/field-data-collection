@@ -25,7 +25,6 @@
     "react-native-level-fs": "^3.0.0",
     "react-native-localization": "^0.1.30",
     "react-native-mapbox-gl": "sethvincent/react-native-mapbox-gl#field-data",
-    "react-native-material-kit": "^0.4.1",
     "react-navigation": "^1.0.0-beta.11",
     "react-redux": "^5.0.5",
     "redux": "^3.6.0",
