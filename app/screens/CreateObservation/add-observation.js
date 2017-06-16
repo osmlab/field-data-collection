@@ -1,11 +1,5 @@
 import React, { Component } from "react";
-import {
-  StyleSheet,
-  View,
-  TouchableHighlight,
-  TouchableOpacity
-} from "react-native";
-import Mapbox, { MapView } from "react-native-mapbox-gl";
+import { StyleSheet, View, TouchableHighlight } from "react-native";
 import { NavigationActions } from "react-navigation";
 import { connect } from "react-redux";
 
@@ -31,7 +25,6 @@ class AddObservationScreen extends Component {
 
   renderField(field, index) {
     const { navigate } = this.props.navigation;
-    const { type: { fields, name } } = this.props;
 
     const Field = getFieldType(field.type);
 
@@ -40,17 +33,12 @@ class AddObservationScreen extends Component {
         key={index}
         onPress={() =>
           navigate("FieldsetForm", {
-            fieldset: { title: name, index, fields }
+            fieldset: { title: "Basic info", index }
           })}
       >
         <Field {...field} />
       </TouchableHighlight>
     );
-  }
-
-  addLocation() {
-    const { navigate } = this.props.navigation;
-    navigate("Location");
   }
 
   render() {
@@ -97,11 +85,18 @@ class AddObservationScreen extends Component {
           </Text>
         </View>
 
-        <TouchableOpacity onPress={this.addLocation.bind(this)}>
-          <Text style={[styles.sectionTitle, { padding: 20, zIndex: 6000 }]}>
+        {/* TODO: map */}
+        <View
+          style={{
+            height: 200,
+            backgroundColor: "white",
+            justifyContent: "flex-end"
+          }}
+        >
+          <Text style={[styles.sectionTitle, { padding: 20 }]}>
             Add Location
           </Text>
-        </TouchableOpacity>
+        </View>
 
         <View style={{ marginTop: 20 }}>
           <Text style={[styles.sectionTitle]}>Basic info</Text>
