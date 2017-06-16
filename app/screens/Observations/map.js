@@ -4,6 +4,7 @@ import Mapbox, { MapView } from "react-native-mapbox-gl";
 
 import { Header } from "../../components";
 import { baseStyles } from "../../styles";
+import osmp2p from "../../lib/osm-p2p";
 
 Mapbox.setAccessToken(
   "pk.eyJ1Ijoic2V0aHZpbmNlbnQiLCJhIjoiSXZZXzZnUSJ9.Nr_zKa-4Ztcmc1Ypl0k5nw"
@@ -19,6 +20,7 @@ class ObservationMapScreen extends Component {
   constructor() {
     super();
 
+    this.osm = osmp2p();
     this.navigationOptions = { tabBarLabel: "Map" };
   }
 
@@ -31,6 +33,10 @@ class ObservationMapScreen extends Component {
       zoom: 11,
       userTrackingMode: Mapbox.userTrackingMode.none
     });
+  }
+
+  componentDidMount() {
+    console.log("map", this._map);
   }
 
   render() {
