@@ -2,6 +2,7 @@ const levelup = require("levelup");
 const asyncstorage = require("asyncstorage-down");
 const hyperlog = require("hyperlog");
 const osmdb = require("osm-p2p-db");
+const eos = require("end-of-stream");
 
 const createStore = require("./asyncstorage-chunk-store");
 const convert = require("./convert-geojson-osmp2p");
@@ -66,6 +67,27 @@ function osmp2p() {
 
   function replicate(opts) {
     return osm.log.replicate(opts);
+  }
+
+  function sync(transportStream, opts, callback) {
+    if (typeof opts === "function") {
+      callback = opts;
+      opts = null;
+    }
+
+    var osmStream = replicate(opts);
+
+    eos(osmStream, onend);
+    eos(transportStream, onend);
+
+    let pending = 2;
+    function onend(err) {
+      pending--;
+      if (err) return callback(err);
+      if (pending === 0) return callback();
+    }
+
+    return osmStream.pipe(transportStream).pipe(osmStream);
   }
 }
 
