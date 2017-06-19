@@ -46,7 +46,7 @@ function osmp2p() {
     osm.del(id, opts, cb);
   }
 
-  function createObservation(doc, opts, cb) {
+  function createObservation(geojson, opts, cb) {
     var doc = convert.toOSM(geojson, "observation");
     osm.create(doc, opts, callback);
   }
