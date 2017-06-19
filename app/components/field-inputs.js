@@ -2,25 +2,9 @@ import React, { Component } from "react";
 import { StyleSheet, View, TextInput } from "react-native";
 
 import { Text } from ".";
+import { baseStyles } from "../styles";
 
-const styles = StyleSheet.create({
-  field: {
-    backgroundColor: "white",
-    borderColor: "#ccc",
-    borderWidth: 1,
-    padding: 6,
-    paddingLeft: 10,
-    borderRadius: 2,
-    marginTop: 5
-  },
-  fieldLabel: {
-    fontSize: 10
-  },
-  fieldValue: {
-    color: "#aaa"
-  },
-  fieldArrow: {}
-});
+const styles = StyleSheet.create({});
 
 class Field extends Component {
   setNativeProps(nativeProps) {
@@ -33,9 +17,9 @@ export class ComboField extends Field {
     const { label } = this.props;
 
     return (
-      <View ref={x => (this._root = x)} style={styles.field}>
+      <View ref={x => (this._root = x)} style={[baseStyles.field]}>
         <View>
-          <Text style={styles.fieldLabel}>{label}</Text>
+          <Text style={[baseStyles.fieldLabel]}>{label}</Text>
           <Text style={styles.fieldValue}>(options)</Text>
         </View>
       </View>
@@ -48,7 +32,7 @@ export class NumberField extends Field {
     const { label, placeholder } = this.props;
 
     return (
-      <View ref={x => (this._root = x)} style={styles.field}>
+      <View ref={x => (this._root = x)} style={baseStyles.field}>
         <View>
           <Text style={styles.fieldLabel}>{label}</Text>
           <TextInput
@@ -67,9 +51,9 @@ export class TextField extends Field {
     const { label, placeholder } = this.props;
 
     return (
-      <View ref={x => (this._root = x)} style={styles.field}>
+      <View ref={x => (this._root = x)} style={baseStyles.field}>
         <View>
-          <Text style={styles.fieldLabel}>{label}</Text>
+          <Text style={baseStyles.h5}>{label}</Text>
           <TextInput style={styles.fieldValue} value={placeholder} />
         </View>
       </View>

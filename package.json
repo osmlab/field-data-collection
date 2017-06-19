@@ -21,6 +21,7 @@
     "osm-p2p-db": "^4.0.0",
     "react": "^16.0.0-alpha.12",
     "react-native": "0.45.0",
+    "react-native-fontawesome": "^5.7.0",
     "react-native-interactable": "^0.0.9",
     "react-native-level-fs": "^3.0.0",
     "react-native-localization": "^0.1.30",

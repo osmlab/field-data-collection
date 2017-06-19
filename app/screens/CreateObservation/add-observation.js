@@ -13,18 +13,7 @@ import { Text, Wrapper } from "../../components";
 import { getFieldType } from "../../components/fields";
 import { baseStyles } from "../../styles";
 
-const styles = StyleSheet.create({
-  sectionTitle: {
-    fontSize: 17,
-    fontWeight: "bold",
-    marginBottom: 5
-  },
-  fieldset: {
-    borderRadius: 2,
-    borderWidth: 1,
-    borderColor: "#ccc"
-  }
-});
+const styles = StyleSheet.create({});
 
 class AddObservationScreen extends Component {
   onBackPress = () => this.props.navigation.dispatch(NavigationActions.back());
@@ -65,49 +54,50 @@ class AddObservationScreen extends Component {
             alignItems: "center"
           }}
         >
-          <Text
-            style={{ fontSize: 30, marginTop: -10, marginRight: 5 }}
-            onPress={this.onBackPress}
-          >
+          <Text style={[baseStyles.headerBackIcon]} onPress={this.onBackPress}>
             ←
           </Text>
-          <Text style={[baseStyles.title]}>Adding: {name}</Text>
+          <Text style={[baseStyles.title]}>Add</Text>
         </View>
 
         <View
-          style={{
-            marginTop: 20,
-            marginBottom: 20,
-            flexDirection: "row",
-            flexWrap: "wrap"
-          }}
+          style={[
+            baseStyles.headerPage,
+            {
+              flexDirection: "row",
+              flexWrap: "wrap"
+            }
+          ]}
         >
-          <Text>
-            <Text style={{}}>Adding point to: </Text>
-            <Text style={{ paddingLeft: 5, paddingRight: 5 }}>Survey 1 </Text>
-            <Text
-              style={{
-                textDecorationLine: "underline",
-                textDecorationStyle: "solid",
-                textDecorationColor: "#ccc"
-              }}
-            >
-              edit
+          <View style={[baseStyles.wrapperContent]}>
+            <Text style={[baseStyles.h2, baseStyles.textWhite]}>{name}</Text>
+            <Text>
+              <Text style={[baseStyles.textWhite]}>Adding point to: </Text>
+              <Text
+                style={[
+                  baseStyles.textWhite,
+                  { paddingLeft: 5, paddingRight: 5 }
+                ]}
+              >
+                Survey 1
+              </Text>
             </Text>
-          </Text>
+          </View>
         </View>
 
         <TouchableOpacity onPress={this.addLocation.bind(this)}>
-          <Text style={[styles.sectionTitle, { padding: 20, zIndex: 6000 }]}>
-            Add Location
+          <Text style={[baseStyles.link, { zIndex: 6000 }]}>
+            + Add Location
           </Text>
         </TouchableOpacity>
 
         <View style={{ marginTop: 20 }}>
-          <Text style={[styles.sectionTitle]}>Basic info</Text>
+          <View style={[baseStyles.wrapperContent]}>
+            <Text style={[baseStyles.h3]}>Basic Info</Text>
 
-          <View style={styles.fieldset}>
-            {fields.map(this.renderField, this)}
+            <View style={baseStyles.fieldset}>
+              {fields.map(this.renderField, this)}
+            </View>
           </View>
         </View>
       </Wrapper>

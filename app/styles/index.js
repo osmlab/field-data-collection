@@ -26,7 +26,9 @@ const baseStyles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     // justifyContent: 'flex-start',
-    backgroundColor: "#ffffff",
+    backgroundColor: "#ffffff"
+  },
+  wrapperContent: {
     padding: 20
   },
   title: {
@@ -45,21 +47,25 @@ const baseStyles = StyleSheet.create({
   },
   h3: {
     fontFamily: "Roboto",
-    fontSize: 26,
+    fontSize: 22,
     fontWeight: "bold",
-    color: colors.text.header
+    color: colors.text.header,
+    marginBottom: 10
   },
   h4: {
     fontFamily: "Roboto",
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "bold",
     color: colors.text.header
   },
   h5: {
     fontFamily: "Roboto",
-    fontSize: 18,
+    fontSize: 14,
     fontWeight: "bold",
     color: colors.text.header
+  },
+  textWhite: {
+    color: "#ffffff"
   },
 
   //links
@@ -78,19 +84,24 @@ const baseStyles = StyleSheet.create({
   },
   link: {
     color: colors.interface.links,
+    borderBottomWidth: 0.5,
     borderBottomColor: colors.interface.links,
-    borderBottomWidth: 0.5
+    flexDirection: "column"
   },
 
   headerPage: {
-    backgroundColor: colors.interface.headerBackground,
-    color: "#ffffff"
+    backgroundColor: colors.interface.headerBackground
   },
   titleMenu: {
     paddingTop: 30,
     paddingBottom: 10,
     paddingLeft: 30,
     paddingRight: 30
+  },
+  headerBackIcon: {
+    fontSize: 30,
+    marginTop: -10,
+    marginRight: 5
   },
 
   //buttons
@@ -115,6 +126,29 @@ const baseStyles = StyleSheet.create({
     paddingLeft: 15,
     paddingRight: 15,
     borderRadius: 4
+  },
+
+  //Fieldset
+  fieldset: {
+    borderRadius: 2,
+    borderWidth: 1,
+    borderColor: "#ccc"
+  },
+  field: {
+    backgroundColor: "white",
+    padding: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: "#ccc",
+    justifyContent: "space-between",
+    flexDirection: "row"
+  },
+  fieldValue: {
+    color: colors.text.tertiary
+  },
+  fieldArrow: {
+    fontSize: 15,
+    color: colors.interface.links,
+    paddingTop: 13
   }
 });
 

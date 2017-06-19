@@ -4,15 +4,9 @@ import { NavigationActions } from "react-navigation";
 
 import { Text, Wrapper, getFieldInput } from "../../components";
 import { baseStyles } from "../../styles";
+import FontAwesome, { Icons } from "react-native-fontawesome";
 
-const styles = StyleSheet.create({
-  sectionTitle: {
-    fontSize: 17,
-    fontWeight: "bold",
-    marginBottom: 5
-  },
-  fieldset: {}
-});
+const styles = StyleSheet.create({});
 
 class FieldsetFormScreen extends Component {
   componentWillMount() {
@@ -46,7 +40,7 @@ class FieldsetFormScreen extends Component {
             alignItems: "center"
           }}
         >
-          <Text style={baseStyles.title}>
+          <Text style={[baseStyles.title]}>
             {fieldset.title}
           </Text>
           <Text style={{ fontSize: 25 }} onPress={this.onClosePress}>
@@ -74,7 +68,7 @@ class FieldsetFormScreen extends Component {
             onChangeText={val => console.log("field value", val)}
           />
         </View>
-        <View style={styles.fieldset}>
+        <View style={[baseStyles.fieldset]}>
           {fields.map(this.renderField, this)}
         </View>
       </Wrapper>

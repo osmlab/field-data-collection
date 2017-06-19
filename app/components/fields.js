@@ -2,25 +2,10 @@ import React, { Component } from "react";
 import { StyleSheet, View } from "react-native";
 
 import { Text } from ".";
+import { baseStyles } from "../styles";
+import FontAwesome, { Icons } from "react-native-fontawesome";
 
-const styles = StyleSheet.create({
-  field: {
-    borderBottomWidth: 1,
-    borderBottomColor: "#ccc",
-    backgroundColor: "white",
-    padding: 5,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center"
-  },
-  fieldLabel: {
-    fontSize: 10
-  },
-  fieldValue: {
-    color: "#aaa"
-  },
-  fieldArrow: {}
-});
+const styles = StyleSheet.create({});
 
 class Field extends Component {
   setNativeProps(nativeProps) {
@@ -33,13 +18,15 @@ export class ComboField extends Field {
     const { label } = this.props;
 
     return (
-      <View ref={x => (this._root = x)} style={styles.field}>
+      <View ref={x => (this._root = x)} style={[baseStyles.field]}>
         <View>
-          <Text style={styles.fieldLabel}>{label}</Text>
-          <Text style={styles.fieldValue}>(options)</Text>
+          <Text style={[baseStyles.h5]}>{label.toUpperCase()}</Text>
+          <Text style={[baseStyles.fieldValue]}>(options)</Text>
         </View>
-        <View style={styles.fieldArrow}>
-          <Text>＞</Text>
+        <View>
+          <FontAwesome style={[baseStyles.fieldArrow]}>
+            {Icons.chevronRight}
+          </FontAwesome>
         </View>
       </View>
     );
@@ -51,13 +38,15 @@ export class NumberField extends Field {
     const { label, placeholder } = this.props;
 
     return (
-      <View ref={x => (this._root = x)} style={styles.field}>
+      <View ref={x => (this._root = x)} style={[baseStyles.field]}>
         <View>
-          <Text style={styles.fieldLabel}>{label}</Text>
-          <Text style={styles.fieldValue}>{placeholder}</Text>
+          <Text style={[baseStyles.h5]}>{label.toUpperCase()}</Text>
+          <Text style={[baseStyles.fieldValue]}>{placeholder}</Text>
         </View>
-        <View style={styles.fieldArrow}>
-          <Text>＞</Text>
+        <View>
+          <FontAwesome style={[baseStyles.fieldArrow]}>
+            {Icons.chevronRight}
+          </FontAwesome>
         </View>
       </View>
     );
@@ -69,13 +58,15 @@ export class TextField extends Field {
     const { label } = this.props;
 
     return (
-      <View ref={x => (this._root = x)} style={styles.field}>
+      <View ref={x => (this._root = x)} style={[baseStyles.field]}>
         <View>
-          <Text style={styles.fieldLabel}>{label}</Text>
-          <Text style={styles.fieldValue}>(text)</Text>
+          <Text style={[baseStyles.h5]}>{label.toUpperCase()}</Text>
+          <Text style={[baseStyles.fieldValue]}>(text)</Text>
         </View>
-        <View style={styles.fieldArrow}>
-          <Text>＞</Text>
+        <View>
+          <FontAwesome style={[baseStyles.fieldArrow]}>
+            {Icons.chevronRight}
+          </FontAwesome>
         </View>
       </View>
     );
