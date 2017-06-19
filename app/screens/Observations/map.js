@@ -1,5 +1,11 @@
 import React, { Component } from "react";
-import { StyleSheet, View, Button, Dimensions } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Button,
+  Dimensions,
+  TouchableOpacity
+} from "react-native";
 import Mapbox, { MapView } from "react-native-mapbox-gl";
 
 import Interactable from "react-native-interactable";
@@ -27,19 +33,16 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     flexDirection: "row",
-    zIndex: 1002
+    zIndex: 1002,
+    borderLeftWidth: 0.5
   },
   sideMenu: {
     left: 0,
     width: SideMenuWidth,
-    paddingLeft: RemainingWidth,
     flex: 1,
-    backgroundColor: "#aaa",
-    paddingTop: 80
+    backgroundColor: "#fff"
   },
   sideMenuTitle: {
-    fontSize: 20,
-    textAlign: "center",
     marginBottom: 20
   },
   header: {
@@ -118,19 +121,37 @@ class ObservationMapScreen extends Component {
           >
 
             <View style={styles.sideMenu}>
-              <Text style={styles.sideMenuTitle}>Menu</Text>
-              <Button
-                title="Button 1"
-                onPress={() => alert("Button 1 pressed")}
-              />
-              <Button
-                title="Button 2"
-                onPress={() => alert("Button 2 pressed")}
-              />
-              <Button
-                title="Button 3"
-                onPress={() => alert("Button 3 pressed")}
-              />
+              <Text style={[baseStyles.title, baseStyles.titleMenu]}>Menu</Text>
+              <TouchableOpacity
+                style={[baseStyles.navLink]}
+                onPress={this._onPressButton}
+              >
+                <Text>Profile</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[baseStyles.navLink]}
+                onPress={this._onPressButton}
+              >
+                <Text>My Observations</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[baseStyles.navLink]}
+                onPress={this._onPressButton}
+              >
+                <Text>Surveys</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[baseStyles.navLink]}
+                onPress={this._onPressButton}
+              >
+                <Text>Settings</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[baseStyles.navLink]}
+                onPress={this._onPressButton}
+              >
+                <Text>About</Text>
+              </TouchableOpacity>
               <Button title="Close" onPress={this.onClosePress.bind(this)} />
             </View>
           </Interactable.View>
