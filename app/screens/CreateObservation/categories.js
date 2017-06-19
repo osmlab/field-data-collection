@@ -11,7 +11,8 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     flexDirection: "row",
     flexWrap: "wrap",
-    marginTop: 20
+    marginTop: 20,
+    marginBottom: 50
   },
   gridItem: {
     borderWidth: 1,
