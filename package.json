@@ -14,6 +14,7 @@
   "dependencies": {
     "asyncstorage-down": "sethvincent/asyncstorage-down",
     "babel-plugin-rewrite-require": "^1.9.1",
+    "bonjour": "github:noffle/bonjour",
     "buffer": "^5.0.6",
     "d64": "^1.0.0",
     "hyperlog": "github:sethvincent/hyperlog",
