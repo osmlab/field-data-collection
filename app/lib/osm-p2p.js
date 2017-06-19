@@ -32,12 +32,12 @@ function osmp2p() {
     osm.ready(cb);
   }
 
-  function create(doc, opts, cb) {
+  function create(geojson, opts, cb) {
     var doc = convert.toOSM(geojson);
     osm.create(doc, opts, callback);
   }
 
-  function put(id, doc, opts, cb) {
+  function put(id, geojson, opts, cb) {
     var doc = convert.toOSM(geojson);
     osm.put(id, doc, opts, callback);
   }
@@ -51,7 +51,7 @@ function osmp2p() {
     osm.create(doc, opts, callback);
   }
 
-  function putObservation(id, doc, opts, cb) {
+  function putObservation(id, geojson, opts, cb) {
     var doc = convert.toOSM(geojson, "observation");
     osm.put(id, doc, opts, callback);
   }
