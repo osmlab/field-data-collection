@@ -11,7 +11,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 10,
     marginBottom: 5,
-    flex: 1
+    flex: 1,
+    padding: 10,
+    margin: 5,
+    borderRadius: 2,
+    elevation: 1
   },
   muted: {
     color: "#bbb"
@@ -38,7 +42,7 @@ class ObservationListScreen extends Component {
           observationName: "Name of observation",
           updated: "Sep. 2, 2016",
           lnglat: [47, -122],
-          complete: 0.70
+          complete: 0.7
         },
         {
           category: "Oil spill",
@@ -46,7 +50,7 @@ class ObservationListScreen extends Component {
           observationName: "Name of observation",
           updated: "Sep. 2, 2016",
           lnglat: [47, -122],
-          complete: 0.70
+          complete: 0.7
         },
         {
           category: "Oil spill",
@@ -54,7 +58,7 @@ class ObservationListScreen extends Component {
           observationName: "Name of observation",
           updated: "Sep. 2, 2016",
           lnglat: [47, -122],
-          complete: 0.70
+          complete: 0.7
         }
       ])
     };

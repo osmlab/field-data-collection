@@ -3,10 +3,12 @@ import { StackNavigator } from "react-navigation";
 import CategoriesScreen from "./categories";
 import AddObservationScreen from "./add-observation";
 import FieldsetFormScreen from "./fieldset-form";
+import LocationScreen from "./location";
 
 const routeConfiguration = {
   Categories: { screen: CategoriesScreen },
   AddObservation: { screen: AddObservationScreen },
+  Location: { screen: LocationScreen },
   FieldsetForm: { screen: FieldsetFormScreen }
 };
 
