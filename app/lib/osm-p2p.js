@@ -13,25 +13,25 @@ function osmp2p() {
   const logdb = levelup("db", { db: asyncstorage });
   const log = hyperlog(logdb, { valueEncoding: "json" });
 
-  var osm = osmdb({
+  var db = osmdb({
     log: log,
     db: levelup("index", { db: asyncstorage }),
     store: createStore(1024, "chunks")
   });
 
   return {
-    db: osm,
-    ready: ready,
-    create: create,
-    put: put,
-    del: del,
-    createObservation: createObservation,
-    putObservation: putObservation,
-    delObservation: delObservation,
-    query: query,
-    queryGeoJSONStream: queryGeoJSONStream,
-    replicate: replicate,
-    sync: sync
+    db,
+    ready,
+    create,
+    put,
+    del,
+    createObservation,
+    putObservation,
+    delObservation,
+    query,
+    queryGeoJSONStream,
+    replicate,
+    sync
   };
 
   osm.on("error", console.log);

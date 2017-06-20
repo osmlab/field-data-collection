@@ -103,7 +103,7 @@ class ObservationMapScreen extends Component {
     this.refs["menuInstance"].setVelocity({ x: 3000 });
   }
 
-  getFeatures() {
+  prepareAnnotations = () => {
     this._map.getBounds(data => {
       var q = [[data[0], data[2]], [data[1], data[3]]];
       var annotations = [];
@@ -135,7 +135,7 @@ class ObservationMapScreen extends Component {
         });
       });
     });
-  }
+  };
 
   render() {
     const { navigate } = this.props.navigation;
@@ -163,7 +163,7 @@ class ObservationMapScreen extends Component {
                   this.osm.sync(ws, err => {
                     if (err) console.log(err);
                     this.osm.ready(() => {
-                      this.getFeatures();
+                      this.prepareAnnotations();
                     });
                   });
                 }}
@@ -212,7 +212,7 @@ class ObservationMapScreen extends Component {
           }}
           style={styles.map}
           annotations={this.state.annotations}
-          onFinishLoadingMap={this.getFeatures.bind(this)}
+          onFinishLoadingMap={this.prepareAnnotations}
           initialCenterCoordinate={this.state.center}
           initialZoomLevel={this.state.zoom}
           initialDirection={0}
