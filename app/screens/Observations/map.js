@@ -14,6 +14,8 @@ import { Header, Text } from "../../components";
 import { baseStyles } from "../../styles";
 import osmp2p from "../../lib/osm-p2p";
 
+import FontAwesome, { Icons } from "react-native-fontawesome";
+
 const Screen = Dimensions.get("window");
 const SideMenuWidth = 280;
 const RemainingWidth = Screen.width - SideMenuWidth;
@@ -25,6 +27,26 @@ Mapbox.setAccessToken(
 const styles = StyleSheet.create({
   map: {
     flex: 1
+  },
+  buttonAdd: {
+    width: 60,
+    height: 60,
+    borderRadius: 80,
+    backgroundColor: "#8212C6",
+    zIndex: 1002,
+    position: "absolute",
+    bottom: 10,
+    right: 10
+  },
+  buttonLegend: {
+    width: 30,
+    height: 30,
+    borderRadius: 80,
+    backgroundColor: "#6579FC",
+    zIndex: 1002,
+    position: "absolute",
+    top: 90,
+    right: 10
   },
   sideMenuContainer: {
     position: "absolute",
@@ -172,6 +194,36 @@ class ObservationMapScreen extends Component {
           styleURL="https://openmaptiles.github.io/osm-bright-gl-style/style-cdn.json"
           userTrackingMode={this.state.userTrackingMode}
         />
+        <TouchableOpacity
+          style={[styles.buttonLegend]}
+          onPress={this._onPressButton}
+        >
+          <FontAwesome
+            style={{
+              paddingTop: 7,
+              paddingLeft: 12,
+              fontSize: 15,
+              color: "#ffffff"
+            }}
+          >
+            {Icons.info}
+          </FontAwesome>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.buttonAdd]}
+          onPress={this._onPressButton}
+        >
+          <FontAwesome
+            style={{
+              paddingTop: 18,
+              paddingLeft: 20,
+              fontSize: 25,
+              color: "#ffffff"
+            }}
+          >
+            {Icons.plus}
+          </FontAwesome>
+        </TouchableOpacity>
       </View>
     );
   }
