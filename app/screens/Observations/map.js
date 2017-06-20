@@ -4,7 +4,8 @@ import {
   View,
   Button,
   Dimensions,
-  TouchableOpacity
+  TouchableOpacity,
+  AsyncStorage
 } from "react-native";
 import Mapbox, { MapView } from "react-native-mapbox-gl";
 
@@ -13,6 +14,9 @@ import Interactable from "react-native-interactable";
 import { Header, Text } from "../../components";
 import { baseStyles } from "../../styles";
 import osmp2p from "../../lib/osm-p2p";
+import websocket from "websocket-stream";
+
+import FontAwesome, { Icons } from "react-native-fontawesome";
 
 const Screen = Dimensions.get("window");
 const SideMenuWidth = 280;
@@ -25,6 +29,26 @@ Mapbox.setAccessToken(
 const styles = StyleSheet.create({
   map: {
     flex: 1
+  },
+  buttonAdd: {
+    width: 60,
+    height: 60,
+    borderRadius: 80,
+    backgroundColor: "#8212C6",
+    zIndex: 1002,
+    position: "absolute",
+    bottom: 10,
+    right: 10
+  },
+  buttonLegend: {
+    width: 30,
+    height: 30,
+    borderRadius: 80,
+    backgroundColor: "#6579FC",
+    zIndex: 1002,
+    position: "absolute",
+    top: 90,
+    right: 10
   },
   sideMenuContainer: {
     position: "absolute",
@@ -63,11 +87,12 @@ class ObservationMapScreen extends Component {
   componentWillMount() {
     this.setState({
       center: {
-        latitude: 40.72052634,
-        longitude: -73.97686958312988
+        latitude: 47.6685,
+        longitude: -122.384
       },
-      zoom: 11,
-      userTrackingMode: Mapbox.userTrackingMode.none
+      zoom: 16,
+      userTrackingMode: Mapbox.userTrackingMode.none,
+      annotations: []
     });
   }
 
@@ -79,9 +104,39 @@ class ObservationMapScreen extends Component {
     this.refs["menuInstance"].setVelocity({ x: 3000 });
   }
 
-  componentDidMount() {
-    console.log("map", this._map);
-  }
+  prepareAnnotations = () => {
+    this._map.getBounds(data => {
+      var q = [[data[0], data[2]], [data[1], data[3]]];
+      var annotations = [];
+      var stream = this.osm.queryGeoJSONStream(q);
+
+      stream.on("data", d => {
+        const type = d.geometry.type.toLowerCase();
+        const coordinates = d.geometry.coordinates;
+
+        if (type === "point" && coordinates) {
+          annotations.push({
+            id: d.id,
+            type: type,
+            coordinates: coordinates.reverse(),
+            annotationImage: {
+              source: {
+                uri: "https://cldup.com/7NLZklp8zS.png"
+              },
+              height: 25,
+              width: 25
+            }
+          });
+        }
+      });
+
+      stream.on("end", () => {
+        this.setState({
+          annotations
+        });
+      });
+    });
+  };
 
   render() {
     const { navigate } = this.props.navigation;
@@ -101,6 +156,32 @@ class ObservationMapScreen extends Component {
 
             <View style={styles.sideMenu}>
               <Text style={[baseStyles.title, baseStyles.titleMenu]}>Menu</Text>
+              <TouchableOpacity
+                style={{ paddingLeft: 30 }}
+                onPress={() => {
+                  var ws = websocket("ws://10.0.2.2:3000");
+
+                  this.osm.sync(ws, err => {
+                    if (err) console.log(err);
+                    this.osm.ready(() => {
+                      this.prepareAnnotations();
+                    });
+                  });
+                }}
+              >
+                <Text>Sync Data</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{ paddingLeft: 30 }}
+                onPress={() => {
+                  AsyncStorage.clear(function(err) {
+                    console.log("data cleared", err);
+                  });
+                }}
+              >
+                <Text>Delete data</Text>
+              </TouchableOpacity>
+
               <TouchableOpacity
                 style={[baseStyles.navLink]}
                 onPress={() => {
@@ -151,6 +232,8 @@ class ObservationMapScreen extends Component {
             this._map = map;
           }}
           style={styles.map}
+          annotations={this.state.annotations}
+          onFinishLoadingMap={this.prepareAnnotations}
           initialCenterCoordinate={this.state.center}
           initialZoomLevel={this.state.zoom}
           initialDirection={0}
@@ -161,6 +244,38 @@ class ObservationMapScreen extends Component {
           styleURL="https://openmaptiles.github.io/osm-bright-gl-style/style-cdn.json"
           userTrackingMode={this.state.userTrackingMode}
         />
+        <TouchableOpacity
+          style={[styles.buttonLegend]}
+          onPress={this._onPressButton}
+        >
+          <FontAwesome
+            style={{
+              paddingTop: 7,
+              paddingLeft: 12,
+              fontSize: 15,
+              color: "#ffffff"
+            }}
+          >
+            {Icons.info}
+          </FontAwesome>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.buttonAdd]}
+          onPress={() => {
+            navigate("Categories");
+          }}
+        >
+          <FontAwesome
+            style={{
+              paddingTop: 18,
+              paddingLeft: 20,
+              fontSize: 25,
+              color: "#ffffff"
+            }}
+          >
+            {Icons.plus}
+          </FontAwesome>
+        </TouchableOpacity>
       </View>
     );
   }
