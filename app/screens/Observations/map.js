@@ -42,9 +42,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff"
   },
-  sideMenuTitle: {
-    marginBottom: 20
-  },
   header: {
     height: 60,
     paddingLeft: 20,
@@ -52,24 +49,6 @@ const styles = StyleSheet.create({
     backgroundColor: "red",
     alignItems: "center",
     zIndex: 1001
-  },
-  body: {
-    flex: 1,
-    zIndex: 1000,
-    alignItems: "center",
-    justifyContent: "center"
-  },
-  menuIcon: {
-    width: 30,
-    height: 30
-  },
-  headerTitle: {
-    marginLeft: 30,
-    color: "white",
-    fontSize: 20
-  },
-  content: {
-    fontSize: 18
   }
 });
 
@@ -124,31 +103,41 @@ class ObservationMapScreen extends Component {
               <Text style={[baseStyles.title, baseStyles.titleMenu]}>Menu</Text>
               <TouchableOpacity
                 style={[baseStyles.navLink]}
-                onPress={this._onPressButton}
+                onPress={() => {
+                  navigate("AddProfile");
+                }}
               >
                 <Text>Profile</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={[baseStyles.navLink]}
-                onPress={this._onPressButton}
+                onPress={() => {
+                  navigate("AccountObservations");
+                }}
               >
                 <Text>My Observations</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={[baseStyles.navLink]}
-                onPress={this._onPressButton}
+                onPress={() => {
+                  navigate("Surveys");
+                }}
               >
                 <Text>Surveys</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={[baseStyles.navLink]}
-                onPress={this._onPressButton}
+                onPress={() => {
+                  navigate("Settings");
+                }}
               >
                 <Text>Settings</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={[baseStyles.navLink]}
-                onPress={this._onPressButton}
+                onPress={() => {
+                  navigate("About");
+                }}
               >
                 <Text>About</Text>
               </TouchableOpacity>
