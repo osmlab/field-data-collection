@@ -13,14 +13,14 @@ function osmp2p() {
   const logdb = levelup("db", { db: asyncstorage });
   const log = hyperlog(logdb, { valueEncoding: "json" });
 
-  var db = osmdb({
+  var osm = osmdb({
     log: log,
     db: levelup("index", { db: asyncstorage }),
     store: createStore(1024, "chunks")
   });
 
   return {
-    db,
+    db: osm,
     ready,
     create,
     put,

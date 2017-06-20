@@ -14,7 +14,7 @@ import Interactable from "react-native-interactable";
 import { Header, Text } from "../../components";
 import { baseStyles } from "../../styles";
 import osmp2p from "../../lib/osm-p2p";
-import websocket from "../../lib/websocket";
+import websocket from "websocket-stream";
 
 const Screen = Dimensions.get("window");
 const SideMenuWidth = 280;
@@ -158,7 +158,7 @@ class ObservationMapScreen extends Component {
               <TouchableOpacity
                 style={{ paddingLeft: 30 }}
                 onPress={() => {
-                  var ws = websocket();
+                  var ws = websocket("http://127.0.0.1:3000");
 
                   this.osm.sync(ws, err => {
                     if (err) console.log(err);
