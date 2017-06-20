@@ -5,6 +5,7 @@ const osmdb = require("osm-p2p-db");
 const eos = require("end-of-stream");
 const getGeoJSON = require("osm-p2p-geojson");
 const pump = require("pump");
+const OsmSync = require("./osm-sync");
 
 const createStore = require("./asyncstorage-chunk-store");
 const convert = require("./convert-geojson-osmp2p");
@@ -23,6 +24,8 @@ function createOsmDb (prefix) {
 function osmp2p() {
   var observationDb = createOsmDb('observations')
   var osmOrgDb = createOsmDb('osmorg')
+
+  var netSync = OsmSync(observationDb, osmOrgDb)
 
   return {
     db: osm,
@@ -97,6 +100,14 @@ function osmp2p() {
 
   function replicate(opts) {
     return observationDb.log.replicate(opts);
+  }
+
+  function replicateNet(addr, opts, cb) {
+    netSync.replicate(addr, opts, cb)
+  }
+
+  function findReplicationTargets(opts, cb) {
+    netSync.findPeers(opts, cb)
   }
 
   function sync(transportStream, opts, callback) {
