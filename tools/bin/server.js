@@ -78,7 +78,7 @@ function start(osm) {
       if (err) throw err;
       if (--pending === 0) {
         console.log("sync: end");
-        socket.close();
+        socket.end();
       }
     }
   }

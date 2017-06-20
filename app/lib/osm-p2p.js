@@ -37,39 +37,39 @@ function osmp2p() {
   osm.on("error", console.log);
 
   function ready(cb) {
-    db.ready(cb);
+    osm.ready(cb);
   }
 
   function create(geojson, opts, cb) {
     var doc = convert.toOSM(geojson);
-    db.create(doc, opts, cb);
+    osm.create(doc, opts, cb);
   }
 
   function put(id, geojson, opts, cb) {
     var doc = convert.toOSM(geojson);
-    db.put(id, doc, opts, cb);
+    osm.put(id, doc, opts, cb);
   }
 
   function del(id, opts, cb) {
-    db.del(id, opts, cb);
+    osm.del(id, opts, cb);
   }
 
   function createObservation(geojson, opts, cb) {
     var doc = convert.toOSM(geojson, "observation");
-    db.create(doc, opts, cb);
+    osm.create(doc, opts, cb);
   }
 
   function putObservation(id, geojson, opts, cb) {
     var doc = convert.toOSM(geojson, "observation");
-    db.put(id, doc, opts, cb);
+    osm.put(id, doc, opts, cb);
   }
 
   function delObservation(id, opts, cb) {
-    db.del(id, opts, cb);
+    osm.del(id, opts, cb);
   }
 
   function query(q, opts, cb) {
-    return db.query(q, opts, cb);
+    return osm.query(q, opts, cb);
   }
 
   function queryStream(q, opts) {
@@ -83,7 +83,7 @@ function osmp2p() {
   }
 
   function replicate(opts) {
-    return db.log.replicate(opts);
+    return osm.log.replicate(opts);
   }
 
   function sync(transportStream, opts, callback) {
@@ -95,20 +95,18 @@ function osmp2p() {
     console.log("sync: start");
     var osmStream = replicate(opts);
 
-    eos(osmStream, function(err) {
-      if (err) return console.log("osmStream error", err);
-      console.log("osm stream ended");
-      callback();
-    });
-    eos(transportStream, function(err) {
-      if (err) return console.log("transportStream error", err);
-      console.log("transport stream ended");
-      callback();
-    });
+    eos(osmStream, done);
+    eos(transportStream, done);
+    transportStream.on("close", done);
 
-    transportStream.on("data", d => {
-      console.log(d.toString());
-    });
+    let pending = 2;
+    function done(err) {
+      if (err) return callback(err);
+      if (--pending === 0) {
+        console.log("sync: end");
+        callback();
+      }
+    }
 
     return transportStream.pipe(osmStream).pipe(transportStream);
   }

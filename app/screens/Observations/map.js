@@ -158,7 +158,7 @@ class ObservationMapScreen extends Component {
               <TouchableOpacity
                 style={{ paddingLeft: 30 }}
                 onPress={() => {
-                  var ws = websocket("http://127.0.0.1:3000");
+                  var ws = websocket("ws://10.0.2.2:3000");
 
                   this.osm.sync(ws, err => {
                     if (err) console.log(err);
@@ -169,6 +169,16 @@ class ObservationMapScreen extends Component {
                 }}
               >
                 <Text>Sync Data</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{ paddingLeft: 30 }}
+                onPress={() => {
+                  AsyncStorage.clear(function(err) {
+                    console.log("data cleared", err);
+                  });
+                }}
+              >
+                <Text>Delete data</Text>
               </TouchableOpacity>
 
               <TouchableOpacity
