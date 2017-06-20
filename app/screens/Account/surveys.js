@@ -36,15 +36,39 @@ class SurveysScreen extends Component {
           <Text style={[baseStyles.title]}>Surveys</Text>
         </View>
 
-        <View style={{ marginTop: 20, marginBottom: 20 }}>
-          <Text style={styles.subtitle}>
-            Some text about surveys to read.
+        <View
+          style={[baseStyles.wrapperContent, baseStyles.listBlock, { flex: 1 }]}
+        >
+          <Text style={[baseStyles.h3, baseStyles.headerWithDescription]}>
+            OSM
           </Text>
+          <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+            <Text>Updated: </Text>
+            <Text>4/30/17 4:30</Text>
+          </View>
+          <View style={[baseStyles.observationBlock]}>
+            <Text style={[baseStyles.metadataText]}>2 Observations</Text>
+          </View>
         </View>
-
-        <View style={{ flex: 1 }}>
-          <Button style={{ flex: 1 }} onPress={() => {}} title="Survey 1" />
-          <Button style={{ flex: 1 }} onPress={() => {}} title="Survey 2" />
+        <View
+          style={[baseStyles.wrapperContent, baseStyles.listBlock, { flex: 1 }]}
+        >
+          <Text style={[baseStyles.h3, baseStyles.headerWithDescription]}>
+            Survey Name
+          </Text>
+          <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+            <Text>Updated: </Text>
+            <Text>4/30/17 4:30pm</Text>
+          </View>
+          <View
+            style={[
+              baseStyles.observationBlock,
+              { flexDirection: "row", flexWrap: "wrap" }
+            ]}
+          >
+            <Text style={[baseStyles.metadataText]}>2 Observations</Text>
+            <Text style={[baseStyles.textAlert]}>(2 incomplete)</Text>
+          </View>
         </View>
       </Wrapper>
     );

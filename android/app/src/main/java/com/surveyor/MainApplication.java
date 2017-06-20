@@ -3,6 +3,7 @@ package com.surveyor;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.tradle.react.UdpSocketsModule;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -29,6 +30,7 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
         new MainReactPackage(),
         new Interactable(),
+        new UdpSocketsModule(),
         new ReactNativeMapboxGLPackage(),
         new ReactNativeLocalizationPackage()
       );

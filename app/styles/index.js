@@ -11,14 +11,14 @@ const colors = {
   text: {
     header: "#575456",
     secondary: "#716674",
-    tertiary: "#948D94"
+    tertiary: "#8D8D8D"
   }
 };
 
 const baseText = {
   fontFamily: "Noto, sans-serif",
   fontSize: 16,
-  color: colors.text.tertiary
+  color: colors.text.secondary
 };
 
 const baseStyles = StyleSheet.create({
@@ -26,9 +26,17 @@ const baseStyles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     // justifyContent: 'flex-start',
-    backgroundColor: "#ffffff",
+    backgroundColor: "#ffffff"
+  },
+  wrapperContent: {
     padding: 20
   },
+  listBlock: {
+    borderBottomColor: colors.text.tertiary,
+    borderBottomWidth: 0.5
+  },
+
+  //text
   title: {
     fontFamily: "Roboto",
     fontSize: 32,
@@ -45,21 +53,40 @@ const baseStyles = StyleSheet.create({
   },
   h3: {
     fontFamily: "Roboto",
-    fontSize: 26,
+    fontSize: 22,
     fontWeight: "bold",
-    color: colors.text.header
+    color: colors.text.header,
+    marginBottom: 10
   },
   h4: {
     fontFamily: "Roboto",
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "bold",
     color: colors.text.header
   },
   h5: {
     fontFamily: "Roboto",
-    fontSize: 18,
+    fontSize: 14,
     fontWeight: "bold",
     color: colors.text.header
+  },
+  textWhite: {
+    color: "#ffffff"
+  },
+  metadataText: {
+    fontStyle: "italic",
+    marginRight: 10,
+    color: colors.text.secondary
+  },
+  headerWithDescription: {
+    marginBottom: 5
+  },
+  observationBlock: {
+    marginTop: 15
+  },
+  textAlert: {
+    fontStyle: "italic",
+    color: colors.interface.error
   },
 
   //links
@@ -78,19 +105,24 @@ const baseStyles = StyleSheet.create({
   },
   link: {
     color: colors.interface.links,
+    borderBottomWidth: 0.5,
     borderBottomColor: colors.interface.links,
-    borderBottomWidth: 0.5
+    flexDirection: "column"
   },
 
   headerPage: {
-    backgroundColor: colors.interface.headerBackground,
-    color: "#ffffff"
+    backgroundColor: colors.interface.headerBackground
   },
   titleMenu: {
     paddingTop: 30,
     paddingBottom: 10,
     paddingLeft: 30,
     paddingRight: 30
+  },
+  headerBackIcon: {
+    fontSize: 30,
+    marginTop: -10,
+    marginRight: 5
   },
 
   //buttons
@@ -115,6 +147,29 @@ const baseStyles = StyleSheet.create({
     paddingLeft: 15,
     paddingRight: 15,
     borderRadius: 4
+  },
+
+  //Fieldset
+  fieldset: {
+    borderRadius: 2,
+    borderWidth: 1,
+    borderColor: "#ccc"
+  },
+  field: {
+    backgroundColor: "white",
+    padding: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: "#ccc",
+    justifyContent: "space-between",
+    flexDirection: "row"
+  },
+  fieldValue: {
+    color: colors.text.tertiary
+  },
+  fieldArrow: {
+    fontSize: 15,
+    color: colors.interface.links,
+    paddingTop: 13
   }
 });
 

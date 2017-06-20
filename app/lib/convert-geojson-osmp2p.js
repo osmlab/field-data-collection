@@ -10,7 +10,7 @@ function toOSM(feature, type) {
     timestamp: new Date().toISOString()
   };
 
-  if (geo.type === "Point") {
+  if (feature.type === "Point") {
     observation.type = "node";
     observation.lon = feature.geometry.coordinates[0];
     observation.lat = feature.geometry.coordinates[1];
