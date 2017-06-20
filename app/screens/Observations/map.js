@@ -211,7 +211,9 @@ class ObservationMapScreen extends Component {
         </TouchableOpacity>
         <TouchableOpacity
           style={[styles.buttonAdd]}
-          onPress={this._onPressButton}
+          onPress={() => {
+            navigate("Categories");
+          }}
         >
           <FontAwesome
             style={{
