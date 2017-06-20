@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import { TextInput, View, TouchableHighlight } from "react-native";
+import FontAwesome, { Icons } from "react-native-fontawesome";
 
 import Text from "./text";
 import SearchBox from "./search-box";
+import { colors } from "../styles";
 
 export default function Header(props) {
   function onChangeText(value) {
@@ -33,7 +35,9 @@ function MapListToggle(props) {
   return (
     <View style={{ flex: 0.3, height: 30, justifyContent: "center" }}>
       <Text style={{ textAlign: "right" }} onPress={props.onTogglePress}>
-        🍔
+        <FontAwesome style={{ fontSize: 25, color: colors.interface.links }}>
+          {Icons.bars}
+        </FontAwesome>
       </Text>
     </View>
   );

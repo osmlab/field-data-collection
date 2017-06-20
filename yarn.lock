@@ -278,8 +278,7 @@ asyncstorage-down@sethvincent/asyncstorage-down:
     abstract-leveldown "2.6.1"
     argsarray "0.0.1"
     d64 "^1.0.0"
-    ltgt "^2.1.3"
-    tiny-queue "0.2.0"
+    tiny-queue "0.2.1"
 
 aws-sign2@~0.6.0:
   version "0.6.0"
@@ -3983,7 +3982,7 @@ lru-cache@^4.0.0, lru-cache@^4.0.1:
     pseudomap "^1.0.1"
     yallist "^2.0.0"
 
-ltgt@^2.1.2, ltgt@^2.1.3, ltgt@~2.1.1:
+ltgt@^2.1.2, ltgt@~2.1.1:
   version "2.1.3"
   resolved "https://registry.yarnpkg.com/ltgt/-/ltgt-2.1.3.tgz#10851a06d9964b971178441c23c9e52698eece34"
 
@@ -5176,6 +5175,10 @@ react-native-drawer-layout@1.3.1:
   dependencies:
     react-native-dismiss-keyboard "1.0.0"
 
+react-native-fontawesome@^5.7.0:
+  version "5.7.0"
+  resolved "https://registry.yarnpkg.com/react-native-fontawesome/-/react-native-fontawesome-5.7.0.tgz#7bfe57c21c6522d05eaf206474903c3f299bfc0d"
+
 react-native-interactable@^0.0.9:
   version "0.0.9"
   resolved "https://registry.yarnpkg.com/react-native-interactable/-/react-native-interactable-0.0.9.tgz#d1d6fcb3e608688d14316d816f032dc9fd5c06e0"
@@ -5197,7 +5200,6 @@ react-native-mapbox-gl@sethvincent/react-native-mapbox-gl#field-data:
   dependencies:
     babel-eslint "^6.1.2"
     lodash "^4.13.1"
-    prop-types "^15.5.10"
 
 react-native-tab-view@^0.0.65:
   version "0.0.65"
@@ -6360,9 +6362,9 @@ timers-browserify@^2.0.2:
   dependencies:
     setimmediate "^1.0.4"
 
-tiny-queue@0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/tiny-queue/-/tiny-queue-0.2.0.tgz#c49fcb5c87555be1b4a5df7eb87101d5b78bc9dc"
+tiny-queue@0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/tiny-queue/-/tiny-queue-0.2.1.tgz#25a67f2c6e253b2ca941977b5ef7442ef97a6046"
 
 tmp@^0.0.29:
   version "0.0.29"
