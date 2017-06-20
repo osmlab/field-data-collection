@@ -11,14 +11,14 @@ const colors = {
   text: {
     header: "#575456",
     secondary: "#716674",
-    tertiary: "#948D94"
+    tertiary: "#8D8D8D"
   }
 };
 
 const baseText = {
   fontFamily: "Noto, sans-serif",
   fontSize: 16,
-  color: colors.text.tertiary
+  color: colors.text.secondary
 };
 
 const baseStyles = StyleSheet.create({
@@ -31,6 +31,12 @@ const baseStyles = StyleSheet.create({
   wrapperContent: {
     padding: 20
   },
+  listBlock: {
+    borderBottomColor: colors.text.tertiary,
+    borderBottomWidth: 0.5
+  },
+
+  //text
   title: {
     fontFamily: "Roboto",
     fontSize: 32,
@@ -66,6 +72,21 @@ const baseStyles = StyleSheet.create({
   },
   textWhite: {
     color: "#ffffff"
+  },
+  metadataText: {
+    fontStyle: "italic",
+    marginRight: 10,
+    color: colors.text.secondary
+  },
+  headerWithDescription: {
+    marginBottom: 5
+  },
+  observationBlock: {
+    marginTop: 15
+  },
+  textAlert: {
+    fontStyle: "italic",
+    color: colors.interface.error
   },
 
   //links
