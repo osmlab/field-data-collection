@@ -1,4 +1,4 @@
-# Surveyor Tools
+  # Surveyor Tools
 
 This contains some supporting tools and experiments for managing
 Surveyor-related data.
@@ -19,7 +19,7 @@ A server for importing data into the app during development.
 Usage:
 
 ```
-./bin/server
+./bin/server /path/to/example/data.xml
 ```
 
 The server listens at http://127.0.0.1:3000

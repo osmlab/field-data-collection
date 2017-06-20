@@ -6,6 +6,7 @@ import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
+import com.facebook.react.modules.storage.ReactDatabaseSupplier;
 import com.facebook.soloader.SoLoader;
 
 import java.util.Arrays;
@@ -42,6 +43,8 @@ public class MainApplication extends Application implements ReactApplication {
   @Override
   public void onCreate() {
     super.onCreate();
+    long size = 50L * 1024L * 1024L; // 50 MB
+    ReactDatabaseSupplier.getInstance(getApplicationContext()).setMaximumSize(size);
     SoLoader.init(this, /* native exopackage */ false);
   }
 }

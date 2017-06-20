@@ -15,16 +15,16 @@ const eos = require("end-of-stream");
 * A server for importing data into the app during development
 */
 
+var filename = process.argv[2];
 var dir = path.join(__dirname, "tmp", "db", "osm");
 
 fs.stat(dir, function(err, stats) {
-  console.log(err);
   if (err && err.code === "ENOENT") {
     mkdirp.sync(dir);
 
     importData(function(err) {
       if (err) throw err;
-      console.log("import finished");
+      console.log("import: finished");
       var db = createDB(dir);
       start(db);
     });
@@ -42,17 +42,18 @@ function createDB(dir, callback) {
 }
 
 function importData(callback) {
-  console.log("import started");
-  var file = path.join(__dirname, "..", "example-data.xml");
-  var xml = fs.createReadStream(file);
-  importer(path.join(dir), xml, callback);
+  var filepath = path.join(__dirname, "..", filename || "example-data.xml");
+  console.log("import: started");
+  console.log("importing from", filepath);
+  var xml = fs.createReadStream(filepath);
+  importer(dir, xml, callback);
 }
 
 function start(osm) {
   var server = http.createServer();
 
   osm.ready(function() {
-    console.log("ready");
+    console.log("osmp2p: ready");
   });
 
   var wss = websocket.createServer(
@@ -64,12 +65,11 @@ function start(osm) {
   );
 
   function handleSocket(socket) {
-    console.log("sync with mobile app started");
+    console.log("sync: start");
     let pending = 2;
 
     var stream = osm.log.replicate();
     socket.pipe(stream).pipe(socket);
-    stream.on("data", console.log);
 
     eos(stream, done);
     eos(socket, done);
@@ -77,7 +77,7 @@ function start(osm) {
     function done(err) {
       if (err) throw err;
       if (--pending === 0) {
-        console.log("done importing");
+        console.log("sync: end");
       }
     }
   }
