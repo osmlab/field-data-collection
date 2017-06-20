@@ -1,11 +1,9 @@
 import React, { Component } from "react";
-import { StyleSheet, View } from "react-native";
+import { View } from "react-native";
 
 import { Text } from ".";
 import { baseStyles } from "../styles";
 import FontAwesome, { Icons } from "react-native-fontawesome";
-
-const styles = StyleSheet.create({});
 
 class Field extends Component {
   setNativeProps(nativeProps) {

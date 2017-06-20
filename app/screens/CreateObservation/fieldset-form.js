@@ -1,12 +1,10 @@
 import React, { Component } from "react";
-import { View, TextInput, StyleSheet } from "react-native";
+import { View, TextInput } from "react-native";
 import { NavigationActions } from "react-navigation";
 
 import { Text, Wrapper, getFieldInput } from "../../components";
 import { baseStyles } from "../../styles";
 import FontAwesome, { Icons } from "react-native-fontawesome";
-
-const styles = StyleSheet.create({});
 
 class FieldsetFormScreen extends Component {
   componentWillMount() {
