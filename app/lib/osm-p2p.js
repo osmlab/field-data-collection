@@ -29,43 +29,43 @@ function osmp2p() {
   };
 
   function ready(cb) {
-    osm.ready(cb);
+    db.ready(cb);
   }
 
   function create(geojson, opts, cb) {
     var doc = convert.toOSM(geojson);
-    osm.create(doc, opts, callback);
+    db.create(doc, opts, cb);
   }
 
   function put(id, geojson, opts, cb) {
     var doc = convert.toOSM(geojson);
-    osm.put(id, doc, opts, callback);
+    db.put(id, doc, opts, cb);
   }
 
   function del(id, opts, cb) {
-    osm.del(id, opts, cb);
+    db.del(id, opts, cb);
   }
 
   function createObservation(geojson, opts, cb) {
     var doc = convert.toOSM(geojson, "observation");
-    osm.create(doc, opts, callback);
+    db.create(doc, opts, cb);
   }
 
   function putObservation(id, geojson, opts, cb) {
     var doc = convert.toOSM(geojson, "observation");
-    osm.put(id, doc, opts, callback);
+    db.put(id, doc, opts, cb);
   }
 
   function delObservation(id, opts, cb) {
-    osm.del(id, opts, cb);
+    db.del(id, opts, cb);
   }
 
   function query(q, opts, cb) {
-    return osm.query(q, opts, cb);
+    return db.query(q, opts, cb);
   }
 
   function replicate(opts) {
-    return osm.log.replicate(opts);
+    return db.log.replicate(opts);
   }
 }
 
