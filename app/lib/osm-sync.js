@@ -7,7 +7,7 @@ module.exports = OsmSync
 function noop () {}
 
 function OsmSync (observationDb, osmOrgDb) {
-  if (!(this instanceof OsmSync)) return new OsmSync(observationDb, cacheDb)
+  if (!(this instanceof OsmSync)) return new OsmSync(observationDb, osmOrgDb)
 
   this.observationDb = observationDb
   this.osmOrgDb = osmOrgDb
@@ -23,8 +23,8 @@ OsmSync.prototype.replicate = function (target, opts, done) {
   done = done || noop
 
   var finished = 0
-  replicateObservationDb(target, onFinish)
-  replicateOsmOrg(target, onFinish)
+  this.replicateObservationDb(target, onFinish)
+  this.replicateOsmOrgDb(target, onFinish)
 
   opts.progressFn(0)
 
@@ -36,15 +36,15 @@ OsmSync.prototype.replicate = function (target, opts, done) {
   }
 }
 
-function replicateObservationDb (target, done) {
+OsmSync.prototype.replicateObservationDb = function (target, done) {
   var socket = websocket('ws://' + target.address + ':' + target.port + '/replicate/observations')
-  var rs = this.observationDb.createReplicationStream()
+  var rs = this.observationDb.log.createReplicationStream()
   replicate(socket, rs, done)
 }
 
-function replicateOsmOrg (target, done) {
+OsmSync.prototype.replicateOsmOrgDb = function (target, done) {
   var socket = websocket('ws://' + target.address + ':' + target.port + '/replicate/osm')
-  var rs = this.osmOrgDb.createReplicationStream()
+  var rs = this.osmOrgDb.log.createReplicationStream()
   replicate(socket, rs, done)
 }
 
@@ -60,25 +60,37 @@ OsmSync.prototype.findPeers = function (opts, done) {
   var bonjour = Bonjour()
   var peers = []
   var browser = bonjour.find({ type: 'osm-sync' }, onPeer)
+  console.log('timeout in', opts.timeout)
   setTimeout(onDone, opts.timeout)
 
   function onPeer (info) {
     console.log('Found an osm-sync peer', info)
-    peers.push(info)
+    peers.push({
+      address: info.addresses[0],
+      port: info.port
+    })
   }
 
   function onDone () {
+    console.log('hit onDone')
     browser.stop()
     done(null, peers)
   }
 }
 
 function replicate (a, b, done) {
-  eos(stream, done)
-  eos(socket, done)
+  eos(a, onDone)
+  a.on('close', onDone)
+  eos(b, onDone)
+  b.on('close', onDone)
+
+  a.on('data', console.log)
+  b.on('data', console.log)
+
+  a.pipe(b).pipe(a)
 
   var pending = 2
-  function done (err) {
+  function onDone (err) {
     if (err) { pending++; return done(err) }
     if (--pending === 0) done()
   }

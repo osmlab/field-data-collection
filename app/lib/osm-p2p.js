@@ -28,7 +28,6 @@ function osmp2p() {
   var netSync = OsmSync(observationDb, osmOrgDb)
 
   return {
-    db: osm,
     ready,
     create,
     put,
@@ -42,7 +41,8 @@ function osmp2p() {
     sync
   };
 
-  osm.on("error", console.log);
+  observationDb.on("error", console.log);
+  osmOrgDb.on("error", console.log);
 
   function ready(cb) {
     observationDb.ready(onReady);
@@ -70,7 +70,6 @@ function osmp2p() {
 
   function createObservation(geojson, opts, cb) {
     var doc = convert.toOSM(geojson, "observation");
-    osm.create(doc, opts, cb);
     observationDb.create(doc, opts, cb);
   }
 
@@ -88,13 +87,15 @@ function osmp2p() {
     return observationDb.query(q, opts, cb);
   }
 
+  // TODO: union the query data from both DBs and return
   function queryStream(q, opts) {
-    return osm.queryStream(q, opts);
+    return observationDb.queryStream(q, opts);
   }
 
+  // TODO: union the query data from both DBs and return
   function queryGeoJSONStream(q, opts) {
-    var osmStream = osm.queryStream(q, opts);
-    var geoJSONStream = getGeoJSON.obj(osm);
+    var osmStream = observationDb.queryStream(q, opts);
+    var geoJSONStream = getGeoJSON.obj(observationDb);
     return pump(osmStream, geoJSONStream);
   }
 
