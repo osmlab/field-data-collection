@@ -1,4 +1,4 @@
-import { TabNavigator, TabBarBottom } from "react-navigation";
+import { StackNavigator } from "react-navigation";
 
 import ObservationsNavigator from "../Observations/navigator";
 import ObservationCreateNavigator from "../CreateObservation/navigator";
@@ -10,17 +10,8 @@ const routeConfiguration = {
   Account: { screen: AccountScreen }
 };
 
-const Navigator = TabNavigator(routeConfiguration, {
-  tabBarComponent: TabBarBottom,
-  tabBarPosition: "bottom",
-  swipeEnabled: false,
-  animationEnabled: false,
-  tabBarOptions: {
-    showIcon: false,
-    style: {
-      backgroundColor: "white"
-    }
-  }
+const Navigator = StackNavigator(routeConfiguration, {
+  headerMode: "none"
 });
 
 export default Navigator;
