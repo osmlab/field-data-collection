@@ -46,7 +46,7 @@ class AddObservationScreen extends Component {
     const { type: { fields, name } } = this.props;
 
     return (
-      <Wrapper>
+      <Wrapper navigation={this.props.navigation}>
         <View
           style={{
             flexDirection: "row",

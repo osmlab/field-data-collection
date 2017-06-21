@@ -68,7 +68,7 @@ class ObservationListScreen extends Component {
     const { navigate } = this.props.navigation;
 
     return (
-      <Wrapper style={{ padding: 0 }}>
+      <Wrapper style={{ padding: 0 }} navigation={this.props.navigation}>
         <View style={{ flex: 1 }}>
           <Header
             button="map"

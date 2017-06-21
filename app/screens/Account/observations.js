@@ -46,7 +46,7 @@ class AccountScreen extends Component {
           observationName: "Name of observation",
           updated: "Sep. 2, 2016",
           lnglat: [47, -122],
-          complete: 0.70
+          complete: 0.7
         },
         {
           category: "Oil spill",
@@ -54,7 +54,7 @@ class AccountScreen extends Component {
           observationName: "Name of observation",
           updated: "Sep. 2, 2016",
           lnglat: [47, -122],
-          complete: 0.70
+          complete: 0.7
         },
         {
           category: "Oil spill",
@@ -62,7 +62,7 @@ class AccountScreen extends Component {
           observationName: "Name of observation",
           updated: "Sep. 2, 2016",
           lnglat: [47, -122],
-          complete: 0.70
+          complete: 0.7
         }
       ])
     });
@@ -77,7 +77,7 @@ class AccountScreen extends Component {
     }
 
     return (
-      <Wrapper>
+      <Wrapper navigation={this.props.navigation}>
         <Text style={baseStyles.title}>
           Your Observations
         </Text>
