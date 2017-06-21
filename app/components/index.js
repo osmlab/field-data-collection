@@ -1,5 +1,5 @@
 import Header from "./header";
-import SearchBox from "./search-box";
+import SideMenu from "./side-menu";
 import Text from "./text";
 import Wrapper from "./wrapper";
 import MapList from "./observation-list";
@@ -8,7 +8,7 @@ import { getFieldType } from "./fields";
 
 export {
   Header,
-  SearchBox,
+  SideMenu,
   Text,
   Wrapper,
   getFieldInput,

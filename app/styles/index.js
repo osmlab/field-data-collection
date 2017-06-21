@@ -35,9 +35,7 @@ const baseStyles = StyleSheet.create({
     borderBottomColor: colors.text.tertiary,
     borderBottomWidth: 0.5
   },
-  rightSideContent: {
-    alignSelf: "flex-end"
-  },
+  rightSideContent: {},
 
   //text
   title: {
@@ -182,25 +180,30 @@ const baseStyles = StyleSheet.create({
     backgroundColor: "#ffffff",
     position: "absolute",
     bottom: 0,
+    right: 0,
+    left: 0,
     height: 180,
     borderColor: colors.text.tertiary,
+    flex: 1,
     elevation: 10
+  },
+  nearbyPointsHeader: {
+    padding: 20,
+    paddingTop: 15,
+    flexDirection: "row",
+    alignItems: "stretch"
+  },
+  nearbyPointsDescription: {
+    flex: 0.75
   },
   cardStyle: {
     borderWidth: 1,
     borderColor: "#ccc",
     padding: 15,
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
+    alignContent: "center",
     height: 100,
     padding: 20,
     paddingTop: 30
-  },
-  nearbyPointsHeader: {
-    padding: 20,
-    flex: 1,
-    flexDirection: "row"
   }
 });
 

@@ -21,7 +21,7 @@ class MainSettingsScreen extends Component {
     };
 
     return (
-      <Wrapper>
+      <Wrapper navigation={this.props.navigation}>
         <View
           style={{
             flexDirection: "row",

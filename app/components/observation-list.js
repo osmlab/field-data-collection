@@ -12,7 +12,7 @@ class MapList extends Component {
   render() {
     return (
       <View style={[baseStyles.nearbyPoints]}>
-        <View style={[baseStyles.nearbyPointsHeader, { flexWrap: "wrap" }]}>
+        <View style={[baseStyles.nearbyPointsHeader]}>
           <View style={[baseStyles.nearbyPointsDescription]}>
             <Text style={[baseStyles.h4]}>Nearby Points</Text>
             <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
@@ -29,7 +29,7 @@ class MapList extends Component {
             </TouchableOpacity>
           </View>
         </View>
-        <View>
+        {/*<View>
           <View style={[baseStyles.cardStyle]}>
             <Text style={[baseStyles.h3]}>Ballard Elementary School</Text>
             <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
@@ -49,7 +49,7 @@ class MapList extends Component {
               <Text style={[baseStyles.textAlert]}>(2 incomplete)</Text>
             </View>
           </View>
-        </View>
+        </View>*/}
       </View>
     );
   }
