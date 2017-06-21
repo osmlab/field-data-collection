@@ -7,10 +7,7 @@ import SearchBox from "./search-box";
 import { colors } from "../styles";
 
 export default function Header(props) {
-  function onChangeText(value) {
-    console.log("onChangeText", value);
-  }
-
+  console.log("header");
   return (
     <View
       style={{

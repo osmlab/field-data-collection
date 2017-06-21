@@ -9,18 +9,10 @@ import {
 } from "react-native";
 import Mapbox, { MapView } from "react-native-mapbox-gl";
 
-import Interactable from "react-native-interactable";
-
-import { Header, Text } from "../../components";
+import { Header, SideMenu, Text } from "../../components";
 import { baseStyles } from "../../styles";
-import osmp2p from "../../lib/osm-p2p";
-import websocket from "websocket-stream";
 
 import FontAwesome, { Icons } from "react-native-fontawesome";
-
-const Screen = Dimensions.get("window");
-const SideMenuWidth = 280;
-const RemainingWidth = Screen.width - SideMenuWidth;
 
 Mapbox.setAccessToken(
   "pk.eyJ1Ijoic2V0aHZpbmNlbnQiLCJhIjoiSXZZXzZnUSJ9.Nr_zKa-4Ztcmc1Ypl0k5nw"
@@ -50,22 +42,6 @@ const styles = StyleSheet.create({
     top: 90,
     right: 10
   },
-  sideMenuContainer: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    flexDirection: "row",
-    zIndex: 1002,
-    borderLeftWidth: 0.5
-  },
-  sideMenu: {
-    left: 0,
-    width: SideMenuWidth,
-    flex: 1,
-    backgroundColor: "#fff"
-  },
   header: {
     height: 60,
     paddingLeft: 20,
@@ -80,7 +56,6 @@ class ObservationMapScreen extends Component {
   constructor() {
     super();
 
-    this.osm = osmp2p();
     this.navigationOptions = { tabBarLabel: "Map" };
   }
 
@@ -96,46 +71,46 @@ class ObservationMapScreen extends Component {
     });
   }
 
-  onMenuPress() {
-    this.refs["menuInstance"].setVelocity({ x: -2000 });
-  }
+  onMenuPress = () => {
+    this._menu.open();
+  };
 
   onClosePress() {
-    this.refs["menuInstance"].setVelocity({ x: 3000 });
+    //
   }
 
   prepareAnnotations = () => {
-    this._map.getBounds(data => {
-      var q = [[data[0], data[2]], [data[1], data[3]]];
-      var annotations = [];
-      var stream = this.osm.queryGeoJSONStream(q);
-
-      stream.on("data", d => {
-        const type = d.geometry.type.toLowerCase();
-        const coordinates = d.geometry.coordinates;
-
-        if (type === "point" && coordinates) {
-          annotations.push({
-            id: d.id,
-            type: type,
-            coordinates: coordinates.reverse(),
-            annotationImage: {
-              source: {
-                uri: "https://cldup.com/7NLZklp8zS.png"
-              },
-              height: 25,
-              width: 25
-            }
-          });
-        }
-      });
-
-      stream.on("end", () => {
-        this.setState({
-          annotations
-        });
-      });
-    });
+    // this._map.getBounds(data => {
+    //   var q = [[data[0], data[2]], [data[1], data[3]]];
+    //   var annotations = [];
+    //   var stream = this.osm.queryGeoJSONStream(q);
+    //
+    //   stream.on("data", d => {
+    //     const type = d.geometry.type.toLowerCase();
+    //     const coordinates = d.geometry.coordinates;
+    //
+    //     if (type === "point" && coordinates) {
+    //       annotations.push({
+    //         id: d.id,
+    //         type: type,
+    //         coordinates: coordinates.reverse(),
+    //         annotationImage: {
+    //           source: {
+    //             uri: "https://cldup.com/7NLZklp8zS.png"
+    //           },
+    //           height: 25,
+    //           width: 25
+    //         }
+    //       });
+    //     }
+    //   });
+    //
+    //   stream.on("end", () => {
+    //     this.setState({
+    //       annotations
+    //     });
+    //   });
+    // });
   };
 
   render() {
@@ -144,88 +119,11 @@ class ObservationMapScreen extends Component {
     return (
       <View style={[baseStyles.wrapper, { padding: 0 }]}>
         <Header onTogglePress={this.onMenuPress.bind(this)} />
-
-        <View style={styles.sideMenuContainer} pointerEvents="box-none">
-          <Interactable.View
-            ref="menuInstance"
-            horizontalOnly={true}
-            snapPoints={[{ x: Screen.width }, { x: RemainingWidth }]}
-            boundaries={{ right: 3000 }}
-            initialPosition={{ x: Screen.width }}
-          >
-
-            <View style={styles.sideMenu}>
-              <Text style={[baseStyles.title, baseStyles.titleMenu]}>Menu</Text>
-              <TouchableOpacity
-                style={{ paddingLeft: 30 }}
-                onPress={() => {
-                  var ws = websocket("ws://10.0.2.2:3000");
-
-                  this.osm.sync(ws, err => {
-                    if (err) console.log(err);
-                    this.osm.ready(() => {
-                      this.prepareAnnotations();
-                    });
-                  });
-                }}
-              >
-                <Text>Sync Data</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{ paddingLeft: 30 }}
-                onPress={() => {
-                  AsyncStorage.clear(function(err) {
-                    console.log("data cleared", err);
-                  });
-                }}
-              >
-                <Text>Delete data</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={[baseStyles.navLink]}
-                onPress={() => {
-                  navigate("AddProfile");
-                }}
-              >
-                <Text>Profile</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[baseStyles.navLink]}
-                onPress={() => {
-                  navigate("AccountObservations");
-                }}
-              >
-                <Text>My Observations</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[baseStyles.navLink]}
-                onPress={() => {
-                  navigate("Surveys");
-                }}
-              >
-                <Text>Surveys</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[baseStyles.navLink]}
-                onPress={() => {
-                  navigate("Settings");
-                }}
-              >
-                <Text>Settings</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[baseStyles.navLink]}
-                onPress={() => {
-                  navigate("About");
-                }}
-              >
-                <Text>About</Text>
-              </TouchableOpacity>
-              <Button title="Close" onPress={this.onClosePress.bind(this)} />
-            </View>
-          </Interactable.View>
-        </View>
+        <SideMenu
+          ref={menu => {
+            this._menu = menu;
+          }}
+        />
 
         <MapView
           ref={map => {

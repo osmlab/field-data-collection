@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { ScrollView } from "react-native";
+import { ScrollView, View } from "react-native";
 
 import { baseStyles } from "../styles";
-
+import Header from "./header";
+import SideMenu from "./side-menu";
 /*
 * A way to set a background color without getting into android/ios files
 */
@@ -18,13 +19,17 @@ class Wrapper extends Component {
     };
 
     return (
-      <ScrollView
-        {...this.props}
-        ref={setRef}
-        style={[baseStyles.wrapper, this.props.style]}
-      >
-        {this.props.children}
-      </ScrollView>
+      <View>
+        <Header />
+
+        <ScrollView
+          {...this.props}
+          ref={setRef}
+          style={[baseStyles.wrapper, this.props.style]}
+        >
+          {this.props.children}
+        </ScrollView>
+      </View>
     );
   }
 }
