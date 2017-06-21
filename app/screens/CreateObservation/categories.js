@@ -51,7 +51,7 @@ class CategoriesScreen extends Component {
     const { navigate } = this.props.navigation;
 
     return (
-      <Wrapper>
+      <Wrapper navigation={this.props.navigation}>
         <Text style={baseStyles.title}>
           What do you want to add?
         </Text>

@@ -118,11 +118,12 @@ class ObservationMapScreen extends Component {
 
     return (
       <View style={[baseStyles.wrapper, { padding: 0 }]}>
-        <Header onTogglePress={this.onMenuPress.bind(this)} />
+        <Header onTogglePress={this.onMenuPress} />
         <SideMenu
           ref={menu => {
             this._menu = menu;
           }}
+          navigation={this.props.navigation}
         />
 
         <MapView

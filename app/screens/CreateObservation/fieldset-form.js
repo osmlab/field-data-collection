@@ -30,7 +30,7 @@ class FieldsetFormScreen extends Component {
     let input;
 
     return (
-      <Wrapper>
+      <Wrapper navigation={this.props.navigation}>
         <View
           style={{
             flexDirection: "row",

@@ -7,6 +7,7 @@ import {
   Button
 } from "react-native";
 import Interactable from "react-native-interactable";
+import { NavigationActions } from "react-navigation";
 
 import { Text } from "./index";
 import osmp2p from "../lib/osm-p2p";
@@ -39,17 +40,15 @@ const styles = StyleSheet.create({
 
 class SideMenu extends Component {
   open = () => {
-    console.log("open", this._menu);
     this._menu.setVelocity({ x: -2000 });
   };
 
   close = () => {
-    console.log("close");
     this._menu.setVelocity({ x: 3000 });
   };
 
   render() {
-    console.log("this.props", this.props);
+    const { dispatch, navigate } = this.props.navigation;
 
     return (
       <View style={styles.sideMenuContainer} pointerEvents="box-none">
@@ -73,9 +72,7 @@ class SideMenu extends Component {
 
                 this.osm.sync(ws, err => {
                   if (err) console.log(err);
-                  this.osm.ready(() => {
-                    this.prepareAnnotations();
-                  });
+                  this.osm.ready(() => {});
                 });
               }}
             >
@@ -85,9 +82,7 @@ class SideMenu extends Component {
             <TouchableOpacity
               style={{ paddingLeft: 30 }}
               onPress={() => {
-                AsyncStorage.clear(function(err) {
-                  console.log("data cleared", err);
-                });
+                AsyncStorage.clear(function(err) {});
               }}
             >
               <Text>Delete data</Text>
@@ -96,6 +91,10 @@ class SideMenu extends Component {
             <TouchableOpacity
               style={[baseStyles.navLink]}
               onPress={() => {
+                const action = NavigationActions.navigate({
+                  routeName: "AddProfile"
+                });
+
                 navigate("AddProfile");
               }}
             >
@@ -119,6 +118,7 @@ class SideMenu extends Component {
             >
               <Text>Surveys</Text>
             </TouchableOpacity>
+
             <TouchableOpacity
               style={[baseStyles.navLink]}
               onPress={() => {

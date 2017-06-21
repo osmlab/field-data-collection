@@ -7,7 +7,7 @@ import { baseStyles } from "../../styles";
 class AddSurveyScreen extends Component {
   render() {
     return (
-      <Wrapper>
+      <Wrapper navigation={this.props.navigation}>
         <View style={baseStyles.container}>
           <View onPress={() => {}}>
             <Text> ← </Text>

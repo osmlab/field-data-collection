@@ -18,9 +18,19 @@ class Wrapper extends Component {
       this._root = component;
     };
 
+    onMenuPress = () => {
+      this._menu.open();
+    };
+
     return (
-      <View>
-        <Header />
+      <View style={baseStyles.wrapper}>
+        <Header onTogglePress={this.onMenuPress} />
+        <SideMenu
+          ref={menu => {
+            this._menu = menu;
+          }}
+          navigation={this.props.navigation}
+        />
 
         <ScrollView
           {...this.props}

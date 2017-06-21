@@ -5,7 +5,7 @@ import { Text, Wrapper } from "../../components";
 class AboutScreen extends Component {
   render() {
     return (
-      <Wrapper>
+      <Wrapper navigation={this.props.navigation}>
         <Text>
           This is the screen for loading a survey
         </Text>

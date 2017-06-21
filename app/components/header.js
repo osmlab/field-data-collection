@@ -3,11 +3,9 @@ import { TextInput, View, TouchableHighlight } from "react-native";
 import FontAwesome, { Icons } from "react-native-fontawesome";
 
 import Text from "./text";
-import SearchBox from "./search-box";
 import { colors } from "../styles";
 
 export default function Header(props) {
-  console.log("header");
   return (
     <View
       style={{

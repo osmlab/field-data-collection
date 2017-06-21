@@ -21,7 +21,7 @@ class ProfileScreen extends Component {
     };
 
     return (
-      <Wrapper>
+      <Wrapper navigation={this.props.navigation}>
         <View
           style={{
             flexDirection: "row",
@@ -43,6 +43,77 @@ class ProfileScreen extends Component {
             Enter your information for your edits to be associated to you.
           </Text>
         </View>
+        <View style={{ marginTop: 20, marginBottom: 20 }}>
+          <Text style={styles.subtitle}>
+            Enter your information for your edits to be associated to you.
+          </Text>
+        </View>
+        <View style={{ marginTop: 20, marginBottom: 20 }}>
+          <Text style={styles.subtitle}>
+            Enter your information for your edits to be associated to you.
+          </Text>
+        </View>
+        <View style={{ marginTop: 20, marginBottom: 20 }}>
+          <Text style={styles.subtitle}>
+            Enter your information for your edits to be associated to you.
+          </Text>
+        </View>
+        <View style={{ marginTop: 20, marginBottom: 20 }}>
+          <Text style={styles.subtitle}>
+            Enter your information for your edits to be associated to you.
+          </Text>
+        </View>
+        <View style={{ marginTop: 20, marginBottom: 20 }}>
+          <Text style={styles.subtitle}>
+            Enter your information for your edits to be associated to you.
+          </Text>
+        </View>
+        <View style={{ marginTop: 20, marginBottom: 20 }}>
+          <Text style={styles.subtitle}>
+            Enter your information for your edits to be associated to you.
+          </Text>
+        </View>
+        <View style={{ marginTop: 20, marginBottom: 20 }}>
+          <Text style={styles.subtitle}>
+            Enter your information for your edits to be associated to you.
+          </Text>
+        </View>
+        <View style={{ marginTop: 20, marginBottom: 20 }}>
+          <Text style={styles.subtitle}>
+            Enter your information for your edits to be associated to you.
+          </Text>
+        </View>
+        <View style={{ marginTop: 20, marginBottom: 20 }}>
+          <Text style={styles.subtitle}>
+            Enter your information for your edits to be associated to you.
+          </Text>
+        </View>
+        <View style={{ marginTop: 20, marginBottom: 20 }}>
+          <Text style={styles.subtitle}>
+            Enter your information for your edits to be associated to you.
+          </Text>
+        </View>
+        <View style={{ marginTop: 20, marginBottom: 20 }}>
+          <Text style={styles.subtitle}>
+            Enter your information for your edits to be associated to you.
+          </Text>
+        </View>
+        <View style={{ marginTop: 20, marginBottom: 20 }}>
+          <Text style={styles.subtitle}>
+            Enter your information for your edits to be associated to you.
+          </Text>
+        </View>
+        <View style={{ marginTop: 20, marginBottom: 20 }}>
+          <Text style={styles.subtitle}>
+            Enter your information for your edits to be associated to you.
+          </Text>
+        </View>
+        <View style={{ marginTop: 20, marginBottom: 20 }}>
+          <Text style={styles.subtitle}>
+            Enter your information for your edits to be associated to you.
+          </Text>
+        </View>
+
       </Wrapper>
     );
   }
