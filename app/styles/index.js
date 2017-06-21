@@ -35,6 +35,9 @@ const baseStyles = StyleSheet.create({
     borderBottomColor: colors.text.tertiary,
     borderBottomWidth: 0.5
   },
+  rightSideContent: {
+    alignSelf: "flex-end"
+  },
 
   //text
   title: {
@@ -109,6 +112,9 @@ const baseStyles = StyleSheet.create({
     borderBottomColor: colors.interface.links,
     flexDirection: "column"
   },
+  headerLink: {
+    textDecorationLine: "underline"
+  },
 
   headerPage: {
     backgroundColor: colors.interface.headerBackground
@@ -131,12 +137,12 @@ const baseStyles = StyleSheet.create({
     color: "#ffffff"
   },
   buttonOutline: {
-    borderBottomColor: colors.text.header,
-    borderBottomWidth: 0.5,
-    paddingTop: 5,
-    paddingBottom: 5,
-    paddingLeft: 10,
-    paddingRight: 10,
+    borderColor: colors.text.header,
+    borderWidth: 1,
+    paddingTop: 3,
+    paddingBottom: 3,
+    paddingLeft: 12,
+    paddingRight: 12,
     borderRadius: 4
   },
   buttonContent: {
@@ -170,6 +176,31 @@ const baseStyles = StyleSheet.create({
     fontSize: 15,
     color: colors.interface.links,
     paddingTop: 13
+  },
+
+  nearbyPoints: {
+    backgroundColor: "#ffffff",
+    position: "absolute",
+    bottom: 0,
+    height: 180,
+    borderColor: colors.text.tertiary,
+    elevation: 10
+  },
+  cardStyle: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    padding: 15,
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    height: 100,
+    padding: 20,
+    paddingTop: 30
+  },
+  nearbyPointsHeader: {
+    padding: 20,
+    flex: 1,
+    flexDirection: "row"
   }
 });
 

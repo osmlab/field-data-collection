@@ -11,7 +11,7 @@ import Mapbox, { MapView } from "react-native-mapbox-gl";
 
 import Interactable from "react-native-interactable";
 
-import { Header, Text } from "../../components";
+import { Header, Text, MapList } from "../../components";
 import { baseStyles } from "../../styles";
 import osmp2p from "../../lib/osm-p2p";
 import websocket from "websocket-stream";
@@ -287,6 +287,7 @@ class ObservationMapScreen extends Component {
             {Icons.plus}
           </FontAwesome>
         </TouchableOpacity>
+        <MapList />
       </View>
     );
   }
