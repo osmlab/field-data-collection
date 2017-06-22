@@ -31,10 +31,17 @@ const baseStyles = StyleSheet.create({
   wrapperContent: {
     padding: 20
   },
+  wrapperContentHeader: {
+    padding: 20,
+    paddingTop: 26,
+    paddingBottom: 30,
+    marginBottom: 20
+  },
   listBlock: {
     borderBottomColor: colors.text.tertiary,
     borderBottomWidth: 0.5
   },
+  rightSideContent: {},
 
   //text
   title: {
@@ -46,9 +53,9 @@ const baseStyles = StyleSheet.create({
   },
   h2: {
     fontFamily: "Roboto",
-    fontSize: 28,
+    fontSize: 26,
     fontWeight: "bold",
-    paddingBottom: 10,
+    marginBottom: 10,
     color: colors.text.header
   },
   h3: {
@@ -88,6 +95,12 @@ const baseStyles = StyleSheet.create({
     fontStyle: "italic",
     color: colors.interface.error
   },
+  withPipe: {
+    marginRight: 15
+  },
+  spaceBelow: {
+    marginBottom: 15
+  },
 
   //links
   navLink: {
@@ -106,8 +119,10 @@ const baseStyles = StyleSheet.create({
   link: {
     color: colors.interface.links,
     borderBottomWidth: 0.5,
-    borderBottomColor: colors.interface.links,
-    flexDirection: "column"
+    borderBottomColor: colors.interface.links
+  },
+  headerLink: {
+    textDecorationLine: "underline"
   },
 
   headerPage: {
@@ -120,9 +135,12 @@ const baseStyles = StyleSheet.create({
     paddingRight: 30
   },
   headerBackIcon: {
-    fontSize: 30,
-    marginTop: -10,
+    fontSize: 50,
+    marginTop: -20,
     marginRight: 5
+  },
+  headerTitle: {
+    paddingTop: 10
   },
 
   //buttons
@@ -131,12 +149,12 @@ const baseStyles = StyleSheet.create({
     color: "#ffffff"
   },
   buttonOutline: {
-    borderBottomColor: colors.text.header,
-    borderBottomWidth: 0.5,
-    paddingTop: 5,
-    paddingBottom: 5,
-    paddingLeft: 10,
-    paddingRight: 10,
+    borderColor: colors.text.header,
+    borderWidth: 1,
+    paddingTop: 3,
+    paddingBottom: 3,
+    paddingLeft: 12,
+    paddingRight: 12,
     borderRadius: 4
   },
   buttonContent: {
@@ -170,6 +188,64 @@ const baseStyles = StyleSheet.create({
     fontSize: 15,
     color: colors.interface.links,
     paddingTop: 13
+  },
+  nearbyPoints: {
+    backgroundColor: "#ffffff",
+    position: "absolute",
+    bottom: 0,
+    right: 0,
+    left: 0,
+    height: 180,
+    borderColor: colors.text.tertiary,
+    flex: 1,
+    elevation: 10
+  },
+  nearbyPointsHeader: {
+    padding: 20,
+    paddingTop: 15,
+    flexDirection: "row",
+    alignItems: "stretch"
+  },
+  nearbyPointsDescription: {
+    flex: 0.75
+  },
+  cardStyle: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    padding: 15,
+    alignContent: "center",
+    height: 100,
+    padding: 20,
+    paddingTop: 30
+  },
+  surveyCard: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 5,
+    position: "relative"
+  },
+  surveyCardContent: {
+    padding: 20,
+    paddingBottom: 25
+  },
+  percentComplete: {
+    backgroundColor: "#ffffff",
+    width: 60,
+    height: 60,
+    borderRadius: 80,
+    position: "absolute",
+    top: 70,
+    right: 20,
+    elevation: 6
+  },
+  percentCompleteText: {
+    textAlign: "center",
+    paddingTop: 18
+  },
+  map: {
+    height: 100,
+    borderBottomColor: "#ccc",
+    borderBottomWidth: 0.5
   }
 });
 

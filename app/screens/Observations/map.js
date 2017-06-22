@@ -13,6 +13,8 @@ import osmp2p from "../../lib/osm-p2p";
 import { Header, SideMenu, Text } from "../../components";
 import { baseStyles } from "../../styles";
 
+import { Header, SideMenu, Text, MapList } from "../../components";
+import { baseStyles } from "../../styles";
 import FontAwesome, { Icons } from "react-native-fontawesome";
 
 Mapbox.setAccessToken(
@@ -121,7 +123,10 @@ class ObservationMapScreen extends Component {
 
     return (
       <View style={[baseStyles.wrapper, { padding: 0 }]}>
-        <Header onTogglePress={this.onMenuPress} />
+        <Header onTogglePress={this.onMenuPress}>
+          <Text>Observe</Text>
+        </Header>
+
         <SideMenu
           ref={menu => {
             this._menu = menu;
@@ -187,6 +192,7 @@ class ObservationMapScreen extends Component {
             {Icons.plus}
           </FontAwesome>
         </TouchableOpacity>
+        <MapList />
       </View>
     );
   }

@@ -45,21 +45,30 @@ class AddObservationScreen extends Component {
   render() {
     const { type: { fields, name } } = this.props;
 
-    return (
-      <Wrapper navigation={this.props.navigation}>
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "flex-start",
-            alignItems: "center"
-          }}
-        >
-          <Text style={[baseStyles.headerBackIcon]} onPress={this.onBackPress}>
-            ←
-          </Text>
-          <Text style={[baseStyles.title]}>Add</Text>
-        </View>
+    const onBackPress = () => {
+      const backAction = NavigationActions.back();
+      this.props.navigation.dispatch(backAction);
+    };
 
+    const headerView = (
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "flex-start",
+          alignItems: "center"
+        }}
+      >
+        <Text style={[baseStyles.headerBackIcon]} onPress={onBackPress}>
+          ←
+        </Text>
+        <Text style={[baseStyles.h3, baseStyles.headerTitle]}>
+          Add Observation
+        </Text>
+      </View>
+    );
+
+    return (
+      <Wrapper navigation={this.props.navigation} headerView={headerView}>
         <View
           style={[
             baseStyles.headerPage,

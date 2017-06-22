@@ -7,22 +7,32 @@ const getGeoJSON = require("osm-p2p-geojson");
 const pump = require("pump");
 const collect = require("collect-stream");
 const through = require("through2");
+const OsmSync = require("./osm-sync");
 
 const createStore = require("./asyncstorage-chunk-store");
 const convert = require("./convert-geojson-osmp2p");
 
-function osmp2p() {
-  const logdb = levelup("db", { db: asyncstorage });
+function createOsmDb(prefix) {
+  const logdb = levelup(prefix + "-db", { db: asyncstorage });
   const log = hyperlog(logdb, { valueEncoding: "json" });
 
-  var osm = osmdb({
+  return osmdb({
     log: log,
-    db: levelup("index", { db: asyncstorage }),
-    store: createStore(1024, "chunks")
+    db: levelup(prefix + "-index", { db: asyncstorage }),
+    store: createStore(1024, prefix + "-chunks")
   });
+}
+
+function osmp2p() {
+  var observationDb = createOsmDb("observations");
+  var osmOrgDb = createOsmDb("osmorg");
+
+  var netSync = OsmSync(observationDb, osmOrgDb);
+
+  observationDb.on("error", console.log);
+  osmOrgDb.on("error", console.log);
 
   return {
-    db: osm,
     ready,
     create,
     put,
@@ -37,56 +47,71 @@ function osmp2p() {
     listAnnotations
   };
 
-  osm.on("error", console.log);
-
   function ready(cb) {
-    osm.ready(cb);
+    observationDb.ready(onReady);
+    osmOrgDb.ready(onReady);
+
+    var pending = 2;
+    function onReady() {
+      if (--pending === 0) cb();
+    }
   }
 
   function create(geojson, opts, cb) {
     var doc = convert.toOSM(geojson);
-    osm.create(doc, opts, cb);
+    observationDb.create(doc, opts, cb);
   }
 
   function put(id, geojson, opts, cb) {
     var doc = convert.toOSM(geojson);
-    osm.put(id, doc, opts, cb);
+    observationDb.put(id, doc, opts, cb);
   }
 
   function del(id, opts, cb) {
-    osm.del(id, opts, cb);
+    observationDb.del(id, opts, cb);
   }
 
   function createObservation(geojson, opts, cb) {
     var doc = convert.toOSM(geojson, "observation");
-    osm.create(doc, opts, cb);
+    observationDb.create(doc, opts, cb);
   }
 
   function putObservation(id, geojson, opts, cb) {
     var doc = convert.toOSM(geojson, "observation");
-    osm.put(id, doc, opts, cb);
+    observationDb.put(id, doc, opts, cb);
   }
 
   function delObservation(id, opts, cb) {
-    osm.del(id, opts, cb);
+    observationDb.del(id, opts, cb);
   }
 
+  // TODO: union the query data from both DBs and return
   function query(q, opts, cb) {
-    return osm.query(q, opts, cb);
+    return observationDb.query(q, opts, cb);
   }
 
+  // TODO: union the query data from both DBs and return
   function queryStream(q, opts) {
-    return osm.queryStream(q, opts);
+    return observationDb.queryStream(q, opts);
   }
 
+  // TODO: union the query data from both DBs and return
   function queryGeoJSONStream(q, opts) {
-    var osmStream = osm.queryStream(q, opts);
-    var geoJSONStream = getGeoJSON.obj(osm);
+    var osmStream = observationDb.queryStream(q, opts);
+    var geoJSONStream = getGeoJSON.obj(observationDb);
     return pump(osmStream, geoJSONStream);
   }
 
   function replicate(opts) {
-    return osm.log.replicate(opts);
+    return observationDb.log.replicate(opts);
+  }
+
+  function replicateNet(addr, opts, cb) {
+    netSync.replicate(addr, opts, cb);
+  }
+
+  function findReplicationTargets(opts, cb) {
+    netSync.findPeers(opts, cb);
   }
 
   function sync(transportStream, opts, callback) {

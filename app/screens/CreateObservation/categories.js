@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { StyleSheet, View, ListView, TouchableHighlight } from "react-native";
 import { connect } from "react-redux";
+import { NavigationActions } from "react-navigation";
 
 import { Text, Wrapper } from "../../components";
 import { baseStyles } from "../../styles";
@@ -50,33 +51,57 @@ class CategoriesScreen extends Component {
   render() {
     const { navigate } = this.props.navigation;
 
-    return (
-      <Wrapper navigation={this.props.navigation}>
-        <Text style={baseStyles.title}>
-          What do you want to add?
+    const onBackPress = () => {
+      const backAction = NavigationActions.back();
+      this.props.navigation.dispatch(backAction);
+    };
+
+    const headerView = (
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "flex-start",
+          alignItems: "center"
+        }}
+      >
+        <Text style={[baseStyles.headerBackIcon]} onPress={onBackPress}>
+          ←
         </Text>
+        <Text style={[baseStyles.h3, baseStyles.headerTitle]}>
+          Add Observation
+        </Text>
+      </View>
+    );
 
-        <ListView
-          contentContainerStyle={styles.gridContainer}
-          dataSource={this.state.categories}
-          noScroll={true}
-          renderRow={item => {
-            function onCategoryPress() {
-              navigate("AddObservation", { observationType: item.id });
-            }
+    return (
+      <Wrapper navigation={this.props.navigation} headerView={headerView}>
+        <View style={[baseStyles.wrapperContent]}>
+          <Text style={baseStyles.title}>
+            What do you want to add?
+          </Text>
 
-            return (
-              <TouchableHighlight onPress={onCategoryPress}>
-                <View style={styles.gridItem}>
-                  <Text>{item.name}</Text>
-                </View>
-              </TouchableHighlight>
-            );
-          }}
-        />
+          <ListView
+            contentContainerStyle={styles.gridContainer}
+            dataSource={this.state.categories}
+            noScroll={true}
+            renderRow={item => {
+              function onCategoryPress() {
+                navigate("AddObservation", { observationType: item.id });
+              }
 
-        <View style={styles.moreItemsButton}>
-          <Text style={{}} onPress={() => {}}>View More</Text>
+              return (
+                <TouchableHighlight onPress={onCategoryPress}>
+                  <View style={styles.gridItem}>
+                    <Text>{item.name}</Text>
+                  </View>
+                </TouchableHighlight>
+              );
+            }}
+          />
+
+          <View style={styles.moreItemsButton}>
+            <Text style={{}} onPress={() => {}}>View More</Text>
+          </View>
         </View>
       </Wrapper>
     );

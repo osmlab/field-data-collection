@@ -18,7 +18,7 @@ export default function Header(props) {
     >
       <View style={{ flex: 1, height: 30 }}>
         <View style={{ flex: 1, flexDirection: "row", alignItems: "center" }}>
-          <Text>Field Data Collection</Text>
+          {props.children}
           <MapListToggle {...props} />
         </View>
       </View>

@@ -4,6 +4,7 @@ import { ScrollView, View } from "react-native";
 import { baseStyles } from "../styles";
 import Header from "./header";
 import SideMenu from "./side-menu";
+import Text from "./text";
 
 /*
 * A way to set a background color without getting into android/ios files
@@ -23,9 +24,14 @@ class Wrapper extends Component {
       this._menu.open();
     };
 
+    const headerView = this.props.headerView || <Text>Observe</Text>;
+
     return (
       <View style={baseStyles.wrapper}>
-        <Header onTogglePress={this.onMenuPress} />
+        <Header onTogglePress={this.onMenuPress}>
+          {headerView}
+        </Header>
+
         <SideMenu
           ref={menu => {
             this._menu = menu;
