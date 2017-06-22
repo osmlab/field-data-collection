@@ -60,7 +60,6 @@ OsmSync.prototype.findPeers = function (opts, done) {
   var bonjour = Bonjour()
   var peers = []
   var browser = bonjour.find({ type: 'osm-sync' }, onPeer)
-  console.log('timeout in', opts.timeout)
   setTimeout(onDone, opts.timeout)
 
   function onPeer (info) {
@@ -72,7 +71,6 @@ OsmSync.prototype.findPeers = function (opts, done) {
   }
 
   function onDone () {
-    console.log('hit onDone')
     browser.stop()
     done(null, peers)
   }
@@ -83,9 +81,6 @@ function replicate (a, b, done) {
   a.on('close', onDone)
   eos(b, onDone)
   b.on('close', onDone)
-
-  a.on('data', console.log)
-  b.on('data', console.log)
 
   a.pipe(b).pipe(a)
 
