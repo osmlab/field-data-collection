@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import Mapbox, { MapView } from "react-native-mapbox-gl";
 
+import osmp2p from "../../lib/osm-p2p";
 import { Header, SideMenu, Text } from "../../components";
 import { baseStyles } from "../../styles";
 
@@ -57,6 +58,7 @@ class ObservationMapScreen extends Component {
     super();
 
     this.navigationOptions = { tabBarLabel: "Map" };
+    this._osm = osmp2p();
   }
 
   componentWillMount() {
@@ -79,38 +81,34 @@ class ObservationMapScreen extends Component {
     //
   }
 
-  prepareAnnotations = () => {
-    // this._map.getBounds(data => {
-    //   var q = [[data[0], data[2]], [data[1], data[3]]];
-    //   var annotations = [];
-    //   var stream = this.osm.queryGeoJSONStream(q);
+  onMapPress = e => {
+    console.log("event", e);
+    // const x = e.screenCoordX;
+    // const y = e.screenCoordY;
     //
-    //   stream.on("data", d => {
-    //     const type = d.geometry.type.toLowerCase();
-    //     const coordinates = d.geometry.coordinates;
-    //
-    //     if (type === "point" && coordinates) {
-    //       annotations.push({
-    //         id: d.id,
-    //         type: type,
-    //         coordinates: coordinates.reverse(),
-    //         annotationImage: {
-    //           source: {
-    //             uri: "https://cldup.com/7NLZklp8zS.png"
-    //           },
-    //           height: 25,
-    //           width: 25
-    //         }
-    //       });
-    //     }
-    //   });
-    //
-    //   stream.on("end", () => {
-    //     this.setState({
-    //       annotations
-    //     });
-    //   });
+    // this._map.queryRenderedFeatures({
+    //   rect: {
+    //     left: x - 22,
+    //     top: y - 22,
+    //     right: x + 22,
+    //     bottom: y + 22
+    //   }
+    // }, function (features) {
+    //   console.log(features)
     // });
+  };
+
+  prepareAnnotations = () => {
+    this._map.getBounds(data => {
+      var q = [[data[0], data[2]], [data[1], data[3]]];
+
+      this._osm.createAnnotationStream(q, (err, annotations) => {
+        console.log("annotations", annotations);
+        if (annotations) {
+          this.setState({ annotations });
+        }
+      });
+    });
   };
 
   render() {
@@ -124,6 +122,8 @@ class ObservationMapScreen extends Component {
             this._menu = menu;
           }}
           navigation={this.props.navigation}
+          osm={this._osm}
+          onSync={this.prepareAnnotations}
         />
 
         <MapView
@@ -133,6 +133,8 @@ class ObservationMapScreen extends Component {
           style={styles.map}
           annotations={this.state.annotations}
           onFinishLoadingMap={this.prepareAnnotations}
+          onTap={this.onMapPress}
+          onOpenAnnotation={this.onMapPress}
           initialCenterCoordinate={this.state.center}
           initialZoomLevel={this.state.zoom}
           initialDirection={0}
