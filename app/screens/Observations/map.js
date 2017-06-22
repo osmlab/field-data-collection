@@ -69,7 +69,8 @@ class ObservationMapScreen extends Component {
       },
       zoom: 16,
       userTrackingMode: Mapbox.userTrackingMode.none,
-      annotations: []
+      annotations: [],
+      mapSize: { width: null, height: null }
     });
   }
 
@@ -82,28 +83,38 @@ class ObservationMapScreen extends Component {
   }
 
   onMapPress = e => {
+    const mapSize = this.state.mapSize;
+    console.log("mapSize", mapSize);
     console.log("event", e);
-    // const x = e.screenCoordX;
-    // const y = e.screenCoordY;
-    //
-    // this._map.queryRenderedFeatures({
-    //   rect: {
-    //     left: x - 22,
-    //     top: y - 22,
-    //     right: x + 22,
-    //     bottom: y + 22
-    //   }
-    // }, function (features) {
-    //   console.log(features)
-    // });
+    const x = e.screenCoordX;
+    const y = e.screenCoordY;
+    console.log("x", x);
+    console.log("y", y);
+
+    const rect = {
+      top: y - 50,
+      right: x + 50,
+      bottom: y + 50,
+      left: x - 50
+    };
+
+    this._map.getBoundsFromScreenCoordinates(rect, bounds => {
+      var q = [[bounds[0], bounds[2]], [bounds[1], bounds[3]]];
+
+      this._osm.listAnnotations(q, (err, annotations) => {
+        console.log("annotations.length", annotations.length);
+        if (annotations) {
+          this.setState({ annotations });
+        }
+      });
+    });
   };
 
   prepareAnnotations = () => {
     this._map.getBounds(data => {
       var q = [[data[0], data[2]], [data[1], data[3]]];
 
-      this._osm.createAnnotationStream(q, (err, annotations) => {
-        console.log("annotations", annotations);
+      this._osm.listAnnotations(q, (err, annotations) => {
         if (annotations) {
           this.setState({ annotations });
         }
@@ -135,6 +146,11 @@ class ObservationMapScreen extends Component {
           onFinishLoadingMap={this.prepareAnnotations}
           onTap={this.onMapPress}
           onOpenAnnotation={this.onMapPress}
+          onLayout={e => {
+            const { nativeEvent: { layout: { height, width } } } = e;
+            this.state.mapSize.height = height;
+            this.state.mapSize.width = width;
+          }}
           initialCenterCoordinate={this.state.center}
           initialZoomLevel={this.state.zoom}
           initialDirection={0}

@@ -4,6 +4,7 @@ import { ScrollView, View } from "react-native";
 import { baseStyles } from "../styles";
 import Header from "./header";
 import SideMenu from "./side-menu";
+
 /*
 * A way to set a background color without getting into android/ios files
 */

@@ -34,7 +34,7 @@ function osmp2p() {
     queryGeoJSONStream,
     replicate,
     sync,
-    createAnnotationStream
+    listAnnotations
   };
 
   osm.on("error", console.log);
@@ -114,7 +114,7 @@ function osmp2p() {
     return transportStream.pipe(osmStream).pipe(transportStream);
   }
 
-  function createAnnotationStream(q, cb) {
+  function listAnnotations(q, cb) {
     var stream = queryGeoJSONStream(q).pipe(through.obj(eachFeature));
 
     function eachFeature(data, enc, next) {
@@ -124,6 +124,7 @@ function osmp2p() {
       if (type === "point" && coordinates) {
         this.push({
           id: data.id,
+          title: "weeeooooeweeewwwweeeeoooooo",
           type: type,
           coordinates: coordinates.reverse(),
           annotationImage: {
