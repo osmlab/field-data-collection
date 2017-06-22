@@ -18,24 +18,23 @@ class SurveysScreen extends Component {
       this.props.navigation.dispatch(backAction);
     };
 
-    return (
-      <Wrapper navigation={this.props.navigation}>
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "flex-start",
-            alignItems: "center"
-          }}
-        >
-          <Text
-            style={{ fontSize: 30, marginTop: -10, marginRight: 5 }}
-            onPress={onBackPress}
-          >
-            ←
-          </Text>
-          <Text style={[baseStyles.title]}>Surveys</Text>
-        </View>
+    const headerView = (
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "flex-start",
+          alignItems: "center"
+        }}
+      >
+        <Text style={[baseStyles.headerBackIcon]} onPress={onBackPress}>
+          ←
+        </Text>
+        <Text style={[baseStyles.h3, baseStyles.headerTitle]}>Surveys</Text>
+      </View>
+    );
 
+    return (
+      <Wrapper navigation={this.props.navigation} headerView={headerView}>
         <View style={[]}>
           <View
             style={[baseStyles.wrapperContentHeader, baseStyles.headerPage]}
