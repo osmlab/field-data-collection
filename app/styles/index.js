@@ -41,6 +41,7 @@ const baseStyles = StyleSheet.create({
     borderBottomColor: colors.text.tertiary,
     borderBottomWidth: 0.5
   },
+  rightSideContent: {},
 
   //text
   title: {
@@ -120,6 +121,9 @@ const baseStyles = StyleSheet.create({
     borderBottomWidth: 0.5,
     borderBottomColor: colors.interface.links
   },
+  headerLink: {
+    textDecorationLine: "underline"
+  },
 
   headerPage: {
     backgroundColor: colors.interface.headerBackground
@@ -145,12 +149,12 @@ const baseStyles = StyleSheet.create({
     color: "#ffffff"
   },
   buttonOutline: {
-    borderBottomColor: colors.text.header,
-    borderBottomWidth: 0.5,
-    paddingTop: 5,
-    paddingBottom: 5,
-    paddingLeft: 10,
-    paddingRight: 10,
+    borderColor: colors.text.header,
+    borderWidth: 1,
+    paddingTop: 3,
+    paddingBottom: 3,
+    paddingLeft: 12,
+    paddingRight: 12,
     borderRadius: 4
   },
   buttonContent: {
@@ -185,7 +189,35 @@ const baseStyles = StyleSheet.create({
     color: colors.interface.links,
     paddingTop: 13
   },
-
+  nearbyPoints: {
+    backgroundColor: "#ffffff",
+    position: "absolute",
+    bottom: 0,
+    right: 0,
+    left: 0,
+    height: 180,
+    borderColor: colors.text.tertiary,
+    flex: 1,
+    elevation: 10
+  },
+  nearbyPointsHeader: {
+    padding: 20,
+    paddingTop: 15,
+    flexDirection: "row",
+    alignItems: "stretch"
+  },
+  nearbyPointsDescription: {
+    flex: 0.75
+  },
+  cardStyle: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    padding: 15,
+    alignContent: "center",
+    height: 100,
+    padding: 20,
+    paddingTop: 30
+  },
   surveyCard: {
     borderWidth: 1,
     borderColor: "#ccc",
