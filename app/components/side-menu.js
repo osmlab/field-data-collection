@@ -104,7 +104,7 @@ class SideMenu extends Component {
             <TouchableOpacity
               style={[baseStyles.navLink]}
               onPress={() => {
-                navigate("AccountObservations");
+                navigate("MyObservations");
               }}
             >
               <Text>My Observations</Text>
