@@ -27,6 +27,9 @@ function osmp2p() {
 
   var netSync = OsmSync(observationDb, osmOrgDb)
 
+  observationDb.on("error", console.log);
+  osmOrgDb.on("error", console.log);
+
   return {
     ready,
     create,
@@ -40,9 +43,6 @@ function osmp2p() {
     replicate,
     sync
   };
-
-  observationDb.on("error", console.log);
-  osmOrgDb.on("error", console.log);
 
   function ready(cb) {
     observationDb.ready(onReady);
