@@ -119,7 +119,10 @@ class ObservationMapScreen extends Component {
 
     return (
       <View style={[baseStyles.wrapper, { padding: 0 }]}>
-        <Header onTogglePress={this.onMenuPress} />
+        <Header onTogglePress={this.onMenuPress}>
+          <Text>Observe</Text>
+        </Header>
+
         <SideMenu
           ref={menu => {
             this._menu = menu;

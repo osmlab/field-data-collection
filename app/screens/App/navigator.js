@@ -8,6 +8,7 @@ import AddSurveyScreen from "../Account/add-survey";
 import AddProfileScreen from "../Account/profile";
 import SettingsScreen from "../Account/settings";
 import SurveysScreen from "../Account/surveys";
+import SurveyScreen from "../Account/survey";
 
 // Observations
 import ObservationMapScreen from "../Observations/map.js";
@@ -21,7 +22,8 @@ const routeConfiguration = {
   AddSurvey: { screen: AddSurveyScreen },
   AddProfile: { screen: AddProfileScreen },
   Settings: { screen: SettingsScreen },
-  Surveys: { screen: SurveysScreen }
+  Surveys: { screen: SurveysScreen },
+  Survey: { screen: SurveyScreen }
 };
 
 const Navigator = StackNavigator(routeConfiguration, {
