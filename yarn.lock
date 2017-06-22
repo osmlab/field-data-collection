@@ -5442,7 +5442,7 @@ react-native-localization@^0.1.30:
 
 react-native-mapbox-gl@sethvincent/react-native-mapbox-gl#field-data:
   version "5.2.0"
-  resolved "https://codeload.github.com/sethvincent/react-native-mapbox-gl/tar.gz/ae128a0b69d7b0609957323b7bd19e0f44981908"
+  resolved "https://codeload.github.com/sethvincent/react-native-mapbox-gl/tar.gz/0cd3eeddf4317ac91dc21ad29d1898a067fdbfe4"
   dependencies:
     babel-eslint "^6.1.2"
     lodash "^4.13.1"

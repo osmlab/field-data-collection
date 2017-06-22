@@ -83,13 +83,8 @@ class ObservationMapScreen extends Component {
   }
 
   onMapPress = e => {
-    const mapSize = this.state.mapSize;
-    console.log("mapSize", mapSize);
-    console.log("event", e);
     const x = e.screenCoordX;
     const y = e.screenCoordY;
-    console.log("x", x);
-    console.log("y", y);
 
     const rect = {
       top: y - 50,
@@ -99,13 +94,12 @@ class ObservationMapScreen extends Component {
     };
 
     this._map.getBoundsFromScreenCoordinates(rect, bounds => {
+      console.log("bounds from screenCoords", bounds);
       var q = [[bounds[0], bounds[2]], [bounds[1], bounds[3]]];
 
       this._osm.listAnnotations(q, (err, annotations) => {
         console.log("annotations.length", annotations.length);
-        if (annotations) {
-          this.setState({ annotations });
-        }
+        this.setState({ annotations });
       });
     });
   };
