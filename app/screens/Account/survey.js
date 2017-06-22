@@ -1,0 +1,97 @@
+import React, { Component } from "react";
+import { StyleSheet, View, Button, TouchableOpacity } from "react-native";
+import { NavigationActions } from "react-navigation";
+
+import { Text, Wrapper } from "../../components";
+import { baseStyles } from "../../styles";
+
+class SurveysScreen extends Component {
+  constructor() {
+    super();
+  }
+
+  render() {
+    const { navigate } = this.props.navigation;
+
+    const onBackPress = () => {
+      const backAction = NavigationActions.back();
+      this.props.navigation.dispatch(backAction);
+    };
+
+    return (
+      <Wrapper navigation={this.props.navigation}>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "flex-start",
+            alignItems: "center"
+          }}
+        >
+          <Text
+            style={{ fontSize: 30, marginTop: -10, marginRight: 5 }}
+            onPress={onBackPress}
+          >
+            ←
+          </Text>
+          <Text style={[baseStyles.title]}>Surveys</Text>
+        </View>
+
+        <View style={[]}>
+          <View
+            style={[baseStyles.wrapperContentHeader, baseStyles.headerPage]}
+          >
+            <Text
+              style={[
+                baseStyles.h2,
+                baseStyles.textWhite,
+                baseStyles.headerWithDescription
+              ]}
+            >
+              Survey Name
+            </Text>
+            <Text style={[baseStyles.metadataText, baseStyles.textWhite]}>
+              2 observations
+            </Text>
+          </View>
+          <View style={[baseStyles.wrapperContent]}>
+            <TouchableOpacity
+              style={[baseStyles.surveyCard]}
+              onPress={() => {
+                navigate("Categories");
+              }}
+            >
+              <View style={[baseStyles.map]}><Text>Map</Text></View>
+              <View style={[baseStyles.percentComplete]}>
+                <Text style={[baseStyles.percentCompleteText]}>80%</Text>
+              </View>
+              <View style={[baseStyles.surveyCardContent]}>
+                <Text style={[baseStyles.h3, baseStyles.headerWithDescription]}>
+                  Name of Observation
+                </Text>
+                <View
+                  style={[
+                    baseStyles.spaceBelow,
+                    { flexDirection: "row", flexWrap: "wrap" }
+                  ]}
+                >
+                  <Text style={[baseStyles.withPipe]}>30cm away |</Text>
+                  <Text>Updated: </Text>
+                  <Text>4/30/17 4:30</Text>
+                </View>
+                <Text>Category</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Wrapper>
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  subtitle: {
+    fontSize: 17
+  }
+});
+
+export default SurveysScreen;
