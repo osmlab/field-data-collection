@@ -131,9 +131,12 @@ const baseStyles = StyleSheet.create({
     paddingRight: 30
   },
   headerBackIcon: {
-    fontSize: 30,
-    marginTop: -10,
+    fontSize: 50,
+    marginTop: -20,
     marginRight: 5
+  },
+  headerTitle: {
+    paddingTop: 10
   },
 
   //buttons
