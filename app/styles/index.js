@@ -31,6 +31,12 @@ const baseStyles = StyleSheet.create({
   wrapperContent: {
     padding: 20
   },
+  wrapperContentHeader: {
+    padding: 20,
+    paddingTop: 26,
+    paddingBottom: 30,
+    marginBottom: 20
+  },
   listBlock: {
     borderBottomColor: colors.text.tertiary,
     borderBottomWidth: 0.5
@@ -46,9 +52,9 @@ const baseStyles = StyleSheet.create({
   },
   h2: {
     fontFamily: "Roboto",
-    fontSize: 28,
+    fontSize: 26,
     fontWeight: "bold",
-    paddingBottom: 10,
+    marginBottom: 10,
     color: colors.text.header
   },
   h3: {
@@ -88,6 +94,12 @@ const baseStyles = StyleSheet.create({
     fontStyle: "italic",
     color: colors.interface.error
   },
+  withPipe: {
+    marginRight: 15
+  },
+  spaceBelow: {
+    marginBottom: 15
+  },
 
   //links
   navLink: {
@@ -106,8 +118,7 @@ const baseStyles = StyleSheet.create({
   link: {
     color: colors.interface.links,
     borderBottomWidth: 0.5,
-    borderBottomColor: colors.interface.links,
-    flexDirection: "column"
+    borderBottomColor: colors.interface.links
   },
 
   headerPage: {
@@ -170,6 +181,36 @@ const baseStyles = StyleSheet.create({
     fontSize: 15,
     color: colors.interface.links,
     paddingTop: 13
+  },
+
+  surveyCard: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 5,
+    position: "relative"
+  },
+  surveyCardContent: {
+    padding: 20,
+    paddingBottom: 25
+  },
+  percentComplete: {
+    backgroundColor: "#ffffff",
+    width: 60,
+    height: 60,
+    borderRadius: 80,
+    position: "absolute",
+    top: 70,
+    right: 20,
+    elevation: 6
+  },
+  percentCompleteText: {
+    textAlign: "center",
+    paddingTop: 18
+  },
+  map: {
+    height: 100,
+    borderBottomColor: "#ccc",
+    borderBottomWidth: 0.5
   }
 });
 
