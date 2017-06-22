@@ -20,8 +20,10 @@ class ProfileScreen extends Component {
       this.props.navigation.dispatch(backAction);
     };
 
+    const headerView = <Text>Profile page</Text>;
+
     return (
-      <Wrapper navigation={this.props.navigation}>
+      <Wrapper navigation={this.props.navigation} headerView={headerView}>
         <View
           style={{
             flexDirection: "row",

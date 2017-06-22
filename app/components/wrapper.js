@@ -22,9 +22,14 @@ class Wrapper extends Component {
       this._menu.open();
     };
 
+    const headerView = this.props.headerView || <Text>Observe</Text>;
+
     return (
       <View style={baseStyles.wrapper}>
-        <Header onTogglePress={this.onMenuPress} />
+        <Header onTogglePress={this.onMenuPress}>
+          {headerView}
+        </Header>
+
         <SideMenu
           ref={menu => {
             this._menu = menu;
