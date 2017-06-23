@@ -13,7 +13,7 @@ import Interactable from "react-native-interactable";
 
 import { Header, SideMenu, Text, MapList } from "../../components";
 import { baseStyles } from "../../styles";
-import FontAwesome, { Icons } from "react-native-fontawesome";
+import Icon from "react-native-vector-icons/MaterialIcons";
 
 Mapbox.setAccessToken(
   "pk.eyJ1Ijoic2V0aHZpbmNlbnQiLCJhIjoiSXZZXzZnUSJ9.Nr_zKa-4Ztcmc1Ypl0k5nw"
@@ -151,16 +151,15 @@ class ObservationMapScreen extends Component {
           style={[styles.buttonLegend]}
           onPress={this._onPressButton}
         >
-          <FontAwesome
+          <Icon
+            name="info"
             style={{
               paddingTop: 7,
               paddingLeft: 12,
               fontSize: 15,
               color: "#ffffff"
             }}
-          >
-            {Icons.info}
-          </FontAwesome>
+          />
         </TouchableOpacity>
         <TouchableOpacity
           style={[styles.buttonAdd]}
@@ -168,16 +167,15 @@ class ObservationMapScreen extends Component {
             navigate("Categories");
           }}
         >
-          <FontAwesome
+          <Icon
+            name="add"
             style={{
-              paddingTop: 18,
-              paddingLeft: 20,
-              fontSize: 25,
+              paddingTop: 7,
+              paddingLeft: 12,
+              fontSize: 15,
               color: "#ffffff"
             }}
-          >
-            {Icons.plus}
-          </FontAwesome>
+          />
         </TouchableOpacity>
         <MapList />
       </View>

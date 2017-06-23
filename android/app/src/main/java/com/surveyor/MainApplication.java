@@ -16,6 +16,7 @@ import java.util.List;
 import com.wix.interactable.Interactable;
 import com.mapbox.reactnativemapboxgl.ReactNativeMapboxGLPackage;
 import com.babisoft.ReactNativeLocalization.ReactNativeLocalizationPackage;
+import com.oblador.vectoricons.VectorIconsPackage;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -32,7 +33,8 @@ public class MainApplication extends Application implements ReactApplication {
         new Interactable(),
         new UdpSocketsModule(),
         new ReactNativeMapboxGLPackage(),
-        new ReactNativeLocalizationPackage()
+        new ReactNativeLocalizationPackage(),
+        new VectorIconsPackage()
       );
     }
   };

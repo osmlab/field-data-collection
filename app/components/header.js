@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { TextInput, View, TouchableHighlight } from "react-native";
-import FontAwesome, { Icons } from "react-native-fontawesome";
+import Icon from "react-native-vector-icons/MaterialIcons";
 
 import Text from "./text";
 import { colors } from "../styles";
@@ -30,9 +30,10 @@ function MapListToggle(props) {
   return (
     <View style={{ flex: 0.3, height: 30, justifyContent: "center" }}>
       <Text style={{ textAlign: "right" }} onPress={props.onTogglePress}>
-        <FontAwesome style={{ fontSize: 25, color: colors.interface.links }}>
-          {Icons.bars}
-        </FontAwesome>
+        <Icon
+          name="menu"
+          style={{ fontSize: 25, color: colors.interface.links }}
+        />
       </Text>
     </View>
   );
