@@ -9,9 +9,10 @@ import {
 } from "react-native";
 import Mapbox, { MapView } from "react-native-mapbox-gl";
 
-import { Header, SideMenu, Text } from "../../components";
-import { baseStyles } from "../../styles";
+import Interactable from "react-native-interactable";
 
+import { Header, SideMenu, Text, MapList } from "../../components";
+import { baseStyles } from "../../styles";
 import FontAwesome, { Icons } from "react-native-fontawesome";
 
 Mapbox.setAccessToken(
@@ -178,6 +179,7 @@ class ObservationMapScreen extends Component {
             {Icons.plus}
           </FontAwesome>
         </TouchableOpacity>
+        <MapList />
       </View>
     );
   }
