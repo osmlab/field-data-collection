@@ -13,8 +13,7 @@ export default function Header(props) {
         height: 60,
         borderBottomWidth: 1,
         borderColor: "#ccc",
-        backgroundColor: "white",
-        elevation: 3
+        backgroundColor: "white"
       }}
     >
       <View style={{ flex: 1, height: 30 }}>

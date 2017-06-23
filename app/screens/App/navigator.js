@@ -16,7 +16,7 @@ import ObservationMapScreen from "../Observations/map.js";
 import ObservationListScreen from "../Observations/list.js";
 
 const routeConfiguration = {
-  ObservationMap: { screen: ObservationsScreen },
+  ObservationMap: { screen: ObservationMapScreen },
   ObservationList: { screen: ObservationListScreen },
   MyObservations: { screen: ObservationsScreen },
   CreateObservation: { screen: ObservationCreateNavigator },
