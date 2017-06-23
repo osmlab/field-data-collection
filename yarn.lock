@@ -1397,7 +1397,7 @@ code-point-at@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/code-point-at/-/code-point-at-1.1.0.tgz#0d070b4d043a5bea33a2f1a40e2edb3d9a4ccf77"
 
-collect-stream@^1.1.1:
+collect-stream@^1.1.1, collect-stream@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/collect-stream/-/collect-stream-1.2.1.tgz#829b41746431b1e27e01e6cd3d0ac163c22a1ca7"
   dependencies:
@@ -5438,7 +5438,7 @@ react-native-localization@^0.1.30:
 
 react-native-mapbox-gl@sethvincent/react-native-mapbox-gl#field-data:
   version "5.2.0"
-  resolved "https://codeload.github.com/sethvincent/react-native-mapbox-gl/tar.gz/35118898a0070834a0c511519532b598810a1331"
+  resolved "https://codeload.github.com/sethvincent/react-native-mapbox-gl/tar.gz/0cd3eeddf4317ac91dc21ad29d1898a067fdbfe4"
   dependencies:
     babel-eslint "^6.1.2"
     lodash "^4.13.1"
@@ -6612,7 +6612,7 @@ through2@^0.6.3:
     readable-stream ">=1.0.33-1 <1.1.0-0"
     xtend ">=4.0.0 <4.1.0-0"
 
-through2@^2.0.0, through2@^2.0.1:
+through2@^2.0.0, through2@^2.0.1, through2@^2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/through2/-/through2-2.0.3.tgz#0004569b37c7c74ba39c43f3ced78d1ad94140be"
   dependencies:

@@ -5,6 +5,8 @@ const osmdb = require("osm-p2p-db");
 const eos = require("end-of-stream");
 const getGeoJSON = require("osm-p2p-geojson");
 const pump = require("pump");
+const collect = require("collect-stream");
+const through = require("through2");
 const OsmSync = require("./osm-sync");
 
 const createStore = require("./asyncstorage-chunk-store");
@@ -41,7 +43,8 @@ function osmp2p() {
     query,
     queryGeoJSONStream,
     replicate,
-    sync
+    sync,
+    listAnnotations
   };
 
   function ready(cb) {
@@ -134,6 +137,38 @@ function osmp2p() {
     }
 
     return transportStream.pipe(osmStream).pipe(transportStream);
+  }
+
+  function listAnnotations(q, cb) {
+    var stream = queryGeoJSONStream(q).pipe(through.obj(eachFeature));
+
+    function eachFeature(data, enc, next) {
+      const type = data.geometry.type.toLowerCase();
+      const coordinates = data.geometry.coordinates;
+
+      if (type === "point" && coordinates) {
+        this.push({
+          id: data.id,
+          type: type,
+          coordinates: coordinates.reverse(),
+          annotationImage: {
+            source: {
+              uri: "https://cldup.com/7NLZklp8zS.png"
+            },
+            height: 25,
+            width: 25
+          }
+        });
+      }
+
+      next();
+    }
+
+    if (cb) {
+      return collect(stream, cb);
+    }
+
+    return stream;
   }
 }
 

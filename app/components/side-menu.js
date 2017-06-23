@@ -39,6 +39,10 @@ const styles = StyleSheet.create({
 });
 
 class SideMenu extends Component {
+  componentWillMount() {
+    this._osm = this.props.osm;
+  }
+
   open = () => {
     this._menu.setVelocity({ x: -2000 });
   };
@@ -49,6 +53,7 @@ class SideMenu extends Component {
 
   render() {
     const { dispatch, navigate } = this.props.navigation;
+    const onSync = this.props.onSync;
 
     return (
       <View style={styles.sideMenuContainer} pointerEvents="box-none">
@@ -70,9 +75,9 @@ class SideMenu extends Component {
               onPress={() => {
                 var ws = websocket("ws://10.0.2.2:3000");
 
-                this.osm.sync(ws, err => {
+                this._osm.sync(ws, err => {
                   if (err) console.log(err);
-                  this.osm.ready(() => {});
+                  this._osm.ready(onSync);
                 });
               }}
             >

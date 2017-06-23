@@ -9,7 +9,9 @@ import {
 } from "react-native";
 import Mapbox, { MapView } from "react-native-mapbox-gl";
 
-import Interactable from "react-native-interactable";
+import osmp2p from "../../lib/osm-p2p";
+import { Header, SideMenu, Text } from "../../components";
+import { baseStyles } from "../../styles";
 
 import { Header, SideMenu, Text, MapList } from "../../components";
 import { baseStyles } from "../../styles";
@@ -58,6 +60,7 @@ class ObservationMapScreen extends Component {
     super();
 
     this.navigationOptions = { tabBarLabel: "Map" };
+    this._osm = osmp2p();
   }
 
   componentWillMount() {
@@ -68,7 +71,8 @@ class ObservationMapScreen extends Component {
       },
       zoom: 16,
       userTrackingMode: Mapbox.userTrackingMode.none,
-      annotations: []
+      annotations: [],
+      mapSize: { width: null, height: null }
     });
   }
 
@@ -80,38 +84,37 @@ class ObservationMapScreen extends Component {
     //
   }
 
+  onMapPress = e => {
+    const x = e.screenCoordX;
+    const y = e.screenCoordY;
+
+    const rect = {
+      top: y - 50,
+      right: x + 50,
+      bottom: y + 50,
+      left: x - 50
+    };
+
+    this._map.getBoundsFromScreenCoordinates(rect, bounds => {
+      console.log("bounds from screenCoords", bounds);
+      var q = [[bounds[0], bounds[2]], [bounds[1], bounds[3]]];
+
+      this._osm.listAnnotations(q, (err, annotations) => {
+        console.log("annotations.length", annotations.length);
+      });
+    });
+  };
+
   prepareAnnotations = () => {
-    // this._map.getBounds(data => {
-    //   var q = [[data[0], data[2]], [data[1], data[3]]];
-    //   var annotations = [];
-    //   var stream = this.osm.queryGeoJSONStream(q);
-    //
-    //   stream.on("data", d => {
-    //     const type = d.geometry.type.toLowerCase();
-    //     const coordinates = d.geometry.coordinates;
-    //
-    //     if (type === "point" && coordinates) {
-    //       annotations.push({
-    //         id: d.id,
-    //         type: type,
-    //         coordinates: coordinates.reverse(),
-    //         annotationImage: {
-    //           source: {
-    //             uri: "https://cldup.com/7NLZklp8zS.png"
-    //           },
-    //           height: 25,
-    //           width: 25
-    //         }
-    //       });
-    //     }
-    //   });
-    //
-    //   stream.on("end", () => {
-    //     this.setState({
-    //       annotations
-    //     });
-    //   });
-    // });
+    this._map.getBounds(data => {
+      var q = [[data[0], data[2]], [data[1], data[3]]];
+
+      this._osm.listAnnotations(q, (err, annotations) => {
+        if (annotations) {
+          this.setState({ annotations });
+        }
+      });
+    });
   };
 
   render() {
@@ -128,6 +131,8 @@ class ObservationMapScreen extends Component {
             this._menu = menu;
           }}
           navigation={this.props.navigation}
+          osm={this._osm}
+          onSync={this.prepareAnnotations}
         />
 
         <MapView
@@ -137,6 +142,13 @@ class ObservationMapScreen extends Component {
           style={styles.map}
           annotations={this.state.annotations}
           onFinishLoadingMap={this.prepareAnnotations}
+          onTap={this.onMapPress}
+          onOpenAnnotation={this.onMapPress}
+          onLayout={e => {
+            const { nativeEvent: { layout: { height, width } } } = e;
+            this.state.mapSize.height = height;
+            this.state.mapSize.width = width;
+          }}
           initialCenterCoordinate={this.state.center}
           initialZoomLevel={this.state.zoom}
           initialDirection={0}

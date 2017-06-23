@@ -16,6 +16,7 @@
     "babel-plugin-rewrite-require": "^1.9.1",
     "bonjour": "github:noffle/bonjour",
     "buffer": "^5.0.6",
+    "collect-stream": "^1.2.1",
     "d64": "^1.0.0",
     "end-of-stream": "^1.4.0",
     "hyperlog": "github:sethvincent/hyperlog",
@@ -38,6 +39,7 @@
     "redux": "^3.6.0",
     "redux-logger": "^3.0.6",
     "redux-persist": "^4.8.0",
+    "through2": "^2.0.3",
     "websocket-stream": "^5.0.0"
   },
   "devDependencies": {
