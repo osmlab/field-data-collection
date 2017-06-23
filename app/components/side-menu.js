@@ -34,7 +34,10 @@ const styles = StyleSheet.create({
     left: 0,
     width: SideMenuWidth,
     flex: 1,
-    backgroundColor: "#fff"
+    backgroundColor: "#fff",
+    borderWidth: 1,
+    borderColor: "#ccc",
+    elevation: 10
   }
 });
 

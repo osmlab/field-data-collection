@@ -151,9 +151,9 @@ const baseStyles = StyleSheet.create({
     paddingRight: 30
   },
   headerBackIcon: {
-    fontSize: 50,
-    marginTop: -20,
-    marginRight: 5
+    fontSize: 28,
+    marginRight: 10,
+    color: colors.text.tertiary
   },
   headerTitle: {
     paddingTop: 10

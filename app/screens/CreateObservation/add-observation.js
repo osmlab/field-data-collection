@@ -8,6 +8,7 @@ import {
 import Mapbox, { MapView } from "react-native-mapbox-gl";
 import { NavigationActions } from "react-navigation";
 import { connect } from "react-redux";
+import Icon from "react-native-vector-icons/MaterialIcons";
 
 import { Text, Wrapper } from "../../components";
 import { getFieldType } from "../../components/fields";
@@ -58,9 +59,12 @@ class AddObservationScreen extends Component {
           alignItems: "center"
         }}
       >
-        <Text style={[baseStyles.headerBackIcon]} onPress={onBackPress}>
-          ←
-        </Text>
+        <TouchableOpacity onPress={onBackPress}>
+          <Icon
+            name="keyboard-backspace"
+            style={[[baseStyles.headerBackIcon]]}
+          />
+        </TouchableOpacity>
         <Text style={[baseStyles.h3, baseStyles.headerTitle]}>
           Add Observation
         </Text>
