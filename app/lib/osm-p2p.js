@@ -149,7 +149,6 @@ function osmp2p() {
       if (type === "point" && coordinates) {
         this.push({
           id: data.id,
-          title: "weeeooooeweeewwwweeeeoooooo",
           type: type,
           coordinates: coordinates.reverse(),
           annotationImage: {

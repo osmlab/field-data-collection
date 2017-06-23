@@ -101,7 +101,6 @@ class ObservationMapScreen extends Component {
 
       this._osm.listAnnotations(q, (err, annotations) => {
         console.log("annotations.length", annotations.length);
-        this.setState({ annotations });
       });
     });
   };
