@@ -8,14 +8,11 @@ import {
   AsyncStorage
 } from "react-native";
 import Mapbox, { MapView } from "react-native-mapbox-gl";
+import Icon from "react-native-vector-icons/MaterialIcons";
 
 import osmp2p from "../../lib/osm-p2p";
 import { Header, SideMenu, Text } from "../../components";
 import { baseStyles } from "../../styles";
-
-import { Header, SideMenu, Text, MapList } from "../../components";
-import { baseStyles } from "../../styles";
-import Icon from "react-native-vector-icons/MaterialIcons";
 
 Mapbox.setAccessToken(
   "pk.eyJ1Ijoic2V0aHZpbmNlbnQiLCJhIjoiSXZZXzZnUSJ9.Nr_zKa-4Ztcmc1Ypl0k5nw"
