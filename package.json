@@ -9,6 +9,7 @@
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "ios": "react-native run-ios && react-native log-ios",
     "android": "react-native run-android && react-native log-android",
+    "android:install": "react-native run-android && adb install android/app/build/outputs/apk/app-debug.apk && react-native log-android",
     "precommit": "lint-staged"
   },
   "dependencies": {

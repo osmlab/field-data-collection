@@ -186,7 +186,6 @@ class ObservationMapScreen extends Component {
             }}
           />
         </TouchableOpacity>
-        <MapList />
       </View>
     );
   }
