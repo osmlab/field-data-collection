@@ -31,6 +31,10 @@ const baseStyles = StyleSheet.create({
   wrapperContent: {
     padding: 20
   },
+  wrapperContentSm: {
+    padding: 20,
+    paddingBottom: 7
+  },
   wrapperContentHeader: {
     padding: 20,
     paddingTop: 26,
@@ -41,8 +45,17 @@ const baseStyles = StyleSheet.create({
     borderBottomColor: colors.text.tertiary,
     borderBottomWidth: 0.5
   },
-  rightSideContent: {},
-
+  wrappedItems: {
+    flexDirection: "row"
+  },
+  mainHeader: {
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    alignItems: "center"
+  },
+  mainHeaderSpace: {
+    marginTop: 20
+  },
   //text
   title: {
     fontFamily: "Roboto",
@@ -86,7 +99,10 @@ const baseStyles = StyleSheet.create({
     color: colors.text.secondary
   },
   headerWithDescription: {
-    marginBottom: 5
+    marginBottom: 3
+  },
+  spacer: {
+    marginBottom: 2
   },
   observationBlock: {
     marginTop: 15
@@ -159,11 +175,10 @@ const baseStyles = StyleSheet.create({
   },
   buttonContent: {
     backgroundColor: colors.interface.links,
-    color: "#ffffff",
-    paddingTop: 10,
-    paddingBottom: 10,
-    paddingLeft: 15,
-    paddingRight: 15,
+    paddingTop: 8,
+    paddingBottom: 8,
+    paddingLeft: 20,
+    paddingRight: 20,
     borderRadius: 4
   },
 
@@ -246,6 +261,18 @@ const baseStyles = StyleSheet.create({
     height: 100,
     borderBottomColor: "#ccc",
     borderBottomWidth: 0.5
+  },
+
+  syncHeader: {
+    flexDirection: "row",
+    alignItems: "stretch",
+    flex: 1
+  },
+  syncHeaderText: {
+    paddingTop: 10
+  },
+  wrappedItemsLeft: {
+    flex: 0.75
   }
 });
 

@@ -10,7 +10,7 @@ const OsmSync = require("./osm-sync");
 const createStore = require("./asyncstorage-chunk-store");
 const convert = require("./convert-geojson-osmp2p");
 
-function createOsmDb (prefix) {
+function createOsmDb(prefix) {
   const logdb = levelup(prefix + "-db", { db: asyncstorage });
   const log = hyperlog(logdb, { valueEncoding: "json" });
 
@@ -22,10 +22,10 @@ function createOsmDb (prefix) {
 }
 
 function osmp2p() {
-  var observationDb = createOsmDb('observations')
-  var osmOrgDb = createOsmDb('osmorg')
+  var observationDb = createOsmDb("observations");
+  var osmOrgDb = createOsmDb("osmorg");
 
-  var netSync = OsmSync(observationDb, osmOrgDb)
+  var netSync = OsmSync(observationDb, osmOrgDb);
 
   observationDb.on("error", console.log);
   osmOrgDb.on("error", console.log);
@@ -48,9 +48,9 @@ function osmp2p() {
     observationDb.ready(onReady);
     osmOrgDb.ready(onReady);
 
-    var pending = 2
+    var pending = 2;
     function onReady() {
-      if (--pending === 0) cb()
+      if (--pending === 0) cb();
     }
   }
 
@@ -104,11 +104,11 @@ function osmp2p() {
   }
 
   function replicateNet(addr, opts, cb) {
-    netSync.replicate(addr, opts, cb)
+    netSync.replicate(addr, opts, cb);
   }
 
   function findReplicationTargets(opts, cb) {
-    netSync.findPeers(opts, cb)
+    netSync.findPeers(opts, cb);
   }
 
   function sync(transportStream, opts, callback) {

@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     flexDirection: "row",
-    zIndex: 1002,
+    zIndex: 1005,
     borderLeftWidth: 0.5
   },
   sideMenu: {
@@ -104,7 +104,7 @@ class SideMenu extends Component {
             <TouchableOpacity
               style={[baseStyles.navLink]}
               onPress={() => {
-                navigate("AccountObservations");
+                navigate("MyObservations");
               }}
             >
               <Text>My Observations</Text>

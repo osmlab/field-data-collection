@@ -1,36 +1,9 @@
 import React, { Component } from "react";
-import { StyleSheet, View, ListView } from "react-native";
+import { StyleSheet, View, ListView, TouchableOpacity } from "react-native";
+import { NavigationActions } from "react-navigation";
 
 import { Text, Wrapper } from "../../components";
 import { baseStyles } from "../../styles";
-
-const styles = StyleSheet.create({
-  observation: {
-    backgroundColor: "white",
-    borderColor: "#ccc",
-    borderWidth: 1,
-    padding: 10,
-    marginBottom: 5
-  },
-  muted: {
-    color: "#bbb"
-  },
-  observationTitle: {
-    fontSize: 15,
-    fontWeight: "bold"
-  },
-  content: {
-    marginTop: 20
-  },
-  settingsButton: {
-    position: "absolute",
-    top: 20,
-    right: 20
-  },
-  settingsButtonText: {
-    fontSize: 15
-  }
-});
 
 class AccountScreen extends Component {
   componentWillMount() {
@@ -45,7 +18,7 @@ class AccountScreen extends Component {
           surveyName: "Survey name",
           observationName: "Name of observation",
           updated: "Sep. 2, 2016",
-          lnglat: [47, -122],
+          distance: "30cm away",
           complete: 0.7
         },
         {
@@ -53,7 +26,7 @@ class AccountScreen extends Component {
           surveyName: "Survey name",
           observationName: "Name of observation",
           updated: "Sep. 2, 2016",
-          lnglat: [47, -122],
+          distance: "30cm away",
           complete: 0.7
         },
         {
@@ -61,7 +34,7 @@ class AccountScreen extends Component {
           surveyName: "Survey name",
           observationName: "Name of observation",
           updated: "Sep. 2, 2016",
-          lnglat: [47, -122],
+          distance: "30cm away",
           complete: 0.7
         }
       ])
@@ -71,43 +44,92 @@ class AccountScreen extends Component {
   render() {
     const { navigate } = this.props.navigation;
 
-    function onSettingsPress() {
-      console.log("onSettingsPress");
-      navigate("Settings");
-    }
+    const onBackPress = () => {
+      const backAction = NavigationActions.back();
+      this.props.navigation.dispatch(backAction);
+    };
+
+    const headerView = (
+      <View style={[baseStyles.mainHeader]}>
+        <Text style={[baseStyles.headerBackIcon]} onPress={onBackPress}>
+          ←
+        </Text>
+        <Text style={[baseStyles.h3, baseStyles.headerTitle]}>
+          My Observations
+        </Text>
+      </View>
+    );
 
     return (
-      <Wrapper navigation={this.props.navigation}>
-        <Text style={baseStyles.title}>
-          Your Observations
-        </Text>
-
-        <View style={styles.settingsButton}>
-          <Text style={styles.settingsButtonText} onPress={onSettingsPress}>
-            ⚙
-          </Text>
+      <Wrapper
+        style={[baseStyles.mainHeaderSpace]}
+        navigation={this.props.navigation}
+        headerView={headerView}
+      >
+        <View style={[baseStyles.wrapperContentSm]}>
+          <View style={[baseStyles.wrappedItems, baseStyles.syncHeader]}>
+            <View
+              style={[
+                baseStyles.wrappedItems,
+                baseStyles.wrappedItemsLeft,
+                baseStyles.syncHeaderText
+              ]}
+            >
+              <Text>Last Synced: </Text>
+              <Text>Aug 14, 2016</Text>
+            </View>
+            <TouchableOpacity
+              style={[baseStyles.buttonContent]}
+              onPress={() => {
+                navigate("");
+              }}
+            >
+              <Text style={[baseStyles.textWhite]}>Sync Data</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-
         <ListView
-          contentContainerStyle={styles.content}
+          style={[baseStyles.listView]}
           dataSource={this.state.observations}
           noScroll={true}
           renderRow={item => {
             return (
-              <View style={styles.observation}>
-                <View />
-                <Text style={styles.muted}>
-                  {item.category} | {item.surveyName}
-                </Text>
-                <Text style={styles.observationTitle}>
-                  {item.observationName}
-                </Text>
-                <Text style={styles.muted}>Last updated: {item.updated}</Text>
-                <Text>Lat/Long: {item.lnglat}</Text>
+              <View style={[baseStyles.wrapperContent]}>
+                <TouchableOpacity
+                  style={[baseStyles.surveyCard]}
+                  onPress={() => {
+                    navigate("");
+                  }}
+                >
+                  <View style={[baseStyles.map]}><Text>Map</Text></View>
+                  <View style={[baseStyles.percentComplete]}>
+                    <Text style={[baseStyles.percentCompleteText]}>80%</Text>
+                  </View>
+                  <View style={[baseStyles.surveyCardContent]}>
+                    <Text
+                      style={[baseStyles.h3, baseStyles.headerWithDescription]}
+                    >
+                      {item.observationName}
+                    </Text>
+                    <View style={[baseStyles.spaceBelow]}>
+                      <View
+                        style={[baseStyles.wrappedItems, baseStyles.spacer]}
+                      >
+                        <Text style={[baseStyles.withPipe]}>
+                          {item.distance} |
+                        </Text>
+                        <Text>Updated: {item.updated}</Text>
+                      </View>
+                      <Text>{item.surveyName}</Text>
+                    </View>
+                    <Text>{item.category}</Text>
+                  </View>
+                </TouchableOpacity>
               </View>
             );
           }}
         />
+
       </Wrapper>
     );
   }
