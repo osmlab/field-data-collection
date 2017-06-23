@@ -3,7 +3,7 @@ import { View } from "react-native";
 
 import { Text } from ".";
 import { baseStyles } from "../styles";
-import FontAwesome, { Icons } from "react-native-fontawesome";
+import Icon from "react-native-vector-icons/MaterialIcons";
 
 class Field extends Component {
   setNativeProps(nativeProps) {
@@ -22,9 +22,7 @@ export class ComboField extends Field {
           <Text style={[baseStyles.fieldValue]}>(options)</Text>
         </View>
         <View>
-          <FontAwesome style={[baseStyles.fieldArrow]}>
-            {Icons.chevronRight}
-          </FontAwesome>
+          <Icon name="chevron_right" style={baseStyles.fieldArrow} />
         </View>
       </View>
     );
@@ -42,9 +40,7 @@ export class NumberField extends Field {
           <Text style={[baseStyles.fieldValue]}>{placeholder}</Text>
         </View>
         <View>
-          <FontAwesome style={[baseStyles.fieldArrow]}>
-            {Icons.chevronRight}
-          </FontAwesome>
+          <Icon name="chevron_right" style={baseStyles.fieldArrow} />
         </View>
       </View>
     );
@@ -62,9 +58,7 @@ export class TextField extends Field {
           <Text style={[baseStyles.fieldValue]}>(text)</Text>
         </View>
         <View>
-          <FontAwesome style={[baseStyles.fieldArrow]}>
-            {Icons.chevronRight}
-          </FontAwesome>
+          <Icon name="chevron_right" style={baseStyles.fieldArrow} />
         </View>
       </View>
     );

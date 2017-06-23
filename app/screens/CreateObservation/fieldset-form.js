@@ -4,7 +4,7 @@ import { NavigationActions } from "react-navigation";
 
 import { Text, Wrapper, getFieldInput } from "../../components";
 import { baseStyles } from "../../styles";
-import FontAwesome, { Icons } from "react-native-fontawesome";
+import Icon from "react-native-vector-icons/MaterialIcons";
 
 class FieldsetFormScreen extends Component {
   componentWillMount() {
