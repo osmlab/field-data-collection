@@ -1,4 +1,4 @@
-import OSMSync from "../lib/osm-sync";
+import { findPeers } from "../lib/osm-sync";
 import { timeout } from "../lib";
 
 const types = {
@@ -24,7 +24,7 @@ const getPeerInfo = (dispatch, callback) => {
     type: types.DISCOVERING_PEERS
   });
 
-  return new OSMSync().findPeers((err, peers) => {
+  return findPeers((err, peers) => {
     if (err) {
       return callback(err);
     }
