@@ -65,21 +65,25 @@ OsmSync.prototype.findPeers = function(opts, done) {
   done = done || noop;
 
   var bonjour = Bonjour();
-  var peers = [];
-  var browser = bonjour.find({ type: "osm-sync" }, onPeer);
-  setTimeout(onDone, opts.timeout);
+  var peer = null;
+  var browser = bonjour.findOne({ type: "osm-sync" }, onPeer);
+  setTimeout(onTimeout, opts.timeout);
 
   function onPeer(info) {
     console.log("Found an osm-sync peer", info);
-    peers.push({
+    peer = {
       address: info.addresses[0],
       port: info.port
-    });
+    };
+    done(null, [peer])
   }
 
-  function onDone() {
-    browser.stop();
-    done(null, peers);
+  function onTimeout() {
+    console.log("Found no osm-sync peers");
+    if (!peer) {
+      browser.stop();
+      done(null, []);
+    }
   }
 };
 
