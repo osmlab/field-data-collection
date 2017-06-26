@@ -1,23 +1,36 @@
 import React, { Component } from "react";
-import { StyleSheet, View, Button, TouchableOpacity } from "react-native";
+import { Button, TouchableOpacity, View } from "react-native";
 import { NavigationActions } from "react-navigation";
+import { connect } from "react-redux";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
-import { Text, Wrapper } from "../../components";
+import {
+  clearRemoteSurveys,
+  fetchRemoteSurvey,
+  listRemoteSurveys
+} from "../../actions";
+import { StatusBar, Text, Wrapper } from "../../components";
+import { selectAvailableSurveys, selectRemoteSurveys } from "../../selectors";
 import { baseStyles } from "../../styles";
+import LocalSurveyList from "./LocalSurveyList";
+import RemoteSurveyList from "./RemoteSurveyList";
 
 class SurveysScreen extends Component {
-  constructor() {
-    super();
+  onBackPress = () => this.props.navigation.dispatch(NavigationActions.back());
+
+  componentWillMount() {
+    this.props.clearRemoteSurveys();
+    this.props.listRemoteSurveys();
   }
 
   render() {
-    const { navigate } = this.props.navigation;
-
-    const onBackPress = () => {
-      const backAction = NavigationActions.back();
-      this.props.navigation.dispatch(backAction);
-    };
+    const {
+      availableSurveys,
+      fetchRemoteSurvey,
+      listRemoteSurveys,
+      navigate,
+      remoteSurveys
+    } = this.props;
 
     const headerView = (
       <View
@@ -39,6 +52,12 @@ class SurveysScreen extends Component {
 
     return (
       <Wrapper navigation={this.props.navigation} headerView={headerView}>
+        <StatusBar />
+
+        <Button onPress={listRemoteSurveys} title="Refresh Survey List" />
+        <RemoteSurveyList fetch={fetchRemoteSurvey} surveys={remoteSurveys} />
+        <LocalSurveyList surveys={availableSurveys} />
+
         <View
           style={[
             baseStyles.wrapperContent,
@@ -107,10 +126,13 @@ class SurveysScreen extends Component {
   }
 }
 
-const styles = StyleSheet.create({
-  subtitle: {
-    fontSize: 17
-  }
+const mapStateToProps = state => ({
+  availableSurveys: selectAvailableSurveys(state),
+  remoteSurveys: selectRemoteSurveys(state)
 });
 
-export default SurveysScreen;
+export default connect(mapStateToProps, {
+  clearRemoteSurveys,
+  fetchRemoteSurvey,
+  listRemoteSurveys
+})(SurveysScreen);

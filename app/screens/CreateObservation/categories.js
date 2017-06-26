@@ -11,6 +11,7 @@ import { NavigationActions } from "react-navigation";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
 import { Text, Wrapper } from "../../components";
+import { selectObservationTypes } from "../../selectors";
 import { baseStyles } from "../../styles";
 
 const styles = StyleSheet.create({
@@ -118,16 +119,8 @@ class CategoriesScreen extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  const survey = state.surveys[0];
-
-  const observationTypes = survey.observationTypes.map(t =>
-    survey.featureTypes.find(x => x.id === t)
-  );
-
-  return {
-    observationTypes
-  };
-};
+const mapStateToProps = state => ({
+  observationTypes: selectObservationTypes(state)
+});
 
 export default connect(mapStateToProps)(CategoriesScreen);
