@@ -1,3 +1,10 @@
+import eos from "end-of-stream";
+import JSONStream from "JSONStream";
+import once from "once";
+import promisify from "es6-promisify";
+import tar from "tar-stream";
+import through2 from "through2";
+
 import { findPeers } from "../lib/osm-sync";
 import { timeout } from "../lib";
 
@@ -18,6 +25,47 @@ const COORDINATOR_FALLBACK_IP = "10.0.2.2";
 const COORDINATOR_FALLBACK_PORT = 3210;
 
 export default types;
+
+const extractSurveyBundle = (id, bundle, _callback) => {
+  const survey = {};
+  const callback = once(err => {
+    return _callback(err, survey);
+  });
+  const extract = tar.extract();
+
+  eos(extract, callback);
+
+  extract.on("entry", (header, stream, next) => {
+    stream.on("end", next);
+
+    if (header.name === "survey.json") {
+      stream.pipe(
+        JSONStream.parse().on(
+          "data",
+          data => (survey.definition = Object.assign(data, { id }))
+        )
+      );
+    } else {
+      const chunks = [];
+
+      stream
+        .pipe(
+          through2((chunk, enc, done) => {
+            chunks.push(chunk);
+
+            done();
+          })
+        )
+        .on("finish", () => {
+          const blob = Buffer.concat(chunks);
+
+          survey[header.name] = blob;
+        });
+    }
+  });
+
+  extract.end(bundle);
+};
 
 const getPeerInfo = (dispatch, callback) => {
   dispatch({
@@ -61,10 +109,27 @@ export const fetchRemoteSurvey = id => (dispatch, getState) => {
     });
 
     return timeout(
-      fetch(`http://${targetIP}:${targetPort}/surveys/${id}`),
+      fetch(`http://${targetIP}:${targetPort}/surveys/${id}/bundle`),
       1000
     )
-      .then(rsp => rsp.json())
+      .then(rsp => rsp.blob())
+      .then(blob => {
+        return new Promise((resolve, reject) => {
+          var reader = new FileReader();
+
+          reader.addEventListener("loadend", () =>
+            resolve(new Buffer(reader.result))
+          );
+          reader.addEventListener("error", err => reject(err));
+
+          reader.readAsArrayBuffer(blob);
+        });
+      })
+      .then(bundle => promisify(extractSurveyBundle)(id, bundle))
+      .then(survey => {
+        console.log(survey);
+        return survey;
+      })
       .then(survey =>
         dispatch({
           id,

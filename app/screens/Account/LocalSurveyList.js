@@ -19,7 +19,7 @@ export default class LocalSurveyList extends Component {
         </Text>
         {surveys.map((survey, idx) =>
           <Text key={idx} style={{ flex: 1 }}>
-            {survey.name} {survey.version}
+            {survey.definition.name} {survey.definition.version}
           </Text>
         )}
       </View>
