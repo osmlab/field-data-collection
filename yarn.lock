@@ -5444,9 +5444,9 @@ react-native-mapbox-gl@sethvincent/react-native-mapbox-gl#field-data:
     lodash "^4.13.1"
     prop-types "^15.5.10"
 
-react-native-pie-chart@sethvincent/react-native-pie-chart:
-  version "1.0.11"
-  resolved "https://codeload.github.com/sethvincent/react-native-pie-chart/tar.gz/456b83a8e2e4cb96b415acdb79ad7a3cfab028e2"
+react-native-pie-chart@^1.0.12:
+  version "1.0.12"
+  resolved "https://registry.yarnpkg.com/react-native-pie-chart/-/react-native-pie-chart-1.0.12.tgz#0d99e9cb4cb3a4503c20a9111d499d84a99b4276"
 
 react-native-tab-view@^0.0.65:
   version "0.0.65"

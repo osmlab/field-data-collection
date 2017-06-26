@@ -32,7 +32,7 @@
     "react-native-level-fs": "^3.0.0",
     "react-native-localization": "^0.1.30",
     "react-native-mapbox-gl": "sethvincent/react-native-mapbox-gl#field-data",
-    "react-native-pie-chart": "sethvincent/react-native-pie-chart",
+    "react-native-pie-chart": "^1.0.12",
     "react-native-udp": "^2.0.0",
     "react-native-vector-icons": "^4.2.0",
     "react-navigation": "^1.0.0-beta.11",
