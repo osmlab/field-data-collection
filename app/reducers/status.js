@@ -1,12 +1,13 @@
 import types from "../actions";
 
 const initialState = {
-  message: "",
+  message: null,
   error: null
 };
 
 export default (state = initialState, { error, type }) => {
   switch (type) {
+    // TODO types can be mapped to messages with a lookup table
     case types.DISCOVERING_PEERS:
       return {
         ...state,
