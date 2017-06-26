@@ -36,10 +36,7 @@ const parse = (path, type, callback) => {
 
 const loadField = (fieldName, { basePath }, callback) => {
   return parse(
-    path.resolve(
-      path.resolve(basePath, "presets", "fields"),
-      fieldName + ".json"
-    ),
+    path.resolve(path.resolve(basePath, "fields"), fieldName + ".json"),
     "json",
     callback
   );
@@ -47,10 +44,7 @@ const loadField = (fieldName, { basePath }, callback) => {
 
 const loadPreset = (presetName, { basePath }, callback) => {
   return parse(
-    path.resolve(
-      path.resolve(basePath, "presets", "presets"),
-      presetName + ".json"
-    ),
+    path.resolve(path.resolve(basePath, "presets"), presetName + ".json"),
     "json",
     callback
   );
@@ -293,10 +287,7 @@ module.exports.compileSurvey = (surveyConfig, callback) => {
     return resolveSurvey(
       yaml.safeLoad(fs.readFileSync(surveyConfig)),
       {
-        basePath: path.join(
-          path.dirname(surveyConfig),
-          path.basename(surveyConfig, path.extname(surveyConfig))
-        )
+        basePath: path.dirname(surveyConfig)
       },
       callback
     );
