@@ -28,9 +28,10 @@ class SurveysScreen extends Component {
       availableSurveys,
       fetchRemoteSurvey,
       listRemoteSurveys,
-      navigate,
       remoteSurveys
     } = this.props;
+
+    const { navigate } = this.props.navigation;
 
     const headerView = (
       <View
@@ -116,7 +117,12 @@ class SurveysScreen extends Component {
             <Text style={[baseStyles.link]}>{"Edit".toUpperCase()}</Text>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity style={[baseStyles.buttonBottom]}>
+        <TouchableOpacity
+          style={[baseStyles.buttonBottom]}
+          onPress={() => {
+            navigate("SurveyChoose");
+          }}
+        >
           <Text style={[baseStyles.textWhite]}>
             {"Add New Surveys".toUpperCase()}
           </Text>

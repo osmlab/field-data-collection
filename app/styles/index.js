@@ -35,6 +35,9 @@ const baseStyles = StyleSheet.create({
     padding: 20,
     paddingBottom: 7
   },
+  wrapperContentMd: {
+    padding: 25
+  },
   wrapperContentLg: {
     paddingBottom: 30,
     paddingTop: 30
@@ -59,6 +62,24 @@ const baseStyles = StyleSheet.create({
   },
   mainHeaderSpace: {
     marginTop: 20
+  },
+
+  //Modal
+  modal: {
+    marginTop: 25,
+    backgroundColor: "#fff",
+    width: 380,
+    height: 600,
+    alignSelf: "center"
+  },
+  touchableLinksWrapper: {
+    marginTop: 10,
+    marginBottom: 10,
+    paddingTop: 10,
+    paddingBottom: 10
+  },
+  touchableLinks: {
+    fontSize: 22
   },
   //text
   title: {
@@ -163,6 +184,10 @@ const baseStyles = StyleSheet.create({
   },
   headerTitle: {
     paddingTop: 10
+  },
+  clearIcon: {
+    fontSize: 28,
+    color: colors.interface.links
   },
 
   //buttons
