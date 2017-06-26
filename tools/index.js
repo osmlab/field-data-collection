@@ -2,6 +2,7 @@ const fs = require("fs");
 const path = require("path");
 
 const async = require("async");
+const recursive = require("recursive-readdir");
 const uniq = require("lodash.uniq");
 const uniqBy = require("lodash.uniqby");
 const yaml = require("js-yaml");
@@ -106,7 +107,11 @@ const resolveFields = (fields, options, callback) => {
 // NOTE: options is the first argument so that it can be partially applied prior
 // to use by map functions
 const resolveFeatureType = (opts, featureType, callback) => {
-  const { preset } = featureType;
+  let { preset } = featureType;
+
+  if (typeof featureType === "string") {
+    preset = featureType;
+  }
 
   return loadPreset(preset, opts, (err, preset) => {
     if (err) {
@@ -128,7 +133,7 @@ const resolveFeatureType = (opts, featureType, callback) => {
       const { extend, id, include, name, options, related } = featureType;
 
       // overrides
-      preset.id = id;
+      preset.id = id || featureType.replace("/", "=");
       preset.name = name || preset.name;
       preset.related = related || [];
 
@@ -173,112 +178,146 @@ const resolveFeatureTypes = (featureTypes, options, callback) => {
   );
 };
 
-const resolveSurvey = (surveyDefinition, options, callback) => {
-  const { feature_types } = surveyDefinition;
-
-  return resolveFeatureTypes(feature_types, options, (err, featureTypes) => {
+const listPresets = (presetDir, callback) => {
+  return recursive(presetDir, (err, entries) => {
     if (err) {
       return callback(err);
     }
 
-    // post-process feature types
-    featureTypes = featureTypes.map(ft => {
-      if (ft.extend != null) {
-        // the original definition of this feature type
-        const ftDef = feature_types.find(x => x.id === ft.id);
-        // definitions to extend
-        const defs = [];
+    return callback(
+      null,
+      entries.map(x =>
+        x
+          .replace(path.normalize(presetDir) + "/", "")
+          .replace(path.extname(x), "")
+      )
+    );
+  });
+};
 
-        if (Array.isArray(ft.extend)) {
-          defs.push(...feature_types.filter(x => ft.extend.includes(x.id)));
-        } else {
-          defs.push(feature_types.find(x => x.id === ft.extend));
-        }
+const resolveSurvey = (surveyDefinition, options, callback) => {
+  const { feature_types } = surveyDefinition;
+  let addFeatureTypes = callback => callback(null, feature_types);
 
-        let localFields = ft.fields;
-        const inheritedFields = [];
+  if (feature_types == null) {
+    addFeatureTypes = listPresets.bind(
+      null,
+      path.join(options.basePath, "presets")
+    );
+  }
 
-        const relatedTypes = ft.related;
-        const inhertedRelatedTypes = [];
+  return addFeatureTypes((err, featureTypes) => {
+    if (err) {
+      return callback(err);
+    }
 
-        defs.forEach(def => {
-          if (def.exclude != null) {
-            const toRemove = [];
-
-            if (ftDef.include != null) {
-              // resolve the list of included fields to their type
-              const included = ftDef.include.map(i => i.type || i);
-
-              // locally included fields should override what the parent excludes
-              toRemove.push(...def.exclude.filter(e => !included.includes(e)));
-            } else {
-              toRemove.push(...def.exclude);
-            }
-
-            // remove excluded fields
-            localFields = localFields.filter(f => !toRemove.includes(f.type));
-          }
-
-          // add inherited fields
-          const superType = featureTypes.find(x => x.id === def.id);
-          inheritedFields.push(...superType.fields);
-          inhertedRelatedTypes.push(...superType.related);
-        });
-
-        // append + dedupe local fields (both custom + from presets), preferring
-        // custom fields
-        ft.fields = uniqBy(
-          inheritedFields.concat(localFields).reverse(),
-          "key"
-        ).reverse();
-
-        // append + dedupe related fields
-        ft.related = uniq(inhertedRelatedTypes.concat(relatedTypes));
-
-        // clean up after ourselves
-        delete ft.extend;
+    return resolveFeatureTypes(featureTypes, options, (err, featureTypes) => {
+      if (err) {
+        return callback(err);
       }
 
-      return ft;
+      // post-process feature types
+      featureTypes = featureTypes.map(ft => {
+        if (ft.extend != null) {
+          // the original definition of this feature type
+          const ftDef = feature_types.find(x => x.id === ft.id);
+          // definitions to extend
+          const defs = [];
+
+          if (Array.isArray(ft.extend)) {
+            defs.push(...feature_types.filter(x => ft.extend.includes(x.id)));
+          } else {
+            defs.push(feature_types.find(x => x.id === ft.extend));
+          }
+
+          let localFields = ft.fields;
+          const inheritedFields = [];
+
+          const relatedTypes = ft.related;
+          const inhertedRelatedTypes = [];
+
+          defs.forEach(def => {
+            if (def.exclude != null) {
+              const toRemove = [];
+
+              if (ftDef.include != null) {
+                // resolve the list of included fields to their type
+                const included = ftDef.include.map(i => i.type || i);
+
+                // locally included fields should override what the parent excludes
+                toRemove.push(
+                  ...def.exclude.filter(e => !included.includes(e))
+                );
+              } else {
+                toRemove.push(...def.exclude);
+              }
+
+              // remove excluded fields
+              localFields = localFields.filter(f => !toRemove.includes(f.type));
+            }
+
+            // add inherited fields
+            const superType = featureTypes.find(x => x.id === def.id);
+            inheritedFields.push(...superType.fields);
+            inhertedRelatedTypes.push(...superType.related);
+          });
+
+          // append + dedupe local fields (both custom + from presets), preferring
+          // custom fields
+          ft.fields = uniqBy(
+            inheritedFields.concat(localFields).reverse(),
+            "key"
+          ).reverse();
+
+          // append + dedupe related fields
+          ft.related = uniq(inhertedRelatedTypes.concat(relatedTypes));
+
+          // clean up after ourselves
+          delete ft.extend;
+        }
+
+        return ft;
+      });
+
+      const observationTypes =
+        surveyDefinition.observation_types || featureTypes.map(x => x.id);
+
+      const {
+        attachments,
+        description,
+        imagery,
+        meta,
+        name,
+        sync,
+        version
+      } = surveyDefinition;
+      let { anonymous, editable } = surveyDefinition;
+
+      // defaults
+      if (anonymous == null) {
+        anonymous = true;
+      }
+
+      if (editable == null) {
+        editable = true;
+      }
+
+      const survey = {
+        anonymous,
+        attachments,
+        description,
+        editable,
+        imagery,
+        meta,
+        name,
+        sync,
+        version,
+        featureTypes,
+        observationTypes
+      };
+
+      return callback(null, survey);
     });
-
-    const observationTypes = surveyDefinition.observation_types;
-
-    const {
-      attachments,
-      description,
-      imagery,
-      meta,
-      name,
-      sync,
-      version
-    } = surveyDefinition;
-    let { anonymous, editable } = surveyDefinition;
-
-    // defaults
-    if (anonymous == null) {
-      anonymous = true;
-    }
-
-    if (editable == null) {
-      editable = true;
-    }
-
-    const survey = {
-      anonymous,
-      attachments,
-      description,
-      editable,
-      imagery,
-      meta,
-      name,
-      sync,
-      version,
-      featureTypes,
-      observationTypes
-    };
-
-    return callback(null, survey);
   });
 };
 
