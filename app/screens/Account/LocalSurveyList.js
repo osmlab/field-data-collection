@@ -1,12 +1,12 @@
 import React, { Component } from "react";
-import { View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 
 import { Text } from "../../components";
 import { baseStyles } from "../../styles";
 
 export default class LocalSurveyList extends Component {
   render() {
-    const { surveys } = this.props;
+    const { navigation: { navigate }, surveys } = this.props;
 
     if (surveys == null || surveys.length === 0) {
       return null;
@@ -14,13 +14,49 @@ export default class LocalSurveyList extends Component {
 
     return (
       <View style={{ flex: 1 }}>
-        <Text style={[baseStyles.h3, baseStyles.headerWithDescription]}>
-          Loaded Surveys
-        </Text>
         {surveys.map((survey, idx) =>
-          <Text key={idx} style={{ flex: 1 }}>
-            {survey.definition.name} {survey.definition.version}
-          </Text>
+          <View
+            key={idx}
+            style={[
+              baseStyles.wrapperContent,
+              baseStyles.wrapperContentLg,
+              baseStyles.listBlock,
+              { flex: 1 }
+            ]}
+          >
+            <TouchableOpacity
+              onPress={() => {
+                navigate("Survey");
+              }}
+            >
+              <Text style={[baseStyles.h3, baseStyles.headerWithDescription]}>
+                {survey.definition.name}
+              </Text>
+            </TouchableOpacity>
+            <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+              <Text>Updated: </Text>
+              <Text>4/30/17 4:30pm (TBD)</Text>
+            </View>
+            <View
+              style={[
+                baseStyles.observationBlock,
+                baseStyles.spaceBelowMd,
+                { flexDirection: "row", flexWrap: "wrap" }
+              ]}
+            >
+              <Text style={[baseStyles.metadataText]}>
+                2 Observations (TBD)
+              </Text>
+              <Text style={[baseStyles.textAlert]}>(2 incomplete) (TBD)</Text>
+            </View>
+            <TouchableOpacity
+              onPress={() => {
+                navigate("Survey");
+              }}
+            >
+              <Text style={[baseStyles.link]}>{"Edit".toUpperCase()}</Text>
+            </TouchableOpacity>
+          </View>
         )}
       </View>
     );
