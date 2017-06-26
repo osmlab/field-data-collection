@@ -18,11 +18,8 @@ class SurveysScreen extends Component {
   onBackPress = () => this.props.navigation.dispatch(NavigationActions.back());
 
   componentWillMount() {
-    this.props.listRemoteSurveys();
-  }
-
-  componentWillUnmount() {
     this.props.clearRemoteSurveys();
+    this.props.listRemoteSurveys();
   }
 
   render() {
