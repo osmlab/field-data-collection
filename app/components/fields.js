@@ -22,7 +22,7 @@ export class ComboField extends Field {
           <Text style={[baseStyles.fieldValue]}>(options)</Text>
         </View>
         <View>
-          <Icon name="chevron_right" style={baseStyles.fieldArrow} />
+          <Icon name="keyboard-arrow-right" style={[[baseStyles.formArrow]]} />
         </View>
       </View>
     );
@@ -40,7 +40,7 @@ export class NumberField extends Field {
           <Text style={[baseStyles.fieldValue]}>{placeholder}</Text>
         </View>
         <View>
-          <Icon name="chevron_right" style={baseStyles.fieldArrow} />
+          <Icon name="keyboard-arrow-right" style={[[baseStyles.formArrow]]} />
         </View>
       </View>
     );

@@ -1,5 +1,11 @@
 import React, { Component } from "react";
-import { StyleSheet, View, Button, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Button,
+  TouchableOpacity,
+  ScrollView
+} from "react-native";
 import { NavigationActions } from "react-navigation";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
@@ -43,8 +49,7 @@ class SurveysScreen extends Component {
           style={[
             baseStyles.wrapperContent,
             baseStyles.wrapperContentLg,
-            baseStyles.listBlock,
-            { flex: 1 }
+            baseStyles.listBlock
           ]}
         >
           <Text style={[baseStyles.h3, baseStyles.headerWithDescription]}>

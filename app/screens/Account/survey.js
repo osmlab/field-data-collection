@@ -3,7 +3,7 @@ import { StyleSheet, View, Button, TouchableOpacity } from "react-native";
 import { NavigationActions } from "react-navigation";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
-import { Text, Wrapper } from "../../components";
+import { Text, Wrapper, PercentComplete } from "../../components";
 import { baseStyles } from "../../styles";
 
 class SurveysScreen extends Component {
@@ -64,9 +64,7 @@ class SurveysScreen extends Component {
               }}
             >
               <View style={[baseStyles.map]}><Text>Map</Text></View>
-              <View style={[baseStyles.percentComplete]}>
-                <Text style={[baseStyles.percentCompleteText]}>80%</Text>
-              </View>
+              <PercentComplete />
               <View style={[baseStyles.surveyCardContent]}>
                 <Text style={[baseStyles.h3, baseStyles.headerWithDescription]}>
                   Name of Observation

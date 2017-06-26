@@ -10,9 +10,10 @@ import { NavigationActions } from "react-navigation";
 import { connect } from "react-redux";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
-import { Text, Wrapper } from "../../components";
+import { Text, Wrapper, PercentComplete } from "../../components";
 import { getFieldType } from "../../components/fields";
 import { baseStyles } from "../../styles";
+import PieChart from "react-native-pie-chart";
 
 const styles = StyleSheet.create({});
 
@@ -75,15 +76,21 @@ class AddObservationScreen extends Component {
       <Wrapper navigation={this.props.navigation} headerView={headerView}>
         <View
           style={[
+            baseStyles.wrapperContentHeader,
             baseStyles.headerPage,
-            {
-              flexDirection: "row",
-              flexWrap: "wrap"
-            }
+            { flexWrap: "wrap", flex: 1, flexDirection: "row" }
           ]}
         >
-          <View style={[baseStyles.wrapperContent]}>
-            <Text style={[baseStyles.h2, baseStyles.textWhite]}>{name}</Text>
+          <View style={[baseStyles.headerPageText]}>
+            <Text
+              style={[
+                baseStyles.h2,
+                baseStyles.textWhite,
+                baseStyles.headerWithDescription
+              ]}
+            >
+              {name}
+            </Text>
             <Text>
               <Text style={[baseStyles.textWhite]}>Adding point to: </Text>
               <Text
@@ -96,14 +103,44 @@ class AddObservationScreen extends Component {
               </Text>
             </Text>
           </View>
+          <View style={{ flex: 0.25, position: "relative" }}>
+            <PieChart
+              chart_wh={100}
+              series={[80]}
+              sliceColor={["#1DE9B6"]}
+              doughnut={true}
+              coverRadius={0.85}
+              coverFill={"#6579FC"}
+            />
+            <Text
+              style={[
+                baseStyles.percentCompleteText,
+                baseStyles.textWhite,
+                { position: "absolute", marginTop: 5, paddingLeft: 5 }
+              ]}
+            >
+              <Text
+                style={[
+                  baseStyles.percentCompleteTextNum,
+                  baseStyles.textWhite
+                ]}
+              >
+                80%
+              </Text>{" "}
+              Complete
+            </Text>
+          </View>
         </View>
-
-        <TouchableOpacity onPress={this.addLocation.bind(this)}>
-          <Text style={[baseStyles.link, { zIndex: 6000 }]}>
-            + Add Location
-          </Text>
-        </TouchableOpacity>
-
+        <View style={[baseStyles.mapLg]}>
+          <Text>Map</Text>
+          <View style={[baseStyles.mapEditorBlock]}>
+            <TouchableOpacity onPress={this.addLocation.bind(this)}>
+              <Text style={[baseStyles.link]}>
+                {"+ Add Location".toUpperCase()}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
         <View style={{ marginTop: 20 }}>
           <View style={[baseStyles.wrapperContent]}>
             <Text style={[baseStyles.h3]}>Basic Info</Text>
