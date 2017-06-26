@@ -40,7 +40,7 @@ class SurveysScreen extends Component {
           alignItems: "center"
         }}
       >
-        <TouchableOpacity onPress={onBackPress}>
+        <TouchableOpacity onPress={this.onBackPress}>
           <Icon
             name="keyboard-backspace"
             style={[[baseStyles.headerBackIcon]]}
