@@ -35,6 +35,10 @@ const baseStyles = StyleSheet.create({
     padding: 20,
     paddingBottom: 7
   },
+  wrapperContentLg: {
+    paddingBottom: 30,
+    paddingTop: 30
+  },
   wrapperContentHeader: {
     padding: 20,
     paddingTop: 26,
@@ -96,7 +100,7 @@ const baseStyles = StyleSheet.create({
   metadataText: {
     fontStyle: "italic",
     marginRight: 10,
-    color: colors.text.secondary
+    color: colors.text.tertiary
   },
   headerWithDescription: {
     marginBottom: 3
@@ -105,7 +109,7 @@ const baseStyles = StyleSheet.create({
     marginBottom: 2
   },
   observationBlock: {
-    marginTop: 15
+    marginTop: 10
   },
   textAlert: {
     fontStyle: "italic",
@@ -116,6 +120,9 @@ const baseStyles = StyleSheet.create({
   },
   spaceBelow: {
     marginBottom: 15
+  },
+  spaceBelowMd: {
+    marginBottom: 22
   },
 
   //links
@@ -133,9 +140,8 @@ const baseStyles = StyleSheet.create({
     borderBottomWidth: 0.5
   },
   link: {
-    color: colors.interface.links,
-    borderBottomWidth: 0.5,
-    borderBottomColor: colors.interface.links
+    textDecorationLine: "underline",
+    color: colors.interface.links
   },
   headerLink: {
     textDecorationLine: "underline"
@@ -162,7 +168,15 @@ const baseStyles = StyleSheet.create({
   //buttons
   buttonBottom: {
     backgroundColor: colors.interface.links,
-    color: "#ffffff"
+    flex: 1,
+    flexDirection: "row",
+    position: "absolute",
+    justifyContent: "center",
+    left: 0,
+    right: 0,
+    bottom: 0,
+    paddingTop: 15,
+    paddingBottom: 15
   },
   buttonOutline: {
     borderColor: colors.text.header,
@@ -250,7 +264,7 @@ const baseStyles = StyleSheet.create({
     borderRadius: 80,
     position: "absolute",
     top: 70,
-    right: 20,
+    right: 15,
     elevation: 6
   },
   percentCompleteText: {

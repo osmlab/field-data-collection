@@ -40,7 +40,12 @@ class SurveysScreen extends Component {
     return (
       <Wrapper navigation={this.props.navigation} headerView={headerView}>
         <View
-          style={[baseStyles.wrapperContent, baseStyles.listBlock, { flex: 1 }]}
+          style={[
+            baseStyles.wrapperContent,
+            baseStyles.wrapperContentLg,
+            baseStyles.listBlock,
+            { flex: 1 }
+          ]}
         >
           <Text style={[baseStyles.h3, baseStyles.headerWithDescription]}>
             OSM
@@ -54,7 +59,12 @@ class SurveysScreen extends Component {
           </View>
         </View>
         <View
-          style={[baseStyles.wrapperContent, baseStyles.listBlock, { flex: 1 }]}
+          style={[
+            baseStyles.wrapperContent,
+            baseStyles.wrapperContentLg,
+            baseStyles.listBlock,
+            { flex: 1 }
+          ]}
         >
           <TouchableOpacity
             onPress={() => {
@@ -72,6 +82,7 @@ class SurveysScreen extends Component {
           <View
             style={[
               baseStyles.observationBlock,
+              baseStyles.spaceBelowMd,
               { flexDirection: "row", flexWrap: "wrap" }
             ]}
           >
@@ -83,9 +94,14 @@ class SurveysScreen extends Component {
               navigate("Survey");
             }}
           >
-            <Text style={[baseStyles.link]}>Edit</Text>
+            <Text style={[baseStyles.link]}>{"Edit".toUpperCase()}</Text>
           </TouchableOpacity>
         </View>
+        <TouchableOpacity style={[baseStyles.buttonBottom]}>
+          <Text style={[baseStyles.textWhite]}>
+            {"Add New Surveys".toUpperCase()}
+          </Text>
+        </TouchableOpacity>
       </Wrapper>
     );
   }

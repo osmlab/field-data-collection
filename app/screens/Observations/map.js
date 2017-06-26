@@ -176,7 +176,7 @@ class ObservationMapScreen extends Component {
           <Icon
             name="add"
             style={{
-              paddingTop: 8,
+              paddingTop: 10,
               paddingLeft: 10,
               fontSize: 40,
               color: "#ffffff"
