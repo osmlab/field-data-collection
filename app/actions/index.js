@@ -4,6 +4,7 @@ import { timeout } from "../lib";
 const types = {
   CLEAR_REMOTE_SURVEYS: "CLEAR_REMOTE_SURVEYS",
   DISCOVERING_PEERS: "DISCOVERING_PEERS",
+  DISCOVERING_PEERS_FAILED: "DISCOVERING_PEERS_FAILED",
   FETCHING_REMOTE_SURVEY: "FETCHING_REMOTE_SURVEY",
   FETCHING_REMOTE_SURVEY_FAILED: "FETCHING_REMOTE_SURVEY_FAILED",
   FETCHING_REMOTE_SURVEY_LIST: "FETCHING_REMOTE_SURVEY_LIST",
@@ -18,19 +19,14 @@ const COORDINATOR_FALLBACK_PORT = 3210;
 
 export default types;
 
-export const clearRemoteSurveys = () => (dispatch, getState) =>
-  dispatch({
-    type: types.CLEAR_REMOTE_SURVEYS
-  });
-
-export const fetchRemoteSurvey = id => (dispatch, getState) => {
+const getPeerInfo = (dispatch, callback) => {
   dispatch({
     type: types.DISCOVERING_PEERS
   });
 
   return new OSMSync().findPeers((err, peers) => {
     if (err) {
-      return console.warn(err);
+      return callback(err);
     }
 
     let targetIP = COORDINATOR_FALLBACK_IP;
@@ -38,6 +34,25 @@ export const fetchRemoteSurvey = id => (dispatch, getState) => {
 
     if (peers.length > 0) {
       ({ targetIP, targetPort } = peers[0]);
+    }
+
+    return callback(null, targetIP, targetPort);
+  });
+};
+
+export const clearRemoteSurveys = () => (dispatch, getState) =>
+  dispatch({
+    type: types.CLEAR_REMOTE_SURVEYS
+  });
+
+export const fetchRemoteSurvey = id => (dispatch, getState) => {
+  return getPeerInfo(dispatch, (err, targetIP, targetPort) => {
+    if (err) {
+      console.warn(err);
+      return dispatch({
+        type: types.DISCOVERING_PEERS_FAILED,
+        error: err
+      });
     }
 
     dispatch({
@@ -68,20 +83,13 @@ export const fetchRemoteSurvey = id => (dispatch, getState) => {
 };
 
 export const listRemoteSurveys = () => (dispatch, getState) => {
-  dispatch({
-    type: types.DISCOVERING_PEERS
-  });
-
-  return new OSMSync().findPeers((err, peers) => {
+  return getPeerInfo(dispatch, (err, targetIP, targetPort) => {
     if (err) {
-      return console.warn(err);
-    }
-
-    let targetIP = COORDINATOR_FALLBACK_IP;
-    let targetPort = COORDINATOR_FALLBACK_PORT;
-
-    if (peers.length > 0) {
-      ({ targetIP, targetPort } = peers[0]);
+      console.warn(err);
+      return dispatch({
+        type: types.DISCOVERING_PEERS_FAILED,
+        error: err
+      });
     }
 
     dispatch({

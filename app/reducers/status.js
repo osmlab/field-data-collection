@@ -14,6 +14,13 @@ export default (state = initialState, { error, type }) => {
         message: "Discovering peers..."
       };
 
+    case types.DISCOVERING_PEERS_FAILED:
+      return {
+        ...state,
+        error,
+        message: "Discovering peers failed."
+      };
+
     case types.FETCHING_REMOTE_SURVEY:
       return {
         ...state,
