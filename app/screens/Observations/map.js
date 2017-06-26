@@ -12,7 +12,7 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 
 import osmp2p from "../../lib/osm-p2p";
 import { Header, SideMenu, Text } from "../../components";
-import { baseStyles } from "../../styles";
+import { baseStyles, colors } from "../../styles";
 
 Mapbox.setAccessToken(
   "pk.eyJ1Ijoic2V0aHZpbmNlbnQiLCJhIjoiSXZZXzZnUSJ9.Nr_zKa-4Ztcmc1Ypl0k5nw"
@@ -27,20 +27,17 @@ const styles = StyleSheet.create({
     height: 60,
     borderRadius: 80,
     backgroundColor: "#8212C6",
-    zIndex: 1002,
+    zIndex: 10,
     position: "absolute",
     bottom: 10,
-    right: 10
+    right: 15
   },
   buttonLegend: {
-    width: 30,
-    height: 30,
-    borderRadius: 80,
-    backgroundColor: "#6579FC",
     zIndex: 1002,
     position: "absolute",
-    top: 90,
-    right: 10
+    top: 80,
+    right: 15,
+    zIndex: 10
   },
   header: {
     height: 60,
@@ -165,8 +162,8 @@ class ObservationMapScreen extends Component {
             style={{
               paddingTop: 7,
               paddingLeft: 12,
-              fontSize: 15,
-              color: "#ffffff"
+              fontSize: 35,
+              color: colors.interface.headerBackground
             }}
           />
         </TouchableOpacity>
@@ -179,9 +176,9 @@ class ObservationMapScreen extends Component {
           <Icon
             name="add"
             style={{
-              paddingTop: 7,
-              paddingLeft: 12,
-              fontSize: 15,
+              paddingTop: 10,
+              paddingLeft: 10,
+              fontSize: 40,
               color: "#ffffff"
             }}
           />

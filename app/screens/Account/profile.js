@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { StyleSheet, View, Button } from "react-native";
+import { StyleSheet, View, Button, TouchableOpacity } from "react-native";
 import { NavigationActions } from "react-navigation";
+import Icon from "react-native-vector-icons/MaterialIcons";
 
 import { Text, Wrapper } from "../../components";
 import { baseStyles } from "../../styles";
@@ -28,9 +29,12 @@ class ProfileScreen extends Component {
           alignItems: "center"
         }}
       >
-        <Text style={[baseStyles.headerBackIcon]} onPress={onBackPress}>
-          ←
-        </Text>
+        <TouchableOpacity onPress={onBackPress}>
+          <Icon
+            name="keyboard-backspace"
+            style={[[baseStyles.headerBackIcon]]}
+          />
+        </TouchableOpacity>
         <Text style={[baseStyles.h3, baseStyles.headerTitle]}>Profile</Text>
       </View>
     );
