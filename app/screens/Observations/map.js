@@ -11,7 +11,7 @@ import Mapbox, { MapView } from "react-native-mapbox-gl";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
 import osmp2p from "../../lib/osm-p2p";
-import { Header, SideMenu, Text } from "../../components";
+import { Header, SideMenu, Text, Geolocate } from "../../components";
 import { baseStyles, colors } from "../../styles";
 
 Mapbox.setAccessToken(
@@ -167,6 +167,9 @@ class ObservationMapScreen extends Component {
             }}
           />
         </TouchableOpacity>
+
+        <Geolocate />
+
         <TouchableOpacity
           style={[styles.buttonAdd]}
           onPress={() => {
