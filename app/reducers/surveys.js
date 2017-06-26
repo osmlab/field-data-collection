@@ -36,7 +36,9 @@ export default (state = initialState, { id, survey, surveys, type }) => {
         ...state,
         available: state.available
           .concat(survey)
-          .sort((a, b) => a.localeCompare(b))
+          .sort((a, b) =>
+            `${a.name} ${a.version}`.localeCompare(`${b.name} ${b.version}`)
+          )
       };
 
     case types.RECEIVED_REMOTE_SURVEY_LIST:
