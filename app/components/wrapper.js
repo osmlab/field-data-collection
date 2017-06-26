@@ -15,13 +15,13 @@ class Wrapper extends Component {
     this._root.setNativeProps(nativeProps);
   }
 
+  onMenuPress = () => {
+    this._menu.open();
+  };
+
   render() {
     const setRef = component => {
       this._root = component;
-    };
-
-    onMenuPress = () => {
-      this._menu.open();
     };
 
     const headerView = this.props.headerView || <Text>Observe</Text>;
