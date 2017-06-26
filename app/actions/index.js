@@ -126,10 +126,6 @@ export const fetchRemoteSurvey = id => (dispatch, getState) => {
         });
       })
       .then(bundle => promisify(extractSurveyBundle)(id, bundle))
-      .then(survey => {
-        console.log(survey);
-        return survey;
-      })
       .then(survey =>
         dispatch({
           id,
