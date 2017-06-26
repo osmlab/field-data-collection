@@ -5,6 +5,7 @@ import Wrapper from "./wrapper";
 import MapList from "./observation-list";
 import { getFieldInput } from "./field-inputs";
 import { getFieldType } from "./fields";
+import StatusBar from "./StatusBar";
 
 export {
   Header,
@@ -13,5 +14,6 @@ export {
   Wrapper,
   getFieldInput,
   getFieldType,
-  MapList
+  MapList,
+  StatusBar
 };
