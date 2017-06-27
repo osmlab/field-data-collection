@@ -1,7 +1,3 @@
-const levelup = require("levelup");
-const asyncstorage = require("asyncstorage-down");
-const hyperlog = require("hyperlog");
-const osmdb = require("osm-p2p-db");
 const eos = require("end-of-stream");
 const getGeoJSON = require("osm-p2p-geojson");
 const pump = require("pump");
@@ -9,25 +5,10 @@ const collect = require("collect-stream");
 const through = require("through2");
 const OsmSync = require("./osm-sync");
 const generatePlaceholderOsmId = require("./generate-id");
-
-const createStore = require("./asyncstorage-chunk-store");
+const createOsmDb = require('./create-osm-p2p')
 const convert = require("./convert-geojson-osmp2p");
 
-function createOsmDb(prefix) {
-  const logdb = levelup(prefix + "-db", { db: asyncstorage });
-  const log = hyperlog(logdb, { valueEncoding: "json" });
-
-  return osmdb({
-    log: log,
-    db: levelup(prefix + "-index", { db: asyncstorage }),
-    store: createStore(1024, prefix + "-chunks")
-  });
-}
-
-function osmp2p() {
-  var observationDb = createOsmDb("observations");
-  var osmOrgDb = createOsmDb("osmorg");
-
+function osmp2p(observationDb, osmOrgDb) {
   var netSync = OsmSync(observationDb, osmOrgDb);
 
   observationDb.on("error", console.log);
