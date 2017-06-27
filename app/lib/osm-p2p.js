@@ -55,20 +55,29 @@ function osmp2p(observationDb, osmOrgDb) {
     observationDb.del(id, opts, cb);
   }
 
+  // TODO use tags.osm-p2p-id?
+  // TODO handle this being an OSM.org ID _or_ a placeholder ID
   function createObservation(nodeId, geojson, opts, cb) {
+    if (!cb && typeof opts === 'function') {
+      cb = opts
+      opts = {}
+    }
+
     var doc = convert.toOSM(geojson, "observation");
     observationDb.create(doc, opts, onObservationCreated);
 
-    function onObservationCreated(err, newDoc) {
+    function onObservationCreated(err, docId) {
       if (err) return cb(err);
       var link = {
         type: "observation-link",
-        obs: newDoc.id,
+        obs: docId,
         link: nodeId
       };
-      observationDb.put(link, function(err, newLink) {
-        if (err) cb(err);
-        else cb(null, newDoc);
+      observationDb.create(link, function(err, linkId) {
+        if (err) return cb(err);
+        var res = Object.assign(doc, {id:docId});
+        var linkRes = Object.assign(link, {id:linkId})
+        cb(null, res, linkRes)
       });
     }
   }
@@ -169,4 +178,4 @@ function osmp2p(observationDb, osmOrgDb) {
   }
 }
 
-export default osmp2p;
+module.exports = osmp2p;
