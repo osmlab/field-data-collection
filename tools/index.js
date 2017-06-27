@@ -2,6 +2,8 @@ const fs = require("fs");
 const path = require("path");
 
 const async = require("async");
+const dataURI = new (require("datauri"))();
+const mapnik = require("mapnik");
 const recursive = require("recursive-readdir");
 const uniq = require("lodash.uniq");
 const uniqBy = require("lodash.uniqby");
@@ -54,6 +56,39 @@ const loadPreset = ({ basePath }, presetName, callback) =>
     "json",
     callback
   );
+
+const renderIconAsPNG = ({ basePath }, icon, callback) => {
+  const filename = path.resolve(basePath, "icons", icon + ".svg");
+
+  return fs.readFile(filename, (err, svgBytes) => {
+    if (err) {
+      return callback(err);
+    }
+
+    return mapnik.Image.fromSVGBytes(
+      svgBytes,
+      {
+        scale: 2
+      },
+      (err, image) => {
+        if (err) {
+          return callback(err);
+        }
+
+        return image.encode("png", (err, buffer) => {
+          if (err) {
+            return callback(err);
+          }
+
+          return callback(null, {
+            buffer,
+            icon
+          });
+        });
+      }
+    );
+  });
+};
 
 // NOTE: options is the first argument so that it can be partially applied prior
 // to use by map functions
@@ -147,6 +182,49 @@ const resolveCategories = (options, callback) => {
                 members: x.members.map(m => m.replace("/", "="))
               })
             )
+          );
+        }
+      );
+    });
+  });
+};
+
+const resolveIcons = (options, callback) => {
+  const { basePath } = options;
+  const iconDir = path.join(basePath, "icons");
+
+  return fs.stat(iconDir, err => {
+    if (err) {
+      if (err.code === "ENOENT") {
+        // no icons available
+        return callback(null, []);
+      }
+
+      return callback(err);
+    }
+
+    return fs.readdir(iconDir, (err, entries) => {
+      if (err) {
+        return callback(err);
+      }
+
+      return async.mapLimit(
+        entries
+          .filter(x => x.endsWith(".svg"))
+          .map(x => x.replace(path.extname(x), "")),
+        10,
+        async.apply(renderIconAsPNG, options),
+        (err, icons) => {
+          if (err) {
+            return callback(err);
+          }
+
+          return callback(
+            null,
+            icons.map(({ buffer, icon }) => ({
+              icon,
+              src: dataURI.format(".png", buffer).content
+            }))
           );
         }
       );
@@ -258,9 +336,10 @@ const resolveSurvey = (surveyDefinition, options, callback) => {
     return async.parallel(
       {
         categories: async.apply(resolveCategories, options),
-        featureTypes: async.apply(resolveFeatureTypes, featureTypes, options)
+        featureTypes: async.apply(resolveFeatureTypes, featureTypes, options),
+        icons: async.apply(resolveIcons, options)
       },
-      (err, { categories, featureTypes }) => {
+      (err, { categories, featureTypes, icons }) => {
         if (err) {
           return callback(err);
         }
@@ -359,6 +438,7 @@ const resolveSurvey = (surveyDefinition, options, callback) => {
           categories,
           description,
           editable,
+          icons,
           imagery,
           meta,
           name,
