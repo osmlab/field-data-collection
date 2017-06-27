@@ -41,7 +41,7 @@ function osmp2p(observationDb, osmOrgDb) {
   function createNode(geojson, opts, cb) {
     var doc = convert.toOSM(geojson, "node");
     var id = generatePlaceholderOsmId();
-    if (!doc.tags) doc.tags = {}
+    if (!doc.tags) doc.tags = {};
     doc.tags["osm-p2p-id"] = id;
     observationDb.put(id, doc, opts, cb);
   }
@@ -58,9 +58,9 @@ function osmp2p(observationDb, osmOrgDb) {
   // TODO use tags.osm-p2p-id?
   // TODO handle this being an OSM.org ID _or_ a placeholder ID
   function createObservation(nodeId, geojson, opts, cb) {
-    if (!cb && typeof opts === 'function') {
-      cb = opts
-      opts = {}
+    if (!cb && typeof opts === "function") {
+      cb = opts;
+      opts = {};
     }
 
     var doc = convert.toOSM(geojson, "observation");
@@ -75,9 +75,9 @@ function osmp2p(observationDb, osmOrgDb) {
       };
       observationDb.create(link, function(err, linkId) {
         if (err) return cb(err);
-        var res = Object.assign(doc, {id:docId});
-        var linkRes = Object.assign(link, {id:linkId})
-        cb(null, res, linkRes)
+        var res = Object.assign(doc, { id: docId });
+        var linkRes = Object.assign(link, { id: linkId });
+        cb(null, res, linkRes);
       });
     }
   }

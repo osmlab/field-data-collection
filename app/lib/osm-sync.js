@@ -76,7 +76,7 @@ OsmSync.findPeers = function(opts, done) {
       port: info.port
     };
     browser.stop();
-    done(null, [peer])
+    done(null, [peer]);
   }
 
   function onTimeout() {

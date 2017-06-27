@@ -16,4 +16,4 @@ function createOsmDb(prefix) {
   });
 }
 
-module.exports = createOsmDb
+module.exports = createOsmDb;
