@@ -8,6 +8,7 @@ const pump = require("pump");
 const collect = require("collect-stream");
 const through = require("through2");
 const OsmSync = require("./osm-sync");
+const generatePlaceholderOsmId = require("./generate-id");
 
 const createStore = require("./asyncstorage-chunk-store");
 const convert = require("./convert-geojson-osmp2p");
@@ -34,7 +35,7 @@ function osmp2p() {
 
   return {
     ready,
-    create,
+    createNode,
     put,
     del,
     createObservation,
@@ -57,9 +58,11 @@ function osmp2p() {
     }
   }
 
-  function create(geojson, opts, cb) {
-    var doc = convert.toOSM(geojson);
-    observationDb.create(doc, opts, cb);
+  function createNode(geojson, opts, cb) {
+    var doc = convert.toOSM(geojson, "node");
+    var id = generatePlaceholderOsmId();
+    doc.tags["osm-p2p-id"] = id
+    observationDb.put(id, doc, opts, cb);
   }
 
   function put(id, geojson, opts, cb) {
