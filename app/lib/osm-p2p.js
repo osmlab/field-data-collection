@@ -5,7 +5,6 @@ const collect = require("collect-stream");
 const through = require("through2");
 const OsmSync = require("./osm-sync");
 const generatePlaceholderOsmId = require("./generate-id");
-const createOsmDb = require('./create-osm-p2p')
 const convert = require("./convert-geojson-osmp2p");
 
 function osmp2p(observationDb, osmOrgDb) {
@@ -42,6 +41,7 @@ function osmp2p(observationDb, osmOrgDb) {
   function createNode(geojson, opts, cb) {
     var doc = convert.toOSM(geojson, "node");
     var id = generatePlaceholderOsmId();
+    if (!doc.tags) doc.tags = {}
     doc.tags["osm-p2p-id"] = id;
     observationDb.put(id, doc, opts, cb);
   }
