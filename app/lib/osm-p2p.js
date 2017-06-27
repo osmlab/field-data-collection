@@ -61,7 +61,7 @@ function osmp2p() {
   function createNode(geojson, opts, cb) {
     var doc = convert.toOSM(geojson, "node");
     var id = generatePlaceholderOsmId();
-    doc.tags["osm-p2p-id"] = id
+    doc.tags["osm-p2p-id"] = id;
     observationDb.put(id, doc, opts, cb);
   }
 
@@ -74,9 +74,22 @@ function osmp2p() {
     observationDb.del(id, opts, cb);
   }
 
-  function createObservation(geojson, opts, cb) {
+  function createObservation(nodeId, geojson, opts, cb) {
     var doc = convert.toOSM(geojson, "observation");
-    observationDb.create(doc, opts, cb);
+    observationDb.create(doc, opts, onObservationCreated);
+
+    function onObservationCreated(err, newDoc) {
+      if (err) return cb(err);
+      var link = {
+        type: "observation-link",
+        obs: newDoc.id,
+        link: nodeId
+      };
+      observationDb.put(link, function(err, newLink) {
+        if (err) cb(err);
+        else cb(null, newDoc);
+      });
+    }
   }
 
   function putObservation(id, geojson, opts, cb) {
