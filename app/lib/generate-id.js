@@ -1,12 +1,7 @@
-const randomBytes = require("randombytes");
-const convert = require("base-convertor");
+var _counter = 0
 
 function generatePlaceholderOsmId() {
-  return "-" + hex2dec(randomBytes(8).toString("hex"));
-}
-
-function hex2dec(hex) {
-  return convert(hex.toUpperCase(), "0123456789ABCDEF", "0123456789");
+  return Math.random().toString().substring(2) + '-' + Date.now() + '-' + _counter++
 }
 
 module.exports = generatePlaceholderOsmId;
