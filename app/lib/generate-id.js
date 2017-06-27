@@ -2,7 +2,7 @@ const randomBytes = require('randombytes')
 const convert = require('base-convertor')
 
 function generatePlaceholderOsmId () {
-  return -hex2dec(randomBytes(8).toString('hex'))
+  return '-' + hex2dec(randomBytes(8).toString('hex'))
 }
 
 function hex2dec (hex) {
