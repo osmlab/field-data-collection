@@ -36,21 +36,21 @@ const parse = (path, type, callback) =>
 
 const loadCategory = ({ basePath }, category, callback) =>
   parse(
-    path.resolve(path.resolve(basePath, "categories"), category + ".json"),
+    path.resolve(basePath, "categories", category + ".json"),
     "json",
     callback
   );
 
 const loadField = ({ basePath }, fieldName, callback) =>
   parse(
-    path.resolve(path.resolve(basePath, "fields"), fieldName + ".json"),
+    path.resolve(basePath, "fields", fieldName + ".json"),
     "json",
     callback
   );
 
 const loadPreset = ({ basePath }, presetName, callback) =>
   parse(
-    path.resolve(path.resolve(basePath, "presets"), presetName + ".json"),
+    path.resolve(basePath, "presets", presetName + ".json"),
     "json",
     callback
   );
