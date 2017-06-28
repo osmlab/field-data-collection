@@ -32,6 +32,8 @@ class SurveysScreen extends Component {
       remoteSurveys
     } = this.props;
 
+    const { navigate } = this.props.navigation;
+
     const headerView = (
       <View
         style={{
@@ -66,6 +68,39 @@ class SurveysScreen extends Component {
             {"Add New Surveys".toUpperCase()}
           </Text>
         </TouchableOpacity> */}
+        <View style={{ flex: 0.75, justifyContent: "space-between" }}>
+          <View
+            style={[
+              baseStyles.wrapperContent,
+              baseStyles.wrapperContentLg,
+              baseStyles.listBlock
+            ]}
+          >
+            <Text style={[baseStyles.h3, baseStyles.headerWithDescription]}>
+              OSM
+            </Text>
+            <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+              <Text>Updated: </Text>
+              <Text>4/30/17 4:30</Text>
+            </View>
+            <View style={[baseStyles.observationBlock]}>
+              <Text style={[baseStyles.metadataText]}>2 Observations</Text>
+            </View>
+          </View>
+
+        </View>
+        <View style={{ position: "relative" }}>
+          <TouchableOpacity
+            style={[baseStyles.buttonBottom, { alignSelf: "flex-end" }]}
+            onPress={() => {
+              navigate("SurveyChoose");
+            }}
+          >
+            <Text style={[baseStyles.textWhite]}>
+              {"Add New Surveys".toUpperCase()}
+            </Text>
+          </TouchableOpacity>
+        </View>
       </Wrapper>
     );
   }
