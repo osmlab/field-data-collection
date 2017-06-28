@@ -11,7 +11,7 @@
     "android": "react-native run-android && react-native log-android",
     "android:install": "react-native run-android && adb install android/app/build/outputs/apk/app-debug.apk && react-native log-android",
     "precommit": "lint-staged",
-    "test": "tap test/*.js"
+    "test": "tape test/*.js"
   },
   "dependencies": {
     "JSONStream": "^1.3.1",
