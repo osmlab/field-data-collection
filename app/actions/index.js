@@ -1,7 +1,6 @@
 import eos from "end-of-stream";
 import JSONStream from "JSONStream";
 import once from "once";
-import promisify from "es6-promisify";
 import tar from "tar-stream";
 import through2 from "through2";
 
@@ -125,7 +124,14 @@ export const fetchRemoteSurvey = id => (dispatch, getState) => {
           reader.readAsArrayBuffer(blob);
         });
       })
-      .then(bundle => promisify(extractSurveyBundle)(id, bundle))
+      .then(bundle => {
+        return new Promise((resolve, reject) => {
+          extractSurveyBundle(id, bundle, function(err, surveys) {
+            if (err) return reject(new Error(err));
+            return resolve(surveys);
+          });
+        });
+      })
       .then(survey =>
         dispatch({
           id,
