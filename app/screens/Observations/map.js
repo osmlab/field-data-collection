@@ -10,6 +10,7 @@ import {
 import Mapbox, { MapView } from "react-native-mapbox-gl";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
+import createOsmp2p from "../../lib/create-osm-p2p";
 import osmp2p from "../../lib/osm-p2p";
 import { Header, SideMenu, Text } from "../../components";
 import { baseStyles, colors } from "../../styles";
@@ -54,7 +55,9 @@ class ObservationMapScreen extends Component {
     super();
 
     this.navigationOptions = { tabBarLabel: "Map" };
-    this._osm = osmp2p();
+    this._obsdb = createOsmp2p("obs");
+    this._osmdb = createOsmp2p("osm");
+    this._osm = osmp2p(this._obsdb, this._osmdb);
   }
 
   componentWillMount() {
