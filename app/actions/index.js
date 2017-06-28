@@ -112,26 +112,31 @@ export const fetchRemoteSurvey = id => (dispatch, getState) => {
       1000
     )
       .then(rsp => rsp.blob())
-      .then(blob => {
-        return new Promise((resolve, reject) => {
-          var reader = new FileReader();
+      .then(
+        blob =>
+          new Promise((resolve, reject) => {
+            var reader = new FileReader();
 
-          reader.addEventListener("loadend", () =>
-            resolve(new Buffer(reader.result))
-          );
-          reader.addEventListener("error", err => reject(err));
+            reader.addEventListener("loadend", () =>
+              resolve(new Buffer(reader.result))
+            );
+            reader.addEventListener("error", err => reject(err));
 
-          reader.readAsArrayBuffer(blob);
-        });
-      })
-      .then(bundle => {
-        return new Promise((resolve, reject) => {
-          extractSurveyBundle(id, bundle, function(err, surveys) {
-            if (err) return reject(new Error(err));
-            return resolve(surveys);
-          });
-        });
-      })
+            reader.readAsArrayBuffer(blob);
+          })
+      )
+      .then(
+        bundle =>
+          new Promise((resolve, reject) =>
+            extractSurveyBundle(id, bundle, (err, surveys) => {
+              if (err) {
+                return reject(new Error(err));
+              }
+
+              return resolve(surveys);
+            })
+          )
+      )
       .then(survey =>
         dispatch({
           id,
