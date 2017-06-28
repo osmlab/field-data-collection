@@ -20,7 +20,7 @@ export default class RemoteSurveyList extends Component {
         {surveys.map((survey, idx) =>
           <Button
             key={idx}
-            onPress={() => fetch(survey.id)}
+            onPress={() => fetch(survey.id, survey.url)}
             style={{ flex: 1 }}
             title={`${survey.name} ${survey.version}`}
           />

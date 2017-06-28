@@ -100,66 +100,53 @@ export const clearRemoteSurveys = () => (dispatch, getState) =>
     type: types.CLEAR_REMOTE_SURVEYS
   });
 
-export const fetchRemoteSurvey = id => (dispatch, getState) => {
-  return getPeerInfo(dispatch, (err, targetIP, targetPort) => {
-    if (err) {
-      console.warn(err);
-      return dispatch({
-        type: types.DISCOVERING_PEERS_FAILED,
-        error: err
-      });
-    }
-
-    dispatch({
-      id,
-      type: types.FETCHING_REMOTE_SURVEY
-    });
-
-    return timeout(
-      fetch(`http://${targetIP}:${targetPort}/surveys/${id}/bundle`),
-      1000
-    )
-      .then(rsp => rsp.blob())
-      .then(
-        blob =>
-          new Promise((resolve, reject) => {
-            var reader = new FileReader();
-
-            reader.addEventListener("loadend", () =>
-              resolve(new Buffer(reader.result))
-            );
-            reader.addEventListener("error", err => reject(err));
-
-            reader.readAsArrayBuffer(blob);
-          })
-      )
-      .then(
-        bundle =>
-          new Promise((resolve, reject) =>
-            extractSurveyBundle(id, bundle, (err, surveys) => {
-              if (err) {
-                return reject(new Error(err));
-              }
-
-              return resolve(surveys);
-            })
-          )
-      )
-      .then(survey =>
-        dispatch({
-          id,
-          type: types.RECEIVED_REMOTE_SURVEY,
-          survey
-        })
-      )
-      .catch(error =>
-        dispatch({
-          id,
-          type: types.FETCHING_REMOTE_SURVEY_FAILED,
-          error
-        })
-      );
+export const fetchRemoteSurvey = (id, url) => (dispatch, getState) => {
+  dispatch({
+    id,
+    type: types.FETCHING_REMOTE_SURVEY
   });
+
+  return timeout(fetch(`${url}/bundle`), 1000)
+    .then(rsp => rsp.blob())
+    .then(
+      blob =>
+        new Promise((resolve, reject) => {
+          var reader = new FileReader();
+
+          reader.addEventListener("loadend", () =>
+            resolve(new Buffer(reader.result))
+          );
+          reader.addEventListener("error", err => reject(err));
+
+          reader.readAsArrayBuffer(blob);
+        })
+    )
+    .then(
+      bundle =>
+        new Promise((resolve, reject) =>
+          extractSurveyBundle(id, bundle, (err, surveys) => {
+            if (err) {
+              return reject(new Error(err));
+            }
+
+            return resolve(surveys);
+          })
+        )
+    )
+    .then(survey =>
+      dispatch({
+        id,
+        type: types.RECEIVED_REMOTE_SURVEY,
+        survey
+      })
+    )
+    .catch(error =>
+      dispatch({
+        id,
+        type: types.FETCHING_REMOTE_SURVEY_FAILED,
+        error
+      })
+    );
 };
 
 export const listRemoteSurveys = () => (dispatch, getState) => {
@@ -181,7 +168,10 @@ export const listRemoteSurveys = () => (dispatch, getState) => {
       .then(surveys =>
         dispatch({
           type: types.RECEIVED_REMOTE_SURVEY_LIST,
-          surveys
+          surveys: surveys.map(x => ({
+            ...x,
+            url: `http://${targetIP}:${targetPort}/surveys/${x.id}`
+          }))
         })
       )
       .catch(error =>
