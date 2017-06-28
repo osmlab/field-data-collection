@@ -5481,11 +5481,7 @@ react-native-pathjs-charts@^0.0.29:
     paths-js "^0.4.5"
     react-native-svg "~5.2.0"
 
-react-native-pie-chart@sethvincent/react-native-pie-chart:
-  version "1.0.11"
-  resolved "https://codeload.github.com/sethvincent/react-native-pie-chart/tar.gz/456b83a8e2e4cb96b415acdb79ad7a3cfab028e2"
-
-react-native-svg@~5.2.0:
+react-native-svg@^5.2.0, react-native-svg@~5.2.0:
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/react-native-svg/-/react-native-svg-5.2.0.tgz#0ed24e04ee9f755b5a6fc840ff69792207e08aca"
   dependencies:

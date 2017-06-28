@@ -13,7 +13,6 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import { Text, Wrapper, PercentComplete } from "../../components";
 import { getFieldType } from "../../components/fields";
 import { baseStyles } from "../../styles";
-import PieChart from "react-native-pie-chart";
 
 const styles = StyleSheet.create({});
 
@@ -104,31 +103,25 @@ class AddObservationScreen extends Component {
             </Text>
           </View>
           <View style={{ flex: 0.25, position: "relative" }}>
-            <PieChart
-              chart_wh={100}
-              series={[80]}
-              sliceColor={["#1DE9B6"]}
-              doughnut={true}
-              coverRadius={0.85}
-              coverFill={"#6579FC"}
-            />
-            <Text
-              style={[
-                baseStyles.percentCompleteText,
-                baseStyles.textWhite,
-                { position: "absolute", marginTop: 5, paddingLeft: 5 }
-              ]}
-            >
+            <PercentComplete radius={50} complete={5} incomplete={4}>
               <Text
                 style={[
-                  baseStyles.percentCompleteTextNum,
-                  baseStyles.textWhite
+                  baseStyles.percentCompleteText,
+                  baseStyles.textWhite,
+                  { position: "absolute", marginTop: 5, paddingLeft: 5 }
                 ]}
               >
-                80%
-              </Text>{" "}
-              Complete
-            </Text>
+                <Text
+                  style={[
+                    baseStyles.percentCompleteTextNum,
+                    baseStyles.textWhite
+                  ]}
+                >
+                  80%
+                </Text>{" "}
+                Complete
+              </Text>
+            </PercentComplete>
           </View>
         </View>
         <View style={[baseStyles.mapLg]}>

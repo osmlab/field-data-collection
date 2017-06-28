@@ -106,7 +106,15 @@ class AccountScreen extends Component {
                   }}
                 >
                   <View style={[baseStyles.map]}><Text>Map</Text></View>
-                  <PercentComplete />
+
+                  <PercentComplete radius={35} complete={5} incomplete={4}>
+                    <Text style={[baseStyles.percentCompleteTextSm]}>
+                      <Text style={[baseStyles.percentCompleteTextNumSm]}>
+                        80%
+                      </Text>
+                    </Text>
+                  </PercentComplete>
+
                   <View style={[baseStyles.surveyCardContent]}>
                     <Text
                       style={[baseStyles.h3, baseStyles.headerWithDescription]}
