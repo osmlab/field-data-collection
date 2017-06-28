@@ -1,7 +1,13 @@
 import types from "../actions";
 
 const initialState = {
-  available: [],
+  available: [
+    {
+      definition: {
+        name: "OSM"
+      }
+    }
+  ],
   remote: []
 };
 

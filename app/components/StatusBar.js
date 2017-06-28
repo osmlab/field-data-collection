@@ -14,7 +14,7 @@ class StatusBar extends Component {
     }
 
     return (
-      <View style={{ flex: 1 }}>
+      <View>
         <Text>
           {message}{error && `: ${error}`}
         </Text>

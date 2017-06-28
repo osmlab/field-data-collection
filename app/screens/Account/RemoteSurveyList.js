@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 
 import { Text } from "../../components";
 import { baseStyles } from "../../styles";
@@ -14,16 +14,16 @@ export default class RemoteSurveyList extends Component {
 
     return (
       <View style={{ flex: 1 }}>
-        <Text style={[baseStyles.h3, baseStyles.headerWithDescription]}>
-          Available Surveys
-        </Text>
         {surveys.map((survey, idx) =>
-          <Button
+          <TouchableOpacity
             key={idx}
             onPress={() => fetch(survey.id, survey.url)}
-            style={{ flex: 1 }}
-            title={`${survey.name} ${survey.version}`}
-          />
+            style={[baseStyles.touchableLinksWrapper]}
+          >
+            <Text style={[baseStyles.touchableLinks]}>
+              {survey.name} {survey.version}
+            </Text>
+          </TouchableOpacity>
         )}
       </View>
     );
