@@ -50,7 +50,7 @@ class PercentComplete extends Component {
             }
           ]}
         >
-          <Pie data={data} options={options} accessorKey="amount" />
+          <PieChart data={data} options={options} accessorKey="amount" />
           <Text style={[baseStyles.percentCompleteTextSm]}>
             <Text style={[baseStyles.percentCompleteTextNumSm]}>80%</Text>
           </Text>
@@ -63,11 +63,20 @@ class PercentComplete extends Component {
 class PieChart extends Component {
   render() {
     let chart = Pie({
-      center: [centerX, centerY],
+      center: [0, 0],
       r,
       R,
-      data: this.props.data,
-      accessor: this.props.accessor || identity(this.props.accessorKey)
+      data: [
+        {
+          name: "complete",
+          amount: 5
+        },
+        {
+          name: "incomplete",
+          amount: 3
+        }
+      ],
+      accessor: "amount"
     });
 
     slices = chart.curves.map((c, i) => {
@@ -81,23 +90,17 @@ class PieChart extends Component {
             fill={fill}
             fillOpacity={1}
           />
-          <G x={options.margin.left} y={options.margin.top}>
-            <Text
-              fontFamily={textStyle.fontFamily}
-              fontSize={textStyle.fontSize}
-              fontWeight={textStyle.fontWeight}
-              fontStyle={textStyle.fontStyle}
-              fill={textStyle.fill}
-              textAnchor="middle"
-              x={c.sector.centroid[0]}
-              y={c.sector.centroid[1]}
-            >
-              {c.item.name}
-            </Text>
-          </G>
         </G>
       );
     });
+
+    return (
+      <Svg width={50} height={50}>
+        <G x={0} y={0}>
+          {slices}
+        </G>
+      </Svg>
+    );
   }
 }
 
