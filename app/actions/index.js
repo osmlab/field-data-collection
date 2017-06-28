@@ -1,3 +1,4 @@
+import dataUriToBuffer from "data-uri-to-buffer";
 import eos from "end-of-stream";
 import JSONStream from "JSONStream";
 import once from "once";
@@ -39,10 +40,17 @@ const extractSurveyBundle = (id, bundle, _callback) => {
 
     if (header.name === "survey.json") {
       stream.pipe(
-        JSONStream.parse().on(
-          "data",
-          data => (survey.definition = Object.assign(data, { id }))
-        )
+        JSONStream.parse().on("data", data => {
+          survey.icons = survey.icons || {};
+
+          data.icons.forEach(
+            ({ icon, src }) => (survey.icons[icon] = dataUriToBuffer(src))
+          );
+
+          delete data.icons;
+
+          survey.definition = Object.assign(data, { id });
+        })
       );
     } else {
       const chunks = [];
