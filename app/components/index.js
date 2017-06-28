@@ -6,6 +6,7 @@ import MapList from "./observation-list";
 import PercentComplete from "./percent-complete";
 import { getFieldInput } from "./field-inputs";
 import { getFieldType } from "./fields";
+import StatusBar from "./StatusBar";
 
 export {
   Header,
@@ -15,5 +16,6 @@ export {
   getFieldInput,
   getFieldType,
   MapList,
-  PercentComplete
+  PercentComplete,
+  StatusBar
 };

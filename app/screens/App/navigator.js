@@ -10,6 +10,7 @@ import SettingsScreen from "../Account/settings";
 import SurveysScreen from "../Account/surveys";
 import SurveyScreen from "../Account/survey";
 import ObservationsScreen from "../Account/observations";
+import SurveyModal from "../Account/surveyChoose";
 
 // Observations
 import ObservationMapScreen from "../Observations/map.js";
@@ -25,6 +26,7 @@ const routeConfiguration = {
   AddProfile: { screen: AddProfileScreen },
   Settings: { screen: SettingsScreen },
   Surveys: { screen: SurveysScreen },
+  SurveyChoose: { screen: SurveyModal },
   Survey: { screen: SurveyScreen }
 };
 

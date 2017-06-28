@@ -55,7 +55,7 @@ OsmSync.prototype.replicateOsmOrgDb = function(target, done) {
   replicate(socket, rs, done);
 };
 
-OsmSync.prototype.findPeers = function(opts, done) {
+OsmSync.findPeers = function(opts, done) {
   if (typeof opts === "function" && !done) {
     done = opts;
     opts = {};
@@ -75,7 +75,8 @@ OsmSync.prototype.findPeers = function(opts, done) {
       address: info.addresses[0],
       port: info.port
     };
-    done(null, [peer])
+    browser.stop();
+    done(null, [peer]);
   }
 
   function onTimeout() {

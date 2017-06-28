@@ -1,29 +1,38 @@
 import React, { Component } from "react";
-import {
-  StyleSheet,
-  View,
-  Button,
-  TouchableOpacity,
-  ScrollView
-} from "react-native";
+import { Button, TouchableOpacity, View } from "react-native";
 import { NavigationActions } from "react-navigation";
+import { connect } from "react-redux";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
-import { Text, Wrapper } from "../../components";
+import {
+  clearRemoteSurveys,
+  fetchRemoteSurvey,
+  listRemoteSurveys
+} from "../../actions";
+import { StatusBar, Text, Wrapper } from "../../components";
+import { selectAvailableSurveys, selectRemoteSurveys } from "../../selectors";
 import { baseStyles } from "../../styles";
+import LocalSurveyList from "./LocalSurveyList";
+import RemoteSurveyList from "./RemoteSurveyList";
 
 class SurveysScreen extends Component {
-  constructor() {
-    super();
+  onBackPress = () => this.props.navigation.dispatch(NavigationActions.back());
+
+  componentWillMount() {
+    this.props.clearRemoteSurveys();
+    this.props.listRemoteSurveys();
   }
 
   render() {
-    const { navigate } = this.props.navigation;
+    const {
+      availableSurveys,
+      fetchRemoteSurvey,
+      listRemoteSurveys,
+      navigation,
+      remoteSurveys
+    } = this.props;
 
-    const onBackPress = () => {
-      const backAction = NavigationActions.back();
-      this.props.navigation.dispatch(backAction);
-    };
+    const { navigate } = this.props.navigation;
 
     const headerView = (
       <View
@@ -33,7 +42,7 @@ class SurveysScreen extends Component {
           alignItems: "center"
         }}
       >
-        <TouchableOpacity onPress={onBackPress}>
+        <TouchableOpacity onPress={this.onBackPress}>
           <Icon
             name="keyboard-backspace"
             style={[[baseStyles.headerBackIcon]]}
@@ -44,78 +53,66 @@ class SurveysScreen extends Component {
     );
 
     return (
-      <Wrapper navigation={this.props.navigation} headerView={headerView}>
-        <View
-          style={[
-            baseStyles.wrapperContent,
-            baseStyles.wrapperContentLg,
-            baseStyles.listBlock
-          ]}
-        >
-          <Text style={[baseStyles.h3, baseStyles.headerWithDescription]}>
-            OSM
-          </Text>
-          <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
-            <Text>Updated: </Text>
-            <Text>4/30/17 4:30</Text>
-          </View>
-          <View style={[baseStyles.observationBlock]}>
-            <Text style={[baseStyles.metadataText]}>2 Observations</Text>
-          </View>
-        </View>
-        <View
-          style={[
-            baseStyles.wrapperContent,
-            baseStyles.wrapperContentLg,
-            baseStyles.listBlock,
-            { flex: 1 }
-          ]}
-        >
-          <TouchableOpacity
-            onPress={() => {
-              navigate("Survey");
-            }}
-          >
-            <Text style={[baseStyles.h3, baseStyles.headerWithDescription]}>
-              Survey Name
-            </Text>
-          </TouchableOpacity>
-          <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
-            <Text>Updated: </Text>
-            <Text>4/30/17 4:30pm</Text>
-          </View>
-          <View
-            style={[
-              baseStyles.observationBlock,
-              baseStyles.spaceBelowMd,
-              { flexDirection: "row", flexWrap: "wrap" }
-            ]}
-          >
-            <Text style={[baseStyles.metadataText]}>2 Observations</Text>
-            <Text style={[baseStyles.textAlert]}>(2 incomplete)</Text>
-          </View>
-          <TouchableOpacity
-            onPress={() => {
-              navigate("Survey");
-            }}
-          >
-            <Text style={[baseStyles.link]}>{"Edit".toUpperCase()}</Text>
-          </TouchableOpacity>
-        </View>
-        <TouchableOpacity style={[baseStyles.buttonBottom]}>
+      <Wrapper navigation={navigation} headerView={headerView}>
+        <StatusBar />
+
+        <Button onPress={listRemoteSurveys} title="Refresh Survey List" />
+        <RemoteSurveyList fetch={fetchRemoteSurvey} surveys={remoteSurveys} />
+
+        {/* TODO blank slate state when no surveys are available */}
+        <LocalSurveyList navigation={navigation} surveys={availableSurveys} />
+
+        {/* TODO this should display on the bottom */}
+        {/* <TouchableOpacity style={baseStyles.buttonBottom}>
           <Text style={[baseStyles.textWhite]}>
             {"Add New Surveys".toUpperCase()}
           </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
+        <View style={{ flex: 0.75, justifyContent: "space-between" }}>
+          <View
+            style={[
+              baseStyles.wrapperContent,
+              baseStyles.wrapperContentLg,
+              baseStyles.listBlock
+            ]}
+          >
+            <Text style={[baseStyles.h3, baseStyles.headerWithDescription]}>
+              OSM
+            </Text>
+            <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+              <Text>Updated: </Text>
+              <Text>4/30/17 4:30</Text>
+            </View>
+            <View style={[baseStyles.observationBlock]}>
+              <Text style={[baseStyles.metadataText]}>2 Observations</Text>
+            </View>
+          </View>
+
+        </View>
+        <View style={{ position: "relative" }}>
+          <TouchableOpacity
+            style={[baseStyles.buttonBottom, { alignSelf: "flex-end" }]}
+            onPress={() => {
+              navigate("SurveyChoose");
+            }}
+          >
+            <Text style={[baseStyles.textWhite]}>
+              {"Add New Surveys".toUpperCase()}
+            </Text>
+          </TouchableOpacity>
+        </View>
       </Wrapper>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  subtitle: {
-    fontSize: 17
-  }
+const mapStateToProps = state => ({
+  availableSurveys: selectAvailableSurveys(state),
+  remoteSurveys: selectRemoteSurveys(state)
 });
 
-export default SurveysScreen;
+export default connect(mapStateToProps, {
+  clearRemoteSurveys,
+  fetchRemoteSurvey,
+  listRemoteSurveys
+})(SurveysScreen);

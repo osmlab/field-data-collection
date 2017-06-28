@@ -1,5 +1,11 @@
 import React, { Component } from "react";
-import { StyleSheet, View, Button, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Button,
+  TouchableOpacity,
+  TouchableHighlight
+} from "react-native";
 import { NavigationActions } from "react-navigation";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
