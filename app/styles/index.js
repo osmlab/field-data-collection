@@ -25,7 +25,6 @@ const baseStyles = StyleSheet.create({
   wrapper: {
     flex: 1,
     flexDirection: "column",
-    // justifyContent: 'flex-start',
     backgroundColor: "#ffffff"
   },
   wrapperContent: {
