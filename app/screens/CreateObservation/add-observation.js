@@ -12,6 +12,7 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 
 import { Text, Wrapper } from "../../components";
 import { getFieldType } from "../../components/fields";
+import { selectFeatureType } from "../../selectors";
 import { baseStyles } from "../../styles";
 
 const styles = StyleSheet.create({});
@@ -119,14 +120,10 @@ class AddObservationScreen extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const survey = state.surveys[0];
-
   const { navigation: { state: { params: { observationType } } } } = ownProps;
 
-  const type = survey.featureTypes.find(x => x.id === observationType);
-
   return {
-    type
+    type: selectFeatureType(observationType, state)
   };
 };
 
