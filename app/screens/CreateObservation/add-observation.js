@@ -24,19 +24,25 @@ class AddObservationScreen extends Component {
     const { navigate } = this.props.navigation;
     const { type: { fields, name } } = this.props;
 
-    const Field = getFieldType(field.type);
+    try {
+      const Field = getFieldType(field.type);
 
-    return (
-      <TouchableHighlight
-        key={index}
-        onPress={() =>
-          navigate("FieldsetForm", {
-            fieldset: { title: name, index, fields }
-          })}
-      >
-        <Field {...field} />
-      </TouchableHighlight>
-    );
+      return (
+        <TouchableHighlight
+          key={index}
+          onPress={() =>
+            navigate("FieldsetForm", {
+              fieldset: { title: name, index, fields }
+            })}
+        >
+          <Field {...field} />
+        </TouchableHighlight>
+      );
+    } catch (err) {
+      console.warn(err);
+
+      return null;
+    }
   }
 
   addLocation() {
