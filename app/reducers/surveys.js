@@ -13,6 +13,12 @@ const initialState = {
 
 export default (state = initialState, { id, survey, surveys, type }) => {
   switch (type) {
+    case types.CLEAR_LOCAL_SURVEYS:
+      return {
+        ...state,
+        available: initialState.available
+      };
+
     case types.CLEAR_REMOTE_SURVEYS:
       return {
         ...state,

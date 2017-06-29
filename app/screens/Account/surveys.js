@@ -4,6 +4,7 @@ import { NavigationActions } from "react-navigation";
 import { connect } from "react-redux";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
+import { clearLocalSurveys } from "../../actions";
 import { Text, Wrapper } from "../../components";
 import { selectAvailableSurveys } from "../../selectors";
 import { baseStyles } from "../../styles";
@@ -11,6 +12,11 @@ import LocalSurveyList from "./LocalSurveyList";
 
 class SurveysScreen extends Component {
   onBackPress = () => this.props.navigation.dispatch(NavigationActions.back());
+
+  // uncomment this to clear local surveys when displaying this screen
+  // componentWillMount() {
+  //   this.props.clearLocalSurveys();
+  // }
 
   render() {
     const { availableSurveys, navigation } = this.props;
@@ -61,4 +67,4 @@ const mapStateToProps = state => ({
   availableSurveys: selectAvailableSurveys(state)
 });
 
-export default connect(mapStateToProps)(SurveysScreen);
+export default connect(mapStateToProps, { clearLocalSurveys })(SurveysScreen);

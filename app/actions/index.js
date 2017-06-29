@@ -9,6 +9,7 @@ import { findPeers } from "../lib/osm-sync";
 import { timeout } from "../lib";
 
 const types = {
+  CLEAR_LOCAL_SURVEYS: "CLEAR_LOCAL_SURVEYS",
   CLEAR_REMOTE_SURVEYS: "CLEAR_REMOTE_SURVEYS",
   DISCOVERING_PEERS: "DISCOVERING_PEERS",
   DISCOVERING_PEERS_FAILED: "DISCOVERING_PEERS_FAILED",
@@ -94,6 +95,11 @@ const getPeerInfo = (dispatch, callback) => {
     return callback(null, targetIP, targetPort);
   });
 };
+
+export const clearLocalSurveys = () => (dispatch, getState) =>
+  dispatch({
+    type: types.CLEAR_LOCAL_SURVEYS
+  });
 
 export const clearRemoteSurveys = () => (dispatch, getState) =>
   dispatch({
