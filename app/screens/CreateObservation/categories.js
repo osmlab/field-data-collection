@@ -10,7 +10,7 @@ import { connect } from "react-redux";
 import { NavigationActions } from "react-navigation";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
-import { Text, Wrapper } from "../../components";
+import { Text, Wrapper, CategoryList } from "../../components";
 import { selectObservationTypes } from "../../selectors";
 import { baseStyles } from "../../styles";
 
@@ -39,25 +39,10 @@ const styles = StyleSheet.create({
 });
 
 class CategoriesScreen extends Component {
-  componentWillMount() {
-    const { observationTypes } = this.props;
-
-    const ds = new ListView.DataSource({
-      rowHasChanged: (r1, r2) => r1 !== r2
-    });
-
-    this.setState({
-      categories: ds.cloneWithRows(
-        observationTypes.map(t => ({
-          id: t.id,
-          name: t.name
-        }))
-      )
-    });
-  }
-
   render() {
-    const { navigate } = this.props.navigation;
+    console.log("CategoriesScreen", this.props, this.navigation);
+    const { navigation } = this.props;
+    const navigate = navigation.navigate;
 
     const onBackPress = () => {
       const backAction = NavigationActions.back();
@@ -85,34 +70,33 @@ class CategoriesScreen extends Component {
     );
 
     return (
-      <Wrapper navigation={this.props.navigation} headerView={headerView}>
+      <Wrapper navigation={navigation} headerView={headerView}>
         <View style={[baseStyles.wrapperContent]}>
           <Text style={baseStyles.title}>
             What do you want to add?
           </Text>
 
-          <ListView
-            contentContainerStyle={styles.gridContainer}
-            dataSource={this.state.categories}
-            noScroll={true}
-            renderRow={item => {
-              function onCategoryPress() {
-                navigate("AddObservation", { observationType: item.id });
+          {/* TODO: pull this from surveys in state */}
+          <CategoryList
+            navigation={navigation}
+            categories={[
+              {
+                name: "OSM",
+                list: [
+                  { name: "Oil spills" },
+                  { name: "Blast Fishing" },
+                  { name: "Schools" },
+                  { name: "Buildings" },
+                  { name: "Hazards" },
+                  { name: "Oil spills" },
+                  { name: "Blast Fishing" },
+                  { name: "Schools" },
+                  { name: "Buildings" },
+                  { name: "Hazards" }
+                ]
               }
-
-              return (
-                <TouchableHighlight onPress={onCategoryPress}>
-                  <View style={styles.gridItem}>
-                    <Text>{item.name}</Text>
-                  </View>
-                </TouchableHighlight>
-              );
-            }}
+            ]}
           />
-
-          <View style={styles.moreItemsButton}>
-            <Text style={{}} onPress={() => {}}>View More</Text>
-          </View>
         </View>
       </Wrapper>
     );
