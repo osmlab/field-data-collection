@@ -7,7 +7,7 @@ export const selectObservationTypes = createSelector(
   surveys =>
     surveys
       .map(({ definition: { featureTypes, observationTypes } }) =>
-        (observationTypes || []).map(t => featureTypes.find(x => x.id === t))
+        observationTypes.map(t => featureTypes.find(x => x.id === t))
       )
       .reduce((arr, val) => arr.concat(val), [])
 );

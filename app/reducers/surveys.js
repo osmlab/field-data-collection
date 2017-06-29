@@ -1,11 +1,10 @@
 import types from "../actions";
+import OSM from "../config/OSM-2.2.2.json";
 
 const initialState = {
   available: [
     {
-      definition: {
-        name: "OSM"
-      }
+      definition: OSM
     }
   ],
   remote: []
