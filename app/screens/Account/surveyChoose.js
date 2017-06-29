@@ -1,69 +1,59 @@
 import React, { Component } from "react";
-import {
-  StyleSheet,
-  View,
-  Button,
-  TouchableOpacity,
-  Modal,
-  TouchableHighlight
-} from "react-native";
+import { View, TouchableOpacity, Modal } from "react-native";
 import { NavigationActions } from "react-navigation";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import { connect } from "react-redux";
 
-import { Text, Wrapper } from "../../components";
+import {
+  clearRemoteSurveys,
+  fetchRemoteSurvey,
+  listRemoteSurveys
+} from "../../actions";
+import { StatusBar, Text } from "../../components";
+import RemoteSurveyList from "./RemoteSurveyList";
+import { selectRemoteSurveys } from "../../selectors";
 import { baseStyles } from "../../styles";
 
 class SurveyModal extends Component {
-  state = {
-    modalVisible: true
-  };
+  onBackPress = () => this.props.navigation.dispatch(NavigationActions.back());
 
-  setModalVisible(visible) {
-    this.setState({ modalVisible: visible });
+  componentWillMount() {
+    this.props.clearRemoteSurveys();
+    this.props.listRemoteSurveys();
   }
 
   render() {
-    const onBackPress = () => {
-      const backAction = NavigationActions.back();
-      this.props.navigation.dispatch(backAction);
-    };
+    const { fetchRemoteSurvey, remoteSurveys } = this.props;
 
     return (
       <View>
         <Modal
-          animationType={"slide"}
-          transparent={true}
-          visible={this.state.modalVisible}
-          onRequestClose={() => {
-            alert("Modal has been closed.");
-          }}
+          animationType="slide"
+          transparent
+          visible
+          onRequestClose={this.onBackPress}
         >
           <View style={[baseStyles.wrapperContentMd, baseStyles.modal]}>
+            <StatusBar />
+
             <View style={[baseStyles.wrappedItems]}>
               <Text style={[baseStyles.h2, baseStyles.wrappedItemsLeft]}>
                 Add Surveys
               </Text>
-              <TouchableOpacity onPress={onBackPress}>
+              <TouchableOpacity onPress={this.onBackPress}>
                 <Icon name="clear" style={[[baseStyles.clearIcon]]} />
               </TouchableOpacity>
             </View>
-            <View>
-              <TouchableOpacity style={[baseStyles.touchableLinksWrapper]}>
-                <Text style={[baseStyles.touchableLinks]}>Survey 1</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={[baseStyles.touchableLinksWrapper]}>
-                <Text style={[baseStyles.touchableLinks]}>Survey 2</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={[baseStyles.touchableLinksWrapper]}>
-                <Text style={[baseStyles.touchableLinks]}>Survey 3</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={[baseStyles.touchableLinksWrapper]}>
-                <Text style={[baseStyles.touchableLinks]}>Survey 4</Text>
-              </TouchableOpacity>
-            </View>
-            <TouchableOpacity style={[baseStyles.buttonBottom]}>
+            <RemoteSurveyList
+              fetch={fetchRemoteSurvey}
+              surveys={remoteSurveys}
+            />
+            <TouchableOpacity
+              onPress={this.onBackPress}
+              style={[baseStyles.buttonBottom]}
+            >
               <Text style={[baseStyles.textWhite]}>
-                {"Submit".toUpperCase()}
+                {"Done".toUpperCase()}
               </Text>
             </TouchableOpacity>
           </View>
@@ -73,4 +63,12 @@ class SurveyModal extends Component {
   }
 }
 
-export default SurveyModal;
+const mapStateToProps = state => ({
+  remoteSurveys: selectRemoteSurveys(state)
+});
+
+export default connect(mapStateToProps, {
+  clearRemoteSurveys,
+  fetchRemoteSurvey,
+  listRemoteSurveys
+})(SurveyModal);
