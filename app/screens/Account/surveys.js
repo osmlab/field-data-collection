@@ -9,7 +9,7 @@ import { Text, Wrapper } from "../../components";
 import { selectAvailableSurveys } from "../../selectors";
 import { baseStyles } from "../../styles";
 import LocalSurveyList from "./LocalSurveyList";
-import SurveyModal from "./surveyChoose";
+import SurveyModal from "./SurveyModal";
 
 class SurveysScreen extends Component {
   state = {
