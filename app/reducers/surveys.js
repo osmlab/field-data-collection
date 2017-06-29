@@ -4,7 +4,8 @@ import OSM from "../config/OSM-2.2.2.json";
 const initialState = {
   available: [
     {
-      definition: OSM
+      definition: OSM,
+      default: true
     }
   ],
   remote: []

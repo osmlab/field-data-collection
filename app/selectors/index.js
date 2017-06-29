@@ -2,12 +2,27 @@ import { createSelector } from "reselect";
 
 export const selectAvailableSurveys = state => state.surveys.available;
 
-export const selectFeatureTypes = createSelector(
+export const selectCustomSurveys = createSelector(
   selectAvailableSurveys,
-  surveys =>
-    surveys
-      .map(({ definition: { featureTypes } }) => featureTypes)
-      .reduce((arr, val) => arr.concat(val), [])
+  surveys => surveys.filter(x => !x.default)
+);
+
+export const selectDefaultSurveys = createSelector(
+  selectAvailableSurveys,
+  surveys => surveys.filter(x => x.default)
+);
+
+export const selectActiveSurveys = state =>
+  createSelector(
+    [selectCustomSurveys, selectDefaultSurveys],
+    (customSurveys, defaultSurveys) =>
+      customSurveys.length > 0 ? customSurveys : defaultSurveys
+  );
+
+export const selectFeatureTypes = createSelector(selectActiveSurveys, surveys =>
+  surveys
+    .map(({ definition: { featureTypes } }) => featureTypes)
+    .reduce((arr, val) => arr.concat(val), [])
 );
 
 export const selectFeatureType = (id, state) =>
