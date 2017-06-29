@@ -2,11 +2,26 @@ import dataUriToBuffer from "data-uri-to-buffer";
 import eos from "end-of-stream";
 import JSONStream from "JSONStream";
 import once from "once";
+import RNFetchBlob from "react-native-fetch-blob";
 import tar from "tar-stream";
 import through2 from "through2";
 
 import { findPeers } from "../lib/osm-sync";
 import { timeout } from "../lib";
+
+const Fetch = RNFetchBlob.polyfill.Fetch;
+// replace built-in fetch
+window.fetch = new Fetch({
+  // enable this option so that the response data conversion handled automatically
+  auto: true,
+  // when receiving response data, the module will match its Content-Type header
+  // with strings in this array. If it contains any one of string in this array,
+  // the response body will be considered as binary data and the data will be stored
+  // in file system instead of in memory.
+  // By default, it only store response data to file system when Content-Type
+  // contains string `application/octet`.
+  binaryContentTypes: ["image/", "video/", "audio/", "application/gzip"]
+}).build();
 
 const types = {
   CLEAR_LOCAL_SURVEYS: "CLEAR_LOCAL_SURVEYS",
@@ -72,7 +87,11 @@ const extractSurveyBundle = (id, bundle, _callback) => {
     }
   });
 
-  extract.end(bundle);
+  // NOTE: can't attach multiple handlers to these
+  bundle.onData(chunk => extract.write(chunk));
+  bundle.onEnd(() => extract.end());
+
+  bundle.open();
 };
 
 const getPeerInfo = (dispatch, callback) => {
@@ -113,29 +132,17 @@ export const fetchRemoteSurvey = (id, url) => (dispatch, getState) => {
   });
 
   return timeout(fetch(`${url}/bundle`), 1000)
-    .then(rsp => rsp.blob())
+    .then(rsp => rsp.rawResp())
+    .then(rsp => rsp.readStream())
     .then(
-      blob =>
-        new Promise((resolve, reject) => {
-          var reader = new FileReader();
-
-          reader.addEventListener("loadend", () =>
-            resolve(new Buffer(reader.result))
-          );
-          reader.addEventListener("error", err => reject(err));
-
-          reader.readAsArrayBuffer(blob);
-        })
-    )
-    .then(
-      bundle =>
+      stream =>
         new Promise((resolve, reject) =>
-          extractSurveyBundle(id, bundle, (err, surveys) => {
+          extractSurveyBundle(id, stream, (err, survey) => {
             if (err) {
               return reject(new Error(err));
             }
 
-            return resolve(surveys);
+            return resolve(survey);
           })
         )
     )
