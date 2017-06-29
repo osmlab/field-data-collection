@@ -12,12 +12,11 @@ export const selectDefaultSurveys = createSelector(
   surveys => surveys.filter(x => x.default)
 );
 
-export const selectActiveSurveys = state =>
-  createSelector(
-    [selectCustomSurveys, selectDefaultSurveys],
-    (customSurveys, defaultSurveys) =>
-      customSurveys.length > 0 ? customSurveys : defaultSurveys
-  );
+export const selectActiveSurveys = createSelector(
+  [selectCustomSurveys, selectDefaultSurveys],
+  (customSurveys, defaultSurveys) =>
+    customSurveys.length > 0 ? customSurveys : defaultSurveys
+);
 
 export const selectFeatureTypes = createSelector(selectActiveSurveys, surveys =>
   surveys
@@ -29,7 +28,7 @@ export const selectFeatureType = (id, state) =>
   selectFeatureTypes(state).find(x => x.id === id);
 
 export const selectObservationTypes = createSelector(
-  selectAvailableSurveys,
+  selectActiveSurveys,
   surveys =>
     surveys
       .map(({ definition: { featureTypes, observationTypes } }) =>

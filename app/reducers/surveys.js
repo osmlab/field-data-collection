@@ -28,7 +28,9 @@ export default (state = initialState, { id, survey, surveys, type }) => {
     case types.FETCHING_REMOTE_SURVEY:
       return {
         ...state,
-        available: state.available.filter(x => x.id !== id)
+        available: state.available.filter(
+          ({ definition }) => definition.id !== id
+        )
       };
 
     case types.FETCHING_REMOTE_SURVEY_LIST:
