@@ -52,11 +52,12 @@ class CategoryView extends Component {
       rowHasChanged: (r1, r2) => r1 !== r2
     });
 
+    this.animation = new Animated.Value();
+    this.minHeight = null;
+    this.maxHeight = null;
+
     this.setState({
       expanded: false,
-      minHeight: null,
-      maxHeight: null,
-      animation: new Animated.Value(),
       categoryName: category.name,
       categories: ds.cloneWithRows(
         category.list.map(item => ({
@@ -68,20 +69,22 @@ class CategoryView extends Component {
   }
 
   _setMinHeight = e => {
-    this.state.animation.setValue(20);
-    if (!this.state.minHeight) {
-      this.state.minHeight = 20;
+    this.animation.setValue(20);
+    if (!this.minHeight) {
+      this.minHeight = 20;
     }
   };
 
   _setMaxHeight = e => {
-    if (!this.state.maxHeight) {
-      this.state.maxHeight = e.nativeEvent.layout.height;
+    if (!this.maxHeight) {
+      this.maxHeight = e.nativeEvent.layout.height;
     }
   };
 
   toggle = () => {
-    const { expanded, maxHeight, minHeight } = this.state;
+    const { expanded } = this.state;
+    const minHeight = this.minHeight;
+    const maxHeight = this.maxHeight;
     const initialHeight = expanded ? maxHeight + minHeight : minHeight;
     const finalHeight = expanded ? minHeight : maxHeight + minHeight;
 
@@ -89,8 +92,9 @@ class CategoryView extends Component {
       expanded: !expanded
     });
 
-    this.state.animation.setValue(initialHeight);
-    Animated.timing(this.state.animation, {
+    this.animation.setValue(initialHeight);
+
+    Animated.timing(this.animation, {
       duration: 250,
       toValue: finalHeight
     }).start();
@@ -107,7 +111,7 @@ class CategoryView extends Component {
     );
 
     return (
-      <Animated.View style={{ height: this.state.animation }}>
+      <Animated.View style={{ height: this.animation }}>
         <View style={styles.categoryHeader} onLayout={this._setMinHeight}>
           <TouchableOpacity
             style={{
@@ -118,21 +122,21 @@ class CategoryView extends Component {
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               {arrowIcon}
               <Text style={[baseStyles.h2, { height: 40 }]}>
-                {" "}{categoryName}
+                {categoryName}
               </Text>
             </View>
           </TouchableOpacity>
         </View>
 
         <Interactable.View
-          verticalOnly={true}
+          verticalOnly
           snapPoints={[]}
           onLayout={this._setMaxHeight}
         >
           <ListView
             contentContainerStyle={{ marginTop: 10 }}
             dataSource={categories}
-            noScroll={true}
+            noScroll
             renderRow={category => {
               function onCategoryPress() {
                 navigate("AddObservation", { category });

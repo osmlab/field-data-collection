@@ -40,7 +40,6 @@ const styles = StyleSheet.create({
 
 class CategoriesScreen extends Component {
   render() {
-    console.log("CategoriesScreen", this.props, this.navigation);
     const { navigation } = this.props;
     const navigate = navigation.navigate;
 
