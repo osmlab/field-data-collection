@@ -47,11 +47,6 @@ class AddObservationScreen extends Component {
   render() {
     const { type: { fields, name } } = this.props;
 
-    const onBackPress = () => {
-      const backAction = NavigationActions.back();
-      this.props.navigation.dispatch(backAction);
-    };
-
     const headerView = (
       <View
         style={{
@@ -60,7 +55,7 @@ class AddObservationScreen extends Component {
           alignItems: "center"
         }}
       >
-        <TouchableOpacity onPress={onBackPress}>
+        <TouchableOpacity onPress={this.onBackPress}>
           <Icon
             name="keyboard-backspace"
             style={[[baseStyles.headerBackIcon]]}
