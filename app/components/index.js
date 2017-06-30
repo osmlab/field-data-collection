@@ -6,6 +6,7 @@ import MapList from "./observation-list";
 import { getFieldInput } from "./field-inputs";
 import { getFieldType } from "./fields";
 import StatusBar from "./StatusBar";
+import CategoryList from "./category-list";
 
 export {
   Header,
@@ -15,5 +16,6 @@ export {
   getFieldInput,
   getFieldType,
   MapList,
-  StatusBar
+  StatusBar,
+  CategoryList
 };
