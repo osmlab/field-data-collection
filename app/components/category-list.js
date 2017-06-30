@@ -60,12 +60,7 @@ class CategoryView extends Component {
     this.setState({
       expanded: false,
       categoryName: category.name,
-      categories: ds.cloneWithRows(
-        category.list.map(item => ({
-          id: item.id,
-          name: item.name
-        }))
-      )
+      categories: ds.cloneWithRows(category.list)
     });
   }
 

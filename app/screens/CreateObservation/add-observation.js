@@ -22,7 +22,8 @@ class AddObservationScreen extends Component {
 
   renderField(field, index) {
     const { navigate } = this.props.navigation;
-    const { type: { fields, name } } = this.props;
+    const { state: { params: { category } } } = this.props.navigation;
+    const { name, fields } = category;
 
     try {
       const Field = getFieldType(field.type);
@@ -51,7 +52,8 @@ class AddObservationScreen extends Component {
   }
 
   render() {
-    const { type: { fields, name } } = this.props;
+    const { state: { params: { category } } } = this.props.navigation;
+    const { name, fields } = category;
 
     const headerView = (
       <View
