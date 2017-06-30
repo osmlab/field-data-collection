@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
 
 class CategoriesScreen extends Component {
   render() {
-    const { navigation } = this.props;
+    const { navigation, observationTypes } = this.props;
     const navigate = navigation.navigate;
 
     const onBackPress = () => {
@@ -80,19 +80,8 @@ class CategoriesScreen extends Component {
             navigation={navigation}
             categories={[
               {
-                name: "OSM",
-                list: [
-                  { name: "Oil spills" },
-                  { name: "Blast Fishing" },
-                  { name: "Schools" },
-                  { name: "Buildings" },
-                  { name: "Hazards" },
-                  { name: "Oil spills" },
-                  { name: "Blast Fishing" },
-                  { name: "Schools" },
-                  { name: "Buildings" },
-                  { name: "Hazards" }
-                ]
+                name: "Categories",
+                list: observationTypes
               }
             ]}
           />
