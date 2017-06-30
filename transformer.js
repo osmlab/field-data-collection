@@ -43,7 +43,8 @@ const babelRC = {
         throwForNonStringLiteral: true
       }
     ]
-  ]
+  ],
+  sourceMaps: true
 };
 
 module.exports.transform = function transform(src, filename, options) {

@@ -1,12 +1,24 @@
 import types from "../actions";
+import OSM from "../config/OSM-2.2.2.json";
 
 const initialState = {
-  available: [],
+  available: [
+    {
+      definition: OSM,
+      default: true
+    }
+  ],
   remote: []
 };
 
 export default (state = initialState, { id, survey, surveys, type }) => {
   switch (type) {
+    case types.CLEAR_LOCAL_SURVEYS:
+      return {
+        ...state,
+        available: initialState.available
+      };
+
     case types.CLEAR_REMOTE_SURVEYS:
       return {
         ...state,
@@ -16,7 +28,9 @@ export default (state = initialState, { id, survey, surveys, type }) => {
     case types.FETCHING_REMOTE_SURVEY:
       return {
         ...state,
-        available: state.available.filter(x => x.id !== id)
+        available: state.available.filter(
+          ({ definition }) => definition.id !== id
+        )
       };
 
     case types.FETCHING_REMOTE_SURVEY_LIST:
