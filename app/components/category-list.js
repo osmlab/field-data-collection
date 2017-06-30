@@ -47,6 +47,7 @@ class CategoryList extends Component {
 class CategoryView extends Component {
   componentWillMount() {
     const { category } = this.props;
+    category.list = category.list || [];
 
     const ds = new ListView.DataSource({
       rowHasChanged: (r1, r2) => r1 !== r2
