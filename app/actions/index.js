@@ -6,6 +6,8 @@ import RNFetchBlob from "react-native-fetch-blob";
 import tar from "tar-stream";
 import through2 from "through2";
 
+import osmp2p from "../lib/osm-p2p";
+import createOsmp2p from "../lib/create-osm-p2p";
 import { findPeers } from "../lib/osm-sync";
 import { timeout } from "../lib";
 
@@ -23,6 +25,10 @@ window.fetch = new Fetch({
   binaryContentTypes: ["image/", "video/", "audio/", "application/gzip"]
 }).build();
 
+const obsdb = createOsmp2p("obs");
+const osmdb = createOsmp2p("osm");
+const osm = osmp2p(obsdb, osmdb);
+
 const types = {
   CLEAR_LOCAL_SURVEYS: "CLEAR_LOCAL_SURVEYS",
   CLEAR_REMOTE_SURVEYS: "CLEAR_REMOTE_SURVEYS",
@@ -33,7 +39,10 @@ const types = {
   FETCHING_REMOTE_SURVEY_LIST: "FETCHING_REMOTE_SURVEY_LIST",
   FETCHING_REMOTE_SURVEY_LIST_FAILED: "FETCHING_REMOTE_SURVEY_LIST_FAILED",
   RECEIVED_REMOTE_SURVEY_LIST: "RECEIVED_REMOTE_SURVEY_LIST",
-  RECEIVED_REMOTE_SURVEY: "RECEIVED_REMOTE_SURVEY"
+  RECEIVED_REMOTE_SURVEY: "RECEIVED_REMOTE_SURVEY",
+  SYNCING_SURVEY_DATA: "SYNCING_SURVEY_DATA",
+  SYNCING_SURVEY_DATA_FAILED: "SYNCING_SURVEY_DATA_FAILED",
+  FINISHED_SYNCING_SURVEY_DATA: "FINISHED_SYNCING_SURVEY_DATA"
 };
 
 // fallback to 10.0.2.2 when connecting to the coordinator (host's localhost from the emulator)
@@ -94,6 +103,32 @@ const extractSurveyBundle = (id, bundle, _callback) => {
   bundle.open();
 };
 
+const syncSurveyData = (target, dispatch) => {
+  console.log("does this happen", target);
+
+  dispatch({
+    type: types.SYNCING_SURVEY_DATA
+  });
+
+  const progressFn = i => {
+    console.log("progress", i);
+  };
+
+  osm.replicate(target, { progressFn }, function(err) {
+    if (err) {
+      console.log(types.SYNCING_SURVEY_DATA_FAILED);
+      return dispatch({
+        type: types.SYNCING_SURVEY_DATA_FAILED
+      });
+    }
+
+    console.log(types.FINISHED_SYNCING_SURVEY_DATA);
+    dispatch({
+      type: types.FINISHED_SYNCING_SURVEY_DATA
+    });
+  });
+};
+
 const getPeerInfo = (dispatch, callback) => {
   dispatch({
     type: types.DISCOVERING_PEERS
@@ -125,7 +160,7 @@ export const clearRemoteSurveys = () => (dispatch, getState) =>
     type: types.CLEAR_REMOTE_SURVEYS
   });
 
-export const fetchRemoteSurvey = (id, url) => (dispatch, getState) => {
+export const fetchRemoteSurvey = (id, url, target) => (dispatch, getState) => {
   dispatch({
     id,
     type: types.FETCHING_REMOTE_SURVEY
@@ -146,13 +181,15 @@ export const fetchRemoteSurvey = (id, url) => (dispatch, getState) => {
           })
         )
     )
-    .then(survey =>
+    .then(survey => {
       dispatch({
         id,
         type: types.RECEIVED_REMOTE_SURVEY,
         survey
-      })
-    )
+      });
+
+      syncSurveyData(target, dispatch);
+    })
     .catch(error =>
       dispatch({
         id,
@@ -183,7 +220,9 @@ export const listRemoteSurveys = () => (dispatch, getState) => {
           type: types.RECEIVED_REMOTE_SURVEY_LIST,
           surveys: surveys.map(x => ({
             ...x,
-            url: `http://${targetIP}:${targetPort}/surveys/${x.id}`
+            url: `http://${targetIP}:${targetPort}/surveys/${x.id}`,
+            ip: targetIP,
+            port: targetPort
           }))
         })
       )

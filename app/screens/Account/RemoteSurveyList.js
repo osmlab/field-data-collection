@@ -17,7 +17,11 @@ export default class RemoteSurveyList extends Component {
         {surveys.map((survey, idx) =>
           <TouchableOpacity
             key={idx}
-            onPress={() => fetch(survey.id, survey.url)}
+            onPress={() =>
+              fetch(survey.id, survey.url, {
+                address: survey.ip,
+                port: survey.port
+              })}
             style={[baseStyles.touchableLinksWrapper]}
           >
             <Text style={[baseStyles.touchableLinks]}>

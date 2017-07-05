@@ -29,9 +29,9 @@ class SurveysScreen extends Component {
     });
 
   // uncomment this to clear local surveys when displaying this screen
-  // componentWillMount() {
-  //   this.props.clearLocalSurveys();
-  // }
+  componentWillMount() {
+    this.props.clearLocalSurveys();
+  }
 
   render() {
     const { availableSurveys, navigation } = this.props;

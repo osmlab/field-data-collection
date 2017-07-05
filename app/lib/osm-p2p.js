@@ -108,11 +108,7 @@ function osmp2p(observationDb, osmOrgDb) {
     return pump(osmStream, geoJSONStream);
   }
 
-  function replicate(opts) {
-    return observationDb.log.replicate(opts);
-  }
-
-  function replicateNet(addr, opts, cb) {
+  function replicate(addr, opts, cb) {
     netSync.replicate(addr, opts, cb);
   }
 
