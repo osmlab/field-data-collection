@@ -29,12 +29,14 @@ OsmSync.prototype.replicate = function(target, opts, done) {
   opts.progressFn(0);
 
   function onFinish(err) {
-    console.log("finished replicating", finished);
     if (err) {
       finished--;
       return done(err);
     }
-    if (++finished === 2) done();
+    if (++finished === 2) {
+      console.log("finished replicating", finished);
+      done();
+    }
     opts.progressFn(finished / 2);
   }
 };

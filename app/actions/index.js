@@ -41,6 +41,7 @@ const types = {
   RECEIVED_REMOTE_SURVEY_LIST: "RECEIVED_REMOTE_SURVEY_LIST",
   RECEIVED_REMOTE_SURVEY: "RECEIVED_REMOTE_SURVEY",
   SYNCING_SURVEY_DATA: "SYNCING_SURVEY_DATA",
+  SYNCING_SURVEY_DATA_PROGRESS: "SYNCING_SURVEY_DATA_PROGRESS",
   SYNCING_SURVEY_DATA_FAILED: "SYNCING_SURVEY_DATA_FAILED",
   FINISHED_SYNCING_SURVEY_DATA: "FINISHED_SYNCING_SURVEY_DATA"
 };
@@ -103,28 +104,35 @@ const extractSurveyBundle = (id, bundle, _callback) => {
   bundle.open();
 };
 
-const syncSurveyData = (target, dispatch) => {
+const syncSurveyData = (id, target, dispatch) => {
   console.log("does this happen", target);
 
   dispatch({
-    type: types.SYNCING_SURVEY_DATA
+    type: types.SYNCING_SURVEY_DATA,
+    id
   });
 
   const progressFn = i => {
-    console.log("progress", i);
+    dispatch({
+      type: types.SYNCING_SURVEY_DATA_PROGRESS,
+      progress: i,
+      id
+    });
   };
 
   osm.replicate(target, { progressFn }, function(err) {
     if (err) {
       console.log(types.SYNCING_SURVEY_DATA_FAILED);
       return dispatch({
-        type: types.SYNCING_SURVEY_DATA_FAILED
+        type: types.SYNCING_SURVEY_DATA_FAILED,
+        id
       });
     }
 
     console.log(types.FINISHED_SYNCING_SURVEY_DATA);
     dispatch({
-      type: types.FINISHED_SYNCING_SURVEY_DATA
+      type: types.FINISHED_SYNCING_SURVEY_DATA,
+      id
     });
   });
 };
@@ -188,7 +196,7 @@ export const fetchRemoteSurvey = (id, url, target) => (dispatch, getState) => {
         survey
       });
 
-      syncSurveyData(target, dispatch);
+      syncSurveyData(id, target, dispatch);
     })
     .catch(error =>
       dispatch({

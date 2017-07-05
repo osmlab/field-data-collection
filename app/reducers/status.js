@@ -58,6 +58,27 @@ export default (state = initialState, { error, type }) => {
         message: null
       };
 
+    case types.SYNCING_SURVEY_DATA:
+      return {
+        ...state,
+        error,
+        message: "Syncing survey data..."
+      };
+
+    case types.SYNCING_SURVEY_DATA_FAILED:
+      return {
+        ...state,
+        error,
+        message: "Syncing survey data failed."
+      };
+
+    case types.FINISHED_SYNCING_SURVEY_DATA:
+      return {
+        ...state,
+        error,
+        message: "Survey data sync complete."
+      };
+
     default:
       return state;
   }
