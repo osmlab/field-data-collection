@@ -118,7 +118,7 @@ const syncSurveyData = (id, target, dispatch) => {
     });
   };
 
-  osm.replicate(target, { progressFn }, function(err) {
+  osm.replicate(target, { progressFn }, err => {
     if (err) {
       return dispatch({
         type: types.SYNCING_SURVEY_DATA_FAILED,
