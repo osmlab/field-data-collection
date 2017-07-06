@@ -105,8 +105,6 @@ const extractSurveyBundle = (id, bundle, _callback) => {
 };
 
 const syncSurveyData = (id, target, dispatch) => {
-  console.log("does this happen", target);
-
   dispatch({
     type: types.SYNCING_SURVEY_DATA,
     id
@@ -122,14 +120,12 @@ const syncSurveyData = (id, target, dispatch) => {
 
   osm.replicate(target, { progressFn }, function(err) {
     if (err) {
-      console.log(types.SYNCING_SURVEY_DATA_FAILED);
       return dispatch({
         type: types.SYNCING_SURVEY_DATA_FAILED,
         id
       });
     }
 
-    console.log(types.FINISHED_SYNCING_SURVEY_DATA);
     dispatch({
       type: types.FINISHED_SYNCING_SURVEY_DATA,
       id
