@@ -229,8 +229,10 @@ export const listRemoteSurveys = () => (dispatch, getState) => {
           surveys: surveys.map(x => ({
             ...x,
             url: `http://${targetIP}:${targetPort}/surveys/${x.id}`,
-            ip: targetIP,
-            port: targetPort
+            target: {
+              address: targetIP,
+              port: targetPort
+            }
           }))
         })
       )
