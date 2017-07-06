@@ -41,10 +41,6 @@ const styles = StyleSheet.create({
 });
 
 class SideMenu extends Component {
-  componentWillMount() {
-    this._osm = this.props.osm;
-  }
-
   open = () => {
     this._menu.setVelocity({ x: -2000 });
   };
@@ -71,29 +67,6 @@ class SideMenu extends Component {
 
           <View style={styles.sideMenu}>
             <Text style={[baseStyles.title, baseStyles.titleMenu]}>Menu</Text>
-
-            <TouchableOpacity
-              style={{ paddingLeft: 30 }}
-              onPress={() => {
-                var ws = websocket("ws://10.0.2.2:3000");
-
-                this._osm.sync(ws, err => {
-                  if (err) console.log(err);
-                  this._osm.ready(onSync);
-                });
-              }}
-            >
-              <Text>Sync Data</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={{ paddingLeft: 30 }}
-              onPress={() => {
-                AsyncStorage.clear(function(err) {});
-              }}
-            >
-              <Text>Delete data</Text>
-            </TouchableOpacity>
 
             <TouchableOpacity
               style={[baseStyles.navLink]}

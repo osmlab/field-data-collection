@@ -55,9 +55,6 @@ class ObservationMapScreen extends Component {
     super();
 
     this.navigationOptions = { tabBarLabel: "Map" };
-    this._obsdb = createOsmp2p("obs");
-    this._osmdb = createOsmp2p("osm");
-    this._osm = osmp2p(this._obsdb, this._osmdb);
   }
 
   componentWillMount() {
@@ -94,11 +91,7 @@ class ObservationMapScreen extends Component {
 
     this._map.getBoundsFromScreenCoordinates(rect, bounds => {
       console.log("bounds from screenCoords", bounds);
-      var q = [[bounds[0], bounds[2]], [bounds[1], bounds[3]]];
-
-      this._osm.listAnnotations(q, (err, annotations) => {
-        console.log("annotations.length", annotations.length);
-      });
+      // TODO: trigger action fetching points within bounds
     });
   };
 
@@ -106,11 +99,7 @@ class ObservationMapScreen extends Component {
     this._map.getBounds(data => {
       var q = [[data[0], data[2]], [data[1], data[3]]];
 
-      this._osm.listAnnotations(q, (err, annotations) => {
-        if (annotations) {
-          this.setState({ annotations });
-        }
-      });
+      // TODO: trigger action fetching points within bounds
     });
   };
 
@@ -128,7 +117,6 @@ class ObservationMapScreen extends Component {
             this._menu = menu;
           }}
           navigation={this.props.navigation}
-          osm={this._osm}
           onSync={this.prepareAnnotations}
         />
 
