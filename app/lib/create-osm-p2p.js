@@ -16,12 +16,14 @@ function createOsmDb(prefix) {
   });
 
   db.clear = function(cb) {
+    console.log('db.clear: 1')
     var pending = 3;
-    asyncstorage.destroy(prefix + "-db", onDone);
-    asyncstorage.destroy(prefix + "-index", onDone);
-    store.destroy(onDone);
+    asyncstorage.destroy(prefix + "-db", onDone.bind(this, 'db'));
+    asyncstorage.destroy(prefix + "-index", onDone.bind(this, 'index'));
+    store.destroy(onDone.bind(this, 'chunk-store'));
 
-    function onDone() {
+    function onDone(type) {
+      console.log('db.clear: 2; pending ===', pending, 'type ===', type)
       if (--pending === 0) db();
     }
   };
