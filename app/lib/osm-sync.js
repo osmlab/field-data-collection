@@ -52,22 +52,24 @@ OsmSync.prototype.replicateObservationDb = function(target, done) {
 
 OsmSync.prototype.replicateOsmOrgDb = function(target, done) {
   // Wipe db and import fresh XML
-  var self = this
-  console.log('replicateOsmOrgDb: 1')
-  this.osmOrgDb.clear(function () {
-    console.log('replicateOsmOrgDb: 2')
+  var self = this;
+  console.log("replicateOsmOrgDb: 1");
+  this.osmOrgDb.clear(function() {
+    console.log("replicateOsmOrgDb: 2");
     var socket = websocket(
       "ws://" + target.address + ":" + target.port + "/replicate/osm"
     );
-    importer.toLevel(self.osmOrgDb.log.db, socket, function (err) {
-      console.log('replicateOsmOrgDb: 3', err)
-      var count = 0
-      var rs = self.osmOrgDb.log.db.createReadStream()
-      rs.on('data', () => count++)
-      rs.on('end', () => console.log('replicateOsmOrgDb: 4, num-records ===', count)
-      done(err)
-    })
-  })
+    importer.toLevel(self.osmOrgDb.log.db, socket, function(err) {
+      console.log("replicateOsmOrgDb: 3", err);
+      var count = 0;
+      var rs = self.osmOrgDb.log.db.createReadStream();
+      rs.on("data", () => count++);
+      rs.on("end", () =>
+        console.log("replicateOsmOrgDb: 4, num-records ===", count)
+      );
+      done(err);
+    });
+  });
 };
 
 OsmSync.findPeers = function(opts, done) {
