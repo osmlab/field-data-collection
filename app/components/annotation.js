@@ -1,4 +1,5 @@
 import React from "react";
+import { TouchableOpacity } from "react-native";
 import { Annotation as MapboxAnnotation } from "react-native-mapbox-gl";
 
 /**
@@ -24,7 +25,9 @@ export default function Annotation(props) {
         position: "absolute"
       }}
     >
-      {props.children}
+      <TouchableOpacity onPress={props.onPress}>
+        {props.children}
+      </TouchableOpacity>
     </MapboxAnnotation>
   );
 }
