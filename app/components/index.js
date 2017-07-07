@@ -7,8 +7,10 @@ import { getFieldInput } from "./field-inputs";
 import { getFieldType } from "./fields";
 import StatusBar from "./StatusBar";
 import CategoryList from "./category-list";
+import Annotation from "./annotation";
 
 export {
+  Annotation,
   Header,
   SideMenu,
   Text,

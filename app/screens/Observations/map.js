@@ -12,7 +12,7 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 
 import createOsmp2p from "../../lib/create-osm-p2p";
 import osmp2p from "../../lib/osm-p2p";
-import { Header, SideMenu, Text } from "../../components";
+import { Annotation, Header, SideMenu, Text } from "../../components";
 import { baseStyles, colors } from "../../styles";
 
 Mapbox.setAccessToken(
@@ -117,7 +117,6 @@ class ObservationMapScreen extends Component {
             this._menu = menu;
           }}
           navigation={this.props.navigation}
-          onSync={this.prepareAnnotations}
         />
 
         <MapView
@@ -143,7 +142,10 @@ class ObservationMapScreen extends Component {
           showsUserLocation={false}
           styleURL="https://openmaptiles.github.io/osm-bright-gl-style/style-cdn.json"
           userTrackingMode={this.state.userTrackingMode}
-        />
+        >
+          {/* TODO: show annotations if available */}
+        </MapView>
+
         <TouchableOpacity
           style={[styles.buttonLegend]}
           onPress={this._onPressButton}
@@ -158,6 +160,7 @@ class ObservationMapScreen extends Component {
             }}
           />
         </TouchableOpacity>
+
         <TouchableOpacity
           style={[styles.buttonAdd]}
           onPress={() => {
