@@ -80,9 +80,9 @@ Storage.prototype.close = function(cb) {
 Storage.prototype.destroy = function(cb) {
   if (this.closed) return nextTick(cb, new Error("Storage is closed"));
 
-  this.close(function() {
+  this.close(() => {
     var prefix = this._prefix;
-    var prefixLen = this._prefix.length();
+    var prefixLen = this._prefix.length;
 
     AsyncStorage.getAllKeys(function(err, keys) {
       if (err) return cb(err);
@@ -90,6 +90,8 @@ Storage.prototype.destroy = function(cb) {
       keys = keys.filter(function(key) {
         return key.slice(0, prefixLen) === prefix;
       });
+
+      if (!keys.length) return cb();
 
       AsyncStorage.multiRemove(keys, cb);
     });
