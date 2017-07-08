@@ -27,6 +27,7 @@ function osmp2p(createOsmDb) {
     query,
     queryGeoJSONStream,
     replicate,
+    findReplicationTargets,
     sync,
     listAnnotations
   };
@@ -116,7 +117,7 @@ function osmp2p(createOsmDb) {
   }
 
   function findReplicationTargets(opts, cb) {
-    netSync.findPeers(opts, cb);
+    OsmSync.findPeers(opts, cb);
   }
 
   function sync(transportStream, opts, callback) {
