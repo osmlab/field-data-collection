@@ -7,7 +7,10 @@ const OsmSync = require("./osm-sync");
 const generatePlaceholderOsmId = require("./generate-id");
 const convert = require("./convert-geojson-osmp2p");
 
-function osmp2p(observationDb, osmOrgDb) {
+function osmp2p(createOsmDb) {
+  var observationDb = createOsmDb('obs')
+  var osmOrgDb = createOsmDb('osm')
+
   var netSync = OsmSync(observationDb, osmOrgDb);
 
   observationDb.on("error", console.log);

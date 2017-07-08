@@ -55,9 +55,7 @@ class ObservationMapScreen extends Component {
     super();
 
     this.navigationOptions = { tabBarLabel: "Map" };
-    this._obsdb = createOsmp2p("obs");
-    this._osmdb = createOsmp2p("osm");
-    this._osm = osmp2p(this._obsdb, this._osmdb);
+    this._osm = osmp2p(createOsmp2p);
   }
 
   componentWillMount() {
