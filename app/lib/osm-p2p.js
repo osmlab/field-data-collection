@@ -120,9 +120,36 @@ function osmp2p(createOsmDb) {
     })
   }
 
+  function closeAndReopenOsmOrgDb (cb) {
+    osmOrgDb.db.close(onDone)
+    osmOrgDb.log.db.close(onDone)
+    osmOrgDb.store.close() // TODO: investigate fd-chunk-store (or deferred-chunk-store) not calling its cb on 'close'
+
+    var pending = 2
+    function onDone (err) {
+      if (err) {
+        pending = Infinity
+        cb(err)
+      } else if (--pending === 0) {
+        cb()
+      }
+    }
+  }
+
   function replicate(addr, opts, cb) {
+    if (!cb && typeof opts === 'function') {
+      cb = opts
+      opts = {}
+    }
+
     clearOsmOrgDb(function () {
-      netSync.replicate(addr, opts, cb);
+      netSync.replicate(addr, opts, function () {
+        closeAndReopenOsmOrgDb(function () {
+          osmOrgDb = createOsmDb('osm')
+          netSync = OsmSync(observationDb, osmOrgDb);
+          cb()
+        })
+      })
     })
   }
 
