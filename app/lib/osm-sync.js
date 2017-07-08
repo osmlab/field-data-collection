@@ -56,7 +56,7 @@ OsmSync.prototype.replicateOsmOrgDb = function(target, done) {
   var socket = websocket(
     "ws://" + target.address + ":" + target.port + "/replicate/osm"
   );
-  importer.toLevel(self.osmOrgDb.log.db, socket, done)
+  importer.toLevel(this.osmOrgDb.log.db, socket, done)
 };
 
 OsmSync.findPeers = function(opts, done) {
