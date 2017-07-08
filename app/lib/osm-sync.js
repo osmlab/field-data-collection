@@ -97,8 +97,8 @@ OsmSync.findPeers = function(opts, done) {
   }
 
   function onTimeout() {
-    console.log("Found no osm-sync peers");
     if (!peer) {
+      console.log("Found no osm-sync peers");
       browser.stop();
       done(null, []);
     }
