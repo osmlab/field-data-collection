@@ -112,8 +112,18 @@ function osmp2p(createOsmDb) {
     return pump(osmStream, geoJSONStream);
   }
 
+  function clearOsmOrgDb (cb) {
+    osmOrgDb.clear(function () {
+      osmOrgDb = createOsmDb('osm')
+      netSync = OsmSync(observationDb, osmOrgDb);
+      cb()
+    })
+  }
+
   function replicate(addr, opts, cb) {
-    netSync.replicate(addr, opts, cb);
+    clearOsmOrgDb(function () {
+      netSync.replicate(addr, opts, cb);
+    })
   }
 
   function findReplicationTargets(opts, cb) {
