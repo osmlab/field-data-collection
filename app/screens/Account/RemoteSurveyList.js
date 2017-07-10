@@ -3,10 +3,11 @@ import { TouchableOpacity, View } from "react-native";
 
 import { Text } from "../../components";
 import { baseStyles } from "../../styles";
+import { syncSurveyData } from "../../actions";
 
 export default class RemoteSurveyList extends Component {
   render() {
-    const { fetch, surveys } = this.props;
+    const { fetch, surveys, sync } = this.props;
 
     if (surveys == null || surveys.length === 0) {
       return null;
@@ -17,7 +18,10 @@ export default class RemoteSurveyList extends Component {
         {surveys.map((survey, idx) =>
           <TouchableOpacity
             key={idx}
-            onPress={() => fetch(survey.id, survey.url, survey.target)}
+            onPress={() => {
+              fetch(survey.id, survey.url);
+              sync(survey);
+            }}
             style={[baseStyles.touchableLinksWrapper]}
           >
             <Text style={[baseStyles.touchableLinks]}>
