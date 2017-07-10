@@ -33,11 +33,13 @@ OsmSync.prototype.replicate = function(target, opts, done) {
       finished--;
       return done(err);
     }
-    if (++finished === 2) {
+
+    opts.progressFn(++finished / 2);
+
+    if (finished === 2) {
       console.log("finished replicating", finished);
-      done();
+      return done();
     }
-    opts.progressFn(finished / 2);
   }
 };
 
