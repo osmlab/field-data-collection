@@ -206,7 +206,7 @@ export const clearRemoteSurveys = () => (dispatch, getState) =>
     type: types.CLEAR_REMOTE_SURVEYS
   });
 
-export const fetchRemoteSurvey = (id, url, target) => (dispatch, getState) => {
+export const fetchRemoteSurvey = (id, url) => (dispatch, getState) => {
   dispatch({
     id,
     type: types.FETCHING_REMOTE_SURVEY
