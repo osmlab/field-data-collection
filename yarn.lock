@@ -287,7 +287,7 @@ asynckit@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/asynckit/-/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
 
-asyncstorage-down@4:
+asyncstorage-down@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/asyncstorage-down/-/asyncstorage-down-4.0.1.tgz#380b484ab629aad86cd6b723e04f08c05a2b0067"
   dependencies:
