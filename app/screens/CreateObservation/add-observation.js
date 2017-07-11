@@ -12,6 +12,7 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 
 import { Text, Wrapper, PercentComplete } from "../../components";
 import { getFieldType } from "../../components/fields";
+import { selectFeatureType } from "../../selectors";
 import { baseStyles } from "../../styles";
 
 const styles = StyleSheet.create({});
@@ -21,21 +22,28 @@ class AddObservationScreen extends Component {
 
   renderField(field, index) {
     const { navigate } = this.props.navigation;
-    const { type: { fields, name } } = this.props;
+    const { state: { params: { category } } } = this.props.navigation;
+    const { name, fields } = category;
 
-    const Field = getFieldType(field.type);
+    try {
+      const Field = getFieldType(field.type);
 
-    return (
-      <TouchableHighlight
-        key={index}
-        onPress={() =>
-          navigate("FieldsetForm", {
-            fieldset: { title: name, index, fields }
-          })}
-      >
-        <Field {...field} />
-      </TouchableHighlight>
-    );
+      return (
+        <TouchableHighlight
+          key={index}
+          onPress={() =>
+            navigate("FieldsetForm", {
+              fieldset: { title: name, index, fields }
+            })}
+        >
+          <Field {...field} />
+        </TouchableHighlight>
+      );
+    } catch (err) {
+      console.warn(err);
+
+      return null;
+    }
   }
 
   addLocation() {
@@ -44,12 +52,8 @@ class AddObservationScreen extends Component {
   }
 
   render() {
-    const { type: { fields, name } } = this.props;
-
-    const onBackPress = () => {
-      const backAction = NavigationActions.back();
-      this.props.navigation.dispatch(backAction);
-    };
+    const { state: { params: { category } } } = this.props.navigation;
+    const { name, fields } = category;
 
     const headerView = (
       <View
@@ -59,7 +63,7 @@ class AddObservationScreen extends Component {
           alignItems: "center"
         }}
       >
-        <TouchableOpacity onPress={onBackPress}>
+        <TouchableOpacity onPress={this.onBackPress}>
           <Icon
             name="keyboard-backspace"
             style={[[baseStyles.headerBackIcon]]}
@@ -149,14 +153,10 @@ class AddObservationScreen extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const survey = state.surveys[0];
-
   const { navigation: { state: { params: { observationType } } } } = ownProps;
 
-  const type = survey.featureTypes.find(x => x.id === observationType);
-
   return {
-    type
+    type: selectFeatureType(observationType, state)
   };
 };
 

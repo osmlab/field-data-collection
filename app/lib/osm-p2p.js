@@ -1,32 +1,13 @@
-const levelup = require("levelup");
-const asyncstorage = require("asyncstorage-down");
-const hyperlog = require("hyperlog");
-const osmdb = require("osm-p2p-db");
 const eos = require("end-of-stream");
 const getGeoJSON = require("osm-p2p-geojson");
 const pump = require("pump");
 const collect = require("collect-stream");
 const through = require("through2");
 const OsmSync = require("./osm-sync");
-
-const createStore = require("./asyncstorage-chunk-store");
+const generatePlaceholderOsmId = require("./generate-id");
 const convert = require("./convert-geojson-osmp2p");
 
-function createOsmDb(prefix) {
-  const logdb = levelup(prefix + "-db", { db: asyncstorage });
-  const log = hyperlog(logdb, { valueEncoding: "json" });
-
-  return osmdb({
-    log: log,
-    db: levelup(prefix + "-index", { db: asyncstorage }),
-    store: createStore(1024, prefix + "-chunks")
-  });
-}
-
-function osmp2p() {
-  var observationDb = createOsmDb("observations");
-  var osmOrgDb = createOsmDb("osmorg");
-
+function osmp2p(observationDb, osmOrgDb) {
   var netSync = OsmSync(observationDb, osmOrgDb);
 
   observationDb.on("error", console.log);
@@ -34,7 +15,7 @@ function osmp2p() {
 
   return {
     ready,
-    create,
+    createNode,
     put,
     del,
     createObservation,
@@ -57,9 +38,12 @@ function osmp2p() {
     }
   }
 
-  function create(geojson, opts, cb) {
-    var doc = convert.toOSM(geojson);
-    observationDb.create(doc, opts, cb);
+  function createNode(geojson, opts, cb) {
+    var doc = convert.toOSM(geojson, "node");
+    var id = generatePlaceholderOsmId();
+    if (!doc.tags) doc.tags = {};
+    doc.tags["osm-p2p-id"] = id;
+    observationDb.put(id, doc, opts, cb);
   }
 
   function put(id, geojson, opts, cb) {
@@ -71,9 +55,31 @@ function osmp2p() {
     observationDb.del(id, opts, cb);
   }
 
-  function createObservation(geojson, opts, cb) {
+  // TODO use tags.osm-p2p-id?
+  // TODO handle this being an OSM.org ID _or_ a placeholder ID
+  function createObservation(nodeId, geojson, opts, cb) {
+    if (!cb && typeof opts === "function") {
+      cb = opts;
+      opts = {};
+    }
+
     var doc = convert.toOSM(geojson, "observation");
-    observationDb.create(doc, opts, cb);
+    observationDb.create(doc, opts, onObservationCreated);
+
+    function onObservationCreated(err, docId) {
+      if (err) return cb(err);
+      var link = {
+        type: "observation-link",
+        obs: docId,
+        link: nodeId
+      };
+      observationDb.create(link, function(err, linkId) {
+        if (err) return cb(err);
+        var res = Object.assign(doc, { id: docId });
+        var linkRes = Object.assign(link, { id: linkId });
+        cb(null, res, linkRes);
+      });
+    }
   }
 
   function putObservation(id, geojson, opts, cb) {
@@ -172,4 +178,4 @@ function osmp2p() {
   }
 }
 
-export default osmp2p;
+module.exports = osmp2p;

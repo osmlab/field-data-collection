@@ -1,7 +1,7 @@
-import { AsyncStorage } from "react-native";
 import { applyMiddleware, compose, createStore } from "redux";
 import { createLogger } from "redux-logger";
 import { persistStore, autoRehydrate } from "redux-persist";
+import FilesystemStorage from "redux-persist-filesystem-storage";
 import thunk from "redux-thunk";
 
 import reducers from "../reducers";
@@ -18,7 +18,7 @@ const middleware = () => {
 const store = compose(autoRehydrate())(createStore)(reducers, middleware());
 
 persistStore(store, {
-  storage: AsyncStorage,
+  storage: FilesystemStorage,
   whitelist: ["surveys"]
 });
 

@@ -10,7 +10,6 @@ import Interactable from "react-native-interactable";
 import { NavigationActions } from "react-navigation";
 
 import { Text } from "./index";
-import osmp2p from "../lib/osm-p2p";
 import websocket from "websocket-stream";
 
 import { baseStyles } from "../styles";
@@ -69,7 +68,6 @@ class SideMenu extends Component {
           boundaries={{ right: 3000 }}
           initialPosition={{ x: Screen.width }}
         >
-
           <View style={styles.sideMenu}>
             <Text style={[baseStyles.title, baseStyles.titleMenu]}>Menu</Text>
 
