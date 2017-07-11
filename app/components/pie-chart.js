@@ -1,3 +1,4 @@
+import "babel-polyfill";
 import React, { Component } from "react";
 
 import Svg, { G, Path, Circle } from "react-native-svg";
