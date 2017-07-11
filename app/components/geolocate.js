@@ -17,11 +17,11 @@ const styles = StyleSheet.create({
 
 export default function geolocate(props) {
   const success = data => {
-    console.log("geolocation data", data);
+    props.onGeolocate(null, data);
   };
 
   const error = err => {
-    console.log("geolocation error", err);
+    props.onGeolocate(err);
   };
 
   return (
