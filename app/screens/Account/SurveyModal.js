@@ -37,9 +37,7 @@ class SurveyModal extends Component {
           </View>
           <RemoteSurveyList fetch={fetchRemoteSurvey} surveys={remoteSurveys} />
           <TouchableOpacity onPress={close} style={[baseStyles.buttonBottom]}>
-            <Text style={[baseStyles.textWhite]}>
-              {"Done".toUpperCase()}
-            </Text>
+            <Text style={[baseStyles.textWhite]}>DONE</Text>
           </TouchableOpacity>
         </View>
       </Modal>

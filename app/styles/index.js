@@ -201,10 +201,7 @@ const baseStyles = StyleSheet.create({
     backgroundColor: colors.interface.links,
     flexDirection: "row",
     justifyContent: "center",
-    left: 0,
-    right: 0,
-    bottom: 0,
-    marginTop: 20,
+    alignItems: "center",
     paddingTop: 15,
     paddingBottom: 15,
     height: 50
