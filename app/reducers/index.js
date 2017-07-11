@@ -6,10 +6,12 @@ import { reducer as createObservation } from "../screens/CreateObservation/navig
 
 import status from "./status";
 import surveys from "./surveys";
+import osm from "./osm";
 
 export default combineReducers({
   app,
   createObservation,
   status,
-  surveys
+  surveys,
+  osm
 });

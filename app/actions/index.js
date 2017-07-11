@@ -41,7 +41,8 @@ const types = {
   SYNCING_SURVEY_DATA: "SYNCING_SURVEY_DATA",
   SYNCING_SURVEY_DATA_PROGRESS: "SYNCING_SURVEY_DATA_PROGRESS",
   SYNCING_SURVEY_DATA_FAILED: "SYNCING_SURVEY_DATA_FAILED",
-  FINISHED_SYNCING_SURVEY_DATA: "FINISHED_SYNCING_SURVEY_DATA"
+  FINISHED_SYNCING_SURVEY_DATA: "FINISHED_SYNCING_SURVEY_DATA",
+  SET_AREA_OF_INTEREST: "SET_AREA_OF_INTEREST"
 };
 
 // fallback to 10.0.2.2 when connecting to the coordinator (host's localhost from the emulator)
@@ -102,35 +103,72 @@ const extractSurveyBundle = (id, bundle, _callback) => {
   bundle.open();
 };
 
-const syncSurveyData = (id, target, dispatch) => {
-  console.log("does this happen", target);
+const checkRemoteOsmMeta = (url, cb) => {
+  return fetch(`${url}/osm/meta`)
+    .then(res => {
+      res.json().then(data => cb(null, data));
+    })
+    .catch(cb);
+};
 
-  dispatch({
-    type: types.SYNCING_SURVEY_DATA,
-    id
+const checkOsmMeta = (url, getState, cb) => {
+  const { osm: { areaOfInterest } } = getState();
+
+  checkRemoteOsmMeta(url, function(err, res) {
+    if (err) return cb(err);
+    if (!areaOfInterest) return cb(null, true, res);
+
+    if (areaOfInterest.uuid === res.uuid) {
+      return cb(null, false);
+    }
+
+    return cb(null, true, res);
   });
+};
 
-  const progressFn = i => {
-    dispatch({
-      type: types.SYNCING_SURVEY_DATA_PROGRESS,
-      progress: i,
-      id
-    });
-  };
+export const syncSurveyData = survey => (dispatch, getState) => {
+  const { id, target } = survey;
+  const url = `http://${target.address}:${target.port}`;
 
-  osm.replicate(target, { progressFn }, function(err) {
-    if (err) {
-      console.log(types.SYNCING_SURVEY_DATA_FAILED);
+  checkOsmMeta(url, getState, (err, shouldSync, areaOfInterest) => {
+    if (err) return console.warn(err);
+    if (!shouldSync) {
       return dispatch({
-        type: types.SYNCING_SURVEY_DATA_FAILED,
+        type: types.FINISHED_SYNCING_SURVEY_DATA,
         id
       });
     }
 
-    console.log(types.FINISHED_SYNCING_SURVEY_DATA);
     dispatch({
-      type: types.FINISHED_SYNCING_SURVEY_DATA,
-      id
+      type: types.SYNCING_SURVEY_DATA,
+      id: id
+    });
+
+    const progressFn = i => {
+      dispatch({
+        type: types.SYNCING_SURVEY_DATA_PROGRESS,
+        progress: i,
+        id: id
+      });
+    };
+
+    osm.replicate(target, { progressFn }, err => {
+      if (err) {
+        return dispatch({
+          type: types.SYNCING_SURVEY_DATA_FAILED,
+          id
+        });
+      }
+
+      dispatch({
+        type: types.FINISHED_SYNCING_SURVEY_DATA,
+        id
+      });
+
+      dispatch({
+        type: types.SET_AREA_OF_INTEREST,
+        areaOfInterest
+      });
     });
   });
 };
@@ -166,7 +204,7 @@ export const clearRemoteSurveys = () => (dispatch, getState) =>
     type: types.CLEAR_REMOTE_SURVEYS
   });
 
-export const fetchRemoteSurvey = (id, url, target) => (dispatch, getState) => {
+export const fetchRemoteSurvey = (id, url) => (dispatch, getState) => {
   dispatch({
     id,
     type: types.FETCHING_REMOTE_SURVEY
@@ -193,8 +231,6 @@ export const fetchRemoteSurvey = (id, url, target) => (dispatch, getState) => {
         type: types.RECEIVED_REMOTE_SURVEY,
         survey
       });
-
-      syncSurveyData(id, target, dispatch);
     })
     .catch(error =>
       dispatch({
@@ -227,8 +263,10 @@ export const listRemoteSurveys = () => (dispatch, getState) => {
           surveys: surveys.map(x => ({
             ...x,
             url: `http://${targetIP}:${targetPort}/surveys/${x.id}`,
-            ip: targetIP,
-            port: targetPort
+            target: {
+              address: targetIP,
+              port: targetPort
+            }
           }))
         })
       )
