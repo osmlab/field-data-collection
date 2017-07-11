@@ -29,13 +29,17 @@ OsmSync.prototype.replicate = function(target, opts, done) {
   opts.progressFn(0);
 
   function onFinish(err) {
-    console.log("finished replicating", finished);
     if (err) {
       finished--;
       return done(err);
     }
-    if (++finished === 2) done();
-    opts.progressFn(finished / 2);
+
+    opts.progressFn(++finished / 2);
+
+    if (finished === 2) {
+      console.log("finished replicating", finished);
+      return done();
+    }
   }
 };
 
@@ -55,7 +59,7 @@ OsmSync.prototype.replicateOsmOrgDb = function(target, done) {
   replicate(socket, rs, done);
 };
 
-OsmSync.prototype.findPeers = function(opts, done) {
+OsmSync.findPeers = function(opts, done) {
   if (typeof opts === "function" && !done) {
     done = opts;
     opts = {};
@@ -75,7 +79,8 @@ OsmSync.prototype.findPeers = function(opts, done) {
       address: info.addresses[0],
       port: info.port
     };
-    done(null, [peer])
+    browser.stop();
+    done(null, [peer]);
   }
 
   function onTimeout() {

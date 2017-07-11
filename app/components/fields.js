@@ -18,11 +18,13 @@ export class ComboField extends Field {
     return (
       <View ref={x => (this._root = x)} style={[baseStyles.field]}>
         <View>
-          <Text style={[baseStyles.h5]}>{label.toUpperCase()}</Text>
+          <Text style={[baseStyles.h5]}>
+            {label.toUpperCase()}
+          </Text>
           <Text style={[baseStyles.fieldValue]}>(options)</Text>
         </View>
         <View>
-          <Icon name="chevron_right" style={baseStyles.fieldArrow} />
+          <Icon name="keyboard-arrow-right" style={[[baseStyles.formArrow]]} />
         </View>
       </View>
     );
@@ -36,11 +38,15 @@ export class NumberField extends Field {
     return (
       <View ref={x => (this._root = x)} style={[baseStyles.field]}>
         <View>
-          <Text style={[baseStyles.h5]}>{label.toUpperCase()}</Text>
-          <Text style={[baseStyles.fieldValue]}>{placeholder}</Text>
+          <Text style={[baseStyles.h5]}>
+            {label.toUpperCase()}
+          </Text>
+          <Text style={[baseStyles.fieldValue]}>
+            {placeholder}
+          </Text>
         </View>
         <View>
-          <Icon name="chevron_right" style={baseStyles.fieldArrow} />
+          <Icon name="keyboard-arrow-right" style={[[baseStyles.formArrow]]} />
         </View>
       </View>
     );
@@ -54,7 +60,9 @@ export class TextField extends Field {
     return (
       <View ref={x => (this._root = x)} style={[baseStyles.field]}>
         <View>
-          <Text style={[baseStyles.h5]}>{label.toUpperCase()}</Text>
+          <Text style={[baseStyles.h5]}>
+            {label.toUpperCase()}
+          </Text>
           <Text style={[baseStyles.fieldValue]}>(text)</Text>
         </View>
         <View>

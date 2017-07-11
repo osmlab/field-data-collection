@@ -1,23 +1,41 @@
 import React, { Component } from "react";
-import { StyleSheet, View, Button, TouchableOpacity } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import { NavigationActions } from "react-navigation";
+import { connect } from "react-redux";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
+import { clearLocalSurveys } from "../../actions";
 import { Text, Wrapper } from "../../components";
+import { selectAvailableSurveys } from "../../selectors";
 import { baseStyles } from "../../styles";
+import LocalSurveyList from "./LocalSurveyList";
+import SurveyModal from "./SurveyModal";
 
 class SurveysScreen extends Component {
-  constructor() {
-    super();
-  }
+  state = {
+    showModal: false
+  };
+
+  onBackPress = () => this.props.navigation.dispatch(NavigationActions.back());
+
+  hideModal = () =>
+    this.setState({
+      showModal: false
+    });
+
+  showModal = () =>
+    this.setState({
+      showModal: true
+    });
+
+  // uncomment this to clear local surveys when displaying this screen
+  // componentWillMount() {
+  //   this.props.clearLocalSurveys();
+  // }
 
   render() {
-    const { navigate } = this.props.navigation;
-
-    const onBackPress = () => {
-      const backAction = NavigationActions.back();
-      this.props.navigation.dispatch(backAction);
-    };
+    const { availableSurveys, navigation } = this.props;
+    const { showModal } = this.state;
 
     const headerView = (
       <View
@@ -27,7 +45,7 @@ class SurveysScreen extends Component {
           alignItems: "center"
         }}
       >
-        <TouchableOpacity onPress={onBackPress}>
+        <TouchableOpacity onPress={this.onBackPress}>
           <Icon
             name="keyboard-backspace"
             style={[[baseStyles.headerBackIcon]]}
@@ -38,79 +56,26 @@ class SurveysScreen extends Component {
     );
 
     return (
-      <Wrapper navigation={this.props.navigation} headerView={headerView}>
-        <View
-          style={[
-            baseStyles.wrapperContent,
-            baseStyles.wrapperContentLg,
-            baseStyles.listBlock,
-            { flex: 1 }
-          ]}
-        >
-          <Text style={[baseStyles.h3, baseStyles.headerWithDescription]}>
-            OSM
-          </Text>
-          <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
-            <Text>Updated: </Text>
-            <Text>4/30/17 4:30</Text>
-          </View>
-          <View style={[baseStyles.observationBlock]}>
-            <Text style={[baseStyles.metadataText]}>2 Observations</Text>
-          </View>
-        </View>
-        <View
-          style={[
-            baseStyles.wrapperContent,
-            baseStyles.wrapperContentLg,
-            baseStyles.listBlock,
-            { flex: 1 }
-          ]}
-        >
+      <Wrapper navigation={navigation} headerView={headerView}>
+        {showModal && <SurveyModal close={this.hideModal} />}
+
+        <LocalSurveyList navigation={navigation} surveys={availableSurveys} />
+
+        <View style={{ flex: 1, alignItems: "stretch" }}>
           <TouchableOpacity
-            onPress={() => {
-              navigate("Survey");
-            }}
+            style={[baseStyles.buttonBottom]}
+            onPress={this.showModal}
           >
-            <Text style={[baseStyles.h3, baseStyles.headerWithDescription]}>
-              Survey Name
-            </Text>
-          </TouchableOpacity>
-          <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
-            <Text>Updated: </Text>
-            <Text>4/30/17 4:30pm</Text>
-          </View>
-          <View
-            style={[
-              baseStyles.observationBlock,
-              baseStyles.spaceBelowMd,
-              { flexDirection: "row", flexWrap: "wrap" }
-            ]}
-          >
-            <Text style={[baseStyles.metadataText]}>2 Observations</Text>
-            <Text style={[baseStyles.textAlert]}>(2 incomplete)</Text>
-          </View>
-          <TouchableOpacity
-            onPress={() => {
-              navigate("Survey");
-            }}
-          >
-            <Text style={[baseStyles.link]}>{"Edit".toUpperCase()}</Text>
+            <Text style={[baseStyles.textWhite]}>ADD NEW SURVEYS</Text>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity style={[baseStyles.buttonBottom]}>
-          <Text style={[baseStyles.textWhite]}>
-            {"Add New Surveys".toUpperCase()}
-          </Text>
-        </TouchableOpacity>
       </Wrapper>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  subtitle: {
-    fontSize: 17
-  }
+const mapStateToProps = state => ({
+  availableSurveys: selectAvailableSurveys(state)
 });
 
-export default SurveysScreen;
+export default connect(mapStateToProps, { clearLocalSurveys })(SurveysScreen);

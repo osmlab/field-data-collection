@@ -10,6 +10,7 @@ import {
 import Mapbox, { MapView } from "react-native-mapbox-gl";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
+import createOsmp2p from "../../lib/create-osm-p2p";
 import osmp2p from "../../lib/osm-p2p";
 import { Header, SideMenu, Text, Geolocate } from "../../components";
 import { baseStyles, colors } from "../../styles";
@@ -54,7 +55,6 @@ class ObservationMapScreen extends Component {
     super();
 
     this.navigationOptions = { tabBarLabel: "Map" };
-    this._osm = osmp2p();
   }
 
   componentWillMount() {
@@ -91,11 +91,7 @@ class ObservationMapScreen extends Component {
 
     this._map.getBoundsFromScreenCoordinates(rect, bounds => {
       console.log("bounds from screenCoords", bounds);
-      var q = [[bounds[0], bounds[2]], [bounds[1], bounds[3]]];
-
-      this._osm.listAnnotations(q, (err, annotations) => {
-        console.log("annotations.length", annotations.length);
-      });
+      // TODO: trigger action fetching points within bounds
     });
   };
 
@@ -103,11 +99,7 @@ class ObservationMapScreen extends Component {
     this._map.getBounds(data => {
       var q = [[data[0], data[2]], [data[1], data[3]]];
 
-      this._osm.listAnnotations(q, (err, annotations) => {
-        if (annotations) {
-          this.setState({ annotations });
-        }
-      });
+      // TODO: trigger action fetching points within bounds
     });
   };
 
@@ -125,7 +117,6 @@ class ObservationMapScreen extends Component {
             this._menu = menu;
           }}
           navigation={this.props.navigation}
-          osm={this._osm}
           onSync={this.prepareAnnotations}
         />
 

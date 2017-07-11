@@ -4,8 +4,11 @@ import Text from "./text";
 import Wrapper from "./wrapper";
 import MapList from "./observation-list";
 import Geolocate from "./geolocate";
+import PercentComplete from "./percent-complete";
 import { getFieldInput } from "./field-inputs";
 import { getFieldType } from "./fields";
+import StatusBar from "./StatusBar";
+import CategoryList from "./category-list";
 
 export {
   Header,
@@ -15,5 +18,8 @@ export {
   Geolocate,
   getFieldInput,
   getFieldType,
-  MapList
+  MapList,
+  PercentComplete,
+  StatusBar,
+  CategoryList
 };
