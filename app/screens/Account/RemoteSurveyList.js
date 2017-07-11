@@ -14,7 +14,7 @@ export default class RemoteSurveyList extends Component {
     }
 
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{}}>
         {surveys.map((survey, idx) =>
           <TouchableOpacity
             key={idx}

@@ -71,9 +71,7 @@ class CategoriesScreen extends Component {
     return (
       <Wrapper navigation={navigation} headerView={headerView}>
         <View style={[baseStyles.wrapperContent]}>
-          <Text style={baseStyles.title}>
-            What do you want to add?
-          </Text>
+          <Text style={baseStyles.title}>What do you want to add?</Text>
 
           {/* TODO: pull this from surveys in state */}
           <CategoryList

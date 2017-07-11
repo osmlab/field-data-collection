@@ -6,7 +6,8 @@ const colors = {
     headerBackground: "#6579FC",
     geolocationIconInside: "#C3CAFA",
     relatedItemsBackground: "#FDFDFD",
-    error: "#FF5C3F"
+    error: "#FF5C3F",
+    chartColor: "#1DE9B6"
   },
   text: {
     header: "#575456",
@@ -45,7 +46,8 @@ const baseStyles = StyleSheet.create({
     padding: 20,
     paddingTop: 26,
     paddingBottom: 30,
-    marginBottom: 20
+    marginBottom: 20,
+    position: "relative"
   },
   listBlock: {
     borderBottomColor: colors.text.tertiary,
@@ -168,7 +170,12 @@ const baseStyles = StyleSheet.create({
   },
 
   headerPage: {
-    backgroundColor: colors.interface.headerBackground
+    backgroundColor: colors.interface.headerBackground,
+    marginBottom: 0
+  },
+  headerPageText: {
+    flex: 0.75,
+    paddingTop: 6
   },
   titleMenu: {
     paddingTop: 30,
@@ -192,15 +199,12 @@ const baseStyles = StyleSheet.create({
   //buttons
   buttonBottom: {
     backgroundColor: colors.interface.links,
-    flex: 1,
     flexDirection: "row",
-    position: "absolute",
     justifyContent: "center",
-    left: 0,
-    right: 0,
-    bottom: 0,
+    alignItems: "center",
     paddingTop: 15,
-    paddingBottom: 15
+    paddingBottom: 15,
+    height: 50
   },
   buttonOutline: {
     borderColor: colors.text.header,
@@ -281,24 +285,59 @@ const baseStyles = StyleSheet.create({
     padding: 20,
     paddingBottom: 25
   },
+  percentCompleteWrapper: {
+    top: 65,
+    right: 15,
+    position: "absolute"
+  },
   percentComplete: {
     backgroundColor: "#ffffff",
-    width: 60,
-    height: 60,
+    width: 70,
+    height: 70,
     borderRadius: 80,
+    position: "relative",
+    elevation: 6,
+    justifyContent: "center",
+    alignSelf: "center"
+  },
+  percentCompleteTextSm: {
+    textAlign: "center",
     position: "absolute",
-    top: 70,
-    right: 15,
-    elevation: 6
+    width: 70
+  },
+  percentCompleteTextNumSm: {
+    fontWeight: "bold"
   },
   percentCompleteText: {
     textAlign: "center",
-    paddingTop: 18
+    paddingTop: 18,
+    fontSize: 14,
+    position: "absolute"
+  },
+  percentCompleteTextNum: {
+    fontSize: 22,
+    fontWeight: "bold"
   },
   map: {
     height: 100,
     borderBottomColor: "#ccc",
     borderBottomWidth: 0.5
+  },
+  mapLg: {
+    height: 250,
+    borderBottomColor: "#ccc",
+    borderBottomWidth: 0.5,
+    backgroundColor: "#F3F3F3",
+    position: "relative"
+  },
+  mapEditorBlock: {
+    backgroundColor: "rgba(255, 255, 255, 0.5)",
+    padding: 20,
+    justifyContent: "flex-end",
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0
   },
 
   syncHeader: {
@@ -311,6 +350,12 @@ const baseStyles = StyleSheet.create({
   },
   wrappedItemsLeft: {
     flex: 0.75
+  },
+
+  formArrow: {
+    fontSize: 28,
+    color: colors.interface.links,
+    paddingTop: 6
   }
 });
 

@@ -3,7 +3,7 @@ import { StyleSheet, View, ListView, TouchableOpacity } from "react-native";
 import { NavigationActions } from "react-navigation";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
-import { Text, Wrapper } from "../../components";
+import { Text, Wrapper, PercentComplete } from "../../components";
 import { baseStyles } from "../../styles";
 
 class AccountScreen extends Component {
@@ -44,7 +44,7 @@ class AccountScreen extends Component {
 
   render() {
     const { navigate } = this.props.navigation;
-
+    console.log("this.state", this.state);
     const onBackPress = () => {
       const backAction = NavigationActions.back();
       this.props.navigation.dispatch(backAction);
@@ -97,6 +97,10 @@ class AccountScreen extends Component {
           dataSource={this.state.observations}
           noScroll={true}
           renderRow={item => {
+            const complete = item.complete * 10;
+            const incomplete = 10 - complete;
+            const percentage = complete + "0%";
+
             return (
               <View style={[baseStyles.wrapperContent]}>
                 <TouchableOpacity
@@ -105,10 +109,22 @@ class AccountScreen extends Component {
                     navigate("");
                   }}
                 >
-                  <View style={[baseStyles.map]}><Text>Map</Text></View>
-                  <View style={[baseStyles.percentComplete]}>
-                    <Text style={[baseStyles.percentCompleteText]}>80%</Text>
+                  <View style={[baseStyles.map]}>
+                    <Text>Map</Text>
                   </View>
+
+                  <PercentComplete
+                    radius={35}
+                    complete={complete}
+                    incomplete={incomplete}
+                  >
+                    <Text style={[baseStyles.percentCompleteTextSm]}>
+                      <Text style={[baseStyles.percentCompleteTextNumSm]}>
+                        {percentage}
+                      </Text>
+                    </Text>
+                  </PercentComplete>
+
                   <View style={[baseStyles.surveyCardContent]}>
                     <Text
                       style={[baseStyles.h3, baseStyles.headerWithDescription]}
@@ -122,18 +138,23 @@ class AccountScreen extends Component {
                         <Text style={[baseStyles.withPipe]}>
                           {item.distance} |
                         </Text>
-                        <Text>Updated: {item.updated}</Text>
+                        <Text>
+                          Updated: {item.updated}
+                        </Text>
                       </View>
-                      <Text>{item.surveyName}</Text>
+                      <Text>
+                        {item.surveyName}
+                      </Text>
                     </View>
-                    <Text>{item.category}</Text>
+                    <Text>
+                      {item.category}
+                    </Text>
                   </View>
                 </TouchableOpacity>
               </View>
             );
           }}
         />
-
       </Wrapper>
     );
   }

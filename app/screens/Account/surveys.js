@@ -61,15 +61,12 @@ class SurveysScreen extends Component {
 
         <LocalSurveyList navigation={navigation} surveys={availableSurveys} />
 
-        {/* TODO this covers up part of a listed survey */}
-        <View style={{ position: "relative" }}>
+        <View style={{ flex: 1, alignItems: "stretch" }}>
           <TouchableOpacity
-            style={[baseStyles.buttonBottom, { alignSelf: "flex-end" }]}
+            style={[baseStyles.buttonBottom]}
             onPress={this.showModal}
           >
-            <Text style={[baseStyles.textWhite]}>
-              {"Add New Surveys".toUpperCase()}
-            </Text>
+            <Text style={[baseStyles.textWhite]}>ADD NEW SURVEYS</Text>
           </TouchableOpacity>
         </View>
       </Wrapper>

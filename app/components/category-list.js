@@ -141,7 +141,9 @@ class CategoryView extends Component {
               return (
                 <View style={styles.category}>
                   <TouchableOpacity onPress={onCategoryPress}>
-                    <Text>{category.name}</Text>
+                    <Text>
+                      {category.name}
+                    </Text>
                   </TouchableOpacity>
                 </View>
               );

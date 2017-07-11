@@ -16,7 +16,8 @@ class StatusBar extends Component {
     return (
       <View>
         <Text>
-          {message}{error && `: ${error}`}
+          {message}
+          {error && `: ${error}`}
         </Text>
       </View>
     );
