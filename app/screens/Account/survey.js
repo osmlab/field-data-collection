@@ -69,7 +69,9 @@ class SurveysScreen extends Component {
                 navigate("Categories");
               }}
             >
-              <View style={[baseStyles.map]}><Text>Map</Text></View>
+              <View style={[baseStyles.map]}>
+                <Text>Map</Text>
+              </View>
               <PercentComplete />
               <View style={[baseStyles.surveyCardContent]}>
                 <Text style={[baseStyles.h3, baseStyles.headerWithDescription]}>
