@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import { StyleSheet, View, ListView, TouchableOpacity } from "react-native";
+import Mapbox, { MapView } from "react-native-mapbox-gl";
 import { NavigationActions } from "react-navigation";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
-import { Text, Wrapper, PercentComplete } from "../../components";
+import { Text, Wrapper, PercentComplete, Map } from "../../components";
 import { baseStyles } from "../../styles";
 
-class AccountScreen extends Component {
+class MyObservations extends Component {
   componentWillMount() {
     const ds = new ListView.DataSource({
       rowHasChanged: (r1, r2) => r1 !== r2
@@ -20,7 +21,11 @@ class AccountScreen extends Component {
           observationName: "Name of observation",
           updated: "Sep. 2, 2016",
           distance: "30cm away",
-          complete: 0.7
+          complete: 0.7,
+          coords: {
+            latitude: 47.6685,
+            longitude: -122.384
+          }
         },
         {
           category: "Oil spill",
@@ -28,7 +33,11 @@ class AccountScreen extends Component {
           observationName: "Name of observation",
           updated: "Sep. 2, 2016",
           distance: "30cm away",
-          complete: 0.7
+          complete: 0.7,
+          coords: {
+            latitude: 47.5685,
+            longitude: -122.384
+          }
         },
         {
           category: "Oil spill",
@@ -36,7 +45,11 @@ class AccountScreen extends Component {
           observationName: "Name of observation",
           updated: "Sep. 2, 2016",
           distance: "30cm away",
-          complete: 0.7
+          complete: 0.7,
+          coords: {
+            latitude: 47.6685,
+            longitude: -123.384
+          }
         }
       ])
     });
@@ -109,9 +122,7 @@ class AccountScreen extends Component {
                     navigate("");
                   }}
                 >
-                  <View style={[baseStyles.map]}>
-                    <Text>Map</Text>
-                  </View>
+                  <Map center={item.coords} zoom={12} />
 
                   <PercentComplete
                     radius={35}
@@ -160,4 +171,4 @@ class AccountScreen extends Component {
   }
 }
 
-export default AccountScreen;
+export default MyObservations;

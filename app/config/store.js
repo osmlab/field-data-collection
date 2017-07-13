@@ -7,12 +7,11 @@ import thunk from "redux-thunk";
 import reducers from "../reducers";
 
 const middleware = () => {
-  return applyMiddleware(
-    thunk,
-    createLogger({
-      collapsed: true
-    })
-  );
+  return applyMiddleware();
+  // thunk,
+  // createLogger({
+  //   collapsed: true
+  // })
 };
 
 const store = compose(autoRehydrate())(createStore)(reducers, middleware());
