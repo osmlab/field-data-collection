@@ -107,8 +107,12 @@ const extractSurveyBundle = (id, bundle, _callback) => {
 
 const checkRemoteOsmMeta = (url, cb) => {
   return fetch(`${url}/osm/meta`)
-    .then(res => {
-      res.json().then(data => cb(null, data));
+    .then(rsp => {
+      if (rsp.status !== 200) {
+        return cb(null, {});
+      }
+
+      return rsp.json().then(data => cb(null, data));
     })
     .catch(cb);
 };
