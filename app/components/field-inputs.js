@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, TextInput } from "react-native";
+import { Switch, TextInput, View } from "react-native";
 
 import { Text } from ".";
 import { baseStyles } from "../styles";
@@ -11,8 +11,18 @@ class Field extends Component {
 }
 
 export class CheckField extends Field {
+  state = {
+    value: false
+  };
+
+  onValueChange = value =>
+    this.setState({
+      value
+    });
+
   render() {
     const { label } = this.props;
+    const { value } = this.state;
 
     return (
       <View ref={x => (this._root = x)} style={[baseStyles.field]}>
@@ -20,7 +30,7 @@ export class CheckField extends Field {
           <Text style={[baseStyles.fieldLabel]}>
             {label}
           </Text>
-          <Text style={[baseStyles.fieldValue]}>(on/off)</Text>
+          <Switch onValueChange={this.onValueChange} value={value} />
         </View>
       </View>
     );
