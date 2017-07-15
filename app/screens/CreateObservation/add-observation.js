@@ -41,10 +41,7 @@ class AddObservationScreen extends Component {
     }
   }
 
-  addLocation() {
-    const { navigate } = this.props.navigation;
-    navigate("Location");
-  }
+  addLocation = () => this.props.navigation.navigate("Location");
 
   render() {
     const { icon, type: { fields, name } } = this.props;
@@ -133,7 +130,7 @@ class AddObservationScreen extends Component {
         <View style={[baseStyles.mapLg]}>
           <Text>Map</Text>
           <View style={[baseStyles.mapEditorBlock]}>
-            <TouchableOpacity onPress={this.addLocation.bind(this)}>
+            <TouchableOpacity onPress={this.addLocation}>
               <Text style={[baseStyles.link]}>
                 {"+ Add Location".toUpperCase()}
               </Text>
