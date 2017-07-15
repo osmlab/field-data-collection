@@ -10,6 +10,23 @@ class Field extends Component {
   }
 }
 
+export class CheckField extends Field {
+  render() {
+    const { label } = this.props;
+
+    return (
+      <View ref={x => (this._root = x)} style={[baseStyles.field]}>
+        <View>
+          <Text style={[baseStyles.fieldLabel]}>
+            {label}
+          </Text>
+          <Text style={[baseStyles.fieldValue]}>(on/off)</Text>
+        </View>
+      </View>
+    );
+  }
+}
+
 export class ComboField extends Field {
   render() {
     const { label } = this.props;
@@ -17,7 +34,9 @@ export class ComboField extends Field {
     return (
       <View ref={x => (this._root = x)} style={[baseStyles.field]}>
         <View>
-          <Text style={[baseStyles.fieldLabel]}>{label}</Text>
+          <Text style={[baseStyles.fieldLabel]}>
+            {label}
+          </Text>
           <Text style={[baseStyles.fieldValue]}>(options)</Text>
         </View>
       </View>
@@ -32,7 +51,9 @@ export class NumberField extends Field {
     return (
       <View ref={x => (this._root = x)} style={baseStyles.field}>
         <View>
-          <Text style={[baseStyles.fieldLabel]}>{label}</Text>
+          <Text style={[baseStyles.fieldLabel]}>
+            {label}
+          </Text>
           <TextInput
             style={[baseStyles.fieldValue]}
             value={placeholder}
@@ -51,7 +72,9 @@ export class TextField extends Field {
     return (
       <View ref={x => (this._root = x)} style={[baseStyles.field]}>
         <View>
-          <Text style={baseStyles.h5}>{label}</Text>
+          <Text style={baseStyles.h5}>
+            {label}
+          </Text>
           <TextInput style={[baseStyles.fieldValue]} value={placeholder} />
         </View>
       </View>
@@ -61,6 +84,9 @@ export class TextField extends Field {
 
 export const getFieldInput = type => {
   switch (type) {
+    case "check":
+      return CheckField;
+
     case "combo":
       return ComboField;
 
