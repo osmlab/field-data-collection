@@ -24,7 +24,7 @@ class MyObservations extends Component {
           complete: 0.7,
           coords: {
             latitude: 47.6685,
-            longitude: -122.384
+            longitude: -12.384
           }
         },
         {
@@ -36,7 +36,7 @@ class MyObservations extends Component {
           complete: 0.7,
           coords: {
             latitude: 47.5685,
-            longitude: -122.384
+            longitude: -12.384
           }
         },
         {
@@ -48,7 +48,7 @@ class MyObservations extends Component {
           complete: 0.7,
           coords: {
             latitude: 47.6685,
-            longitude: -123.384
+            longitude: -13.384
           }
         }
       ])
@@ -57,7 +57,7 @@ class MyObservations extends Component {
 
   render() {
     const { navigate } = this.props.navigation;
-    console.log("this.state", this.state);
+
     const onBackPress = () => {
       const backAction = NavigationActions.back();
       this.props.navigation.dispatch(backAction);

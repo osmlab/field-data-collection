@@ -7,28 +7,21 @@ Mapbox.setAccessToken(
 );
 
 class Map extends Component {
-  componentWillMount() {
-    this.setState({
-      center: {
-        latitude: 47.6685,
-        longitude: -122.384
-      },
-      zoom: 16
-    });
-  }
+  componentWillMount() {}
 
   render() {
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{ height: 100 }}>
         <MapView
-          ref={map => {
-            this._map = map;
-          }}
-          style={{ height: 100, flex: 1 }}
+          ref={map => (this._map = map)}
+          style={{ flex: 1, top: 0, bottom: 0 }}
+          debugActive={true}
+          direction={10}
+          compassIsHidden={false}
           initialCenterCoordinate={this.props.center}
           initialZoomLevel={this.props.zoom}
           rotateEnabled={false}
-          scrollEnabled={false}
+          scrollEnabled={true}
           zoomEnabled={false}
           showsUserLocation={true}
           styleURL="https://openmaptiles.github.io/osm-bright-gl-style/style-cdn.json"

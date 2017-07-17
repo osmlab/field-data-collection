@@ -29,7 +29,8 @@ const routeConfiguration = {
 };
 
 const Navigator = StackNavigator(routeConfiguration, {
-  headerMode: "none"
+  headerMode: "none",
+  onTransitionEnd: (props, prev) => console.log("onTransitionEnd")
 });
 
 export default Navigator;

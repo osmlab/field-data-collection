@@ -70,6 +70,10 @@ class ObservationMapScreen extends Component {
     });
   }
 
+  componentWillUnmount() {
+    console.log("componentWillUnmount");
+  }
+
   onMenuPress = () => {
     this._menu.open();
   };
