@@ -11,6 +11,26 @@ class Field extends Component {
   }
 }
 
+export class CheckField extends Field {
+  render() {
+    const { label } = this.props;
+
+    return (
+      <View ref={x => (this._root = x)} style={[baseStyles.field]}>
+        <View>
+          <Text style={[baseStyles.h5]}>
+            {label.toUpperCase()}
+          </Text>
+          <Text style={[baseStyles.fieldValue]}>(on/off)</Text>
+        </View>
+        <View>
+          <Icon name="keyboard-arrow-right" style={[[baseStyles.formArrow]]} />
+        </View>
+      </View>
+    );
+  }
+}
+
 export class ComboField extends Field {
   render() {
     const { label } = this.props;
@@ -75,6 +95,9 @@ export class TextField extends Field {
 
 export const getFieldType = type => {
   switch (type) {
+    case "check":
+      return CheckField;
+
     case "combo":
       return ComboField;
 

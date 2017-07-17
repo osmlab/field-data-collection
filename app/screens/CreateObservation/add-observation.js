@@ -1,29 +1,24 @@
 import React, { Component } from "react";
 import {
-  StyleSheet,
+  Image,
   View,
   TouchableHighlight,
   TouchableOpacity
 } from "react-native";
-import Mapbox, { MapView } from "react-native-mapbox-gl";
 import { NavigationActions } from "react-navigation";
 import { connect } from "react-redux";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
 import { Text, Wrapper, PercentComplete } from "../../components";
 import { getFieldType } from "../../components/fields";
-import { selectFeatureType } from "../../selectors";
+import { selectFeatureType, selectIcon } from "../../selectors";
 import { baseStyles } from "../../styles";
-
-const styles = StyleSheet.create({});
 
 class AddObservationScreen extends Component {
   onBackPress = () => this.props.navigation.dispatch(NavigationActions.back());
 
   renderField(field, index) {
-    const { navigate } = this.props.navigation;
-    const { state: { params: { category } } } = this.props.navigation;
-    const { name, fields } = category;
+    const { navigation: { navigate }, type: { fields, name } } = this.props;
 
     try {
       const Field = getFieldType(field.type);
@@ -46,14 +41,10 @@ class AddObservationScreen extends Component {
     }
   }
 
-  addLocation() {
-    const { navigate } = this.props.navigation;
-    navigate("Location");
-  }
+  addLocation = () => this.props.navigation.navigate("Location");
 
   render() {
-    const { state: { params: { category } } } = this.props.navigation;
-    const { name, fields } = category;
+    const { icon, type: { fields, name } } = this.props;
 
     const headerView = (
       <View
@@ -94,6 +85,14 @@ class AddObservationScreen extends Component {
             >
               {name}
             </Text>
+            <Image
+              source={{ uri: icon.src }}
+              style={{
+                width: 100,
+                height: 50,
+                resizeMode: Image.resizeMode.contain
+              }}
+            />
             <Text>
               <Text style={[baseStyles.textWhite]}>Adding point to: </Text>
               <Text
@@ -131,7 +130,7 @@ class AddObservationScreen extends Component {
         <View style={[baseStyles.mapLg]}>
           <Text>Map</Text>
           <View style={[baseStyles.mapEditorBlock]}>
-            <TouchableOpacity onPress={this.addLocation.bind(this)}>
+            <TouchableOpacity onPress={this.addLocation}>
               <Text style={[baseStyles.link]}>
                 {"+ Add Location".toUpperCase()}
               </Text>
@@ -153,10 +152,13 @@ class AddObservationScreen extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const { navigation: { state: { params: { observationType } } } } = ownProps;
+  const { navigation: { state: { params: { type } } } } = ownProps;
+
+  const featureType = selectFeatureType(type, state);
 
   return {
-    type: selectFeatureType(observationType, state)
+    icon: selectIcon(featureType.icon, state),
+    type: featureType
   };
 };
 
