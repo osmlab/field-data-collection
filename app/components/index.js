@@ -9,6 +9,7 @@ import { getFieldInput } from "./field-inputs";
 import { getFieldType } from "./fields";
 import StatusBar from "./StatusBar";
 import CategoryList from "./category-list";
+import Map from "./map";
 
 export {
   Header,
@@ -21,5 +22,6 @@ export {
   MapList,
   PercentComplete,
   StatusBar,
-  CategoryList
+  CategoryList,
+  Map
 };

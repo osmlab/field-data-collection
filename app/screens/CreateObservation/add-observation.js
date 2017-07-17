@@ -5,12 +5,11 @@ import {
   TouchableHighlight,
   TouchableOpacity
 } from "react-native";
-import Mapbox, { MapView } from "react-native-mapbox-gl";
 import { NavigationActions } from "react-navigation";
 import { connect } from "react-redux";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
-import { Text, Wrapper, PercentComplete } from "../../components";
+import { Text, Wrapper, PercentComplete, Map } from "../../components";
 import { getFieldType } from "../../components/fields";
 import { selectFeatureType } from "../../selectors";
 import { baseStyles } from "../../styles";
@@ -46,10 +45,10 @@ class AddObservationScreen extends Component {
     }
   }
 
-  addLocation() {
+  addLocation = () => {
     const { navigate } = this.props.navigation;
     navigate("Location");
-  }
+  };
 
   render() {
     const { state: { params: { category } } } = this.props.navigation;
@@ -106,35 +105,13 @@ class AddObservationScreen extends Component {
               </Text>
             </Text>
           </View>
-          <View style={{ flex: 0.25, position: "relative" }}>
-            <PercentComplete radius={50} complete={5} incomplete={4}>
-              <Text
-                style={[
-                  baseStyles.percentCompleteText,
-                  baseStyles.textWhite,
-                  { position: "absolute", marginTop: 5, paddingLeft: 5 }
-                ]}
-              >
-                <Text
-                  style={[
-                    baseStyles.percentCompleteTextNum,
-                    baseStyles.textWhite
-                  ]}
-                >
-                  80%
-                </Text>{" "}
-                Complete
-              </Text>
-            </PercentComplete>
-          </View>
         </View>
         <View style={[baseStyles.mapLg]}>
-          <Text>Map</Text>
+          <Map />
+
           <View style={[baseStyles.mapEditorBlock]}>
-            <TouchableOpacity onPress={this.addLocation.bind(this)}>
-              <Text style={[baseStyles.link]}>
-                {"+ Add Location".toUpperCase()}
-              </Text>
+            <TouchableOpacity onPress={this.addLocation}>
+              <Text style={[baseStyles.link]}>+ ADD LOCATION</Text>
             </TouchableOpacity>
           </View>
         </View>
