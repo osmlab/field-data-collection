@@ -38,7 +38,8 @@ const babelRC = {
           vm: "vm-browserify",
           zlib: "browserify-zlib",
           pbkdf2: "pbkdf2/browser",
-          "websocket-stream": "websocket-stream/stream"
+          "websocket-stream": "websocket-stream/stream",
+          cuid: "uuid"
         },
         throwForNonStringLiteral: true
       }

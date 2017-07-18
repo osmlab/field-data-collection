@@ -24,9 +24,7 @@ window.fetch = new Fetch({
   binaryContentTypes: ["image/", "video/", "audio/", "application/gzip"]
 }).build();
 
-const obsdb = createOsmp2p("obs");
-const osmdb = createOsmp2p("osm");
-const osm = osmp2p(obsdb, osmdb);
+const osm = osmp2p(createOsmp2p);
 
 const types = {
   CLEAR_LOCAL_SURVEYS: "CLEAR_LOCAL_SURVEYS",
