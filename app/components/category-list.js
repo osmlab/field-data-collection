@@ -47,7 +47,6 @@ class CategoryList extends Component {
 class CategoryView extends Component {
   componentWillMount() {
     const { category } = this.props;
-    category.list = category.list || [];
 
     const ds = new ListView.DataSource({
       rowHasChanged: (r1, r2) => r1 !== r2
@@ -60,7 +59,7 @@ class CategoryView extends Component {
     this.setState({
       expanded: false,
       categoryName: category.name,
-      categories: ds.cloneWithRows(category.list)
+      members: ds.cloneWithRows(category.list)
     });
   }
 
@@ -98,7 +97,7 @@ class CategoryView extends Component {
 
   render() {
     const { navigate } = this.props.navigation;
-    const { expanded, categoryName, categories } = this.state;
+    const { expanded, categoryName, members } = this.state;
     const arrowDirection = expanded
       ? "keyboard-arrow-down"
       : "keyboard-arrow-right";
@@ -131,17 +130,19 @@ class CategoryView extends Component {
         >
           <ListView
             contentContainerStyle={{ marginTop: 10 }}
-            dataSource={categories}
+            dataSource={members}
             noScroll
-            renderRow={category => {
+            renderRow={member => {
               function onCategoryPress() {
-                navigate("AddObservation", { category });
+                navigate("AddObservation", { type: member.id });
               }
 
               return (
                 <View style={styles.category}>
                   <TouchableOpacity onPress={onCategoryPress}>
-                    <Text>{category.name}</Text>
+                    <Text>
+                      {member.name}
+                    </Text>
                   </TouchableOpacity>
                 </View>
               );

@@ -12,7 +12,7 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 
 import createOsmp2p from "../../lib/create-osm-p2p";
 import osmp2p from "../../lib/osm-p2p";
-import { Header, SideMenu, Text } from "../../components";
+import { Header, SideMenu, Text, Geolocate } from "../../components";
 import { baseStyles, colors } from "../../styles";
 
 Mapbox.setAccessToken(
@@ -64,7 +64,7 @@ class ObservationMapScreen extends Component {
         longitude: -122.384
       },
       zoom: 16,
-      userTrackingMode: Mapbox.userTrackingMode.none,
+      userTrackingMode: Mapbox.userTrackingMode.followWithCourse,
       annotations: [],
       mapSize: { width: null, height: null }
     });
@@ -101,6 +101,14 @@ class ObservationMapScreen extends Component {
 
       // TODO: trigger action fetching points within bounds
     });
+  };
+
+  onGeolocate = (err, data) => {
+    this._map.setCenterCoordinate(
+      data.coords.latitude,
+      data.coords.longitude,
+      true
+    );
   };
 
   render() {
@@ -158,6 +166,9 @@ class ObservationMapScreen extends Component {
             }}
           />
         </TouchableOpacity>
+
+        <Geolocate onGeolocate={this.onGeolocate} />
+
         <TouchableOpacity
           style={[styles.buttonAdd]}
           onPress={() => {

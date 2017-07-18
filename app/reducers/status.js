@@ -5,81 +5,23 @@ const initialState = {
   error: null
 };
 
+const MESSAGES = {
+  [types.DISCOVERING_PEERS]: "Discovering peers...",
+  [types.DISCOVERING_PEERS_FAILED]: "Discovering peers failed.",
+  [types.FETCHING_REMOTE_SURVEY]: "Fetching remote survey...",
+  [types.FETCHING_REMOTE_SURVEY_LIST]: "Fetching remote survey list...",
+  [types.FETCHING_REMOTE_SURVEY_FAILED]: "Fetching remote survey failed.",
+  [types.FETCHING_REMOTE_SURVEY_LIST_FAILED]:
+    "Fetching remote survey list failed.",
+  [types.SYNCING_SURVEY_DATA]: "Syncing survey data...",
+  [types.SYNCING_SURVEY_DATA_FAILED]: "Syncing survey data failed.",
+  [types.FINISHED_SYNCING_SURVEY_DATA]: "Survey data sync complete"
+};
+
 export default (state = initialState, { error, type }) => {
-  switch (type) {
-    // TODO types can be mapped to messages with a lookup table
-    case types.DISCOVERING_PEERS:
-      return {
-        ...state,
-        error,
-        message: "Discovering peers..."
-      };
-
-    case types.DISCOVERING_PEERS_FAILED:
-      return {
-        ...state,
-        error,
-        message: "Discovering peers failed."
-      };
-
-    case types.FETCHING_REMOTE_SURVEY:
-      return {
-        ...state,
-        error,
-        message: "Fetching remote survey..."
-      };
-
-    case types.FETCHING_REMOTE_SURVEY_LIST:
-      return {
-        ...state,
-        error,
-        message: "Fetching remote survey list..."
-      };
-
-    case types.FETCHING_REMOTE_SURVEY_FAILED:
-      return {
-        ...state,
-        error,
-        message: "Fetching remote survey failed."
-      };
-
-    case types.FETCHING_REMOTE_SURVEY_LIST_FAILED:
-      return {
-        ...state,
-        error,
-        message: "Fetching remote survey list failed."
-      };
-
-    case types.RECEIVED_REMOTE_SURVEY:
-    case types.RECEIVED_REMOTE_SURVEY_LIST:
-      return {
-        ...state,
-        error, // will reset error
-        message: null
-      };
-
-    case types.SYNCING_SURVEY_DATA:
-      return {
-        ...state,
-        error,
-        message: "Syncing survey data..."
-      };
-
-    case types.SYNCING_SURVEY_DATA_FAILED:
-      return {
-        ...state,
-        error,
-        message: "Syncing survey data failed."
-      };
-
-    case types.FINISHED_SYNCING_SURVEY_DATA:
-      return {
-        ...state,
-        error,
-        message: "Survey data sync complete."
-      };
-
-    default:
-      return state;
-  }
+  return {
+    ...state,
+    error,
+    message: MESSAGES[type]
+  };
 };

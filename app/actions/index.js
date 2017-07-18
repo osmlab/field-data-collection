@@ -1,4 +1,3 @@
-import dataUriToBuffer from "data-uri-to-buffer";
 import eos from "end-of-stream";
 import JSONStream from "JSONStream";
 import once from "once";
@@ -66,12 +65,7 @@ const extractSurveyBundle = (id, bundle, _callback) => {
     if (header.name === "survey.json") {
       stream.pipe(
         JSONStream.parse().on("data", data => {
-          survey.icons = survey.icons || {};
-
-          data.icons.forEach(
-            ({ icon, src }) => (survey.icons[icon] = dataUriToBuffer(src))
-          );
-
+          survey.icons = data.icons;
           delete data.icons;
 
           survey.definition = Object.assign(data, { id });
@@ -105,8 +99,12 @@ const extractSurveyBundle = (id, bundle, _callback) => {
 
 const checkRemoteOsmMeta = (url, cb) => {
   return fetch(`${url}/osm/meta`)
-    .then(res => {
-      res.json().then(data => cb(null, data));
+    .then(rsp => {
+      if (rsp.status !== 200) {
+        return cb(null, {});
+      }
+
+      return rsp.json().then(data => cb(null, data));
     })
     .catch(cb);
 };

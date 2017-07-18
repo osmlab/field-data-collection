@@ -1,7 +1,5 @@
 import { StackNavigator } from "react-navigation";
 
-import ObservationCreateNavigator from "../CreateObservation/navigator";
-
 // Account screens
 import AboutScreen from "../Account/about";
 import AddSurveyScreen from "../Account/add-survey";
@@ -14,18 +12,25 @@ import ObservationsScreen from "../Account/observations";
 // Observations
 import ObservationMapScreen from "../Observations/map.js";
 import ObservationListScreen from "../Observations/list.js";
+import AddObservationScreen from "../Observations/create";
+import FieldsetFormScreen from "../Observations/fieldset-form";
+import CategoriesScreen from "../Observations/categories";
+import LocationScreen from "../Observations/location";
 
 const routeConfiguration = {
   ObservationMap: { screen: ObservationMapScreen },
   ObservationList: { screen: ObservationListScreen },
   MyObservations: { screen: ObservationsScreen },
-  CreateObservation: { screen: ObservationCreateNavigator },
   About: { screen: AboutScreen },
   AddSurvey: { screen: AddSurveyScreen },
   AddProfile: { screen: AddProfileScreen },
   Settings: { screen: SettingsScreen },
   Surveys: { screen: SurveysScreen },
-  Survey: { screen: SurveyScreen }
+  Survey: { screen: SurveyScreen },
+  AddObservation: { screen: AddObservationScreen },
+  FieldsetForm: { screen: FieldsetFormScreen },
+  Categories: { screen: CategoriesScreen },
+  Location: { screen: LocationScreen }
 };
 
 const Navigator = StackNavigator(routeConfiguration, {

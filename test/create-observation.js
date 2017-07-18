@@ -11,7 +11,6 @@ test("create an observation to a placeholder node, and check they are linked", f
 
   var obsDb = osmdb();
   var osm = osmp2p(obsDb, osmdb());
-  var linkDb = obsp2p({ db: memdb(), log: obsDb.log });
 
   var nodeId;
 

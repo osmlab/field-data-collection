@@ -64,7 +64,6 @@ class SideMenu extends Component {
           boundaries={{ right: 3000 }}
           initialPosition={{ x: Screen.width }}
         >
-
           <View style={styles.sideMenu}>
             <Text style={[baseStyles.title, baseStyles.titleMenu]}>Menu</Text>
 
