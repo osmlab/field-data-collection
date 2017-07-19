@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import { StyleSheet, View, ListView, TouchableOpacity } from "react-native";
-import { NavigationActions } from "react-navigation";
+import Mapbox, { MapView } from "react-native-mapbox-gl";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
-import { Text, Wrapper, PercentComplete } from "../../components";
+import { Text, Wrapper, PercentComplete, Map } from "../../components";
 import { baseStyles } from "../../styles";
 
-class AccountScreen extends Component {
+class MyObservations extends Component {
   componentWillMount() {
     const ds = new ListView.DataSource({
       rowHasChanged: (r1, r2) => r1 !== r2
@@ -20,7 +20,11 @@ class AccountScreen extends Component {
           observationName: "Name of observation",
           updated: "Sep. 2, 2016",
           distance: "30cm away",
-          complete: 0.7
+          complete: 0.7,
+          coords: {
+            latitude: 47.6685,
+            longitude: -12.384
+          }
         },
         {
           category: "Oil spill",
@@ -28,7 +32,11 @@ class AccountScreen extends Component {
           observationName: "Name of observation",
           updated: "Sep. 2, 2016",
           distance: "30cm away",
-          complete: 0.7
+          complete: 0.7,
+          coords: {
+            latitude: 47.5685,
+            longitude: -12.384
+          }
         },
         {
           category: "Oil spill",
@@ -36,28 +44,28 @@ class AccountScreen extends Component {
           observationName: "Name of observation",
           updated: "Sep. 2, 2016",
           distance: "30cm away",
-          complete: 0.7
+          complete: 0.7,
+          coords: {
+            latitude: 47.6685,
+            longitude: -13.384
+          }
         }
       ])
     });
   }
 
   render() {
-    const { navigate } = this.props.navigation;
-    console.log("this.state", this.state);
-    const onBackPress = () => {
-      const backAction = NavigationActions.back();
-      this.props.navigation.dispatch(backAction);
-    };
+    const { history } = this.props;
 
     const headerView = (
       <View style={[baseStyles.mainHeader]}>
-        <TouchableOpacity onPress={onBackPress}>
+        <TouchableOpacity onPress={history.goBack}>
           <Icon
             name="keyboard-backspace"
             style={[[baseStyles.headerBackIcon]]}
           />
         </TouchableOpacity>
+
         <Text style={[baseStyles.h3, baseStyles.headerTitle]}>
           My Observations
         </Text>
@@ -65,11 +73,7 @@ class AccountScreen extends Component {
     );
 
     return (
-      <Wrapper
-        style={[baseStyles.mainHeaderSpace]}
-        navigation={this.props.navigation}
-        headerView={headerView}
-      >
+      <Wrapper style={[baseStyles.mainHeaderSpace]} headerView={headerView}>
         <View style={[baseStyles.wrapperContentSm]}>
           <View style={[baseStyles.wrappedItems, baseStyles.syncHeader]}>
             <View
@@ -85,7 +89,7 @@ class AccountScreen extends Component {
             <TouchableOpacity
               style={[baseStyles.buttonContent]}
               onPress={() => {
-                navigate("");
+                //TODO Link
               }}
             >
               <Text style={[baseStyles.textWhite]}>Sync Data</Text>
@@ -106,12 +110,10 @@ class AccountScreen extends Component {
                 <TouchableOpacity
                   style={[baseStyles.surveyCard]}
                   onPress={() => {
-                    navigate("");
+                    //TODO Link
                   }}
                 >
-                  <View style={[baseStyles.map]}>
-                    <Text>Map</Text>
-                  </View>
+                  <Map center={item.coords} zoom={12} />
 
                   <PercentComplete
                     radius={35}
@@ -160,4 +162,4 @@ class AccountScreen extends Component {
   }
 }
 
-export default AccountScreen;
+export default MyObservations;

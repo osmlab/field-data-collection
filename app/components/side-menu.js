@@ -7,7 +7,7 @@ import {
   Button
 } from "react-native";
 import Interactable from "react-native-interactable";
-import { NavigationActions } from "react-navigation";
+import { Link } from "react-router-native";
 
 import { Text } from "./index";
 import websocket from "websocket-stream";
@@ -50,7 +50,6 @@ class SideMenu extends Component {
   };
 
   render() {
-    const { dispatch, navigate } = this.props.navigation;
     const onSync = this.props.onSync;
 
     return (
@@ -67,54 +66,25 @@ class SideMenu extends Component {
           <View style={styles.sideMenu}>
             <Text style={[baseStyles.title, baseStyles.titleMenu]}>Menu</Text>
 
-            <TouchableOpacity
-              style={[baseStyles.navLink]}
-              onPress={() => {
-                const action = NavigationActions.navigate({
-                  routeName: "AddProfile"
-                });
-
-                navigate("AddProfile");
-              }}
-            >
+            <Link to="/account/profile" style={baseStyles.navLink}>
               <Text>Profile</Text>
-            </TouchableOpacity>
+            </Link>
 
-            <TouchableOpacity
-              style={[baseStyles.navLink]}
-              onPress={() => {
-                navigate("MyObservations");
-              }}
-            >
+            <Link to="/account/observations" style={[baseStyles.navLink]}>
               <Text>My Observations</Text>
-            </TouchableOpacity>
+            </Link>
 
-            <TouchableOpacity
-              style={[baseStyles.navLink]}
-              onPress={() => {
-                navigate("Surveys");
-              }}
-            >
+            <Link to="/account/surveys" style={[baseStyles.navLink]}>
               <Text>Surveys</Text>
-            </TouchableOpacity>
+            </Link>
 
-            <TouchableOpacity
-              style={[baseStyles.navLink]}
-              onPress={() => {
-                navigate("Settings");
-              }}
-            >
+            <Link to="/account/settings" style={[baseStyles.navLink]}>
               <Text>Settings</Text>
-            </TouchableOpacity>
+            </Link>
 
-            <TouchableOpacity
-              style={[baseStyles.navLink]}
-              onPress={() => {
-                navigate("About");
-              }}
-            >
+            <Link to="/account/about" style={[baseStyles.navLink]}>
               <Text>About</Text>
-            </TouchableOpacity>
+            </Link>
 
             <Button title="Close" onPress={this.close} />
           </View>

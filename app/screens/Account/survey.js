@@ -6,24 +6,14 @@ import {
   TouchableOpacity,
   TouchableHighlight
 } from "react-native";
-import { NavigationActions } from "react-navigation";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
 import { Text, Wrapper, PercentComplete } from "../../components";
 import { baseStyles } from "../../styles";
 
 class SurveysScreen extends Component {
-  constructor() {
-    super();
-  }
-
   render() {
-    const { navigate } = this.props.navigation;
-
-    const onBackPress = () => {
-      const backAction = NavigationActions.back();
-      this.props.navigation.dispatch(backAction);
-    };
+    const { history } = this.props;
 
     const headerView = (
       <View
@@ -33,7 +23,7 @@ class SurveysScreen extends Component {
           alignItems: "center"
         }}
       >
-        <TouchableOpacity onPress={onBackPress}>
+        <TouchableOpacity onPress={history.goBack}>
           <Icon
             name="keyboard-backspace"
             style={[[baseStyles.headerBackIcon]]}
@@ -44,7 +34,7 @@ class SurveysScreen extends Component {
     );
 
     return (
-      <Wrapper navigation={this.props.navigation} headerView={headerView}>
+      <Wrapper headerView={headerView}>
         <View style={[]}>
           <View
             style={[baseStyles.wrapperContentHeader, baseStyles.headerPage]}
@@ -65,9 +55,7 @@ class SurveysScreen extends Component {
           <View style={[baseStyles.wrapperContent]}>
             <TouchableOpacity
               style={[baseStyles.surveyCard]}
-              onPress={() => {
-                navigate("Categories");
-              }}
+              onPress={() => {}}
             >
               <View style={[baseStyles.map]}>
                 <Text>Map</Text>

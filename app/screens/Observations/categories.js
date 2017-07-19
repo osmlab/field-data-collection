@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { View, TouchableOpacity } from "react-native";
 import { connect } from "react-redux";
-import { NavigationActions } from "react-navigation";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
 import { Text, Wrapper, CategoryList } from "../../components";
@@ -9,10 +8,8 @@ import { selectAllCategories } from "../../selectors";
 import { baseStyles } from "../../styles";
 
 class CategoriesScreen extends Component {
-  onBackPress = () => this.props.navigation.dispatch(NavigationActions.back());
-
   render() {
-    const { categories, navigation } = this.props;
+    const { categories, history } = this.props;
 
     const headerView = (
       <View
@@ -35,11 +32,11 @@ class CategoriesScreen extends Component {
     );
 
     return (
-      <Wrapper navigation={navigation} headerView={headerView}>
+      <Wrapper headerView={headerView}>
         <View style={[baseStyles.wrapperContent]}>
           <Text style={baseStyles.title}>What do you want to add?</Text>
 
-          <CategoryList navigation={navigation} categories={categories} />
+          <CategoryList categories={categories} />
         </View>
       </Wrapper>
     );
