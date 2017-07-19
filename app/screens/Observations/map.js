@@ -51,14 +51,9 @@ const styles = StyleSheet.create({
 });
 
 class ObservationMapScreen extends Component {
-  constructor() {
-    super();
-
-    this.navigationOptions = { tabBarLabel: "Map" };
-  }
-
   componentWillMount() {
     this.setState({
+      showMap: true,
       center: {
         latitude: 47.6685,
         longitude: -122.384
@@ -70,13 +65,15 @@ class ObservationMapScreen extends Component {
     });
   }
 
+  componentWillUnmount() {
+    this.setState({
+      showMap: false
+    });
+  }
+
   onMenuPress = () => {
     this._menu.open();
   };
-
-  onClosePress() {
-    //
-  }
 
   onMapPress = e => {
     const x = e.screenCoordX;
@@ -112,8 +109,6 @@ class ObservationMapScreen extends Component {
   };
 
   render() {
-    const { navigate } = this.props.navigation;
-
     return (
       <View style={[baseStyles.wrapper, { padding: 0 }]}>
         <Header onTogglePress={this.onMenuPress}>
@@ -124,34 +119,35 @@ class ObservationMapScreen extends Component {
           ref={menu => {
             this._menu = menu;
           }}
-          navigation={this.props.navigation}
           onSync={this.prepareAnnotations}
         />
 
-        <MapView
-          ref={map => {
-            this._map = map;
-          }}
-          style={styles.map}
-          annotations={this.state.annotations}
-          onFinishLoadingMap={this.prepareAnnotations}
-          onTap={this.onMapPress}
-          onOpenAnnotation={this.onMapPress}
-          onLayout={e => {
-            const { nativeEvent: { layout: { height, width } } } = e;
-            this.state.mapSize.height = height;
-            this.state.mapSize.width = width;
-          }}
-          initialCenterCoordinate={this.state.center}
-          initialZoomLevel={this.state.zoom}
-          initialDirection={0}
-          rotateEnabled={false}
-          scrollEnabled
-          zoomEnabled
-          showsUserLocation={false}
-          styleURL="https://openmaptiles.github.io/osm-bright-gl-style/style-cdn.json"
-          userTrackingMode={this.state.userTrackingMode}
-        />
+        {this.state.showMap &&
+          <MapView
+            ref={map => {
+              this._map = map;
+            }}
+            style={styles.map}
+            annotations={this.state.annotations}
+            onFinishLoadingMap={this.prepareAnnotations}
+            onTap={this.onMapPress}
+            onOpenAnnotation={this.onMapPress}
+            onLayout={e => {
+              const { nativeEvent: { layout: { height, width } } } = e;
+              this.state.mapSize.height = height;
+              this.state.mapSize.width = width;
+            }}
+            initialCenterCoordinate={this.state.center}
+            initialZoomLevel={this.state.zoom}
+            initialDirection={0}
+            rotateEnabled={false}
+            scrollEnabled
+            zoomEnabled
+            showsUserLocation={false}
+            styleURL="https://openmaptiles.github.io/osm-bright-gl-style/style-cdn.json"
+            userTrackingMode={this.state.userTrackingMode}
+          />}
+
         <TouchableOpacity
           style={[styles.buttonLegend]}
           onPress={this._onPressButton}
@@ -172,7 +168,7 @@ class ObservationMapScreen extends Component {
         <TouchableOpacity
           style={[styles.buttonAdd]}
           onPress={() => {
-            navigate("Categories");
+            // TODO: Link
           }}
         >
           <Icon

@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { StyleSheet, View, ListView, TouchableOpacity } from "react-native";
-import { NavigationActions } from "react-navigation";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
 import { Text, Wrapper, PercentComplete } from "../../components";
@@ -43,16 +42,15 @@ class AccountScreen extends Component {
   }
 
   render() {
-    const { navigate } = this.props.navigation;
-    console.log("this.state", this.state);
-    const onBackPress = () => {
-      const backAction = NavigationActions.back();
-      this.props.navigation.dispatch(backAction);
-    };
+    const { history } = this.props;
 
     const headerView = (
       <View style={[baseStyles.mainHeader]}>
-        <TouchableOpacity onPress={onBackPress}>
+        <TouchableOpacity
+          onPress={() => {
+            history.goBack();
+          }}
+        >
           <Icon
             name="keyboard-backspace"
             style={[[baseStyles.headerBackIcon]]}
@@ -65,11 +63,7 @@ class AccountScreen extends Component {
     );
 
     return (
-      <Wrapper
-        style={[baseStyles.mainHeaderSpace]}
-        navigation={this.props.navigation}
-        headerView={headerView}
-      >
+      <Wrapper style={[baseStyles.mainHeaderSpace]} headerView={headerView}>
         <View style={[baseStyles.wrapperContentSm]}>
           <View style={[baseStyles.wrappedItems, baseStyles.syncHeader]}>
             <View
@@ -85,7 +79,7 @@ class AccountScreen extends Component {
             <TouchableOpacity
               style={[baseStyles.buttonContent]}
               onPress={() => {
-                navigate("");
+                //TODO Link
               }}
             >
               <Text style={[baseStyles.textWhite]}>Sync Data</Text>
@@ -106,7 +100,7 @@ class AccountScreen extends Component {
                 <TouchableOpacity
                   style={[baseStyles.surveyCard]}
                   onPress={() => {
-                    navigate("");
+                    //TODO Link
                   }}
                 >
                   <View style={[baseStyles.map]}>

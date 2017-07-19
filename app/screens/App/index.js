@@ -1,53 +1,38 @@
 import React, { Component } from "react";
-import { BackHandler } from "react-native";
-import { addNavigationHelpers, NavigationActions } from "react-navigation";
+import { View, Animated, Platform, UIManager } from "react-native";
+import { NativeRouter, Switch, Route, Link } from "react-router-native";
 import { connect } from "react-redux";
 
-import Navigator from "./navigator";
+import { Text } from "../../components";
 
-const mapStateToProps = state => {
-  return {
-    navigationState: state.app
-  };
-};
+// Observations
+import ObservationMap from "../Observations/map.js";
+import ObservationList from "../Observations/list.js";
+import AddObservation from "../Observations/create";
+import FieldsetForm from "../Observations/fieldset-form";
+import Categories from "../Observations/categories";
+import Location from "../Observations/location";
+
+// Account
+import MyObservations from "../Account/observations";
+
+if (Platform.OS === "android") {
+  UIManager.setLayoutAnimationEnabledExperimental(true);
+}
 
 class App extends Component {
-  componentWillMount() {
-    BackHandler.addEventListener("hardwareBackPress", this.onBackPress);
-  }
-
-  componentWillUmount() {
-    BackHandler.removeEventListener("hardwareBackPress", this.onBackPress);
-  }
-
-  shouldCloseApp(nav) {
-    return nav.index === 0;
-  }
-
-  onBackPress = () => {
-    const { dispatch, navigationState } = this.props;
-
-    if (this.shouldCloseApp(navigationState)) {
-      return false;
-    }
-
-    dispatch(NavigationActions.back());
-
-    return true;
-  };
-
   render() {
-    const { dispatch, navigationState } = this.props;
-
     return (
-      <Navigator
-        navigation={addNavigationHelpers({
-          dispatch,
-          state: navigationState
-        })}
-      />
+      <NativeRouter>
+        <Switch>
+          <Route path="/" exact component={ObservationMap} />
+          <Route path="/account/observations" component={MyObservations} />
+        </Switch>
+      </NativeRouter>
     );
   }
 }
+
+const mapStateToProps = state => ({});
 
 export default connect(mapStateToProps)(App);
