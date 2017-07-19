@@ -6,6 +6,8 @@ module.exports = Storage;
 function Storage(chunkLength, opts) {
   if (!(this instanceof Storage)) return new Storage(chunkLength, opts);
 
+  this._id = Math.random().toString().substring(5);
+
   if (typeof opts === "string") {
     var prefix = opts;
     opts = {};
