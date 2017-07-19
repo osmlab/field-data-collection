@@ -46,7 +46,6 @@ class SideMenu extends Component {
   };
 
   close = () => {
-    console.log("weeeoooooooooooooo");
     this._menu.setVelocity({ x: 3000 });
   };
 

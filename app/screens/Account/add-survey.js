@@ -7,15 +7,13 @@ import { baseStyles } from "../../styles";
 class AddSurveyScreen extends Component {
   render() {
     return (
-      <Wrapper navigation={this.props.navigation}>
+      <Wrapper>
         <View style={baseStyles.container}>
           <View onPress={() => {}}>
             <Text> ← </Text>
           </View>
 
-          <Text style={baseStyles.title}>
-            Add a survey
-          </Text>
+          <Text style={baseStyles.title}>Add a survey</Text>
         </View>
       </Wrapper>
     );

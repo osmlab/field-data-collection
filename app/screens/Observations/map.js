@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import Mapbox, { MapView } from "react-native-mapbox-gl";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import { Link } from "react-router-native";
 
 import createOsmp2p from "../../lib/create-osm-p2p";
 import osmp2p from "../../lib/osm-p2p";
@@ -165,12 +166,7 @@ class ObservationMapScreen extends Component {
 
         <Geolocate onGeolocate={this.onGeolocate} />
 
-        <TouchableOpacity
-          style={[styles.buttonAdd]}
-          onPress={() => {
-            // TODO: Link
-          }}
-        >
+        <Link to="/add-observation/categories" style={[styles.buttonAdd]}>
           <Icon
             name="add"
             style={{
@@ -180,7 +176,7 @@ class ObservationMapScreen extends Component {
               color: "#ffffff"
             }}
           />
-        </TouchableOpacity>
+        </Link>
       </View>
     );
   }

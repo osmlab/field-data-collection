@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import Interactable from "react-native-interactable";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import { Link } from "react-router-native";
 
 import Text from "./text";
 import { baseStyles } from "../styles";
@@ -26,18 +27,12 @@ const styles = StyleSheet.create({
 
 class CategoryList extends Component {
   render() {
-    const { navigation, categories } = this.props;
+    const { categories } = this.props;
 
     return (
       <View style={styles.categoryList}>
         {categories.map(category => {
-          return (
-            <CategoryView
-              navigation={navigation}
-              category={category}
-              key={category.name}
-            />
-          );
+          return <CategoryView category={category} key={category.name} />;
         })}
       </View>
     );
@@ -96,7 +91,6 @@ class CategoryView extends Component {
   };
 
   render() {
-    const { navigate } = this.props.navigation;
     const { expanded, categoryName, members } = this.state;
     const arrowDirection = expanded
       ? "keyboard-arrow-down"
@@ -133,17 +127,13 @@ class CategoryView extends Component {
             dataSource={members}
             noScroll
             renderRow={member => {
-              function onCategoryPress() {
-                navigate("AddObservation", { type: member.id });
-              }
-
               return (
                 <View style={styles.category}>
-                  <TouchableOpacity onPress={onCategoryPress}>
+                  <Link to="/add-observation/categories" type={member.id}>
                     <Text>
                       {member.name}
                     </Text>
-                  </TouchableOpacity>
+                  </Link>
                 </View>
               );
             }}

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { StyleSheet, View, ListView } from "react-native";
+import { Link } from "react-router-native";
 
 import { Text, Header, Wrapper } from "../../components";
 import { baseStyles } from "../../styles";
@@ -65,17 +66,10 @@ class ObservationListScreen extends Component {
   }
 
   render() {
-    const { navigate } = this.props.navigation;
-
     return (
-      <Wrapper style={{ padding: 0 }} navigation={this.props.navigation}>
+      <Wrapper style={{ padding: 0 }}>
         <View style={{ flex: 1 }}>
-          <Header
-            button="map"
-            onTogglePress={() => {
-              navigate("ObservationMap");
-            }}
-          />
+          <Header button="map" onTogglePress={() => {}} />
 
           <View style={baseStyles.container}>
             <ListView
@@ -87,11 +81,15 @@ class ObservationListScreen extends Component {
                     <Text style={styles.muted}>
                       {item.category} | {item.surveyName}
                     </Text>
-                    <Text style={styles.title}>{item.observationName}</Text>
+                    <Text style={styles.title}>
+                      {item.observationName}
+                    </Text>
                     <Text style={styles.muted}>
                       Last updated: {item.updated}
                     </Text>
-                    <Text>Lat/Long: {item.lnglat}</Text>
+                    <Text>
+                      Lat/Long: {item.lnglat}
+                    </Text>
                   </View>
                 );
               }}

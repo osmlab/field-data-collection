@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { StyleSheet, View, Button, TouchableOpacity } from "react-native";
-import { NavigationActions } from "react-navigation";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
 import { Text, Wrapper } from "../../components";
@@ -14,12 +13,7 @@ const styles = StyleSheet.create({
 
 class MainSettingsScreen extends Component {
   render() {
-    const { navigate } = this.props.navigation;
-
-    const onBackPress = () => {
-      const backAction = NavigationActions.back();
-      this.props.navigation.dispatch(backAction);
-    };
+    const { history } = this.props;
 
     const headerView = (
       <View
@@ -29,7 +23,7 @@ class MainSettingsScreen extends Component {
           alignItems: "center"
         }}
       >
-        <TouchableOpacity onPress={onBackPress}>
+        <TouchableOpacity onPress={history.goBack}>
           <Icon
             name="keyboard-backspace"
             style={[[baseStyles.headerBackIcon]]}
@@ -40,7 +34,7 @@ class MainSettingsScreen extends Component {
     );
 
     return (
-      <Wrapper navigation={this.props.navigation} headerView={headerView}>
+      <Wrapper headerView={headerView}>
         <View style={[baseStyles.wrapperContent]}>
           <View style={{ marginTop: 20, marginBottom: 20 }}>
             <Text style={styles.subtitle}>

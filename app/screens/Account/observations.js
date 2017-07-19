@@ -59,16 +59,13 @@ class MyObservations extends Component {
 
     const headerView = (
       <View style={[baseStyles.mainHeader]}>
-        <TouchableOpacity
-          onPress={() => {
-            history.goBack();
-          }}
-        >
+        <TouchableOpacity onPress={history.goBack}>
           <Icon
             name="keyboard-backspace"
             style={[[baseStyles.headerBackIcon]]}
           />
         </TouchableOpacity>
+
         <Text style={[baseStyles.h3, baseStyles.headerTitle]}>
           My Observations
         </Text>

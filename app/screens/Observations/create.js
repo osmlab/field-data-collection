@@ -5,9 +5,9 @@ import {
   TouchableHighlight,
   TouchableOpacity
 } from "react-native";
-import { NavigationActions } from "react-navigation";
 import { connect } from "react-redux";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import { Link } from "react-router-native";
 
 import { Text, Wrapper, PercentComplete, Map } from "../../components";
 import { getFieldType } from "../../components/fields";
@@ -15,24 +15,20 @@ import { selectFeatureType, selectIcon } from "../../selectors";
 import { baseStyles } from "../../styles";
 
 class AddObservationScreen extends Component {
-  onBackPress = () => this.props.navigation.dispatch(NavigationActions.back());
-
   renderField(field, index) {
-    const { navigation: { navigate }, type: { fields, name } } = this.props;
+    const { type: { fields, name } } = this.props;
 
     try {
       const Field = getFieldType(field.type);
 
       return (
-        <TouchableHighlight
+        <Link
           key={index}
-          onPress={() =>
-            navigate("FieldsetForm", {
-              fieldset: { title: name, index, fields }
-            })}
+          to="/add-observation/fields"
+          fieldset={{ title: name, index, fields }}
         >
           <Field {...field} />
-        </TouchableHighlight>
+        </Link>
       );
     } catch (err) {
       console.warn(err);
@@ -41,12 +37,8 @@ class AddObservationScreen extends Component {
     }
   }
 
-  addLocation = () => {
-    // TODO: Link
-  };
-
   render() {
-    const { icon, type: { fields, name } } = this.props;
+    const { icon, history, type: { fields, name } } = this.props;
 
     const headerView = (
       <View
@@ -56,7 +48,7 @@ class AddObservationScreen extends Component {
           alignItems: "center"
         }}
       >
-        <TouchableOpacity onPress={this.onBackPress}>
+        <TouchableOpacity onPress={history.goBack}>
           <Icon
             name="keyboard-backspace"
             style={[[baseStyles.headerBackIcon]]}
@@ -69,7 +61,7 @@ class AddObservationScreen extends Component {
     );
 
     return (
-      <Wrapper navigation={this.props.navigation} headerView={headerView}>
+      <Wrapper headerView={headerView}>
         <View
           style={[
             baseStyles.wrapperContentHeader,
@@ -112,9 +104,9 @@ class AddObservationScreen extends Component {
           <Map />
 
           <View style={[baseStyles.mapEditorBlock]}>
-            <TouchableOpacity onPress={this.addLocation}>
+            <Link to="/add-observation/location">
               <Text style={[baseStyles.link]}>+ ADD LOCATION</Text>
-            </TouchableOpacity>
+            </Link>
           </View>
         </View>
         <View style={{ marginTop: 20 }}>

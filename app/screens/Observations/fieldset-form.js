@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { View, TextInput } from "react-native";
-import { NavigationActions } from "react-navigation";
 
 import { Text, Wrapper, getFieldInput } from "../../components";
 import { baseStyles } from "../../styles";
@@ -8,29 +7,24 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 
 class FieldsetFormScreen extends Component {
   componentWillMount() {
-    const { navigation: { state: { params: { fieldset } } } } = this.props;
-
     this.setState({
-      fieldset
+      fieldset: {} // TODO get fieldset from props
     });
   }
 
   renderField(field, index) {
-    const { navigate } = this.props.navigation;
-    const { fields } = this.props;
     const Field = getFieldInput(field.type);
     return <Field {...field} />;
   }
 
-  onClosePress = () => this.props.navigation.dispatch(NavigationActions.back());
-
   render() {
+    const { history } = this.props;
     const { fieldset } = this.state;
     const fields = fieldset.fields;
     let input;
 
     return (
-      <Wrapper navigation={this.props.navigation}>
+      <Wrapper>
         <View
           style={{
             flexDirection: "row",
@@ -41,7 +35,7 @@ class FieldsetFormScreen extends Component {
           <Text style={[baseStyles.title]}>
             {fieldset.title}
           </Text>
-          <Text style={{ fontSize: 25 }} onPress={this.onClosePress}>
+          <Text style={{ fontSize: 25 }} onPress={history.goBack}>
             ⅹ
           </Text>
         </View>
