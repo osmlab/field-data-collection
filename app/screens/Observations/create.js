@@ -124,7 +124,7 @@ class AddObservationScreen extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const { navigation: { state: { params: { type } } } } = ownProps;
+  const { match: { params: { type } } } = ownProps;
 
   const featureType = selectFeatureType(type, state);
 

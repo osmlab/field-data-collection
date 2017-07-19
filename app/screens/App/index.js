@@ -32,7 +32,15 @@ class App extends Component {
         <Switch>
           <Route path="/" exact component={ObservationMap} />
           <Route path="/list" component={ObservationList} />
-          <Route path="/add-observation/categories" component={Categories} />
+          <Route
+            exact
+            path="/add-observation/categories"
+            component={Categories}
+          />
+          <Route
+            path="/add-observation/categories/:type"
+            component={AddObservation}
+          />
           <Route path="/add-observation/details" component={AddObservation} />
           <Route path="/add-observation/fields" component={FieldsetForm} />
           <Route path="/add-observation/location" component={FieldsetForm} />
