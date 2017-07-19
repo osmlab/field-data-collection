@@ -48,7 +48,6 @@ class SideMenu extends Component {
   }
 
   open = () => {
-    console.log("openeing");
     this._menu.setVelocity({ x: -2000 });
     this.setState({
       menuOpen: true
