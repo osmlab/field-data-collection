@@ -76,7 +76,7 @@ export default class CategoryList extends Component {
 
     return (
       <SectionList
-        keyExtractor={item => item.id}
+        keyExtractor={(item, idx) => idx}
         renderSectionHeader={this.renderSectionHeader}
         sections={categories.map(({ list: data, name: key }) => ({
           key,
