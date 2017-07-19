@@ -12,6 +12,12 @@ export default (state = initialState, { areaOfInterest, type }) => {
         areaOfInterest
       };
 
+    case types.CLEAR_AREA_OF_INTEREST:
+      return {
+        ...state,
+        areaOfInterest: null
+      };
+
     default:
       return state;
   }

@@ -46,6 +46,7 @@ const types = {
   FINISHED_SYNCING_SURVEY_DATA: "FINISHED_SYNCING_SURVEY_DATA",
   SET_AREA_OF_INTEREST: "SET_AREA_OF_INTEREST",
   UPDATE_OBSERVATION: "UPDATE_OBSERVATION"
+  CLEAR_AREA_OF_INTEREST: "CLEAR_AREA_OF_INTEREST"
 };
 
 // fallback to 10.0.2.2 when connecting to the coordinator (host's localhost from the emulator)
@@ -129,10 +130,12 @@ const checkOsmMeta = (url, getState, cb) => {
 };
 
 export const syncSurveyData = survey => (dispatch, getState) => {
+  console.log("syncSurveyData");
   const { id, target } = survey;
   const url = `http://${target.address}:${target.port}`;
 
   checkOsmMeta(url, getState, (err, shouldSync, areaOfInterest) => {
+    console.log("checkOsmMeta shouldSync?", shouldSync);
     if (err) return console.warn(err);
     if (!shouldSync) {
       return dispatch({
@@ -162,6 +165,7 @@ export const syncSurveyData = survey => (dispatch, getState) => {
         });
       }
 
+      console.log("osm.replicate finished");
       dispatch({
         type: types.FINISHED_SYNCING_SURVEY_DATA,
         id
@@ -172,6 +176,16 @@ export const syncSurveyData = survey => (dispatch, getState) => {
         areaOfInterest
       });
     });
+  });
+};
+
+export const destroyAllData = () => dispatch => {
+  console.log("destroy all data");
+  dispatch({ type: types.CLEAR_LOCAL_SURVEYS });
+  dispatch({ type: types.CLEAR_REMOTE_SURVEYS });
+  dispatch({ type: types.CLEAR_AREA_OF_INTEREST });
+  osm.clearAllData(function(err) {
+    console.log("finished destroying all data");
   });
 };
 

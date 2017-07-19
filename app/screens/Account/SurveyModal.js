@@ -7,7 +7,8 @@ import {
   clearRemoteSurveys,
   fetchRemoteSurvey,
   listRemoteSurveys,
-  syncSurveyData
+  syncSurveyData,
+  destroyAllData
 } from "../../actions";
 import { StatusBar, Text } from "../../components";
 import RemoteSurveyList from "./RemoteSurveyList";
@@ -16,6 +17,9 @@ import { baseStyles } from "../../styles";
 
 class SurveyModal extends Component {
   componentWillMount() {
+    console.log("SurveyModal will mount");
+    // TODO: remove destroyAllData it's being used for debug purposes
+    this.props.destroyAllData();
     this.props.clearRemoteSurveys();
     this.props.listRemoteSurveys();
   }
@@ -63,5 +67,6 @@ export default connect(mapStateToProps, {
   clearRemoteSurveys,
   fetchRemoteSurvey,
   listRemoteSurveys,
-  syncSurveyData
+  syncSurveyData,
+  destroyAllData
 })(SurveyModal);

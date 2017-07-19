@@ -54,11 +54,12 @@ OsmSync.prototype.replicateObservationDb = function(target, done) {
 
 // Assumes you have a wiped, fresh DB
 OsmSync.prototype.replicateOsmOrgDb = function(target, done) {
+  console.log("start replicateOsmOrgDb");
   // Import fresh XML
   var socket = websocket(
     "ws://" + target.address + ":" + target.port + "/replicate/osm"
   );
-  importer.toLevel(this.osmOrgDb.log.db, socket, done)
+  importer.toLevel(this.osmOrgDb.log.db, socket, done);
 };
 
 OsmSync.findPeers = function(opts, done) {
