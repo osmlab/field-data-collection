@@ -1,6 +1,11 @@
 import React, { Component } from "react";
 import { Platform, UIManager } from "react-native";
-import { NativeRouter, Switch, Route } from "react-router-native";
+import {
+  AndroidBackButton,
+  NativeRouter,
+  Switch,
+  Route
+} from "react-router-native";
 
 // Observations
 import ObservationMap from "../Observations/map.js";
@@ -25,28 +30,34 @@ export default class App extends Component {
   render() {
     return (
       <NativeRouter>
-        <Switch>
-          <Route path="/" exact component={ObservationMap} />
-          <Route path="/list" component={ObservationList} />
-          <Route
-            exact
-            path="/add-observation/categories"
-            component={Categories}
-          />
-          <Route
-            path="/add-observation/categories/:type"
-            component={AddObservation}
-          />
-          <Route path="/add-observation/details" component={AddObservation} />
-          <Route path="/add-observation/fields" component={FieldsetForm} />
-          <Route path="/add-observation/location" component={FieldsetForm} />
-          <Route path="/account/observations" component={MyObservations} />
-          <Route path="/account/about" component={About} />
-          <Route path="/account/add-survey" component={AddSurvey} />
-          <Route path="/account/profile" component={Profile} />
-          <Route path="/account/settings" component={Settings} />
-          <Route path="/account/surveys" component={Surveys} />
-        </Switch>
+        <AndroidBackButton>
+          <Switch>
+            <Route path="/" exact component={ObservationMap} />
+            <Route path="/list" component={ObservationList} />
+            <Route
+              exact
+              path="/add-observation/categories"
+              component={Categories}
+            />
+            <Route
+              exact
+              path="/add-observation/:surveyId/:type"
+              component={AddObservation}
+            />
+            <Route path="/add-observation/details" component={AddObservation} />
+            <Route
+              path="/add-observation/:surveyId/:type/fields"
+              component={FieldsetForm}
+            />
+            <Route path="/add-observation/location" component={FieldsetForm} />
+            <Route path="/account/observations" component={MyObservations} />
+            <Route path="/account/about" component={About} />
+            <Route path="/account/add-survey" component={AddSurvey} />
+            <Route path="/account/profile" component={Profile} />
+            <Route path="/account/settings" component={Settings} />
+            <Route path="/account/surveys" component={Surveys} />
+          </Switch>
+        </AndroidBackButton>
       </NativeRouter>
     );
   }
