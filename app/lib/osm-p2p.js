@@ -28,9 +28,9 @@ function osmp2p(createOsmDb) {
     queryGeoJSONStream,
     replicate,
     findReplicationTargets,
-    sync,
     listAnnotations,
-    clearAllData
+    clearAllData,
+    sync: netSync
   };
 
   function ready(cb) {
@@ -128,7 +128,7 @@ function osmp2p(createOsmDb) {
     osmOrgDb.clear(onDone);
     observationDb.clear(onDone);
 
-    var pending = 2;
+    var pending = 0;
     function onDone(err) {
       if (err) {
         pending = 0;
@@ -146,16 +146,28 @@ function osmp2p(createOsmDb) {
   function closeAndReopenOsmOrgDb(cb) {
     osmOrgDb.db.close(onDone);
     osmOrgDb.log.db.close(onDone);
-    osmOrgDb.store.close(); // TODO: investigate fd-chunk-store (or deferred-chunk-store) not calling its cb on 'close'
+    osmOrgDb.store.close(onDone); // TODO: investigate fd-chunk-store (or deferred-chunk-store) not calling its cb on 'close'
 
-    var pending = 2;
+    var pending = 3;
     function onDone(err) {
       if (err) {
         pending = Infinity;
         cb(err);
       } else if (--pending === 0) {
-        console.log("closed and reopened osmorgdb");
-        cb();
+        console.log(
+          "closed and reopened: before new osmorgdb",
+          osmOrgDb.store._id
+        );
+        osmOrgDb = createOsmDb("osm");
+        console.log(
+          "closed and reopened: after new osmorgdb",
+          osmOrgDb.store._id
+        );
+        netSync = OsmSync(observationDb, osmOrgDb);
+        osmOrgDb.ready(function() {
+          console.log("indexing complete");
+          cb();
+        });
       }
     }
   }
@@ -167,49 +179,24 @@ function osmp2p(createOsmDb) {
     }
     console.log("replicate");
     console.log("0", osmOrgDb.store._id);
+
     clearOsmOrgDb(function() {
       console.log("3", osmOrgDb.store._id);
       netSync.replicate(addr, opts, function() {
         console.log("4", osmOrgDb.store._id);
         console.log("netSync.replicate finished");
-        closeAndReopenOsmOrgDb(function() {
-          console.log("5", osmOrgDb.store._id);
-          osmOrgDb = createOsmDb("osm");
-          console.log("6", osmOrgDb.store._id);
-          netSync = OsmSync(observationDb, osmOrgDb);
-          cb();
-        });
+
+        // TODO: investigate why small AOIs cause `Database not open`
+        // and `Storage is closed` errors
+        setTimeout(function() {
+          closeAndReopenOsmOrgDb(cb);
+        }, 1000);
       });
     });
   }
 
   function findReplicationTargets(opts, cb) {
     OsmSync.findPeers(opts, cb);
-  }
-
-  function sync(transportStream, opts, callback) {
-    if (typeof opts === "function") {
-      callback = opts;
-      opts = null;
-    }
-
-    console.log("sync: start");
-    var osmStream = replicate(opts);
-
-    eos(osmStream, done);
-    eos(transportStream, done);
-    transportStream.on("close", done);
-
-    let pending = 2;
-    function done(err) {
-      if (err) return callback(err);
-      if (--pending === 0) {
-        console.log("sync: end");
-        callback();
-      }
-    }
-
-    return transportStream.pipe(osmStream).pipe(transportStream);
   }
 
   function listAnnotations(q, cb) {

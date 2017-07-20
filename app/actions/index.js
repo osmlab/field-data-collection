@@ -130,48 +130,51 @@ export const syncSurveyData = survey => (dispatch, getState) => {
   const { id, target } = survey;
   const url = `http://${target.address}:${target.port}`;
 
-  checkOsmMeta(url, getState, (err, shouldSync, areaOfInterest) => {
-    console.log("checkOsmMeta shouldSync?", shouldSync);
+  checkOsmMeta(url, getState, (err, shouldImportOsm, areaOfInterest) => {
     if (err) return console.warn(err);
-    if (!shouldSync) {
-      return dispatch({
-        type: types.FINISHED_SYNCING_SURVEY_DATA,
-        id
-      });
-    }
+    console.log("shouldImportOsm", shouldImportOsm);
 
     dispatch({
       type: types.SYNCING_SURVEY_DATA,
       id: id
     });
 
+    if (shouldImportOsm) {
+      osm.replicate(
+        target,
+        {
+          progressFn
+        },
+        err => {
+          if (err) {
+            return dispatch({
+              type: types.SYNCING_SURVEY_DATA_FAILED,
+              id
+            });
+          }
+
+          console.log("osm.replicate", err);
+          dispatch({
+            type: types.FINISHED_SYNCING_SURVEY_DATA,
+            id
+          });
+
+          dispatch({
+            type: types.SET_AREA_OF_INTEREST,
+            areaOfInterest
+          });
+        }
+      );
+    }
+
     const progressFn = i => {
+      console.log("progress", i);
       dispatch({
         type: types.SYNCING_SURVEY_DATA_PROGRESS,
         progress: i,
         id: id
       });
     };
-
-    osm.replicate(target, { progressFn }, err => {
-      if (err) {
-        return dispatch({
-          type: types.SYNCING_SURVEY_DATA_FAILED,
-          id
-        });
-      }
-
-      console.log("osm.replicate finished");
-      dispatch({
-        type: types.FINISHED_SYNCING_SURVEY_DATA,
-        id
-      });
-
-      dispatch({
-        type: types.SET_AREA_OF_INTEREST,
-        areaOfInterest
-      });
-    });
   });
 };
 
