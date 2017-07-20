@@ -19,7 +19,7 @@ class SurveyModal extends Component {
   componentWillMount() {
     console.log("SurveyModal will mount");
     // TODO: remove destroyAllData it's being used for debug purposes
-    this.props.destroyAllData();
+    // this.props.destroyAllData();
     this.props.clearRemoteSurveys();
     this.props.listRemoteSurveys();
   }
