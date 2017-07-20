@@ -79,25 +79,15 @@ class AddObservationScreen extends Component {
             >
               {name}
             </Text>
-            <Image
-              source={{ uri: icon.src }}
-              style={{
-                width: 100,
-                height: 50,
-                resizeMode: Image.resizeMode.contain
-              }}
-            />
-            <Text>
-              <Text style={[baseStyles.textWhite]}>Adding point to: </Text>
-              <Text
-                style={[
-                  baseStyles.textWhite,
-                  { paddingLeft: 5, paddingRight: 5 }
-                ]}
-              >
-                Survey 1
-              </Text>
-            </Text>
+            {icon &&
+              <Image
+                source={{ uri: icon.src }}
+                style={{
+                  width: 100,
+                  height: 50,
+                  resizeMode: Image.resizeMode.contain
+                }}
+              />}
           </View>
         </View>
         <View style={[baseStyles.mapLg]}>

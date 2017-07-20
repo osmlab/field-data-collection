@@ -28,7 +28,10 @@ export const selectFeatureType = (id, state) =>
   selectFeatureTypes(state).find(x => x.id === id);
 
 export const selectIcons = createSelector(selectActiveSurveys, surveys =>
-  surveys.map(x => x.icons).reduce((arr, val) => arr.concat(val), [])
+  surveys
+    .map(x => x.icons)
+    .filter(x => x != null)
+    .reduce((arr, val) => arr.concat(val), [])
 );
 
 export const selectIcon = (id, state) =>
