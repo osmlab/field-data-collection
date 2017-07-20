@@ -7,7 +7,7 @@ import {
   clearRemoteSurveys,
   fetchRemoteSurvey,
   listRemoteSurveys,
-  syncSurveyData,
+  syncData,
   destroyAllData
 } from "../../actions";
 import { StatusBar, Text } from "../../components";
@@ -25,12 +25,7 @@ class SurveyModal extends Component {
   }
 
   render() {
-    const {
-      close,
-      fetchRemoteSurvey,
-      remoteSurveys,
-      syncSurveyData
-    } = this.props;
+    const { close, fetchRemoteSurvey, remoteSurveys, syncData } = this.props;
 
     return (
       <Modal animationType="slide" transparent visible onRequestClose={close}>
@@ -47,7 +42,7 @@ class SurveyModal extends Component {
           </View>
           <RemoteSurveyList
             fetch={fetchRemoteSurvey}
-            sync={syncSurveyData}
+            sync={syncData}
             surveys={remoteSurveys}
           />
           <TouchableOpacity onPress={close} style={[baseStyles.buttonBottom]}>
@@ -67,6 +62,6 @@ export default connect(mapStateToProps, {
   clearRemoteSurveys,
   fetchRemoteSurvey,
   listRemoteSurveys,
-  syncSurveyData,
+  syncData,
   destroyAllData
 })(SurveyModal);

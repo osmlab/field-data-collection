@@ -42,7 +42,9 @@ const types = {
   SYNCING_SURVEY_DATA_FAILED: "SYNCING_SURVEY_DATA_FAILED",
   FINISHED_SYNCING_SURVEY_DATA: "FINISHED_SYNCING_SURVEY_DATA",
   SET_AREA_OF_INTEREST: "SET_AREA_OF_INTEREST",
-  CLEAR_AREA_OF_INTEREST: "CLEAR_AREA_OF_INTEREST"
+  CLEAR_AREA_OF_INTEREST: "CLEAR_AREA_OF_INTEREST",
+  SET_OBSERVATIONS_LAST_SYNCED: "SET_OBSERVATIONS_LAST_SYNCED",
+  SET_COORDINATOR_TARGET: "SET_COORDINATOR_TARGET"
 };
 
 // fallback to 10.0.2.2 when connecting to the coordinator (host's localhost from the emulator)
@@ -125,18 +127,18 @@ const checkOsmMeta = (url, getState, cb) => {
   });
 };
 
-export const syncSurveyData = survey => (dispatch, getState) => {
-  console.log("syncSurveyData");
-  const { id, target } = survey;
+export const syncData = target => (dispatch, getState) => {
+  console.log("syncData", target);
   const url = `http://${target.address}:${target.port}`;
+
+  console.log("target url", url);
 
   checkOsmMeta(url, getState, (err, shouldImportOsm, areaOfInterest) => {
     if (err) return console.warn(err);
     console.log("shouldImportOsm", shouldImportOsm);
 
     dispatch({
-      type: types.SYNCING_SURVEY_DATA,
-      id: id
+      type: types.SYNCING_SURVEY_DATA
     });
 
     if (shouldImportOsm) {
@@ -148,20 +150,23 @@ export const syncSurveyData = survey => (dispatch, getState) => {
         err => {
           if (err) {
             return dispatch({
-              type: types.SYNCING_SURVEY_DATA_FAILED,
-              id
+              type: types.SYNCING_SURVEY_DATA_FAILED
             });
           }
 
           console.log("osm.replicate", err);
           dispatch({
-            type: types.FINISHED_SYNCING_SURVEY_DATA,
-            id
+            type: types.FINISHED_SYNCING_SURVEY_DATA
           });
 
           dispatch({
             type: types.SET_AREA_OF_INTEREST,
             areaOfInterest
+          });
+
+          dispatch({
+            type: types.SET_OBSERVATIONS_LAST_SYNCED,
+            observationsLastSynced: Date.now()
           });
         }
       );
@@ -204,6 +209,11 @@ const getPeerInfo = (dispatch, callback) => {
     if (peers.length > 0) {
       ({ targetIP, targetPort } = peers[0]);
     }
+
+    dispatch({
+      type: types.SET_COORDINATOR_TARGET,
+      target: { address: targetIP, port: targetPort }
+    });
 
     return callback(null, targetIP, targetPort);
   });

@@ -3,7 +3,6 @@ import { TouchableOpacity, View } from "react-native";
 
 import { Text } from "../../components";
 import { baseStyles } from "../../styles";
-import { syncSurveyData } from "../../actions";
 
 export default class RemoteSurveyList extends Component {
   render() {
@@ -20,7 +19,7 @@ export default class RemoteSurveyList extends Component {
             key={idx}
             onPress={() => {
               fetch(survey.id, survey.url);
-              sync(survey);
+              sync(survey.target);
             }}
             style={[baseStyles.touchableLinksWrapper]}
           >
