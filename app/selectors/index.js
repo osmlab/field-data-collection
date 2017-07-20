@@ -50,12 +50,30 @@ export const selectCategories = createSelector(
   (surveys, observationTypes) =>
     surveys
       .map(({ definition: { categories } }) =>
-        categories.map(category => ({
-          ...category,
-          list: category.members
-            .map(id => observationTypes.find(x => x.id === id))
-            .map(({ id, name }) => ({ id, name }))
-        }))
+        categories
+          .reduce((arr, { icon, members, name }) => {
+            const cat = arr.find(x => x.name === name);
+
+            if (cat != null) {
+              cat.members = cat.members.concat(
+                members.filter(x => !cat.members.includes(x))
+              );
+            } else {
+              arr.push({
+                icon,
+                members,
+                name
+              });
+            }
+
+            return arr;
+          }, [])
+          .map(category => ({
+            ...category,
+            list: category.members
+              .map(id => observationTypes.find(x => x.id === id))
+              .map(({ id, name }) => ({ id, name }))
+          }))
       )
       .reduce((arr, val) => arr.concat(val), [])
 );
