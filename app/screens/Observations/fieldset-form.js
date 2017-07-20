@@ -3,7 +3,6 @@ import { View, TextInput } from "react-native";
 
 import { Text, Wrapper, getFieldInput } from "../../components";
 import { baseStyles } from "../../styles";
-import Icon from "react-native-vector-icons/MaterialIcons";
 
 class FieldsetFormScreen extends Component {
   componentWillMount() {

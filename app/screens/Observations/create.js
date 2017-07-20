@@ -1,15 +1,10 @@
 import React, { Component } from "react";
-import {
-  Image,
-  View,
-  TouchableHighlight,
-  TouchableOpacity
-} from "react-native";
+import { Image, View, TouchableOpacity } from "react-native";
 import { connect } from "react-redux";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Link } from "react-router-native";
 
-import { Text, Wrapper, PercentComplete, Map } from "../../components";
+import { Text, Wrapper, Map } from "../../components";
 import { getFieldType } from "../../components/fields";
 import { selectFeatureType, selectIcon } from "../../selectors";
 import { baseStyles } from "../../styles";
