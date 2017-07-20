@@ -19,7 +19,7 @@ class CategoriesScreen extends Component {
           alignItems: "center"
         }}
       >
-        <TouchableOpacity onPress={this.onBackPress}>
+        <TouchableOpacity onPress={history.goBack}>
           <Icon
             name="keyboard-backspace"
             style={[[baseStyles.headerBackIcon]]}

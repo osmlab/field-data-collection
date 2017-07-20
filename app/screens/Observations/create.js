@@ -1,32 +1,23 @@
 import React, { Component } from "react";
-import {
-  Image,
-  View,
-  TouchableHighlight,
-  TouchableOpacity
-} from "react-native";
+import { Image, View, TouchableOpacity } from "react-native";
 import { connect } from "react-redux";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Link } from "react-router-native";
 
-import { Text, Wrapper, PercentComplete, Map } from "../../components";
+import { Text, Wrapper, Map } from "../../components";
 import { getFieldType } from "../../components/fields";
 import { selectFeatureType, selectIcon } from "../../selectors";
 import { baseStyles } from "../../styles";
 
 class AddObservationScreen extends Component {
   renderField(field, index) {
-    const { type: { fields, name } } = this.props;
+    const { survey, type: { id } } = this.props;
 
     try {
       const Field = getFieldType(field.type);
 
       return (
-        <Link
-          key={index}
-          to="/add-observation/fields"
-          fieldset={{ title: name, index, fields }}
-        >
+        <Link key={index} to={`/add-observation/${survey}/${id}/fields`}>
           <Field {...field} />
         </Link>
       );
@@ -38,7 +29,7 @@ class AddObservationScreen extends Component {
   }
 
   render() {
-    const { icon, history, type: { fields, name } } = this.props;
+    const { icon, history, surveyId, type: { fields, name } } = this.props;
 
     const headerView = (
       <View
@@ -77,27 +68,17 @@ class AddObservationScreen extends Component {
                 baseStyles.headerWithDescription
               ]}
             >
-              {name}
+              {name} ({surveyId})
             </Text>
-            <Image
-              source={{ uri: icon.src }}
-              style={{
-                width: 100,
-                height: 50,
-                resizeMode: Image.resizeMode.contain
-              }}
-            />
-            <Text>
-              <Text style={[baseStyles.textWhite]}>Adding point to: </Text>
-              <Text
-                style={[
-                  baseStyles.textWhite,
-                  { paddingLeft: 5, paddingRight: 5 }
-                ]}
-              >
-                Survey 1
-              </Text>
-            </Text>
+            {icon &&
+              <Image
+                source={{ uri: icon.src }}
+                style={{
+                  width: 100,
+                  height: 50,
+                  resizeMode: Image.resizeMode.contain
+                }}
+              />}
           </View>
         </View>
         <View style={[baseStyles.mapLg]}>
@@ -124,12 +105,13 @@ class AddObservationScreen extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const { match: { params: { type } } } = ownProps;
+  const { match: { params: { surveyId, type } } } = ownProps;
 
   const featureType = selectFeatureType(type, state);
 
   return {
     icon: selectIcon(featureType.icon, state),
+    surveyId,
     type: featureType
   };
 };

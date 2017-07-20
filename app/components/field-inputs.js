@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Switch, TextInput, View } from "react-native";
+import { Picker, Switch, TextInput, View } from "react-native";
 
 import { Text } from ".";
 import { baseStyles } from "../styles";
@@ -37,37 +37,94 @@ export class CheckField extends Field {
   }
 }
 
-export class ComboField extends Field {
+export class PickerField extends Field {
+  state = {
+    value: null
+  };
+
+  getPickerItems = () => {
+    const { strings: { options } } = this.props;
+
+    if (Array.isArray(options)) {
+      return options.map((opt, idx) =>
+        <Picker.Item key={idx} label={opt} value={opt} />
+      );
+    }
+
+    return Object.keys(options).map((k, idx) =>
+      <Picker.Item key={idx} label={options[k]} value={k} />
+    );
+  };
+
+  onValueChange = value => this.setState({ value });
+
   render() {
     const { label } = this.props;
+    const { value } = this.state;
 
     return (
       <View ref={x => (this._root = x)} style={[baseStyles.field]}>
-        <View>
+        <View style={{ flex: 1 }}>
           <Text style={[baseStyles.fieldLabel]}>
             {label}
           </Text>
-          <Text style={[baseStyles.fieldValue]}>(options)</Text>
+          <Picker
+            onValueChange={this.onValueChange}
+            prompt={label}
+            selectedValue={value}
+            style={{
+              flex: 1
+            }}
+          >
+            <Picker.Item label="" value={null} />
+            {this.getPickerItems()}
+          </Picker>
         </View>
       </View>
     );
   }
 }
 
-export class NumberField extends Field {
+export class ComboField extends Field {
   render() {
-    const { label, placeholder } = this.props;
+    const { strings } = this.props;
+
+    if (strings != null && strings.options != null) {
+      return <PickerField {...this.props} />;
+    }
+
+    return <TextField {...this.props} />;
+  }
+}
+
+export class NumberField extends Field {
+  state = {
+    value: null
+  };
+
+  onValueChange = value =>
+    this.setState({
+      value
+    });
+
+  render() {
+    const { focusNextField, label, placeholder } = this.props;
+    const { value } = this.state;
 
     return (
       <View ref={x => (this._root = x)} style={baseStyles.field}>
-        <View>
+        <View style={{ flex: 1 }}>
           <Text style={[baseStyles.fieldLabel]}>
             {label}
           </Text>
           <TextInput
-            style={[baseStyles.fieldValue]}
-            value={placeholder}
+            onChangeText={this.onValueChange}
             keyboardType="numeric"
+            onSubmitEditing={focusNextField}
+            placeholder={placeholder}
+            style={[baseStyles.fieldValue, { flex: 1 }]}
+            underlineColorAndroid="transparent"
+            value={value}
           />
         </View>
       </View>
@@ -76,16 +133,35 @@ export class NumberField extends Field {
 }
 
 export class TextField extends Field {
+  state = {
+    value: null
+  };
+
+  onValueChange = value =>
+    this.setState({
+      value
+    });
+
   render() {
-    const { label, placeholder } = this.props;
+    const { focusNextField, label, placeholder } = this.props;
+    const { value } = this.state;
 
     return (
       <View ref={x => (this._root = x)} style={[baseStyles.field]}>
-        <View>
+        <View style={{ flex: 1 }}>
           <Text style={baseStyles.h5}>
             {label}
           </Text>
-          <TextInput style={[baseStyles.fieldValue]} value={placeholder} />
+          <TextInput
+            autoCapitalize="none"
+            autoCorrect={false}
+            onChangeText={this.onValueChange}
+            onSubmitEditing={focusNextField}
+            style={[baseStyles.fieldValue, { flex: 1 }]}
+            placeholder={placeholder}
+            underlineColorAndroid="transparent"
+            value={value}
+          />
         </View>
       </View>
     );
