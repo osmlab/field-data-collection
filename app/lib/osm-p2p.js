@@ -154,18 +154,16 @@ function osmp2p(createOsmDb) {
         pending = Infinity;
         cb(err);
       } else if (--pending === 0) {
-        console.log(
-          "closed and reopened: before new osmorgdb",
-          osmOrgDb.store._id
-        );
+        console.log("5", osmOrgDb.store._id);
         osmOrgDb = createOsmDb("osm");
-        console.log(
-          "closed and reopened: after new osmorgdb",
-          osmOrgDb.store._id
-        );
+        console.log("6", osmOrgDb.store._id);
         netSync = OsmSync(observationDb, osmOrgDb);
+        console.log("closed and reopened osmorgdb");
+
         osmOrgDb.ready(function() {
           console.log("indexing complete");
+          // Less likely to see `Database not open` and `Storage is closed`
+          // errors if calling `cb` in the `ready` callback
           cb();
         });
       }
