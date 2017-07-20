@@ -148,12 +148,16 @@ function osmp2p(createOsmDb) {
     osmOrgDb.log.db.close(onDone);
     osmOrgDb.store.close(); // TODO: investigate fd-chunk-store (or deferred-chunk-store) not calling its cb on 'close'
 
-    var pending = 2;
+    var pending = 3;
     function onDone(err) {
       if (err) {
         pending = Infinity;
         cb(err);
       } else if (--pending === 0) {
+        console.log("5", osmOrgDb.store._id);
+        osmOrgDb = createOsmDb("osm");
+        console.log("6", osmOrgDb.store._id);
+        netSync = OsmSync(observationDb, osmOrgDb);
         console.log("closed and reopened osmorgdb");
         cb();
       }
@@ -173,10 +177,6 @@ function osmp2p(createOsmDb) {
         console.log("4", osmOrgDb.store._id);
         console.log("netSync.replicate finished");
         closeAndReopenOsmOrgDb(function() {
-          console.log("5", osmOrgDb.store._id);
-          osmOrgDb = createOsmDb("osm");
-          console.log("6", osmOrgDb.store._id);
-          netSync = OsmSync(observationDb, osmOrgDb);
           cb();
         });
       });
