@@ -11,17 +11,13 @@ import { baseStyles } from "../../styles";
 
 class AddObservationScreen extends Component {
   renderField(field, index) {
-    const { type: { fields, name } } = this.props;
+    const { survey, type: { id } } = this.props;
 
     try {
       const Field = getFieldType(field.type);
 
       return (
-        <Link
-          key={index}
-          to="/add-observation/fields"
-          fieldset={{ title: name, index, fields }}
-        >
+        <Link key={index} to={`/add-observation/${survey}/${id}/fields`}>
           <Field {...field} />
         </Link>
       );
@@ -33,7 +29,7 @@ class AddObservationScreen extends Component {
   }
 
   render() {
-    const { icon, history, type: { fields, name } } = this.props;
+    const { icon, history, surveyId, type: { fields, name } } = this.props;
 
     const headerView = (
       <View
@@ -72,7 +68,7 @@ class AddObservationScreen extends Component {
                 baseStyles.headerWithDescription
               ]}
             >
-              {name}
+              {name} ({surveyId})
             </Text>
             {icon &&
               <Image
@@ -109,12 +105,13 @@ class AddObservationScreen extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const { match: { params: { type } } } = ownProps;
+  const { match: { params: { surveyId, type } } } = ownProps;
 
   const featureType = selectFeatureType(type, state);
 
   return {
     icon: selectIcon(featureType.icon, state),
+    surveyId,
     type: featureType
   };
 };

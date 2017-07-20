@@ -52,7 +52,7 @@ export const selectCategories = createSelector(
   [selectActiveSurveys, selectObservationTypes],
   (surveys, observationTypes) =>
     surveys
-      .map(({ definition: { categories } }) =>
+      .map(({ definition: { categories, name: surveyId } }) =>
         categories
           .reduce((arr, { icon, members, name }) => {
             const cat = arr.find(x => x.name === name);
@@ -65,7 +65,8 @@ export const selectCategories = createSelector(
               arr.push({
                 icon,
                 members,
-                name
+                name,
+                surveyId
               });
             }
 

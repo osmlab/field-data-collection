@@ -26,9 +26,9 @@ export default class CategoryList extends Component {
     this.props.categories.length === 1 ||
     this.state.visible.includes(sectionId);
 
-  renderItem = (sectionId, { item }) =>
+  renderItem = (surveyId, sectionId, { item }) =>
     this.isVisible(sectionId)
-      ? <Link to={`/add-observation/categories/${item.id}`}>
+      ? <Link to={`/add-observation/${surveyId}/${item.id}`}>
           <Text style={styles.category}>
             {item.name}
           </Text>
@@ -78,10 +78,10 @@ export default class CategoryList extends Component {
       <SectionList
         keyExtractor={(item, idx) => idx}
         renderSectionHeader={this.renderSectionHeader}
-        sections={categories.map(({ list: data, name: key }) => ({
+        sections={categories.map(({ list: data, name: key, surveyId }) => ({
           key,
           data,
-          renderItem: info => this.renderItem(key, info)
+          renderItem: info => this.renderItem(surveyId, key, info)
         }))}
       />
     );
