@@ -41,12 +41,24 @@ const styles = StyleSheet.create({
 });
 
 class SideMenu extends Component {
+  componentWillMount() {
+    this.setState({
+      menuOpen: false
+    });
+  }
+
   open = () => {
     this._menu.setVelocity({ x: -2000 });
+    this.setState({
+      menuOpen: true
+    });
   };
 
   close = () => {
     this._menu.setVelocity({ x: 3000 });
+    this.setState({
+      menuOpen: false
+    });
   };
 
   render() {
@@ -54,6 +66,18 @@ class SideMenu extends Component {
 
     return (
       <View style={styles.sideMenuContainer} pointerEvents="box-none">
+        {this.state.menuOpen &&
+          <TouchableOpacity
+            style={[
+              styles.sideMenuContainer,
+              { backgroundColor: "rgba(0,0,0,.8)", zIndex: 1004 }
+            ]}
+            activeOpacity={0.8}
+            onPress={e => {
+              this.close();
+            }}
+          />}
+
         <Interactable.View
           ref={menu => {
             this._menu = menu;
@@ -62,6 +86,7 @@ class SideMenu extends Component {
           snapPoints={[{ x: Screen.width }, { x: RemainingWidth }]}
           boundaries={{ right: 3000 }}
           initialPosition={{ x: Screen.width }}
+          style={{ zIndex: 1005 }}
         >
           <View style={styles.sideMenu}>
             <Text style={[baseStyles.title, baseStyles.titleMenu]}>Menu</Text>
@@ -85,8 +110,6 @@ class SideMenu extends Component {
             <Link to="/account/about" style={[baseStyles.navLink]}>
               <Text>About</Text>
             </Link>
-
-            <Button title="Close" onPress={this.close} />
           </View>
         </Interactable.View>
       </View>
