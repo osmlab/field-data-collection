@@ -1,156 +1,89 @@
 import React, { Component } from "react";
-import {
-  View,
-  ListView,
-  TouchableOpacity,
-  Animated,
-  StyleSheet
-} from "react-native";
-import Interactable from "react-native-interactable";
+import { SectionList, StyleSheet, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import { Link } from "react-router-native";
 
 import Text from "./text";
 import { baseStyles } from "../styles";
 
 const styles = StyleSheet.create({
-  categoryList: {},
   category: {
     borderColor: "#ccc",
     borderWidth: 1,
     padding: 5,
     paddingLeft: 20,
     height: 40
-  },
-  categoryHeader: { padding: 5, height: 40 }
+  }
 });
 
-class CategoryList extends Component {
-  render() {
-    const { navigation, categories } = this.props;
+export default class CategoryList extends Component {
+  state = {
+    visible: []
+  };
 
-    return (
-      <View style={styles.categoryList}>
-        {categories.map(category => {
-          return (
-            <CategoryView
-              navigation={navigation}
-              category={category}
-              key={category.name}
-            />
-          );
-        })}
-      </View>
-    );
-  }
-}
+  isVisible = sectionId =>
+    // always show items within a single category
+    this.props.categories.length === 1 ||
+    this.state.visible.includes(sectionId);
 
-class CategoryView extends Component {
-  componentWillMount() {
-    const { category } = this.props;
-    category.list = category.list || [];
+  renderItem = (surveyId, sectionId, { item }) =>
+    this.isVisible(sectionId)
+      ? <Link to={`/add-observation/${surveyId}/${item.id}`}>
+          <Text style={styles.category}>
+            {item.name}
+          </Text>
+        </Link>
+      : null;
 
-    const ds = new ListView.DataSource({
-      rowHasChanged: (r1, r2) => r1 !== r2
-    });
+  renderSectionHeader = ({ section }) => {
+    const { categories } = this.props;
 
-    this.animation = new Animated.Value();
-    this.minHeight = null;
-    this.maxHeight = null;
-
-    this.setState({
-      expanded: false,
-      categoryName: category.name,
-      categories: ds.cloneWithRows(category.list)
-    });
-  }
-
-  _setMinHeight = e => {
-    this.animation.setValue(20);
-    if (!this.minHeight) {
-      this.minHeight = 20;
+    if (categories.length === 1) {
+      // never show the header when only 1 category exists
+      return null;
     }
-  };
 
-  _setMaxHeight = e => {
-    if (!this.maxHeight) {
-      this.maxHeight = e.nativeEvent.layout.height;
-    }
-  };
-
-  toggle = () => {
-    const { expanded } = this.state;
-    const minHeight = this.minHeight;
-    const maxHeight = this.maxHeight;
-    const initialHeight = expanded ? maxHeight + minHeight : minHeight;
-    const finalHeight = expanded ? minHeight : maxHeight + minHeight;
-
-    this.setState({
-      expanded: !expanded
-    });
-
-    this.animation.setValue(initialHeight);
-
-    Animated.timing(this.animation, {
-      duration: 250,
-      toValue: finalHeight
-    }).start();
-  };
-
-  render() {
-    const { navigate } = this.props.navigation;
-    const { expanded, categoryName, categories } = this.state;
-    const arrowDirection = expanded
+    const arrowDirection = this.isVisible(section.key)
       ? "keyboard-arrow-down"
       : "keyboard-arrow-right";
-    const arrowIcon = (
-      <Icon name={arrowDirection} style={{ fontSize: 26, height: 40 }} />
-    );
 
     return (
-      <Animated.View style={{ height: this.animation }}>
-        <View style={styles.categoryHeader} onLayout={this._setMinHeight}>
-          <TouchableOpacity
-            style={{
-              padding: 5
-            }}
-            onPress={this.toggle}
-          >
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              {arrowIcon}
-              <Text style={[baseStyles.h2, { height: 40 }]}>
-                {categoryName}
-              </Text>
-            </View>
-          </TouchableOpacity>
-        </View>
+      <TouchableOpacity onPress={() => this.toggleVisibility(section.key)}>
+        <Text style={baseStyles.h2}>
+          <Icon name={arrowDirection} style={{ fontSize: 26, height: 40 }} />
+          {section.key}
+        </Text>
+      </TouchableOpacity>
+    );
+  };
 
-        <Interactable.View
-          verticalOnly
-          snapPoints={[]}
-          onLayout={this._setMaxHeight}
-        >
-          <ListView
-            contentContainerStyle={{ marginTop: 10 }}
-            dataSource={categories}
-            noScroll
-            renderRow={category => {
-              function onCategoryPress() {
-                navigate("AddObservation", { category });
-              }
+  toggleVisibility = sectionId => {
+    const { visible } = this.state;
 
-              return (
-                <View style={styles.category}>
-                  <TouchableOpacity onPress={onCategoryPress}>
-                    <Text>{category.name}</Text>
-                  </TouchableOpacity>
-                </View>
-              );
-            }}
-          />
-        </Interactable.View>
-      </Animated.View>
+    if (this.isVisible(sectionId)) {
+      this.setState({
+        visible: visible.filter(x => x !== sectionId)
+      });
+    } else {
+      this.setState({
+        visible: visible.concat(sectionId)
+      });
+    }
+  };
+
+  render() {
+    const { categories } = this.props;
+
+    return (
+      <SectionList
+        keyExtractor={(item, idx) => idx}
+        renderSectionHeader={this.renderSectionHeader}
+        sections={categories.map(({ list: data, name: key, surveyId }) => ({
+          key,
+          data,
+          renderItem: info => this.renderItem(surveyId, key, info)
+        }))}
+      />
     );
   }
 }
-
-export default CategoryList;

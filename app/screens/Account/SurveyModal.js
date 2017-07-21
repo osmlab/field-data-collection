@@ -6,7 +6,8 @@ import { connect } from "react-redux";
 import {
   clearRemoteSurveys,
   fetchRemoteSurvey,
-  listRemoteSurveys
+  listRemoteSurveys,
+  syncSurveyData
 } from "../../actions";
 import { StatusBar, Text } from "../../components";
 import RemoteSurveyList from "./RemoteSurveyList";
@@ -20,7 +21,12 @@ class SurveyModal extends Component {
   }
 
   render() {
-    const { close, fetchRemoteSurvey, remoteSurveys } = this.props;
+    const {
+      close,
+      fetchRemoteSurvey,
+      remoteSurveys,
+      syncSurveyData
+    } = this.props;
 
     return (
       <Modal animationType="slide" transparent visible onRequestClose={close}>
@@ -35,11 +41,13 @@ class SurveyModal extends Component {
               <Icon name="clear" style={[[baseStyles.clearIcon]]} />
             </TouchableOpacity>
           </View>
-          <RemoteSurveyList fetch={fetchRemoteSurvey} surveys={remoteSurveys} />
+          <RemoteSurveyList
+            fetch={fetchRemoteSurvey}
+            sync={syncSurveyData}
+            surveys={remoteSurveys}
+          />
           <TouchableOpacity onPress={close} style={[baseStyles.buttonBottom]}>
-            <Text style={[baseStyles.textWhite]}>
-              {"Done".toUpperCase()}
-            </Text>
+            <Text style={[baseStyles.textWhite]}>DONE</Text>
           </TouchableOpacity>
         </View>
       </Modal>
@@ -54,5 +62,6 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps, {
   clearRemoteSurveys,
   fetchRemoteSurvey,
-  listRemoteSurveys
+  listRemoteSurveys,
+  syncSurveyData
 })(SurveyModal);

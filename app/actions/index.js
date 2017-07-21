@@ -1,4 +1,3 @@
-import dataUriToBuffer from "data-uri-to-buffer";
 import eos from "end-of-stream";
 import JSONStream from "JSONStream";
 import once from "once";
@@ -25,9 +24,7 @@ window.fetch = new Fetch({
   binaryContentTypes: ["image/", "video/", "audio/", "application/gzip"]
 }).build();
 
-const obsdb = createOsmp2p("obs");
-const osmdb = createOsmp2p("osm");
-const osm = osmp2p(obsdb, osmdb);
+const osm = osmp2p(createOsmp2p);
 
 const types = {
   CLEAR_LOCAL_SURVEYS: "CLEAR_LOCAL_SURVEYS",
@@ -43,7 +40,8 @@ const types = {
   SYNCING_SURVEY_DATA: "SYNCING_SURVEY_DATA",
   SYNCING_SURVEY_DATA_PROGRESS: "SYNCING_SURVEY_DATA_PROGRESS",
   SYNCING_SURVEY_DATA_FAILED: "SYNCING_SURVEY_DATA_FAILED",
-  FINISHED_SYNCING_SURVEY_DATA: "FINISHED_SYNCING_SURVEY_DATA"
+  FINISHED_SYNCING_SURVEY_DATA: "FINISHED_SYNCING_SURVEY_DATA",
+  SET_AREA_OF_INTEREST: "SET_AREA_OF_INTEREST"
 };
 
 // fallback to 10.0.2.2 when connecting to the coordinator (host's localhost from the emulator)
@@ -67,12 +65,7 @@ const extractSurveyBundle = (id, bundle, _callback) => {
     if (header.name === "survey.json") {
       stream.pipe(
         JSONStream.parse().on("data", data => {
-          survey.icons = survey.icons || {};
-
-          data.icons.forEach(
-            ({ icon, src }) => (survey.icons[icon] = dataUriToBuffer(src))
-          );
-
+          survey.icons = data.icons;
           delete data.icons;
 
           survey.definition = Object.assign(data, { id });
@@ -104,31 +97,76 @@ const extractSurveyBundle = (id, bundle, _callback) => {
   bundle.open();
 };
 
-const syncSurveyData = (id, target, dispatch) => {
-  dispatch({
-    type: types.SYNCING_SURVEY_DATA,
-    id
+const checkRemoteOsmMeta = (url, cb) => {
+  return fetch(`${url}/osm/meta`)
+    .then(rsp => {
+      if (rsp.status !== 200) {
+        return cb(null, {});
+      }
+
+      return rsp.json().then(data => cb(null, data));
+    })
+    .catch(cb);
+};
+
+const checkOsmMeta = (url, getState, cb) => {
+  const { osm: { areaOfInterest } } = getState();
+
+  checkRemoteOsmMeta(url, function(err, res) {
+    if (err) return cb(err);
+    if (!areaOfInterest) return cb(null, true, res);
+
+    if (areaOfInterest.uuid === res.uuid) {
+      return cb(null, false);
+    }
+
+    return cb(null, true, res);
   });
+};
 
-  const progressFn = i => {
-    dispatch({
-      type: types.SYNCING_SURVEY_DATA_PROGRESS,
-      progress: i,
-      id
-    });
-  };
+export const syncSurveyData = survey => (dispatch, getState) => {
+  const { id, target } = survey;
+  const url = `http://${target.address}:${target.port}`;
 
-  osm.replicate(target, { progressFn }, err => {
-    if (err) {
+  checkOsmMeta(url, getState, (err, shouldSync, areaOfInterest) => {
+    if (err) return console.warn(err);
+    if (!shouldSync) {
       return dispatch({
-        type: types.SYNCING_SURVEY_DATA_FAILED,
+        type: types.FINISHED_SYNCING_SURVEY_DATA,
         id
       });
     }
 
     dispatch({
-      type: types.FINISHED_SYNCING_SURVEY_DATA,
-      id
+      type: types.SYNCING_SURVEY_DATA,
+      id: id
+    });
+
+    const progressFn = i => {
+      dispatch({
+        type: types.SYNCING_SURVEY_DATA_PROGRESS,
+        progress: i,
+        id: id
+      });
+    };
+
+    osm.replicate(target, { progressFn }, err => {
+      if (err) {
+        return dispatch({
+          type: types.SYNCING_SURVEY_DATA_FAILED,
+          id
+        });
+      }
+
+      dispatch({
+        type: types.FINISHED_SYNCING_SURVEY_DATA,
+        id
+      });
+
+      dispatch({
+        type: types.SET_AREA_OF_INTEREST,
+        areaOfInterest
+      });
     });
   });
 };
@@ -164,7 +202,7 @@ export const clearRemoteSurveys = () => (dispatch, getState) =>
     type: types.CLEAR_REMOTE_SURVEYS
   });
 
-export const fetchRemoteSurvey = (id, url, target) => (dispatch, getState) => {
+export const fetchRemoteSurvey = (id, url) => (dispatch, getState) => {
   dispatch({
     id,
     type: types.FETCHING_REMOTE_SURVEY
@@ -191,8 +229,6 @@ export const fetchRemoteSurvey = (id, url, target) => (dispatch, getState) => {
         type: types.RECEIVED_REMOTE_SURVEY,
         survey
       });
-
-      syncSurveyData(id, target, dispatch);
     })
     .catch(error =>
       dispatch({

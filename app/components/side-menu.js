@@ -7,7 +7,7 @@ import {
   Button
 } from "react-native";
 import Interactable from "react-native-interactable";
-import { NavigationActions } from "react-navigation";
+import { Link } from "react-router-native";
 
 import { Text } from "./index";
 import websocket from "websocket-stream";
@@ -41,20 +41,43 @@ const styles = StyleSheet.create({
 });
 
 class SideMenu extends Component {
+  componentWillMount() {
+    this.setState({
+      menuOpen: false
+    });
+  }
+
   open = () => {
     this._menu.setVelocity({ x: -2000 });
+    this.setState({
+      menuOpen: true
+    });
   };
 
   close = () => {
     this._menu.setVelocity({ x: 3000 });
+    this.setState({
+      menuOpen: false
+    });
   };
 
   render() {
-    const { dispatch, navigate } = this.props.navigation;
     const onSync = this.props.onSync;
 
     return (
       <View style={styles.sideMenuContainer} pointerEvents="box-none">
+        {this.state.menuOpen &&
+          <TouchableOpacity
+            style={[
+              styles.sideMenuContainer,
+              { backgroundColor: "rgba(0,0,0,.8)", zIndex: 1004 }
+            ]}
+            activeOpacity={0.8}
+            onPress={e => {
+              this.close();
+            }}
+          />}
+
         <Interactable.View
           ref={menu => {
             this._menu = menu;
@@ -63,61 +86,30 @@ class SideMenu extends Component {
           snapPoints={[{ x: Screen.width }, { x: RemainingWidth }]}
           boundaries={{ right: 3000 }}
           initialPosition={{ x: Screen.width }}
+          style={{ zIndex: 1005 }}
         >
-
           <View style={styles.sideMenu}>
             <Text style={[baseStyles.title, baseStyles.titleMenu]}>Menu</Text>
 
-            <TouchableOpacity
-              style={[baseStyles.navLink]}
-              onPress={() => {
-                const action = NavigationActions.navigate({
-                  routeName: "AddProfile"
-                });
-
-                navigate("AddProfile");
-              }}
-            >
+            <Link to="/account/profile" style={baseStyles.navLink}>
               <Text>Profile</Text>
-            </TouchableOpacity>
+            </Link>
 
-            <TouchableOpacity
-              style={[baseStyles.navLink]}
-              onPress={() => {
-                navigate("MyObservations");
-              }}
-            >
+            <Link to="/account/observations" style={[baseStyles.navLink]}>
               <Text>My Observations</Text>
-            </TouchableOpacity>
+            </Link>
 
-            <TouchableOpacity
-              style={[baseStyles.navLink]}
-              onPress={() => {
-                navigate("Surveys");
-              }}
-            >
+            <Link to="/account/surveys" style={[baseStyles.navLink]}>
               <Text>Surveys</Text>
-            </TouchableOpacity>
+            </Link>
 
-            <TouchableOpacity
-              style={[baseStyles.navLink]}
-              onPress={() => {
-                navigate("Settings");
-              }}
-            >
+            <Link to="/account/settings" style={[baseStyles.navLink]}>
               <Text>Settings</Text>
-            </TouchableOpacity>
+            </Link>
 
-            <TouchableOpacity
-              style={[baseStyles.navLink]}
-              onPress={() => {
-                navigate("About");
-              }}
-            >
+            <Link to="/account/about" style={[baseStyles.navLink]}>
               <Text>About</Text>
-            </TouchableOpacity>
-
-            <Button title="Close" onPress={this.close} />
+            </Link>
           </View>
         </Interactable.View>
       </View>

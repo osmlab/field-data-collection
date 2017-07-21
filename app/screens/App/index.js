@@ -1,53 +1,64 @@
 import React, { Component } from "react";
-import { BackHandler } from "react-native";
-import { addNavigationHelpers, NavigationActions } from "react-navigation";
-import { connect } from "react-redux";
+import { Platform, UIManager } from "react-native";
+import {
+  AndroidBackButton,
+  NativeRouter,
+  Switch,
+  Route
+} from "react-router-native";
 
-import Navigator from "./navigator";
+// Observations
+import ObservationMap from "../Observations/map.js";
+import ObservationList from "../Observations/list.js";
+import AddObservation from "../Observations/create";
+import FieldsetForm from "../Observations/fieldset-form";
+import Categories from "../Observations/categories";
 
-const mapStateToProps = state => {
-  return {
-    navigationState: state.app
-  };
-};
+// Account
+import MyObservations from "../Account/observations";
+import About from "../Account/about";
+import AddSurvey from "../Account/add-survey";
+import Profile from "../Account/profile";
+import Settings from "../Account/settings";
+import Surveys from "../Account/surveys";
 
-class App extends Component {
-  componentWillMount() {
-    BackHandler.addEventListener("hardwareBackPress", this.onBackPress);
-  }
+if (Platform.OS === "android") {
+  UIManager.setLayoutAnimationEnabledExperimental(true);
+}
 
-  componentWillUmount() {
-    BackHandler.removeEventListener("hardwareBackPress", this.onBackPress);
-  }
-
-  shouldCloseApp(nav) {
-    return nav.index === 0;
-  }
-
-  onBackPress = () => {
-    const { dispatch, navigationState } = this.props;
-
-    if (this.shouldCloseApp(navigationState)) {
-      return false;
-    }
-
-    dispatch(NavigationActions.back());
-
-    return true;
-  };
-
+export default class App extends Component {
   render() {
-    const { dispatch, navigationState } = this.props;
-
     return (
-      <Navigator
-        navigation={addNavigationHelpers({
-          dispatch,
-          state: navigationState
-        })}
-      />
+      <NativeRouter>
+        <AndroidBackButton>
+          <Switch>
+            <Route path="/" exact component={ObservationMap} />
+            <Route path="/list" component={ObservationList} />
+            <Route
+              exact
+              path="/add-observation/categories"
+              component={Categories}
+            />
+            <Route
+              exact
+              path="/add-observation/:surveyId/:type"
+              component={AddObservation}
+            />
+            <Route path="/add-observation/details" component={AddObservation} />
+            <Route
+              path="/add-observation/:surveyId/:type/fields"
+              component={FieldsetForm}
+            />
+            <Route path="/add-observation/location" component={FieldsetForm} />
+            <Route path="/account/observations" component={MyObservations} />
+            <Route path="/account/about" component={About} />
+            <Route path="/account/add-survey" component={AddSurvey} />
+            <Route path="/account/profile" component={Profile} />
+            <Route path="/account/settings" component={Settings} />
+            <Route path="/account/surveys" component={Surveys} />
+          </Switch>
+        </AndroidBackButton>
+      </NativeRouter>
     );
   }
 }
-
-export default connect(mapStateToProps)(App);

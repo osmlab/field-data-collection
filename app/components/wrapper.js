@@ -36,7 +36,6 @@ class Wrapper extends Component {
           ref={menu => {
             this._menu = menu;
           }}
-          navigation={this.props.navigation}
         />
 
         <ScrollView

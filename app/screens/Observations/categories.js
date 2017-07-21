@@ -1,13 +1,15 @@
 import React, { Component } from "react";
-import { StyleSheet, View, Button, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity } from "react-native";
+import { connect } from "react-redux";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
-import { Text, Wrapper } from "../../components";
+import { Text, Wrapper, CategoryList } from "../../components";
+import { selectAllCategories } from "../../selectors";
 import { baseStyles } from "../../styles";
 
-class AboutScreen extends Component {
+class CategoriesScreen extends Component {
   render() {
-    const { history } = this.props;
+    const { categories, history } = this.props;
 
     const headerView = (
       <View
@@ -23,18 +25,26 @@ class AboutScreen extends Component {
             style={[[baseStyles.headerBackIcon]]}
           />
         </TouchableOpacity>
-        <Text style={[baseStyles.h3, baseStyles.headerTitle]}>About</Text>
+        <Text style={[baseStyles.h3, baseStyles.headerTitle]}>
+          Add Observation
+        </Text>
       </View>
     );
 
     return (
       <Wrapper headerView={headerView}>
         <View style={[baseStyles.wrapperContent]}>
-          <Text>This is the about page</Text>
+          <Text style={baseStyles.title}>What do you want to add?</Text>
+
+          <CategoryList categories={categories} />
         </View>
       </Wrapper>
     );
   }
 }
 
-export default AboutScreen;
+const mapStateToProps = state => ({
+  categories: selectAllCategories(state)
+});
+
+export default connect(mapStateToProps)(CategoriesScreen);

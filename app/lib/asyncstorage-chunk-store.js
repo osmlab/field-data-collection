@@ -70,10 +70,32 @@ Storage.prototype.get = function(index, opts, cb) {
   });
 };
 
-Storage.prototype.close = Storage.prototype.destroy = function(cb) {
+Storage.prototype.close = function(cb) {
   if (this.closed) return nextTick(cb, new Error("Storage is closed"));
+
   this.closed = true;
-  this._store.clear(cb);
+  return process.nextTick(cb);
+};
+
+Storage.prototype.destroy = function(cb) {
+  if (this.closed) return nextTick(cb, new Error("Storage is closed"));
+
+  this.close(() => {
+    var prefix = this._prefix;
+    var prefixLen = this._prefix.length;
+
+    AsyncStorage.getAllKeys(function(err, keys) {
+      if (err) return cb(err);
+
+      keys = keys.filter(function(key) {
+        return key.slice(0, prefixLen) === prefix;
+      });
+
+      if (!keys.length) return cb();
+
+      AsyncStorage.multiRemove(keys, cb);
+    });
+  });
 };
 
 function nextTick(cb, err, val) {

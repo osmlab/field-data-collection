@@ -7,7 +7,10 @@ const OsmSync = require("./osm-sync");
 const generatePlaceholderOsmId = require("./generate-id");
 const convert = require("./convert-geojson-osmp2p");
 
-function osmp2p(observationDb, osmOrgDb) {
+function osmp2p(createOsmDb) {
+  var observationDb = createOsmDb("obs");
+  var osmOrgDb = createOsmDb("osm");
+
   var netSync = OsmSync(observationDb, osmOrgDb);
 
   observationDb.on("error", console.log);
@@ -24,6 +27,7 @@ function osmp2p(observationDb, osmOrgDb) {
     query,
     queryGeoJSONStream,
     replicate,
+    findReplicationTargets,
     sync,
     listAnnotations
   };
@@ -108,12 +112,49 @@ function osmp2p(observationDb, osmOrgDb) {
     return pump(osmStream, geoJSONStream);
   }
 
+  function clearOsmOrgDb(cb) {
+    osmOrgDb.clear(function() {
+      osmOrgDb = createOsmDb("osm");
+      netSync = OsmSync(observationDb, osmOrgDb);
+      cb();
+    });
+  }
+
+  function closeAndReopenOsmOrgDb(cb) {
+    osmOrgDb.db.close(onDone);
+    osmOrgDb.log.db.close(onDone);
+    osmOrgDb.store.close(); // TODO: investigate fd-chunk-store (or deferred-chunk-store) not calling its cb on 'close'
+
+    var pending = 2;
+    function onDone(err) {
+      if (err) {
+        pending = Infinity;
+        cb(err);
+      } else if (--pending === 0) {
+        cb();
+      }
+    }
+  }
+
   function replicate(addr, opts, cb) {
-    netSync.replicate(addr, opts, cb);
+    if (!cb && typeof opts === "function") {
+      cb = opts;
+      opts = {};
+    }
+
+    clearOsmOrgDb(function() {
+      netSync.replicate(addr, opts, function() {
+        closeAndReopenOsmOrgDb(function() {
+          osmOrgDb = createOsmDb("osm");
+          netSync = OsmSync(observationDb, osmOrgDb);
+          cb();
+        });
+      });
+    });
   }
 
   function findReplicationTargets(opts, cb) {
-    netSync.findPeers(opts, cb);
+    OsmSync.findPeers(opts, cb);
   }
 
   function sync(transportStream, opts, callback) {
