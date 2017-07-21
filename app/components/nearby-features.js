@@ -1,14 +1,19 @@
 import React, { Component } from "react";
-import { View, TouchableHighlight, TouchableOpacity } from "react-native";
+import {
+  View,
+  TouchableHighlight,
+  TouchableOpacity,
+  ScrollView,
+  Dimensions
+} from "react-native";
 
 import Text from "./text";
 import { colors } from "../styles";
 import { baseStyles } from "../styles";
 
-class MapList extends Component {
-  setNativeProps(nativeProps) {
-    this._root.setNativeProps(nativeProps);
-  }
+const Screen = Dimensions.get("window");
+
+class NearbyFeatures extends Component {
   render() {
     return (
       <View style={[baseStyles.nearbyPoints]}>
@@ -29,7 +34,8 @@ class MapList extends Component {
             </TouchableOpacity>
           </View>
         </View>
-        {/*<View>
+
+        <ScrollView horizontal={true} width={Screen.width}>
           <View style={[baseStyles.cardStyle]}>
             <Text style={[baseStyles.h3]}>Ballard Elementary School</Text>
             <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
@@ -49,10 +55,30 @@ class MapList extends Component {
               <Text style={[baseStyles.textAlert]}>(2 incomplete)</Text>
             </View>
           </View>
-        </View>*/}
+
+          <View style={[baseStyles.cardStyle]}>
+            <Text style={[baseStyles.h3]}>Ballard Elementary School</Text>
+            <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+              <Text>30cm away</Text>
+              <View>
+                <Text>Updated: </Text>
+                <Text>4/30/17 4:30</Text>
+              </View>
+            </View>
+            <View
+              style={[
+                baseStyles.observationBlock,
+                { flexDirection: "row", flexWrap: "wrap" }
+              ]}
+            >
+              <Text style={[baseStyles.metadataText]}>2 Observations</Text>
+              <Text style={[baseStyles.textAlert]}>(2 incomplete)</Text>
+            </View>
+          </View>
+        </ScrollView>
       </View>
     );
   }
 }
 
-export default MapList;
+export default NearbyFeatures;

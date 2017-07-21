@@ -18,7 +18,8 @@ import {
   Header,
   SideMenu,
   Text,
-  Geolocate
+  Geolocate,
+  NearbyFeatures
 } from "../../components";
 import { baseStyles, colors } from "../../styles";
 
@@ -217,6 +218,7 @@ class ObservationMapScreen extends Component {
             }}
           />
         </Link>
+        <NearbyFeatures />
       </View>
     );
   }
