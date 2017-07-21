@@ -60,6 +60,7 @@ const styles = StyleSheet.create({
 class ObservationMapScreen extends Component {
   componentWillMount() {
     this.setState({
+      nearbyFeaturesViewOpen: false,
       showMap: true,
       center: {
         latitude: 47.6685,
@@ -77,6 +78,10 @@ class ObservationMapScreen extends Component {
       showMap: false
     });
   }
+
+  openNearbyFeaturesView = () => {};
+
+  closeNearbyFeaturesView = () => {};
 
   onMenuPress = () => {
     this._menu.open();
@@ -97,6 +102,10 @@ class ObservationMapScreen extends Component {
       console.log("bounds from screenCoords", bounds);
       // TODO: trigger action fetching points within bounds
     });
+  };
+
+  onAnnotationPress = e => {
+    console.log("onAnnotationPress", console.log(e));
   };
 
   prepareAnnotations = () => {
@@ -153,7 +162,32 @@ class ObservationMapScreen extends Component {
             showsUserLocation={false}
             styleURL="https://openmaptiles.github.io/osm-bright-gl-style/style-cdn.json"
             userTrackingMode={this.state.userTrackingMode}
-          />}
+          >
+            <Annotation
+              id="example1"
+              radius={8}
+              coordinates={{ latitude: 47.6686, longitude: -122.3841 }}
+              onPress={this.onAnnotationPress}
+            />
+            <Annotation
+              id="example2"
+              radius={8}
+              coordinates={{ latitude: 47.66855, longitude: -122.3838 }}
+              onPress={this.onAnnotationPress}
+            />
+            <Annotation
+              id="example3"
+              radius={8}
+              coordinates={{ latitude: 47.66869, longitude: -122.3842 }}
+              onPress={this.onAnnotationPress}
+            />
+            <Annotation
+              id="example4"
+              radius={8}
+              coordinates={{ latitude: 47.6687, longitude: -122.3843 }}
+              onPress={this.onAnnotationPress}
+            />
+          </MapView>}
 
         <TouchableOpacity
           style={[styles.buttonLegend]}

@@ -84,7 +84,8 @@ class SideMenu extends Component {
           }}
           horizontalOnly={true}
           snapPoints={[{ x: Screen.width }, { x: RemainingWidth }]}
-          boundaries={{ right: 3000 }}
+          frictionAreas={[{ damping: 0.85 }]}
+          boundaries={{ right: 3000, left: 100, bounce: 0.0 }}
           initialPosition={{ x: Screen.width }}
           style={{ zIndex: 1005 }}
         >

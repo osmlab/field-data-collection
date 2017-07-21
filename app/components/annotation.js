@@ -1,6 +1,7 @@
 import React from "react";
 import { TouchableOpacity } from "react-native";
 import { Annotation as MapboxAnnotation } from "react-native-mapbox-gl";
+import Svg, { G, Path, Circle } from "react-native-svg";
 
 /**
 * wrapper around react-native-mapbox-gl Annotation component
@@ -15,6 +16,9 @@ import { Annotation as MapboxAnnotation } from "react-native-mapbox-gl";
 * })
 **/
 export default function Annotation(props) {
+  const { radius } = props;
+  const diameter = radius * 2;
+
   return (
     <MapboxAnnotation
       id={props.id}
@@ -25,8 +29,13 @@ export default function Annotation(props) {
         position: "absolute"
       }}
     >
-      <TouchableOpacity onPress={props.onPress}>
-        {props.children}
+      <TouchableOpacity
+        style={{ width: diameter, height: diameter }}
+        onPress={props.onPress}
+      >
+        <Svg width={diameter} height={diameter}>
+          <Circle cx={radius} cy={radius} r={radius} fill="#575456" />
+        </Svg>
       </TouchableOpacity>
     </MapboxAnnotation>
   );
