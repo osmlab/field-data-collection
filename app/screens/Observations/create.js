@@ -24,10 +24,7 @@ class AddObservationScreen extends Component {
 
     const observationKeys = Object.keys(observationTags);
     const typeKeys = Object.keys(tags);
-
     const shared = observationKeys.filter(x => typeKeys.includes(x));
-
-    console.warn("shared:", shared);
 
     if (
       shared.length === 0 ||
