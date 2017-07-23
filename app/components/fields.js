@@ -13,15 +13,18 @@ class Field extends Component {
 
 export class CheckField extends Field {
   render() {
-    const { label } = this.props;
+    const { field: { key, label }, observation: { tags } } = this.props;
+    const value = tags[key];
 
     return (
       <View ref={x => (this._root = x)} style={[baseStyles.field]}>
         <View>
           <Text style={[baseStyles.h5]}>
-            {label.toUpperCase()}
+            {label.toUpperCase()} ({key})
           </Text>
-          <Text style={[baseStyles.fieldValue]}>(on/off)</Text>
+          <Text style={[baseStyles.fieldValue]}>
+            {value}
+          </Text>
         </View>
         <View>
           <Icon name="keyboard-arrow-right" style={[[baseStyles.formArrow]]} />
@@ -33,15 +36,21 @@ export class CheckField extends Field {
 
 export class ComboField extends Field {
   render() {
-    const { label } = this.props;
+    const {
+      field: { default: placeholder, key, label },
+      observation: { tags }
+    } = this.props;
+    const value = tags[key];
 
     return (
       <View ref={x => (this._root = x)} style={[baseStyles.field]}>
         <View>
           <Text style={[baseStyles.h5]}>
-            {label.toUpperCase()}
+            {label.toUpperCase()} ({key})
           </Text>
-          <Text style={[baseStyles.fieldValue]}>(options)</Text>
+          <Text style={[baseStyles.fieldValue]}>
+            {value || placeholder}
+          </Text>
         </View>
         <View>
           <Icon name="keyboard-arrow-right" style={[[baseStyles.formArrow]]} />
@@ -53,16 +62,21 @@ export class ComboField extends Field {
 
 export class NumberField extends Field {
   render() {
-    const { label, placeholder } = this.props;
+    const {
+      field: { key, label, placeholder },
+      observation: { tags }
+    } = this.props;
+    const value = tags[key];
 
     return (
       <View ref={x => (this._root = x)} style={[baseStyles.field]}>
         <View>
           <Text style={[baseStyles.h5]}>
-            {label.toUpperCase()}
+            {label.toUpperCase()} ({key})
           </Text>
           <Text style={[baseStyles.fieldValue]}>
-            {placeholder}
+            {/* TODO grey out placeholder if used */}
+            {value || placeholder}
           </Text>
         </View>
         <View>
@@ -75,15 +89,22 @@ export class NumberField extends Field {
 
 export class TextField extends Field {
   render() {
-    const { label } = this.props;
+    const {
+      field: { key, label, placeholder },
+      observation: { tags }
+    } = this.props;
+    const value = tags[key];
 
     return (
       <View ref={x => (this._root = x)} style={[baseStyles.field]}>
         <View>
           <Text style={[baseStyles.h5]}>
-            {label.toUpperCase()}
+            {label.toUpperCase()} ({key})
           </Text>
-          <Text style={[baseStyles.fieldValue]}>(text)</Text>
+          <Text style={[baseStyles.fieldValue]}>
+            {/* TODO grey out placeholder if used */}
+            {value || placeholder}
+          </Text>
         </View>
         <View>
           <Icon name="chevron_right" style={baseStyles.fieldArrow} />

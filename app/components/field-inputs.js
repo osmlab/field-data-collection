@@ -5,30 +5,29 @@ import { Text } from ".";
 import { baseStyles } from "../styles";
 
 class Field extends Component {
+  onValueChange = value => {
+    const { field: { key }, updateObservation } = this.props;
+
+    updateObservation({
+      [key]: value
+    });
+  };
+
   setNativeProps(nativeProps) {
     this._root.setNativeProps(nativeProps);
   }
 }
 
 export class CheckField extends Field {
-  state = {
-    value: false
-  };
-
-  onValueChange = value =>
-    this.setState({
-      value
-    });
-
   render() {
-    const { label } = this.props;
-    const { value } = this.state;
+    const { field: { key, label }, observation: { tags } } = this.props;
+    const value = tags[key] != null && tags[key] !== "no";
 
     return (
       <View ref={x => (this._root = x)} style={[baseStyles.field]}>
         <View>
           <Text style={[baseStyles.fieldLabel]}>
-            {label}
+            {label} ({key})
           </Text>
           <Switch onValueChange={this.onValueChange} value={value} />
         </View>
@@ -38,12 +37,8 @@ export class CheckField extends Field {
 }
 
 export class PickerField extends Field {
-  state = {
-    value: null
-  };
-
   getPickerItems = () => {
-    const { strings: { options } } = this.props;
+    const { field: { strings: { options } } } = this.props;
 
     if (Array.isArray(options)) {
       return options.map((opt, idx) =>
@@ -56,17 +51,15 @@ export class PickerField extends Field {
     );
   };
 
-  onValueChange = value => this.setState({ value });
-
   render() {
-    const { label } = this.props;
-    const { value } = this.state;
+    const { field: { key, label }, observation: { tags } } = this.props;
+    const value = tags[key];
 
     return (
       <View ref={x => (this._root = x)} style={[baseStyles.field]}>
         <View style={{ flex: 1 }}>
           <Text style={[baseStyles.fieldLabel]}>
-            {label}
+            {label} ({key})
           </Text>
           <Picker
             onValueChange={this.onValueChange}
@@ -87,7 +80,7 @@ export class PickerField extends Field {
 
 export class ComboField extends Field {
   render() {
-    const { strings } = this.props;
+    const { field: { strings } } = this.props;
 
     if (strings != null && strings.options != null) {
       return <PickerField {...this.props} />;
@@ -98,24 +91,19 @@ export class ComboField extends Field {
 }
 
 export class NumberField extends Field {
-  state = {
-    value: null
-  };
-
-  onValueChange = value =>
-    this.setState({
-      value
-    });
-
   render() {
-    const { focusNextField, label, placeholder } = this.props;
-    const { value } = this.state;
+    const {
+      field: { key, label, placeholder },
+      focusNextField,
+      observation: { tags }
+    } = this.props;
+    const value = tags[key];
 
     return (
       <View ref={x => (this._root = x)} style={baseStyles.field}>
         <View style={{ flex: 1 }}>
           <Text style={[baseStyles.fieldLabel]}>
-            {label}
+            {label} ({key})
           </Text>
           <TextInput
             onChangeText={this.onValueChange}
@@ -133,24 +121,19 @@ export class NumberField extends Field {
 }
 
 export class TextField extends Field {
-  state = {
-    value: null
-  };
-
-  onValueChange = value =>
-    this.setState({
-      value
-    });
-
   render() {
-    const { focusNextField, label, placeholder } = this.props;
-    const { value } = this.state;
+    const {
+      field: { key, label, placeholder },
+      focusNextField,
+      observation: { tags }
+    } = this.props;
+    const value = tags[key];
 
     return (
       <View ref={x => (this._root = x)} style={[baseStyles.field]}>
         <View style={{ flex: 1 }}>
-          <Text style={baseStyles.h5}>
-            {label}
+          <Text style={baseStyles.fieldLabel}>
+            {label} ({key})
           </Text>
           <TextInput
             autoCapitalize="none"

@@ -4,21 +4,49 @@ import { connect } from "react-redux";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Link } from "react-router-native";
 
+import { initializeObservation } from "../../actions";
 import { Text, Wrapper, Map } from "../../components";
 import { getFieldType } from "../../components/fields";
-import { selectFeatureType, selectIcon } from "../../selectors";
+import {
+  selectActiveObservation,
+  selectFeatureType,
+  selectIcon
+} from "../../selectors";
 import { baseStyles } from "../../styles";
 
 class AddObservationScreen extends Component {
+  componentDidMount() {
+    const {
+      initializeObservation,
+      observation: { tags: observationTags },
+      type: { tags }
+    } = this.props;
+
+    const observationKeys = Object.keys(observationTags);
+    const typeKeys = Object.keys(tags);
+
+    const shared = observationKeys.filter(x => typeKeys.includes(x));
+
+    console.warn("shared:", shared);
+
+    if (
+      shared.length === 0 ||
+      !shared.some(k => [observationKeys[k], "*"].includes(typeKeys[k]))
+    ) {
+      // initialize a new observation if the type has changed (no shared keys, or if keys are shared, no matches (including wildcards))
+      initializeObservation(tags);
+    }
+  }
+
   renderField(field, index) {
-    const { survey, type: { id } } = this.props;
+    const { observation, survey, type: { id } } = this.props;
 
     try {
       const Field = getFieldType(field.type);
 
       return (
         <Link key={index} to={`/add-observation/${survey}/${id}/fields`}>
-          <Field {...field} />
+          <Field field={field} observation={observation} />
         </Link>
       );
     } catch (err) {
@@ -29,7 +57,13 @@ class AddObservationScreen extends Component {
   }
 
   render() {
-    const { icon, history, surveyId, type: { fields, name } } = this.props;
+    const {
+      icon,
+      history,
+      observation: { tags },
+      surveyId,
+      type: { fields, name }
+    } = this.props;
 
     const headerView = (
       <View
@@ -97,6 +131,13 @@ class AddObservationScreen extends Component {
             <View style={baseStyles.fieldset}>
               {fields.map(this.renderField, this)}
             </View>
+
+            <Text>
+              {Object.keys(tags).reduce(
+                (str, k) => (str += `\n${k}=${tags[k]}`),
+                ""
+              )}
+            </Text>
           </View>
         </View>
       </Wrapper>
@@ -111,9 +152,12 @@ const mapStateToProps = (state, ownProps) => {
 
   return {
     icon: selectIcon(featureType.icon, state),
+    observation: selectActiveObservation(state),
     surveyId,
     type: featureType
   };
 };
 
-export default connect(mapStateToProps)(AddObservationScreen);
+export default connect(mapStateToProps, { initializeObservation })(
+  AddObservationScreen
+);
