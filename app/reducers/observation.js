@@ -11,6 +11,9 @@ export default (state = initialState, { tags, type }) => {
         tags
       };
 
+    case types.OBSERVATION_SAVED:
+      return initialState;
+
     case types.UPDATE_OBSERVATION:
       return {
         ...state,

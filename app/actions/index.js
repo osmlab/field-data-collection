@@ -9,6 +9,7 @@ import osmp2p from "../lib/osm-p2p";
 import createOsmp2p from "../lib/create-osm-p2p";
 import { findPeers } from "../lib/osm-sync";
 import { timeout } from "../lib";
+import { selectActiveObservation } from "../selectors";
 
 const Fetch = RNFetchBlob.polyfill.Fetch;
 // replace built-in fetch
@@ -38,6 +39,7 @@ const types = {
   INITIALIZE_OBSERVATION: "INITIALIZE_OBSERVATION",
   RECEIVED_REMOTE_SURVEY_LIST: "RECEIVED_REMOTE_SURVEY_LIST",
   RECEIVED_REMOTE_SURVEY: "RECEIVED_REMOTE_SURVEY",
+  SAVING_OBSERVATION: "SAVING_OBSERVATION",
   SYNCING_SURVEY_DATA: "SYNCING_SURVEY_DATA",
   SYNCING_SURVEY_DATA_PROGRESS: "SYNCING_SURVEY_DATA_PROGRESS",
   SYNCING_SURVEY_DATA_FAILED: "SYNCING_SURVEY_DATA_FAILED",
@@ -290,3 +292,34 @@ export const updateObservation = tags => dispatch =>
     type: types.UPDATE_OBSERVATION,
     tags
   });
+
+export const saveObservation = () => (dispatch, getState) => {
+  const { observation } = selectActiveObservation(getState());
+
+  dispatch({
+    type: types.SAVING_OBSERVATION,
+    observation
+  });
+
+  // TODO this is wrong
+  // observation currently looks like (still needs a point / associated feature):
+  // {
+  //   tags: {
+  //     highway: "residential",
+  //     name: "My Street",
+  //     surface: "paved"
+  //   }
+  // }
+  return osm.createObservation(observation, error => {
+    if (error) {
+      return dispatch({
+        type: types.SAVING_OBSERVATION_FAILED,
+        error
+      });
+    }
+
+    return dispatch({
+      type: types.OBSERVATION_SAVED
+    });
+  });
+};

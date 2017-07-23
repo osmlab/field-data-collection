@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Link } from "react-router-native";
 
-import { initializeObservation } from "../../actions";
+import { initializeObservation, saveObservation } from "../../actions";
 import { Text, Wrapper, Map } from "../../components";
 import { getFieldType } from "../../components/fields";
 import {
@@ -58,6 +58,7 @@ class AddObservationScreen extends Component {
       icon,
       history,
       observation: { tags },
+      saveObservation,
       surveyId,
       type: { fields, name }
     } = this.props;
@@ -129,6 +130,10 @@ class AddObservationScreen extends Component {
               {fields.map(this.renderField, this)}
             </View>
 
+            <TouchableOpacity onPress={saveObservation}>
+              <Text>Save</Text>
+            </TouchableOpacity>
+
             <Text>
               {Object.keys(tags).reduce(
                 (str, k) => (str += `\n${k}=${tags[k]}`),
@@ -155,6 +160,7 @@ const mapStateToProps = (state, ownProps) => {
   };
 };
 
-export default connect(mapStateToProps, { initializeObservation })(
-  AddObservationScreen
-);
+export default connect(mapStateToProps, {
+  initializeObservation,
+  saveObservation
+})(AddObservationScreen);
