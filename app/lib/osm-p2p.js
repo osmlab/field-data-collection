@@ -61,13 +61,12 @@ function osmp2p(createOsmDb) {
 
   // TODO use tags.osm-p2p-id?
   // TODO handle this being an OSM.org ID _or_ a placeholder ID
-  function createObservation(nodeId, geojson, opts, cb) {
+  function createObservation(nodeId, doc, opts, cb) {
     if (!cb && typeof opts === "function") {
       cb = opts;
       opts = {};
     }
 
-    var doc = convert.toOSM(geojson, "observation");
     observationDb.create(doc, opts, onObservationCreated);
 
     function onObservationCreated(err, docId) {
