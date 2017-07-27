@@ -157,7 +157,6 @@ export const syncSurveyData = survey => (dispatch, getState) => {
             });
           }
 
-          console.log("osm.replicate", err);
           dispatch({
             type: types.FINISHED_SYNCING_SURVEY_DATA,
             id
