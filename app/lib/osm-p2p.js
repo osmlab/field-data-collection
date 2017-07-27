@@ -169,6 +169,26 @@ function osmp2p(createOsmDb) {
     }
   }
 
+  // Reach into an osm-p2p-db and reset all of its indexes, causing a full
+  // re-index of its data.
+  function resetIndexes (osm, cb) {
+    osm.kdb.dex.db.put('seq', 0, done)
+    osm.refs.dex.db.put('seq', 0, done)
+    osm.changeset.dex.db.put('seq', 0, done)
+
+    var pending = 3
+    function done (err) {
+      if (err) pending++ && cb(err)
+      if (!--pending) cb()
+    }
+  }
+
+  function pauseIndexes (osm) {
+    osm.kdb.dex.pause()
+    osm.refs.dex.pause()
+    osm.changeset.dex.pause()
+  }
+
   function replicate(addr, opts, cb) {
     if (!cb && typeof opts === "function") {
       cb = opts;
@@ -177,13 +197,14 @@ function osmp2p(createOsmDb) {
     console.log("replicate");
     console.log("0", osmOrgDb.store._id);
 
+    pauseIndexes(osmOrgDb)
     clearOsmOrgDb(function() {
       console.log("3", osmOrgDb.store._id);
       netSync.replicate(addr, opts, function() {
-        osmOrgDb._restartIndexes()
-        console.log("4", osmOrgDb.store._id);
-        console.log("netSync.replicate finished");
-        cb()
+        resetIndexes(osmOrgDb, function () {
+          osmOrgDb._restartIndexes()
+          cb()
+        });
       });
     });
   }
