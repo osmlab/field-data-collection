@@ -206,7 +206,8 @@ const getPeerInfo = (dispatch, callback) => {
     let targetPort = COORDINATOR_FALLBACK_PORT;
 
     if (peers.length > 0) {
-      ({ targetIP, targetPort } = peers[0]);
+      targetIP = peers[0].address;
+      targetPort = peers[0].port;
     }
 
     return callback(null, targetIP, targetPort);
