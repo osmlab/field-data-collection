@@ -138,22 +138,22 @@ function osmp2p(createOsmDb) {
 
   // Reach into an osm-p2p-db and reset all of its indexes, causing a full
   // re-index of its data.
-  function resetIndexes (osm, cb) {
-    osm.kdb.dex.db.put('seq', 0, done)
-    osm.refs.dex.db.put('seq', 0, done)
-    osm.changeset.dex.db.put('seq', 0, done)
+  function resetIndexes(osm, cb) {
+    osm.kdb.dex.db.put("seq", 0, done);
+    osm.refs.dex.db.put("seq", 0, done);
+    osm.changeset.dex.db.put("seq", 0, done);
 
-    var pending = 3
-    function done (err) {
-      if (err) pending++ && cb(err)
-      if (!--pending) cb()
+    var pending = 3;
+    function done(err) {
+      if (err) pending++ && cb(err);
+      if (!--pending) cb();
     }
   }
 
-  function pauseIndexes (osm) {
-    osm.kdb.dex.pause()
-    osm.refs.dex.pause()
-    osm.changeset.dex.pause()
+  function pauseIndexes(osm) {
+    osm.kdb.dex.pause();
+    osm.refs.dex.pause();
+    osm.changeset.dex.pause();
   }
 
   function replicate(addr, opts, cb) {
