@@ -4998,9 +4998,9 @@ osm-p2p-db-importer@^1.1.2:
     randombytes "^2.0.3"
     through2 "^2.0.3"
 
-osm-p2p-db@^4.0.0:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/osm-p2p-db/-/osm-p2p-db-4.1.0.tgz#64d350a3ef755fa8ed802fcd9e5a37ab42bd5c35"
+osm-p2p-db@^4.2.2:
+  version "4.2.2"
+  resolved "https://registry.yarnpkg.com/osm-p2p-db/-/osm-p2p-db-4.2.2.tgz#db5b23ee8f3f0963154db15e09dc448942003f1e"
   dependencies:
     after-all "^2.0.2"
     async "^2.3.0"
