@@ -115,9 +115,7 @@ function osmp2p(createOsmDb) {
   function clearOsmOrgDb(cb) {
     console.log("1", osmOrgDb.store._id);
     osmOrgDb.clear(function() {
-      osmOrgDb = createOsmDb("osm");
       console.log("2", osmOrgDb.store._id);
-      netSync = OsmSync(observationDb, osmOrgDb);
       cb();
     });
   }
@@ -182,11 +180,10 @@ function osmp2p(createOsmDb) {
     clearOsmOrgDb(function() {
       console.log("3", osmOrgDb.store._id);
       netSync.replicate(addr, opts, function() {
+        osmOrgDb._restartIndexes()
         console.log("4", osmOrgDb.store._id);
         console.log("netSync.replicate finished");
-        closeAndReopenOsmOrgDb(function() {
-          cb();
-        });
+        cb()
       });
     });
   }
