@@ -162,15 +162,15 @@ function osmp2p(createOsmDb) {
       opts = {};
     }
     console.log("replicate");
-    console.log("0", osmOrgDb.store._id);
 
-    pauseIndexes(osmOrgDb)
-    clearOsmOrgDb(function() {
-      console.log("3", osmOrgDb.store._id);
-      netSync.replicate(addr, opts, function() {
-        resetIndexes(osmOrgDb, function () {
-          osmOrgDb._restartIndexes()
-          cb()
+    pauseIndexes(osmOrgDb);
+    process.nextTick(function() {
+      clearOsmOrgDb(function() {
+        netSync.replicate(addr, opts, function() {
+          resetIndexes(osmOrgDb, function() {
+            osmOrgDb._restartIndexes();
+            cb();
+          });
         });
       });
     });
