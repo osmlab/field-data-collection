@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#8212C6",
     zIndex: 10,
     position: "absolute",
-    bottom: 10,
+    bottom: 95,
     right: 15
   },
   buttonLegend: {
