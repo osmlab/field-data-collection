@@ -113,11 +113,7 @@ function osmp2p(createOsmDb) {
   }
 
   function clearOsmOrgDb(cb) {
-    console.log("1", osmOrgDb.store._id);
-    osmOrgDb.clear(function() {
-      console.log("2", osmOrgDb.store._id);
-      cb();
-    });
+    osmOrgDb.clear(cb);
   }
 
   function clearAllData(cb) {
@@ -136,35 +132,6 @@ function osmp2p(createOsmDb) {
 
       if (pending === 2) {
         return cb();
-      }
-    }
-  }
-
-  function closeAndReopenOsmOrgDb(cb) {
-    osmOrgDb.db.close(onDone);
-    osmOrgDb.log.db.close(onDone);
-    osmOrgDb.store.close(onDone); // TODO: investigate fd-chunk-store (or deferred-chunk-store) not calling its cb on 'close'
-
-    var pending = 3;
-    function onDone(err) {
-      if (err) {
-        pending = Infinity;
-        cb(err);
-      } else if (--pending === 0) {
-        console.log(
-          "closed and reopened: before new osmorgdb",
-          osmOrgDb.store._id
-        );
-        osmOrgDb = createOsmDb("osm");
-        console.log(
-          "closed and reopened: after new osmorgdb",
-          osmOrgDb.store._id
-        );
-        netSync = OsmSync(observationDb, osmOrgDb);
-        osmOrgDb.ready(function() {
-          console.log("indexing complete");
-          cb();
-        });
       }
     }
   }
