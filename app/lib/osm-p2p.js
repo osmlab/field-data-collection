@@ -24,7 +24,8 @@ function osmp2p(createOsmDb) {
     createObservation,
     putObservation,
     delObservation,
-    query,
+    queryObservations,
+    queryOSM,
     queryGeoJSONStream,
     replicate,
     findReplicationTargets,
@@ -96,8 +97,13 @@ function osmp2p(createOsmDb) {
   }
 
   // TODO: union the query data from both DBs and return
-  function query(q, opts, cb) {
+  function queryObservations(q, opts, cb) {
     return observationDb.query(q, opts, cb);
+  }
+
+  // TODO: union the query data from both DBs and return
+  function queryOSM(q, opts, cb) {
+    return osmOrgDb.query(q, opts, cb);
   }
 
   // TODO: union the query data from both DBs and return

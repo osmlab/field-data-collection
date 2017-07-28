@@ -24,12 +24,13 @@ OsmSync.prototype.replicate = function(target, opts, done) {
   done = done || noop;
 
   var finished = 0;
-  // this.replicateObservationDb(target, onFinish);
-  this.replicateOsmOrgDb(target, done);
+  this.replicateObservationDb(target, onFinish);
+  this.replicateOsmOrgDb(target, onFinish);
 
   opts.progressFn(0);
 
   function onFinish(err) {
+    console.log("onFinish", finished);
     if (err) {
       finished--;
       return done(err);

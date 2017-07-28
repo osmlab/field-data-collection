@@ -16,6 +16,8 @@ import osmp2p from "../../lib/osm-p2p";
 import { Header, SideMenu, Text, Geolocate } from "../../components";
 import { baseStyles, colors } from "../../styles";
 
+import { osm } from "../../actions";
+
 Mapbox.setAccessToken(
   "pk.eyJ1Ijoic2V0aHZpbmNlbnQiLCJhIjoiSXZZXzZnUSJ9.Nr_zKa-4Ztcmc1Ypl0k5nw"
 );
@@ -90,6 +92,10 @@ class ObservationMapScreen extends Component {
     this._map.getBoundsFromScreenCoordinates(rect, bounds => {
       console.log("bounds from screenCoords", bounds);
       // TODO: trigger action fetching points within bounds
+      var q = [[bounds[0], bounds[2]], [bounds[1], bounds[3]]];
+      osm.queryOSM(q, function(err, results) {
+        console.log("osm.query", err, Object.keys(results));
+      });
     });
   };
 
