@@ -181,16 +181,6 @@ export const syncSurveyData = survey => (dispatch, getState) => {
   });
 };
 
-export const destroyAllData = () => dispatch => {
-  console.log("destroy all data");
-  dispatch({ type: types.CLEAR_LOCAL_SURVEYS });
-  dispatch({ type: types.CLEAR_REMOTE_SURVEYS });
-  dispatch({ type: types.CLEAR_AREA_OF_INTEREST });
-  osm.clearAllData(function(err) {
-    console.log("finished destroying all data");
-  });
-};
-
 const getPeerInfo = (dispatch, callback) => {
   dispatch({
     type: types.DISCOVERING_PEERS
