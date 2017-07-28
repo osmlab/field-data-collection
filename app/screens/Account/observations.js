@@ -4,7 +4,7 @@ import Mapbox, { MapView } from "react-native-mapbox-gl";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { connect } from "react-redux";
 
-import { syncData } from "../../actions";
+import { syncData, getPeerInfo } from "../../actions";
 import { Text, Wrapper, PercentComplete, Map } from "../../components";
 import { baseStyles } from "../../styles";
 
