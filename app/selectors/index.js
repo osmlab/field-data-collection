@@ -28,7 +28,10 @@ export const selectFeatureType = (id, state) =>
   selectFeatureTypes(state).find(x => x.id === id);
 
 export const selectIcons = createSelector(selectActiveSurveys, surveys =>
-  surveys.map(x => x.icons).reduce((arr, val) => arr.concat(val), [])
+  surveys
+    .map(x => x.icons)
+    .filter(x => x != null)
+    .reduce((arr, val) => arr.concat(val), [])
 );
 
 export const selectIcon = (id, state) =>
@@ -49,13 +52,32 @@ export const selectCategories = createSelector(
   [selectActiveSurveys, selectObservationTypes],
   (surveys, observationTypes) =>
     surveys
-      .map(({ definition: { categories } }) =>
-        categories.map(category => ({
-          ...category,
-          list: category.members
-            .map(id => observationTypes.find(x => x.id === id))
-            .map(({ id, name }) => ({ id, name }))
-        }))
+      .map(({ definition: { categories, name: surveyId } }) =>
+        categories
+          .reduce((arr, { icon, members, name }) => {
+            const cat = arr.find(x => x.name === name);
+
+            if (cat != null) {
+              cat.members = cat.members.concat(
+                members.filter(x => !cat.members.includes(x))
+              );
+            } else {
+              arr.push({
+                icon,
+                members,
+                name,
+                surveyId
+              });
+            }
+
+            return arr;
+          }, [])
+          .map(category => ({
+            ...category,
+            list: category.members
+              .map(id => observationTypes.find(x => x.id === id))
+              .map(({ id, name }) => ({ id, name }))
+          }))
       )
       .reduce((arr, val) => arr.concat(val), [])
 );
@@ -84,3 +106,5 @@ export const selectAllCategories = createSelector(
 export const selectRemoteSurveys = state => state.surveys.remote;
 
 export const selectStatus = state => state.status;
+
+export const selectActiveObservation = state => state.observation;

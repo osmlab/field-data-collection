@@ -24,7 +24,8 @@ function osmp2p(createOsmDb) {
     createObservation,
     putObservation,
     delObservation,
-    query,
+    queryObservations,
+    queryOSM,
     queryGeoJSONStream,
     replicate,
     findReplicationTargets,
@@ -62,13 +63,12 @@ function osmp2p(createOsmDb) {
 
   // TODO use tags.osm-p2p-id?
   // TODO handle this being an OSM.org ID _or_ a placeholder ID
-  function createObservation(nodeId, geojson, opts, cb) {
+  function createObservation(nodeId, doc, opts, cb) {
     if (!cb && typeof opts === "function") {
       cb = opts;
       opts = {};
     }
 
-    var doc = convert.toOSM(geojson, "observation");
     observationDb.create(doc, opts, onObservationCreated);
 
     function onObservationCreated(err, docId) {
@@ -97,8 +97,13 @@ function osmp2p(createOsmDb) {
   }
 
   // TODO: union the query data from both DBs and return
-  function query(q, opts, cb) {
+  function queryObservations(q, opts, cb) {
     return observationDb.query(q, opts, cb);
+  }
+
+  // TODO: union the query data from both DBs and return
+  function queryOSM(q, opts, cb) {
+    return osmOrgDb.query(q, opts, cb);
   }
 
   // TODO: union the query data from both DBs and return
@@ -114,13 +119,7 @@ function osmp2p(createOsmDb) {
   }
 
   function clearOsmOrgDb(cb) {
-    console.log("1", osmOrgDb.store._id);
-    osmOrgDb.clear(function() {
-      osmOrgDb = createOsmDb("osm");
-      console.log("2", osmOrgDb.store._id);
-      netSync = OsmSync(observationDb, osmOrgDb);
-      cb();
-    });
+    osmOrgDb.clear(cb);
   }
 
   function clearAllData(cb) {
@@ -143,31 +142,24 @@ function osmp2p(createOsmDb) {
     }
   }
 
-  function closeAndReopenOsmOrgDb(cb) {
-    osmOrgDb.db.close(onDone);
-    osmOrgDb.log.db.close(onDone);
-    osmOrgDb.store.close(onDone); // TODO: investigate fd-chunk-store (or deferred-chunk-store) not calling its cb on 'close'
+  // Reach into an osm-p2p-db and reset all of its indexes, causing a full
+  // re-index of its data.
+  function resetIndexes(osm, cb) {
+    osm.kdb.dex.db.put("seq", 0, done);
+    osm.refs.dex.db.put("seq", 0, done);
+    osm.changeset.dex.db.put("seq", 0, done);
 
     var pending = 3;
-    function onDone(err) {
-      if (err) {
-        pending = Infinity;
-        cb(err);
-      } else if (--pending === 0) {
-        console.log("5", osmOrgDb.store._id);
-        osmOrgDb = createOsmDb("osm");
-        console.log("6", osmOrgDb.store._id);
-        netSync = OsmSync(observationDb, osmOrgDb);
-        console.log("closed and reopened osmorgdb");
-
-        osmOrgDb.ready(function() {
-          console.log("indexing complete");
-          // Less likely to see `Database not open` and `Storage is closed`
-          // errors if calling `cb` in the `ready` callback
-          cb();
-        });
-      }
+    function done(err) {
+      if (err) pending++ && cb(err);
+      if (!--pending) cb();
     }
+  }
+
+  function pauseIndexes(osm) {
+    osm.kdb.dex.pause();
+    osm.refs.dex.pause();
+    osm.changeset.dex.pause();
   }
 
   function replicate(addr, opts, cb) {
@@ -176,19 +168,16 @@ function osmp2p(createOsmDb) {
       opts = {};
     }
     console.log("replicate");
-    console.log("0", osmOrgDb.store._id);
 
-    clearOsmOrgDb(function() {
-      console.log("3", osmOrgDb.store._id);
-      netSync.replicate(addr, opts, function() {
-        console.log("4", osmOrgDb.store._id);
-        console.log("netSync.replicate finished");
-
-        // TODO: investigate why small AOIs cause `Database not open`
-        // and `Storage is closed` errors
-        setTimeout(function() {
-          closeAndReopenOsmOrgDb(cb);
-        }, 1000);
+    pauseIndexes(osmOrgDb);
+    process.nextTick(function() {
+      clearOsmOrgDb(function() {
+        netSync.replicate(addr, opts, function() {
+          resetIndexes(osmOrgDb, function() {
+            osmOrgDb._restartIndexes();
+            cb();
+          });
+        });
       });
     });
   }

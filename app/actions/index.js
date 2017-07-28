@@ -9,6 +9,7 @@ import osmp2p from "../lib/osm-p2p";
 import createOsmp2p from "../lib/create-osm-p2p";
 import { findPeers } from "../lib/osm-sync";
 import { timeout } from "../lib";
+import { selectActiveObservation } from "../selectors";
 
 const Fetch = RNFetchBlob.polyfill.Fetch;
 // replace built-in fetch
@@ -24,7 +25,7 @@ window.fetch = new Fetch({
   binaryContentTypes: ["image/", "video/", "audio/", "application/gzip"]
 }).build();
 
-const osm = osmp2p(createOsmp2p);
+export const osm = osmp2p(createOsmp2p);
 
 const types = {
   CLEAR_LOCAL_SURVEYS: "CLEAR_LOCAL_SURVEYS",
@@ -35,8 +36,10 @@ const types = {
   FETCHING_REMOTE_SURVEY_FAILED: "FETCHING_REMOTE_SURVEY_FAILED",
   FETCHING_REMOTE_SURVEY_LIST: "FETCHING_REMOTE_SURVEY_LIST",
   FETCHING_REMOTE_SURVEY_LIST_FAILED: "FETCHING_REMOTE_SURVEY_LIST_FAILED",
+  INITIALIZE_OBSERVATION: "INITIALIZE_OBSERVATION",
   RECEIVED_REMOTE_SURVEY_LIST: "RECEIVED_REMOTE_SURVEY_LIST",
   RECEIVED_REMOTE_SURVEY: "RECEIVED_REMOTE_SURVEY",
+  SAVING_OBSERVATION: "SAVING_OBSERVATION",
   SYNCING_SURVEY_DATA: "SYNCING_SURVEY_DATA",
   SYNCING_SURVEY_DATA_PROGRESS: "SYNCING_SURVEY_DATA_PROGRESS",
   SYNCING_SURVEY_DATA_FAILED: "SYNCING_SURVEY_DATA_FAILED",
@@ -44,7 +47,8 @@ const types = {
   SET_AREA_OF_INTEREST: "SET_AREA_OF_INTEREST",
   CLEAR_AREA_OF_INTEREST: "CLEAR_AREA_OF_INTEREST",
   SET_OBSERVATIONS_LAST_SYNCED: "SET_OBSERVATIONS_LAST_SYNCED",
-  SET_COORDINATOR_TARGET: "SET_COORDINATOR_TARGET"
+  SET_COORDINATOR_TARGET: "SET_COORDINATOR_TARGET",
+  UPDATE_OBSERVATION: "UPDATE_OBSERVATION"
 };
 
 // fallback to 10.0.2.2 when connecting to the coordinator (host's localhost from the emulator)
@@ -183,16 +187,6 @@ export const syncData = target => (dispatch, getState) => {
   });
 };
 
-export const destroyAllData = () => dispatch => {
-  console.log("destroy all data");
-  dispatch({ type: types.CLEAR_LOCAL_SURVEYS });
-  dispatch({ type: types.CLEAR_REMOTE_SURVEYS });
-  dispatch({ type: types.CLEAR_AREA_OF_INTEREST });
-  osm.clearAllData(function(err) {
-    console.log("finished destroying all data");
-  });
-};
-
 const getPeerInfo = (dispatch, callback) => {
   dispatch({
     type: types.DISCOVERING_PEERS
@@ -207,7 +201,8 @@ const getPeerInfo = (dispatch, callback) => {
     let targetPort = COORDINATOR_FALLBACK_PORT;
 
     if (peers.length > 0) {
-      ({ targetIP, targetPort } = peers[0]);
+      targetIP = peers[0].address;
+      targetPort = peers[0].port;
     }
 
     dispatch({
@@ -301,5 +296,48 @@ export const listRemoteSurveys = () => (dispatch, getState) => {
           error
         })
       );
+  });
+};
+
+export const initializeObservation = tags => dispatch =>
+  dispatch({
+    type: types.INITIALIZE_OBSERVATION,
+    tags
+  });
+
+export const updateObservation = tags => dispatch =>
+  dispatch({
+    type: types.UPDATE_OBSERVATION,
+    tags
+  });
+
+export const saveObservation = () => (dispatch, getState) => {
+  const { observation } = selectActiveObservation(getState());
+
+  dispatch({
+    type: types.SAVING_OBSERVATION,
+    observation
+  });
+
+  // TODO this is wrong
+  // observation currently looks like (still needs a point / associated feature):
+  // {
+  //   tags: {
+  //     highway: "residential",
+  //     name: "My Street",
+  //     surface: "paved"
+  //   }
+  // }
+  return osm.createObservation(observation, error => {
+    if (error) {
+      return dispatch({
+        type: types.SAVING_OBSERVATION_FAILED,
+        error
+      });
+    }
+
+    return dispatch({
+      type: types.OBSERVATION_SAVED
+    });
   });
 };
