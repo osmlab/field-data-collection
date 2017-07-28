@@ -6,6 +6,8 @@ module.exports = Storage;
 function Storage(chunkLength, opts) {
   if (!(this instanceof Storage)) return new Storage(chunkLength, opts);
 
+  this._id = Math.random().toString().substring(5);
+
   if (typeof opts === "string") {
     var prefix = opts;
     opts = {};
@@ -77,24 +79,32 @@ Storage.prototype.close = function(cb) {
   return process.nextTick(cb);
 };
 
+Storage.prototype.clear = function(cb) {
+  if (this.closed) return nextTick(cb, new Error("Storage is closed"));
+
+  var prefix = this._prefix;
+  var prefixLen = this._prefix.length;
+
+  AsyncStorage.getAllKeys(function(err, keys) {
+    if (err) return cb(err);
+
+    keys = keys.filter(function(key) {
+      return key.slice(0, prefixLen) === prefix;
+    });
+
+    if (!keys.length) return cb();
+
+    AsyncStorage.multiRemove(keys, cb);
+  });
+}
+
 Storage.prototype.destroy = function(cb) {
   if (this.closed) return nextTick(cb, new Error("Storage is closed"));
 
+  var self = this
+
   this.close(() => {
-    var prefix = this._prefix;
-    var prefixLen = this._prefix.length;
-
-    AsyncStorage.getAllKeys(function(err, keys) {
-      if (err) return cb(err);
-
-      keys = keys.filter(function(key) {
-        return key.slice(0, prefixLen) === prefix;
-      });
-
-      if (!keys.length) return cb();
-
-      AsyncStorage.multiRemove(keys, cb);
-    });
+    self.clear(cb)
   });
 };
 

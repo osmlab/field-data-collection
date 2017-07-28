@@ -21,7 +21,7 @@ function createOsmDb(prefix) {
     var pending = 3;
     asyncstorage.destroy(prefix + "-db", onDone.bind(this, "db"));
     asyncstorage.destroy(prefix + "-index", onDone.bind(this, "index"));
-    store.destroy(onDone.bind(this, "chunk-store"));
+    store.clear(onDone.bind(this, "chunk-store"));
 
     function onDone(type) {
       console.log("db.clear: 2; pending ===", pending, "type ===", type);

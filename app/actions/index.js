@@ -25,7 +25,7 @@ window.fetch = new Fetch({
   binaryContentTypes: ["image/", "video/", "audio/", "application/gzip"]
 }).build();
 
-const osm = osmp2p(createOsmp2p);
+export const osm = osmp2p(createOsmp2p);
 
 const types = {
   CLEAR_LOCAL_SURVEYS: "CLEAR_LOCAL_SURVEYS",
@@ -45,7 +45,8 @@ const types = {
   SYNCING_SURVEY_DATA_FAILED: "SYNCING_SURVEY_DATA_FAILED",
   FINISHED_SYNCING_SURVEY_DATA: "FINISHED_SYNCING_SURVEY_DATA",
   SET_AREA_OF_INTEREST: "SET_AREA_OF_INTEREST",
-  UPDATE_OBSERVATION: "UPDATE_OBSERVATION"
+  UPDATE_OBSERVATION: "UPDATE_OBSERVATION",
+  CLEAR_AREA_OF_INTEREST: "CLEAR_AREA_OF_INTEREST"
 };
 
 // fallback to 10.0.2.2 when connecting to the coordinator (host's localhost from the emulator)
@@ -129,49 +130,54 @@ const checkOsmMeta = (url, getState, cb) => {
 };
 
 export const syncSurveyData = survey => (dispatch, getState) => {
+  console.log("syncSurveyData");
   const { id, target } = survey;
   const url = `http://${target.address}:${target.port}`;
 
-  checkOsmMeta(url, getState, (err, shouldSync, areaOfInterest) => {
+  checkOsmMeta(url, getState, (err, shouldImportOsm, areaOfInterest) => {
     if (err) return console.warn(err);
-    if (!shouldSync) {
-      return dispatch({
-        type: types.FINISHED_SYNCING_SURVEY_DATA,
-        id
-      });
-    }
+    console.log("shouldImportOsm", shouldImportOsm);
 
     dispatch({
       type: types.SYNCING_SURVEY_DATA,
       id: id
     });
 
+    if (shouldImportOsm) {
+      osm.replicate(
+        target,
+        {
+          progressFn
+        },
+        err => {
+          if (err) {
+            return dispatch({
+              type: types.SYNCING_SURVEY_DATA_FAILED,
+              id
+            });
+          }
+
+          dispatch({
+            type: types.FINISHED_SYNCING_SURVEY_DATA,
+            id
+          });
+
+          dispatch({
+            type: types.SET_AREA_OF_INTEREST,
+            areaOfInterest
+          });
+        }
+      );
+    }
+
     const progressFn = i => {
+      console.log("progress", i);
       dispatch({
         type: types.SYNCING_SURVEY_DATA_PROGRESS,
         progress: i,
         id: id
       });
     };
-
-    osm.replicate(target, { progressFn }, err => {
-      if (err) {
-        return dispatch({
-          type: types.SYNCING_SURVEY_DATA_FAILED,
-          id
-        });
-      }
-
-      dispatch({
-        type: types.FINISHED_SYNCING_SURVEY_DATA,
-        id
-      });
-
-      dispatch({
-        type: types.SET_AREA_OF_INTEREST,
-        areaOfInterest
-      });
-    });
   });
 };
 
@@ -189,7 +195,8 @@ const getPeerInfo = (dispatch, callback) => {
     let targetPort = COORDINATOR_FALLBACK_PORT;
 
     if (peers.length > 0) {
-      ({ targetIP, targetPort } = peers[0]);
+      targetIP = peers[0].address;
+      targetPort = peers[0].port;
     }
 
     return callback(null, targetIP, targetPort);
