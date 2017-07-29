@@ -96,15 +96,15 @@ Storage.prototype.clear = function(cb) {
 
     AsyncStorage.multiRemove(keys, cb);
   });
-}
+};
 
 Storage.prototype.destroy = function(cb) {
   if (this.closed) return nextTick(cb, new Error("Storage is closed"));
 
-  var self = this
+  var self = this;
 
   this.close(() => {
-    self.clear(cb)
+    self.clear(cb);
   });
 };
 

@@ -45,8 +45,10 @@ const types = {
   SYNCING_SURVEY_DATA_FAILED: "SYNCING_SURVEY_DATA_FAILED",
   FINISHED_SYNCING_SURVEY_DATA: "FINISHED_SYNCING_SURVEY_DATA",
   SET_AREA_OF_INTEREST: "SET_AREA_OF_INTEREST",
-  UPDATE_OBSERVATION: "UPDATE_OBSERVATION",
-  CLEAR_AREA_OF_INTEREST: "CLEAR_AREA_OF_INTEREST"
+  CLEAR_AREA_OF_INTEREST: "CLEAR_AREA_OF_INTEREST",
+  SET_OBSERVATIONS_LAST_SYNCED: "SET_OBSERVATIONS_LAST_SYNCED",
+  SET_COORDINATOR_TARGET: "SET_COORDINATOR_TARGET",
+  UPDATE_OBSERVATION: "UPDATE_OBSERVATION"
 };
 
 // fallback to 10.0.2.2 when connecting to the coordinator (host's localhost from the emulator)
@@ -102,7 +104,25 @@ const extractSurveyBundle = (id, bundle, _callback) => {
   bundle.open();
 };
 
-const checkRemoteOsmMeta = (url, cb) => {
+const checkRemoteOsmMeta = (target, dispatch, cb) => {
+  if (!target || !target.address || !target.port) {
+    return getPeerInfo(dispatch, (err, targetIP, targetPort) => {
+      if (err) {
+        console.log(err);
+        return dispatch({ type: types.DISCOVERING_PEERS_FAILED, error: err });
+      }
+
+      target = { address: targetIP, port: targetPort };
+      fetchMeta(target, cb);
+    });
+  }
+
+  return fetchMeta(target, cb);
+};
+
+const fetchMeta = (target, cb) => {
+  const url = `http://${target.address}:${target.port}`;
+
   return fetch(`${url}/osm/meta`)
     .then(rsp => {
       if (rsp.status !== 200) {
@@ -114,10 +134,10 @@ const checkRemoteOsmMeta = (url, cb) => {
     .catch(cb);
 };
 
-const checkOsmMeta = (url, getState, cb) => {
+const checkOsmMeta = (target, getState, dispatch, cb) => {
   const { osm: { areaOfInterest } } = getState();
 
-  checkRemoteOsmMeta(url, function(err, res) {
+  checkRemoteOsmMeta(target, dispatch, function(err, res) {
     if (err) return cb(err);
     if (!areaOfInterest) return cb(null, true, res);
 
@@ -129,56 +149,75 @@ const checkOsmMeta = (url, getState, cb) => {
   });
 };
 
-export const syncSurveyData = survey => (dispatch, getState) => {
-  console.log("syncSurveyData");
-  const { id, target } = survey;
-  const url = `http://${target.address}:${target.port}`;
+export const syncData = target => (dispatch, getState) => {
+  console.log("syncData", target);
 
-  checkOsmMeta(url, getState, (err, shouldImportOsm, areaOfInterest) => {
-    if (err) return console.warn(err);
-    console.log("shouldImportOsm", shouldImportOsm);
+  checkOsmMeta(
+    target,
+    getState,
+    dispatch,
+    (err, shouldImportOsm, areaOfInterest) => {
+      if (err) return console.log(err);
+      console.log("shouldImportOsm", shouldImportOsm);
 
-    dispatch({
-      type: types.SYNCING_SURVEY_DATA,
-      id: id
-    });
+      dispatch({
+        type: types.SYNCING_SURVEY_DATA
+      });
 
-    if (shouldImportOsm) {
-      osm.replicate(
-        target,
-        {
-          progressFn
-        },
-        err => {
-          if (err) {
-            return dispatch({
-              type: types.SYNCING_SURVEY_DATA_FAILED,
-              id
+      if (shouldImportOsm) {
+        osm.replicate(
+          target,
+          {
+            progressFn
+          },
+          err => {
+            if (err) {
+              return dispatch({
+                type: types.SYNCING_SURVEY_DATA_FAILED
+              });
+            }
+
+            console.log("osm.replicate", err);
+            dispatch({
+              type: types.FINISHED_SYNCING_SURVEY_DATA
+            });
+
+            dispatch({
+              type: types.SET_AREA_OF_INTEREST,
+              areaOfInterest
+            });
+
+            dispatch({
+              type: types.SET_OBSERVATIONS_LAST_SYNCED,
+              observationsLastSynced: Date.now()
             });
           }
+        );
+      } else {
+        // only sync observations
 
-          dispatch({
-            type: types.FINISHED_SYNCING_SURVEY_DATA,
-            id
-          });
+        progressFn(0);
 
-          dispatch({
-            type: types.SET_AREA_OF_INTEREST,
-            areaOfInterest
-          });
-        }
-      );
+        osm.sync.replicateObservationDb(target, err => {
+          progressFn(1);
+
+          if (err) {
+            return dispatch({ type: types.SYNCING_SURVEY_DATA_FAILED });
+          }
+
+          dispatch({ type: types.FINISHED_SYNCING_SURVEY_DATA });
+        });
+      }
+
+      const progressFn = i => {
+        console.log("progress", i);
+        dispatch({
+          type: types.SYNCING_SURVEY_DATA_PROGRESS,
+          progress: i
+        });
+      };
     }
-
-    const progressFn = i => {
-      console.log("progress", i);
-      dispatch({
-        type: types.SYNCING_SURVEY_DATA_PROGRESS,
-        progress: i,
-        id: id
-      });
-    };
-  });
+  );
 };
 
 const getPeerInfo = (dispatch, callback) => {
@@ -198,6 +237,11 @@ const getPeerInfo = (dispatch, callback) => {
       targetIP = peers[0].address;
       targetPort = peers[0].port;
     }
+
+    dispatch({
+      type: types.SET_COORDINATOR_TARGET,
+      target: { address: targetIP, port: targetPort }
+    });
 
     return callback(null, targetIP, targetPort);
   });

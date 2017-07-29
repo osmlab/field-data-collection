@@ -8,10 +8,10 @@ import reducers from "../reducers";
 
 const middleware = () => {
   return applyMiddleware(
-    thunk
-    // createLogger({
-    //   collapsed: true
-    // })
+    thunk,
+    createLogger({
+      collapsed: true
+    })
   );
 };
 
@@ -19,7 +19,7 @@ const store = compose(autoRehydrate())(createStore)(reducers, middleware());
 
 persistStore(store, {
   storage: FilesystemStorage,
-  whitelist: ["surveys", "osm"]
+  whitelist: ["surveys", "osm", "coordinator"]
 });
 
 export default store;
