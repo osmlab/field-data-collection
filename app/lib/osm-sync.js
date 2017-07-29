@@ -30,6 +30,7 @@ OsmSync.prototype.replicate = function(target, opts, done) {
   opts.progressFn(0);
 
   function onFinish(err) {
+    console.log("onFinish", finished);
     if (err) {
       finished--;
       return done(err);
@@ -54,6 +55,7 @@ OsmSync.prototype.replicateObservationDb = function(target, done) {
 
 // Assumes you have a wiped, fresh DB
 OsmSync.prototype.replicateOsmOrgDb = function(target, done) {
+  console.log("start replicateOsmOrgDb");
   // Import fresh XML
   var socket = websocket(
     "ws://" + target.address + ":" + target.port + "/replicate/osm"

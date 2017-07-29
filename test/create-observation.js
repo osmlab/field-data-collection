@@ -9,8 +9,14 @@ test("create an observation to a placeholder node, and check they are linked", f
 ) {
   t.plan(4);
 
-  var obsDb = osmdb();
-  var osm = osmp2p(obsDb, osmdb());
+  var obsDb;
+  function makeDb(name) {
+    var db = osmdb();
+    if (name === "obs") obsDb = db;
+    return db;
+  }
+
+  var osm = osmp2p(makeDb);
 
   var nodeId;
 
@@ -46,9 +52,16 @@ test("create an observation to a pre-existing OSM.org node, and check they are l
 ) {
   t.plan(4);
 
-  var obsDb = osmdb();
-  var osmOrgDb = osmdb();
-  var osm = osmp2p(obsDb, osmOrgDb);
+  var obsDb;
+  var osmOrgDb;
+  function makeDb(name) {
+    var db = osmdb();
+    if (name === "obs") obsDb = db;
+    else osmOrgDb = db;
+    return db;
+  }
+
+  var osm = osmp2p(makeDb);
 
   var doc = {
     type: "node",
@@ -76,10 +89,17 @@ test("simulate an observation created before & after a placeholder node becomes 
 ) {
   t.plan(13);
 
-  var obsDb = osmdb();
-  var osmOrgDb = osmdb();
+  var obsDb;
+  var osmOrgDb;
+  function makeDb(name) {
+    var db = osmdb();
+    if (name === "obs") obsDb = db;
+    else osmOrgDb = db;
+    return db;
+  }
+
+  var osm = osmp2p(makeDb);
   var linkDb = obsp2p({ db: memdb(), log: obsDb.log });
-  var osm = osmp2p(obsDb, osmOrgDb);
 
   var doc = {
     type: "node",

@@ -106,3 +106,5 @@ export const selectAllCategories = createSelector(
 export const selectRemoteSurveys = state => state.surveys.remote;
 
 export const selectStatus = state => state.status;
+
+export const selectActiveObservation = state => state.observation;

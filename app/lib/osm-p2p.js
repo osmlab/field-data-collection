@@ -24,12 +24,14 @@ function osmp2p(createOsmDb) {
     createObservation,
     putObservation,
     delObservation,
-    query,
+    queryObservations,
+    queryOSM,
     queryGeoJSONStream,
     replicate,
     findReplicationTargets,
-    sync,
-    listAnnotations
+    listAnnotations,
+    clearAllData,
+    sync: netSync
   };
 
   function ready(cb) {
@@ -61,13 +63,12 @@ function osmp2p(createOsmDb) {
 
   // TODO use tags.osm-p2p-id?
   // TODO handle this being an OSM.org ID _or_ a placeholder ID
-  function createObservation(nodeId, geojson, opts, cb) {
+  function createObservation(nodeId, doc, opts, cb) {
     if (!cb && typeof opts === "function") {
       cb = opts;
       opts = {};
     }
 
-    var doc = convert.toOSM(geojson, "observation");
     observationDb.create(doc, opts, onObservationCreated);
 
     function onObservationCreated(err, docId) {
@@ -96,8 +97,13 @@ function osmp2p(createOsmDb) {
   }
 
   // TODO: union the query data from both DBs and return
-  function query(q, opts, cb) {
+  function queryObservations(q, opts, cb) {
     return observationDb.query(q, opts, cb);
+  }
+
+  // TODO: union the query data from both DBs and return
+  function queryOSM(q, opts, cb) {
+    return osmOrgDb.query(q, opts, cb);
   }
 
   // TODO: union the query data from both DBs and return
@@ -113,27 +119,47 @@ function osmp2p(createOsmDb) {
   }
 
   function clearOsmOrgDb(cb) {
-    osmOrgDb.clear(function() {
-      osmOrgDb = createOsmDb("osm");
-      netSync = OsmSync(observationDb, osmOrgDb);
-      cb();
-    });
+    osmOrgDb.clear(cb);
   }
 
-  function closeAndReopenOsmOrgDb(cb) {
-    osmOrgDb.db.close(onDone);
-    osmOrgDb.log.db.close(onDone);
-    osmOrgDb.store.close(); // TODO: investigate fd-chunk-store (or deferred-chunk-store) not calling its cb on 'close'
+  function clearAllData(cb) {
+    console.log("osm.clearAllData");
+    osmOrgDb.clear(onDone);
+    observationDb.clear(onDone);
 
-    var pending = 2;
+    var pending = 0;
     function onDone(err) {
       if (err) {
-        pending = Infinity;
+        pending = 0;
         cb(err);
-      } else if (--pending === 0) {
-        cb();
+      }
+
+      pending++;
+
+      if (pending === 2) {
+        return cb();
       }
     }
+  }
+
+  // Reach into an osm-p2p-db and reset all of its indexes, causing a full
+  // re-index of its data.
+  function resetIndexes(osm, cb) {
+    osm.kdb.dex.db.put("seq", 0, done);
+    osm.refs.dex.db.put("seq", 0, done);
+    osm.changeset.dex.db.put("seq", 0, done);
+
+    var pending = 3;
+    function done(err) {
+      if (err) pending++ && cb(err);
+      if (!--pending) cb();
+    }
+  }
+
+  function pauseIndexes(osm) {
+    osm.kdb.dex.pause();
+    osm.refs.dex.pause();
+    osm.changeset.dex.pause();
   }
 
   function replicate(addr, opts, cb) {
@@ -141,13 +167,16 @@ function osmp2p(createOsmDb) {
       cb = opts;
       opts = {};
     }
+    console.log("replicate");
 
-    clearOsmOrgDb(function() {
-      netSync.replicate(addr, opts, function() {
-        closeAndReopenOsmOrgDb(function() {
-          osmOrgDb = createOsmDb("osm");
-          netSync = OsmSync(observationDb, osmOrgDb);
-          cb();
+    pauseIndexes(osmOrgDb);
+    process.nextTick(function() {
+      clearOsmOrgDb(function() {
+        netSync.replicate(addr, opts, function() {
+          resetIndexes(osmOrgDb, function() {
+            osmOrgDb._restartIndexes();
+            cb();
+          });
         });
       });
     });
@@ -155,31 +184,6 @@ function osmp2p(createOsmDb) {
 
   function findReplicationTargets(opts, cb) {
     OsmSync.findPeers(opts, cb);
-  }
-
-  function sync(transportStream, opts, callback) {
-    if (typeof opts === "function") {
-      callback = opts;
-      opts = null;
-    }
-
-    console.log("sync: start");
-    var osmStream = replicate(opts);
-
-    eos(osmStream, done);
-    eos(transportStream, done);
-    transportStream.on("close", done);
-
-    let pending = 2;
-    function done(err) {
-      if (err) return callback(err);
-      if (--pending === 0) {
-        console.log("sync: end");
-        callback();
-      }
-    }
-
-    return transportStream.pipe(osmStream).pipe(transportStream);
   }
 
   function listAnnotations(q, cb) {

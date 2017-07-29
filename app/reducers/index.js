@@ -1,11 +1,15 @@
 import { combineReducers } from "redux";
 
+import observation from "./observation";
+import osm from "./osm";
 import status from "./status";
 import surveys from "./surveys";
-import osm from "./osm";
 
 export default combineReducers({
+  // the active observation being collected
+  observation,
+  osm,
   status,
-  surveys,
-  osm
+  // survey definitions
+  surveys
 });

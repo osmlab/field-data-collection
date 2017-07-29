@@ -3174,6 +3174,18 @@ hyperlog-join@^2.0.0:
     subleveldown "^2.1.0"
     through2 "^2.0.0"
 
+hyperlog-kdb-index@4.0.2:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/hyperlog-kdb-index/-/hyperlog-kdb-index-4.0.2.tgz#d5d2ed7b1639320e926f38d63de84188b68445c8"
+  dependencies:
+    fd-chunk-store "^2.0.0"
+    hyperlog-index "^5.0.1"
+    inherits "^2.0.1"
+    once "^1.3.3"
+    read-only-stream "^2.0.0"
+    subleveldown "^2.1.0"
+    through2 "^2.0.0"
+
 hyperlog-kdb-index@^4.0.0:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/hyperlog-kdb-index/-/hyperlog-kdb-index-4.0.1.tgz#3e7fbc03229060d33d585ddd2d8248765c3f176b"
@@ -4998,9 +5010,9 @@ osm-p2p-db-importer@^1.1.2:
     randombytes "^2.0.3"
     through2 "^2.0.3"
 
-osm-p2p-db@^4.0.0:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/osm-p2p-db/-/osm-p2p-db-4.1.0.tgz#64d350a3ef755fa8ed802fcd9e5a37ab42bd5c35"
+osm-p2p-db@^4.0.0, osm-p2p-db@^4.2.2:
+  version "4.2.2"
+  resolved "https://registry.yarnpkg.com/osm-p2p-db/-/osm-p2p-db-4.2.2.tgz#db5b23ee8f3f0963154db15e09dc448942003f1e"
   dependencies:
     after-all "^2.0.2"
     async "^2.3.0"
