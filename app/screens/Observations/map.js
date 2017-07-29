@@ -13,7 +13,14 @@ import { Link } from "react-router-native";
 
 import createOsmp2p from "../../lib/create-osm-p2p";
 import osmp2p from "../../lib/osm-p2p";
-import { Header, SideMenu, Text, Geolocate } from "../../components";
+import {
+  Annotation,
+  Header,
+  SideMenu,
+  Text,
+  Geolocate,
+  NearbyFeatures
+} from "../../components";
 import { baseStyles, colors } from "../../styles";
 
 import { osm } from "../../actions";
@@ -33,7 +40,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#8212C6",
     zIndex: 10,
     position: "absolute",
-    bottom: 10,
+    bottom: 95,
     right: 15
   },
   buttonLegend: {
@@ -56,6 +63,7 @@ const styles = StyleSheet.create({
 class ObservationMapScreen extends Component {
   componentWillMount() {
     this.setState({
+      nearbyFeaturesViewOpen: false,
       showMap: true,
       center: {
         latitude: 47.6685,
@@ -73,6 +81,10 @@ class ObservationMapScreen extends Component {
       showMap: false
     });
   }
+
+  openNearbyFeaturesView = () => {};
+
+  closeNearbyFeaturesView = () => {};
 
   onMenuPress = () => {
     this._menu.open();
@@ -97,6 +109,10 @@ class ObservationMapScreen extends Component {
         console.log("osm.query", err, Object.keys(results));
       });
     });
+  };
+
+  onAnnotationPress = e => {
+    console.log("onAnnotationPress", console.log(e));
   };
 
   prepareAnnotations = () => {
@@ -153,7 +169,32 @@ class ObservationMapScreen extends Component {
             showsUserLocation={false}
             styleURL="https://openmaptiles.github.io/osm-bright-gl-style/style-cdn.json"
             userTrackingMode={this.state.userTrackingMode}
-          />}
+          >
+            <Annotation
+              id="example1"
+              radius={8}
+              coordinates={{ latitude: 47.6686, longitude: -122.3841 }}
+              onPress={this.onAnnotationPress}
+            />
+            <Annotation
+              id="example2"
+              radius={8}
+              coordinates={{ latitude: 47.66855, longitude: -122.3838 }}
+              onPress={this.onAnnotationPress}
+            />
+            <Annotation
+              id="example3"
+              radius={8}
+              coordinates={{ latitude: 47.66869, longitude: -122.3842 }}
+              onPress={this.onAnnotationPress}
+            />
+            <Annotation
+              id="example4"
+              radius={8}
+              coordinates={{ latitude: 47.6687, longitude: -122.3843 }}
+              onPress={this.onAnnotationPress}
+            />
+          </MapView>}
 
         <TouchableOpacity
           style={[styles.buttonLegend]}
@@ -183,6 +224,7 @@ class ObservationMapScreen extends Component {
             }}
           />
         </Link>
+        <NearbyFeatures />
       </View>
     );
   }

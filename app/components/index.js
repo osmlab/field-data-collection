@@ -2,16 +2,18 @@ import Header from "./header";
 import SideMenu from "./side-menu";
 import Text from "./text";
 import Wrapper from "./wrapper";
-import MapList from "./observation-list";
+import NearbyFeatures from "./nearby-features";
 import Geolocate from "./geolocate";
 import PercentComplete from "./percent-complete";
 import { getFieldInput } from "./field-inputs";
 import { getFieldType } from "./fields";
 import StatusBar from "./StatusBar";
 import CategoryList from "./category-list";
+import Annotation from "./annotation";
 import Map from "./map";
 
 export {
+  Annotation,
   Header,
   SideMenu,
   Text,
@@ -19,7 +21,7 @@ export {
   Geolocate,
   getFieldInput,
   getFieldType,
-  MapList,
+  NearbyFeatures,
   PercentComplete,
   StatusBar,
   CategoryList,

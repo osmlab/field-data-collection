@@ -248,13 +248,8 @@ const baseStyles = StyleSheet.create({
   },
   nearbyPoints: {
     backgroundColor: "#ffffff",
-    position: "absolute",
-    bottom: 0,
-    right: 0,
-    left: 0,
-    height: 180,
+    height: 400,
     borderColor: colors.text.tertiary,
-    flex: 1,
     elevation: 10
   },
   nearbyPointsHeader: {
@@ -271,7 +266,7 @@ const baseStyles = StyleSheet.create({
     borderColor: "#ccc",
     padding: 15,
     alignContent: "center",
-    height: 100,
+    height: 200,
     padding: 20,
     paddingTop: 30
   },

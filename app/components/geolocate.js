@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     zIndex: 10,
     position: "absolute",
-    bottom: 80,
+    bottom: 165,
     right: 15
   }
 });
