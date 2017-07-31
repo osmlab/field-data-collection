@@ -14,7 +14,7 @@ import { connect } from "react-redux";
 
 import getCurrentPosition from "../../lib/get-current-position";
 import { selectOsmFeatures } from "../../selectors";
-import { setOsmFeatureList } from "../../actions";
+import { setOsmFeatureList, osm } from "../../actions";
 import {
   Annotation,
   Header,
@@ -24,8 +24,6 @@ import {
   NearbyFeatures
 } from "../../components";
 import { baseStyles, colors } from "../../styles";
-
-import { osm } from "../../actions";
 
 Mapbox.setAccessToken(
   "pk.eyJ1Ijoic2V0aHZpbmNlbnQiLCJhIjoiSXZZXzZnUSJ9.Nr_zKa-4Ztcmc1Ypl0k5nw"
@@ -119,11 +117,26 @@ class ObservationMapScreen extends Component {
     console.log("onAnnotationPress", console.log(e));
   };
 
-  onFinishLoadingMap = e => {
+  onStartLoadingMap = e => {
     const { setOsmFeatureList } = this.props;
+
     this._map.getBounds(data => {
       var q = [[data[0], data[2]], [data[1], data[3]]];
-      setOsmFeatureList(q);
+
+      osm.queryOSM(q, (err, results) => {
+        console.log("full results.length", results.length);
+        const filtered = results.filter(item => {
+          return (
+            item.type === "node" &&
+            item.lat &&
+            item.lon &&
+            item.tags &&
+            item.tags.name
+          );
+        });
+        console.log("filtered.length", filtered.length);
+        setOsmFeatureList(filtered);
+      });
     });
   };
 
@@ -143,23 +156,19 @@ class ObservationMapScreen extends Component {
 
   render() {
     const { featureList } = this.props;
-
-    const filteredFeatures = featureList.filter(item => {
-      return item.lat && item.lon && item.tags;
-    });
-
-    const annotations = filteredFeatures.map(item => {
+    console.log("featureList.length", featureList.length);
+    const annotations = featureList.map(item => {
       return (
         <Annotation
           key={item.id}
           id={item.id}
           radius={8}
           coordinates={{ latitude: item.lat, longitude: item.lon }}
-          onPress={this.onAnnotationPress}
+          onPress={this.onMapPress}
         />
       );
     });
-
+    console.log("annotations.length", annotations.length);
     return (
       <View style={[baseStyles.wrapper, { padding: 0 }]}>
         <Header onTogglePress={this.onMenuPress}>
@@ -188,6 +197,7 @@ class ObservationMapScreen extends Component {
               this.state.mapSize.height = height;
               this.state.mapSize.width = width;
             }}
+            onStartLoadingMap={this.onStartLoadingMap}
             onFinishLoadingMap={this.onFinishLoadingMap}
             onUpdateUserLocation={this.onUpdateUserLocation}
             initialCenterCoordinate={this.state.center}
@@ -236,7 +246,7 @@ class ObservationMapScreen extends Component {
 
         <NearbyFeatures
           userLocation={this.state.userLocation}
-          features={filteredFeatures}
+          features={featureList}
         />
       </View>
     );

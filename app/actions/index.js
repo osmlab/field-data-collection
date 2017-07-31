@@ -50,10 +50,8 @@ const types = {
   SET_COORDINATOR_TARGET: "SET_COORDINATOR_TARGET",
   UPDATE_OBSERVATION: "UPDATE_OBSERVATION",
   SET_OBSERVATION_LIST: "SET_OBSERVATION_LIST",
-  SET_OBSERVATION_LIST_FAILED: "SET_OBSERVATION_LIST_FAILED",
   CLEAR_OBSERVATION_LIST: "CLEAR_OBSERVATION_LIST",
   SET_OSM_FEATURE_LIST: "SET_OSM_FEATURE_LIST",
-  SET_OSM_FEATURE_LIST_FAILED: "SET_OSM_FEATURE_LIST_FAILED",
   CLEAR_OSM_FEATURE_LIST: "CLEAR_OSM_FEATURE_LIST"
 };
 
@@ -381,29 +379,16 @@ export const saveObservation = () => (dispatch, getState) => {
   });
 };
 
-export const setObservationList = q => (dispatch, getState) => {
-  osm.queryObservations(q, function(err, list) {
-    if (err) {
-      return dispatch({ type: types.SET_OBSERVATION_LIST_FAILED, error });
-    }
-
-    return dispatch({ type: types.SET_OBSERVATION_LIST, list });
-  });
+export const setObservationList = list => (dispatch, getState) => {
+  return dispatch({ type: types.SET_OBSERVATION_LIST, list });
 };
 
 export const clearObservationList = () => dispatch => {
   return dispatch({ type: types.CLEAR_OBSERVATION_LIST });
 };
 
-export const setOsmFeatureList = q => (dispatch, getState) => {
-  console.log("setOsmFeatureList", q);
-  osm.queryOSM(q, function(err, list) {
-    if (err) {
-      return dispatch({ type: types.SET_OSM_FEATURE_LIST_FAILED, error });
-    }
-
-    return dispatch({ type: types.SET_OSM_FEATURE_LIST, list });
-  });
+export const setOsmFeatureList = list => (dispatch, getState) => {
+  return dispatch({ type: types.SET_OSM_FEATURE_LIST, list });
 };
 
 export const clearOsmFeatureList = () => dispatch => {

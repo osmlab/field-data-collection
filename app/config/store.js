@@ -8,10 +8,10 @@ import reducers from "../reducers";
 
 const middleware = () => {
   return applyMiddleware(
-    thunk,
-    createLogger({
-      collapsed: true
-    })
+    thunk
+    // createLogger({
+    //   collapsed: true
+    // })
   );
 };
 

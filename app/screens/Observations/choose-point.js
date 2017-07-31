@@ -5,7 +5,7 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import { connect } from "react-redux";
 
 import { initializeObservation } from "../../actions";
-import { selectActiveObservation } from "../../selectors";
+import { selectActiveObservation, selectOsmFeatures } from "../../selectors";
 import { Text, Wrapper, Map } from "../../components";
 import { baseStyles } from "../../styles";
 
@@ -16,13 +16,7 @@ const styles = StyleSheet.create({
 });
 
 class ChoosePoint extends Component {
-  componentWillMount() {
-    //   const { navigation: { state: { params: { fieldset } } } } = this.props;
-    //
-    //   this.setState({
-    //     fieldset
-    //   });
-  }
+  componentWillMount() {}
 
   render() {
     const { history } = this.props;
@@ -36,10 +30,7 @@ class ChoosePoint extends Component {
         }}
       >
         <TouchableOpacity onPress={history.goBack}>
-          <Icon
-            name="keyboard-backspace"
-            style={[[baseStyles.headerBackIcon]]}
-          />
+          <Icon name="keyboard-backspace" style={baseStyles.headerBackIcon} />
         </TouchableOpacity>
 
         <Text style={[baseStyles.h3, baseStyles.headerTitle]}>Add</Text>
@@ -54,6 +45,25 @@ class ChoosePoint extends Component {
           </Text>
 
           <Map zoom={12} />
+
+          <View style={{ marginTop: 10 }}>
+            {this.props.featureList.map(item => {
+              return (
+                <View
+                  key={item.id}
+                  style={{
+                    elevation: 6,
+                    padding: 10,
+                    margin: 4
+                  }}
+                >
+                  <Text>
+                    {item.tags.name}
+                  </Text>
+                </View>
+              );
+            })}
+          </View>
         </View>
       </Wrapper>
     );
@@ -61,10 +71,9 @@ class ChoosePoint extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  // const { match: { params: { surveyId, type } } } = ownProps;
-
   return {
-    observation: selectActiveObservation(state)
+    observation: selectActiveObservation(state),
+    featureList: selectOsmFeatures(state)
   };
 };
 
