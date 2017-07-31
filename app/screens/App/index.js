@@ -13,6 +13,7 @@ import ObservationList from "../Observations/list.js";
 import AddObservation from "../Observations/create";
 import FieldsetForm from "../Observations/fieldset-form";
 import Categories from "../Observations/categories";
+import ChoosePoint from "../Observations/choose-point";
 
 // Account
 import MyObservations from "../Account/observations";
@@ -35,6 +36,11 @@ export default class App extends Component {
             <Route path="/" exact component={ObservationMap} />
             <Route path="/list" component={ObservationList} />
             <Route
+              path="/add-observation/choose-point"
+              exact
+              component={ChoosePoint}
+            />
+            <Route
               exact
               path="/add-observation/categories"
               component={Categories}
@@ -49,7 +55,6 @@ export default class App extends Component {
               path="/add-observation/:surveyId/:type/fields"
               component={FieldsetForm}
             />
-            <Route path="/add-observation/location" component={FieldsetForm} />
             <Route path="/account/observations" component={MyObservations} />
             <Route path="/account/about" component={About} />
             <Route path="/account/add-survey" component={AddSurvey} />

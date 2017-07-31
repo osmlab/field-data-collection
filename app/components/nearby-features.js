@@ -74,10 +74,14 @@ class NearbyFeatures extends Component {
               <TouchableOpacity onPress={this.toggle}>
                 <Text style={[baseStyles.h4]}>Nearby Points</Text>
 
-                <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
-                  <Text>Location: </Text>
-                  <Text>49° N 100° E</Text>
-                </View>
+                {this.props.userLocation &&
+                  <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+                    <Text>Location: </Text>
+                    <Text>
+                      {this.props.userLocation.latitude.toFixed(2)},{" "}
+                      {this.props.userLocation.longitude.toFixed(2)}
+                    </Text>
+                  </View>}
               </TouchableOpacity>
             </View>
 
@@ -95,45 +99,33 @@ class NearbyFeatures extends Component {
           </View>
 
           <ScrollView horizontal={true} width={Screen.width}>
-            <View style={[baseStyles.cardStyle]}>
-              <Text style={[baseStyles.h3]}>Ballard Elementary School</Text>
-              <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
-                <Text>30cm away</Text>
-                <View>
-                  <Text>Updated: </Text>
-                  <Text>4/30/17 4:30</Text>
+            {this.props.features.map(item => {
+              return (
+                <View style={[baseStyles.cardStyle]} key={item.id}>
+                  <Text style={[baseStyles.h3]}>
+                    {item.tags.name}
+                  </Text>
+                  <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+                    <Text>30cm away</Text>
+                    <View>
+                      <Text>Updated: </Text>
+                      <Text>4/30/17 4:30</Text>
+                    </View>
+                  </View>
+                  <View
+                    style={[
+                      baseStyles.observationBlock,
+                      { flexDirection: "row", flexWrap: "wrap" }
+                    ]}
+                  >
+                    <Text style={[baseStyles.metadataText]}>
+                      2 Observations
+                    </Text>
+                    <Text style={[baseStyles.textAlert]}>(2 incomplete)</Text>
+                  </View>
                 </View>
-              </View>
-              <View
-                style={[
-                  baseStyles.observationBlock,
-                  { flexDirection: "row", flexWrap: "wrap" }
-                ]}
-              >
-                <Text style={[baseStyles.metadataText]}>2 Observations</Text>
-                <Text style={[baseStyles.textAlert]}>(2 incomplete)</Text>
-              </View>
-            </View>
-
-            <View style={[baseStyles.cardStyle]}>
-              <Text style={[baseStyles.h3]}>Ballard Elementary School</Text>
-              <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
-                <Text>30cm away</Text>
-                <View>
-                  <Text>Updated: </Text>
-                  <Text>4/30/17 4:30</Text>
-                </View>
-              </View>
-              <View
-                style={[
-                  baseStyles.observationBlock,
-                  { flexDirection: "row", flexWrap: "wrap" }
-                ]}
-              >
-                <Text style={[baseStyles.metadataText]}>2 Observations</Text>
-                <Text style={[baseStyles.textAlert]}>(2 incomplete)</Text>
-              </View>
-            </View>
+              );
+            })}
           </ScrollView>
         </Interactable.View>
       </View>

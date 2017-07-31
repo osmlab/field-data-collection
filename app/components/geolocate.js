@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { StyleSheet, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import getCurrentPosition from "../lib/get-current-position";
 
 const styles = StyleSheet.create({
   button: {
@@ -16,19 +17,11 @@ const styles = StyleSheet.create({
 });
 
 export default function geolocate(props) {
-  const success = data => {
-    props.onGeolocate(null, data);
-  };
-
-  const error = err => {
-    props.onGeolocate(err);
-  };
-
   return (
     <TouchableOpacity
       style={[styles.button]}
       onPress={() => {
-        navigator.geolocation.getCurrentPosition(success, error);
+        getCurrentPosition(props.onGeolocate);
       }}
     >
       <Icon

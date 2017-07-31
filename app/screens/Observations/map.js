@@ -10,9 +10,11 @@ import {
 import Mapbox, { MapView } from "react-native-mapbox-gl";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Link } from "react-router-native";
+import { connect } from "react-redux";
 
-import createOsmp2p from "../../lib/create-osm-p2p";
-import osmp2p from "../../lib/osm-p2p";
+import getCurrentPosition from "../../lib/get-current-position";
+import { selectOsmFeatures } from "../../selectors";
+import { setOsmFeatureList } from "../../actions";
 import {
   Annotation,
   Header,
@@ -70,9 +72,15 @@ class ObservationMapScreen extends Component {
         longitude: -122.384
       },
       zoom: 16,
-      userTrackingMode: Mapbox.userTrackingMode.followWithCourse,
+      userTrackingMode: Mapbox.userTrackingMode.followWithHeading,
       annotations: [],
-      mapSize: { width: null, height: null }
+      mapSize: { width: null, height: null },
+      userLocation: null
+    });
+
+    getCurrentPosition((err, data) => {
+      console.log("getCurrentPosition", data);
+      this.setState({ userLocation: data.coords });
     });
   }
 
@@ -81,10 +89,6 @@ class ObservationMapScreen extends Component {
       showMap: false
     });
   }
-
-  openNearbyFeaturesView = () => {};
-
-  closeNearbyFeaturesView = () => {};
 
   onMenuPress = () => {
     this._menu.open();
@@ -105,7 +109,7 @@ class ObservationMapScreen extends Component {
       console.log("bounds from screenCoords", bounds);
       // TODO: trigger action fetching points within bounds
       var q = [[bounds[0], bounds[2]], [bounds[1], bounds[3]]];
-      osm.queryOSM(q, function(err, results) {
+      osm.queryOSM(q, (err, results) => {
         console.log("osm.query", err, Object.keys(results));
       });
     });
@@ -115,15 +119,17 @@ class ObservationMapScreen extends Component {
     console.log("onAnnotationPress", console.log(e));
   };
 
-  prepareAnnotations = () => {
+  onFinishLoadingMap = e => {
+    const { setOsmFeatureList } = this.props;
     this._map.getBounds(data => {
       var q = [[data[0], data[2]], [data[1], data[3]]];
-
-      // TODO: trigger action fetching points within bounds
+      setOsmFeatureList(q);
     });
   };
 
   onGeolocate = (err, data) => {
+    this.setState({ userLocation: data.coords });
+
     this._map.setCenterCoordinate(
       data.coords.latitude,
       data.coords.longitude,
@@ -131,7 +137,29 @@ class ObservationMapScreen extends Component {
     );
   };
 
+  onUpdateUserLocation = e => {
+    console.log("e", e);
+  };
+
   render() {
+    const { featureList } = this.props;
+
+    const filteredFeatures = featureList.filter(item => {
+      return item.lat && item.lon && item.tags;
+    });
+
+    const annotations = filteredFeatures.map(item => {
+      return (
+        <Annotation
+          key={item.id}
+          id={item.id}
+          radius={8}
+          coordinates={{ latitude: item.lat, longitude: item.lon }}
+          onPress={this.onAnnotationPress}
+        />
+      );
+    });
+
     return (
       <View style={[baseStyles.wrapper, { padding: 0 }]}>
         <Header onTogglePress={this.onMenuPress}>
@@ -160,6 +188,8 @@ class ObservationMapScreen extends Component {
               this.state.mapSize.height = height;
               this.state.mapSize.width = width;
             }}
+            onFinishLoadingMap={this.onFinishLoadingMap}
+            onUpdateUserLocation={this.onUpdateUserLocation}
             initialCenterCoordinate={this.state.center}
             initialZoomLevel={this.state.zoom}
             initialDirection={0}
@@ -169,31 +199,10 @@ class ObservationMapScreen extends Component {
             showsUserLocation={false}
             styleURL="https://openmaptiles.github.io/osm-bright-gl-style/style-cdn.json"
             userTrackingMode={this.state.userTrackingMode}
+            attributionButtonIsHidden={true}
+            logoIsHidden={true}
           >
-            <Annotation
-              id="example1"
-              radius={8}
-              coordinates={{ latitude: 47.6686, longitude: -122.3841 }}
-              onPress={this.onAnnotationPress}
-            />
-            <Annotation
-              id="example2"
-              radius={8}
-              coordinates={{ latitude: 47.66855, longitude: -122.3838 }}
-              onPress={this.onAnnotationPress}
-            />
-            <Annotation
-              id="example3"
-              radius={8}
-              coordinates={{ latitude: 47.66869, longitude: -122.3842 }}
-              onPress={this.onAnnotationPress}
-            />
-            <Annotation
-              id="example4"
-              radius={8}
-              coordinates={{ latitude: 47.6687, longitude: -122.3843 }}
-              onPress={this.onAnnotationPress}
-            />
+            {annotations}
           </MapView>}
 
         <TouchableOpacity
@@ -213,7 +222,7 @@ class ObservationMapScreen extends Component {
 
         <Geolocate onGeolocate={this.onGeolocate} />
 
-        <Link to="/add-observation/categories" style={[styles.buttonAdd]}>
+        <Link to="/add-observation/choose-point" style={[styles.buttonAdd]}>
           <Icon
             name="add"
             style={{
@@ -224,10 +233,20 @@ class ObservationMapScreen extends Component {
             }}
           />
         </Link>
-        <NearbyFeatures />
+
+        <NearbyFeatures
+          userLocation={this.state.userLocation}
+          features={filteredFeatures}
+        />
       </View>
     );
   }
 }
 
-export default ObservationMapScreen;
+const mapStateToProps = state => ({
+  featureList: selectOsmFeatures(state)
+});
+
+export default connect(mapStateToProps, {
+  setOsmFeatureList
+})(ObservationMapScreen);

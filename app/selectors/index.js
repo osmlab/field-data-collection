@@ -108,3 +108,7 @@ export const selectRemoteSurveys = state => state.surveys.remote;
 export const selectStatus = state => state.status;
 
 export const selectActiveObservation = state => state.observation;
+
+export const selectObservations = state => state.observations.list;
+
+export const selectOsmFeatures = state => state.osm.featureList;

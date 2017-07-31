@@ -2,10 +2,13 @@ import types from "../actions";
 
 const initialState = {
   areaOfInterest: null,
-  observationsLastSynced: null
+  featureList: []
 };
 
-export default (state = initialState, { areaOfInterest, syncDate, type }) => {
+export default (
+  state = initialState,
+  { areaOfInterest, syncDate, list, type }
+) => {
   switch (type) {
     case types.SET_AREA_OF_INTEREST:
       return {
@@ -17,6 +20,18 @@ export default (state = initialState, { areaOfInterest, syncDate, type }) => {
       return {
         ...state,
         areaOfInterest: null
+      };
+
+    case types.SET_OSM_FEATURE_LIST:
+      return {
+        ...state,
+        featureList: list
+      };
+
+    case types.SET_OSM_FEATURE_LIST:
+      return {
+        ...state,
+        featureList: []
       };
 
     default:

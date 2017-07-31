@@ -26,6 +26,8 @@ class Map extends Component {
           showsUserLocation={true}
           styleURL="https://openmaptiles.github.io/osm-bright-gl-style/style-cdn.json"
           userTrackingMode={Mapbox.userTrackingMode.followWithCourse}
+          attributionButtonIsHidden={true}
+          logoIsHidden={true}
         />
       </View>
     );
