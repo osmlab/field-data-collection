@@ -21,7 +21,8 @@ import {
   SideMenu,
   Text,
   Geolocate,
-  NearbyFeatures
+  NearbyFeatures,
+  StatusBar
 } from "../../components";
 import { baseStyles, colors } from "../../styles";
 
@@ -44,11 +45,9 @@ const styles = StyleSheet.create({
     right: 15
   },
   buttonLegend: {
-    zIndex: 1002,
     position: "absolute",
-    top: 80,
-    right: 15,
-    zIndex: 10
+    top: 100,
+    right: 10
   },
   header: {
     height: 60,
@@ -78,7 +77,9 @@ class ObservationMapScreen extends Component {
 
     getCurrentPosition((err, data) => {
       console.log("getCurrentPosition", data);
-      this.setState({ userLocation: data.coords });
+      if (data) {
+        this.setState({ userLocation: data.coords });
+      }
     });
   }
 
@@ -174,6 +175,8 @@ class ObservationMapScreen extends Component {
         <Header onTogglePress={this.onMenuPress}>
           <Text>Observe</Text>
         </Header>
+
+        <StatusBar />
 
         <SideMenu
           ref={menu => {

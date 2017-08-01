@@ -168,6 +168,14 @@ export const syncData = target => (dispatch, getState) => {
         type: types.SYNCING_SURVEY_DATA
       });
 
+      const progressFn = i => {
+        console.log("progress", i);
+        dispatch({
+          type: types.SYNCING_SURVEY_DATA_PROGRESS,
+          progress: i
+        });
+      };
+
       if (shouldImportOsm) {
         osm.replicate(
           target,
@@ -212,14 +220,6 @@ export const syncData = target => (dispatch, getState) => {
           dispatch({ type: types.FINISHED_SYNCING_SURVEY_DATA });
         });
       }
-
-      const progressFn = i => {
-        console.log("progress", i);
-        dispatch({
-          type: types.SYNCING_SURVEY_DATA_PROGRESS,
-          progress: i
-        });
-      };
     }
   );
 };

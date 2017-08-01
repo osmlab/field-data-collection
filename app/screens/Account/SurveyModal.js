@@ -27,8 +27,6 @@ class SurveyModal extends Component {
     return (
       <Modal animationType="slide" transparent visible onRequestClose={close}>
         <View style={[baseStyles.wrapperContentMd, baseStyles.modal]}>
-          <StatusBar />
-
           <View style={[baseStyles.wrappedItems]}>
             <Text style={[baseStyles.h2, baseStyles.wrappedItemsLeft]}>
               Add Surveys

@@ -87,7 +87,7 @@ class NearbyFeatures extends Component {
 
             {/*
             // hide filter button temporarily
-            <View style={[baseStyles.rightSideContent]}>
+            <View style={{}}>
               <TouchableOpacity
                 style={[baseStyles.buttonOutline]}
                 onPress={this._onPressButton}

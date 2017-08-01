@@ -5,6 +5,7 @@ import { baseStyles } from "../styles";
 import Header from "./header";
 import SideMenu from "./side-menu";
 import Text from "./text";
+import StatusBar from "./StatusBar";
 
 /*
 * A way to set a background color without getting into android/ios files
@@ -31,6 +32,8 @@ class Wrapper extends Component {
         <Header onTogglePress={this.onMenuPress}>
           {headerView}
         </Header>
+
+        <StatusBar />
 
         <SideMenu
           ref={menu => {

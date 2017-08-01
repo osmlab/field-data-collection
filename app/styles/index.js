@@ -67,11 +67,12 @@ const baseStyles = StyleSheet.create({
 
   //Modal
   modal: {
-    marginTop: 25,
+    marginTop: 110,
     backgroundColor: "#fff",
-    width: 380,
+    width: 360,
     height: 600,
-    alignSelf: "center"
+    alignSelf: "center",
+    elevation: 15
   },
   touchableLinksWrapper: {
     marginTop: 10,
