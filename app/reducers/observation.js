@@ -1,14 +1,16 @@
 import types from "../actions";
 
 const initialState = {
-  tags: {}
+  nodeId: null,
+  observation: null
 };
 
-export default (state = initialState, { tags, type }) => {
+export default (state = initialState, { nodeId, observation, type }) => {
   switch (type) {
     case types.INITIALIZE_OBSERVATION:
       return {
-        tags
+        nodeId,
+        observation
       };
 
     case types.OBSERVATION_SAVED:
@@ -17,10 +19,7 @@ export default (state = initialState, { tags, type }) => {
     case types.UPDATE_OBSERVATION:
       return {
         ...state,
-        tags: {
-          ...state.tags,
-          ...tags
-        }
+        ...observation
       };
 
     default:

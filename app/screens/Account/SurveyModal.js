@@ -40,8 +40,8 @@ class SurveyModal extends Component {
             sync={syncData}
             surveys={remoteSurveys}
           />
-          <TouchableOpacity onPress={close} style={[baseStyles.buttonBottom]}>
-            <Text style={[baseStyles.textWhite]}>DONE</Text>
+          <TouchableOpacity onPress={close} style={baseStyles.buttonBottom}>
+            <Text style={baseStyles.textWhite}>DONE</Text>
           </TouchableOpacity>
         </View>
       </Modal>

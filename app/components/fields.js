@@ -107,7 +107,7 @@ export class TextField extends Field {
           </Text>
         </View>
         <View>
-          <Icon name="chevron_right" style={baseStyles.fieldArrow} />
+          <Icon name="keyboard-arrow-right" style={baseStyles.fieldArrow} />
         </View>
       </View>
     );

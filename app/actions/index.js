@@ -40,6 +40,8 @@ const types = {
   RECEIVED_REMOTE_SURVEY_LIST: "RECEIVED_REMOTE_SURVEY_LIST",
   RECEIVED_REMOTE_SURVEY: "RECEIVED_REMOTE_SURVEY",
   SAVING_OBSERVATION: "SAVING_OBSERVATION",
+  SAVING_OBSERVATION_FAILED: "SAVING_OBSERVATION_FAILED",
+  OBSERVATION_SAVED: "OBSERVATION_SAVED",
   SYNCING_SURVEY_DATA: "SYNCING_SURVEY_DATA",
   SYNCING_SURVEY_DATA_PROGRESS: "SYNCING_SURVEY_DATA_PROGRESS",
   SYNCING_SURVEY_DATA_FAILED: "SYNCING_SURVEY_DATA_FAILED",
@@ -335,36 +337,32 @@ export const listRemoteSurveys = () => (dispatch, getState) => {
   });
 };
 
-export const initializeObservation = tags => dispatch =>
-  dispatch({
+export const initializeObservation = (nodeId, observation) => dispatch => {
+  console.log("observation", observation);
+  return dispatch({
     type: types.INITIALIZE_OBSERVATION,
-    tags
+    nodeId,
+    observation
   });
+};
 
-export const updateObservation = tags => dispatch =>
+export const updateObservation = (nodeId, observation) => dispatch =>
   dispatch({
     type: types.UPDATE_OBSERVATION,
-    tags
-  });
-
-export const saveObservation = () => (dispatch, getState) => {
-  const { observation } = selectActiveObservation(getState());
-
-  dispatch({
-    type: types.SAVING_OBSERVATION,
+    nodeId,
     observation
   });
 
-  // TODO this is wrong
-  // observation currently looks like (still needs a point / associated feature):
-  // {
-  //   tags: {
-  //     highway: "residential",
-  //     name: "My Street",
-  //     surface: "paved"
-  //   }
-  // }
-  return osm.createObservation(observation, error => {
+export const saveObservation = nodeId => (dispatch, getState) => {
+  const { observation } = selectActiveObservation(getState());
+
+  dispatch({
+    type: types.SAVING_OBSERVATION
+  });
+
+  console.log("save observation", observation);
+  return osm.createObservation(nodeId, observation, error => {
+    console.log("finished saving observation", error);
     if (error) {
       return dispatch({
         type: types.SAVING_OBSERVATION_FAILED,

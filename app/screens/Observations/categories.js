@@ -4,12 +4,13 @@ import { connect } from "react-redux";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
 import { Text, Wrapper, CategoryList } from "../../components";
-import { selectAllCategories } from "../../selectors";
+import { selectAllCategories, selectActiveObservation } from "../../selectors";
 import { baseStyles } from "../../styles";
 
 class CategoriesScreen extends Component {
   render() {
-    const { categories, history } = this.props;
+    const { categories, history, observation } = this.props;
+    console.log("categories observation", observation);
 
     const headerView = (
       <View
@@ -44,7 +45,8 @@ class CategoriesScreen extends Component {
 }
 
 const mapStateToProps = state => ({
-  categories: selectAllCategories(state)
+  categories: selectAllCategories(state),
+  observation: selectActiveObservation(state)
 });
 
 export default connect(mapStateToProps)(CategoriesScreen);

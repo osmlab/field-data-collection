@@ -142,6 +142,14 @@ class ObservationMapScreen extends Component {
 
   onStartLoadingMap = e => {
     this.setFeatures();
+
+    this._map.getBounds(data => {
+      var q = [[data[0], data[2]], [data[1], data[3]]];
+
+      osm.queryObservations(q, (err, results) => {
+        console.log("observations", err, results);
+      });
+    });
   };
 
   onGeolocate = (err, data) => {

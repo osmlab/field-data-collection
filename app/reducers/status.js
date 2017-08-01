@@ -15,7 +15,9 @@ const MESSAGES = {
     "Fetching remote survey list failed.",
   [types.SYNCING_SURVEY_DATA]: "Syncing survey data...",
   [types.SYNCING_SURVEY_DATA_FAILED]: "Syncing survey data failed.",
-  [types.FINISHED_SYNCING_SURVEY_DATA]: "Survey data sync complete"
+  [types.FINISHED_SYNCING_SURVEY_DATA]: "Survey data sync complete",
+  [types.SAVING_OBSERVATION]: "Saving observation...",
+  [types.SAVING_OBSERVATION_FAILED]: "Saving observation failed."
 };
 
 export default (state = initialState, { error, type }) => {

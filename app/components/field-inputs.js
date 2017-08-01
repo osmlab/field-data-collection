@@ -20,7 +20,9 @@ class Field extends Component {
 
 export class CheckField extends Field {
   render() {
-    const { field: { key, label }, observation: { tags } } = this.props;
+    const { field: { key, label }, observation } = this.props;
+    const { tags } = observation;
+
     const value = tags[key] != null && tags[key] !== "no";
 
     return (

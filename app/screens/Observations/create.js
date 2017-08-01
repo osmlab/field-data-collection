@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Link } from "react-router-native";
 
-import { initializeObservation, saveObservation } from "../../actions";
+import { saveObservation } from "../../actions";
 import { Text, Wrapper, Map } from "../../components";
 import { getFieldType } from "../../components/fields";
 import {
@@ -16,34 +16,33 @@ import { baseStyles } from "../../styles";
 
 class AddObservationScreen extends Component {
   componentDidMount() {
-    const {
-      initializeObservation,
-      observation: { tags: observationTags },
-      type: { tags }
-    } = this.props;
-
-    const observationKeys = Object.keys(observationTags);
-    const typeKeys = Object.keys(tags);
-    const shared = observationKeys.filter(x => typeKeys.includes(x));
-
-    if (
-      shared.length === 0 ||
-      !shared.some(k => [observationKeys[k], "*"].includes(typeKeys[k]))
-    ) {
-      // initialize a new observation if the type has changed (no shared keys, or if keys are shared, no matches (including wildcards))
-      initializeObservation(tags);
-    }
+    // const {
+    //   observation: { tags: observationTags },
+    //   type: { tags }
+    // } = this.props;
+    //
+    // const observationKeys = Object.keys(observationTags);
+    // const typeKeys = Object.keys(tags);
+    // const shared = observationKeys.filter(x => typeKeys.includes(x));
+    // if (
+    //   shared.length === 0 ||
+    //   !shared.some(k => [observationKeys[k], "*"].includes(typeKeys[k]))
+    // ) {
+    //   // initialize a new observation if the type has changed (no shared keys, or if keys are shared, no matches (including wildcards))
+    //   initializeObservation(tags);
+    // }
   }
 
   renderField(field, index) {
     const { observation, survey, type: { id } } = this.props;
+    console.log("observation renderField", observation);
 
     try {
       const Field = getFieldType(field.type);
 
       return (
         <Link key={index} to={`/add-observation/${survey}/${id}/fields`}>
-          <Field field={field} observation={observation} />
+          <Field field={field} observation={observation.observation} />
         </Link>
       );
     } catch (err) {
@@ -53,15 +52,23 @@ class AddObservationScreen extends Component {
     }
   }
 
+  save = () => {
+    const { saveObservation, history } = this.props;
+    saveObservation();
+    history.push("/");
+  };
+
   render() {
     const {
       icon,
       history,
-      observation: { tags },
-      saveObservation,
+      observation,
       surveyId,
       type: { fields, name }
     } = this.props;
+    const tags = { observation };
+
+    console.log("create.js observation", this.props.observation);
 
     const headerView = (
       <View
@@ -130,15 +137,16 @@ class AddObservationScreen extends Component {
               {fields.map(this.renderField, this)}
             </View>
 
-            <TouchableOpacity onPress={saveObservation}>
+            <TouchableOpacity onPress={this.save}>
               <Text>Save</Text>
             </TouchableOpacity>
 
             <Text>
-              {Object.keys(tags).reduce(
+              ok
+              {/*Object.keys(tags).reduce(
                 (str, k) => (str += `\n${k}=${tags[k]}`),
                 ""
-              )}
+              )*/}
             </Text>
           </View>
         </View>
@@ -161,6 +169,5 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 export default connect(mapStateToProps, {
-  initializeObservation,
   saveObservation
 })(AddObservationScreen);
