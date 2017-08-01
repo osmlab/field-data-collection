@@ -1,4 +1,3 @@
-const eos = require("end-of-stream");
 const getGeoJSON = require("osm-p2p-geojson");
 const pump = require("pump");
 const collect = require("collect-stream");
@@ -61,15 +60,38 @@ function osmp2p(createOsmDb) {
     observationDb.del(id, opts, cb);
   }
 
-  // TODO use tags.osm-p2p-id?
-  // TODO handle this being an OSM.org ID _or_ a placeholder ID
   function createObservation(nodeId, doc, opts, cb) {
     if (!cb && typeof opts === "function") {
       cb = opts;
       opts = {};
     }
 
-    observationDb.create(doc, opts, onObservationCreated);
+    observationDb.get(nodeId, onGotNode.bind(null, "obs"));
+    osmOrgDb.get(nodeId, onGotNode.bind(null, "osm"));
+
+    var pending = 2;
+    var res = {};
+    function onGotNode(type, err, heads) {
+      if (err) {
+        pending++;
+        return cb(err);
+      }
+      var docs = Object.keys(heads).map(function(k) {
+        return heads[k];
+      });
+      if (docs.length > 0) {
+        res[type] = docs.sort(
+          (a, b) => (b.timestamp || 0) - (a.timestamp || 0)
+        )[0];
+      }
+
+      if (--pending === 0) {
+        if (res["osm"]) nodeId = (res["osm"].tags || {})["osm-p2p-id"];
+        else nodeId = (res["obs"].tags || {})["osm-p2p-id"];
+
+        observationDb.create(doc, opts, onObservationCreated);
+      }
+    }
 
     function onObservationCreated(err, docId) {
       if (err) return cb(err);

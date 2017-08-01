@@ -66,20 +66,23 @@ test("create an observation to a pre-existing OSM.org node, and check they are l
   var doc = {
     type: "node",
     lat: 5,
-    lon: -5
+    lon: -5,
+    tags: {
+      'osm-p2p-id': 567
+    }
   };
-  osmOrgDb.create(JSON.stringify(doc), function(err, nodeId) {
+  osmOrgDb.create(doc, function(err, nodeId) {
     t.error(err);
 
-    var obs = JSON.stringify({
+    var obs = {
       type: "observation",
       lat: 6,
       lon: -6
-    });
+    };
     osm.createObservation(nodeId, obs, function(err, obsDoc, linkDoc) {
       t.error(err);
       t.equals(linkDoc.obs, obsDoc.id);
-      t.equals(linkDoc.link, nodeId);
+      t.equals(linkDoc.link, 567);
     });
   });
 });
