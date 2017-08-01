@@ -20,21 +20,21 @@ test("create an observation to a placeholder node, and check they are linked", f
 
   var nodeId;
 
-  var node = JSON.stringify({
+  var node = {
     type: "node",
     lat: 5,
     lon: -5
-  });
+  };
   osm.createNode(node, function(err, node) {
     t.error(err);
     var doc = node.value.v;
     nodeId = node.value.k;
 
-    var obs = JSON.stringify({
+    var obs = {
       type: "observation",
       lat: 6,
       lon: -6
-    });
+    };
     osm.createObservation(doc.tags["osm-p2p-id"], obs, function(
       err,
       obsDoc,
@@ -68,7 +68,7 @@ test("create an observation to a pre-existing OSM.org node, and check they are l
     lat: 5,
     lon: -5,
     tags: {
-      'osm-p2p-id': 567
+      "osm-p2p-id": 567
     }
   };
   osmOrgDb.create(doc, function(err, nodeId) {
@@ -132,14 +132,12 @@ test("simulate an observation created before & after a placeholder node becomes 
 
   // step 1
   function createPlaceholderNodeAndObservation(done) {
-    var node = JSON.stringify(doc);
-    osm.createNode(node, function(err, node) {
+    osm.createNode(doc, function(err, node) {
       t.error(err);
       var newDoc = node.value.v;
       p2pId = node.value.k;
 
-      var observation = JSON.stringify(obs);
-      osm.createObservation(newDoc.tags["osm-p2p-id"], observation, function(
+      osm.createObservation(newDoc.tags["osm-p2p-id"], obs, function(
         err,
         obsDoc,
         _linkDoc
@@ -156,7 +154,7 @@ test("simulate an observation created before & after a placeholder node becomes 
   // step 2
   function createOsmOrgNode(done) {
     var newDoc = Object.assign(doc, { tags: { "osm-p2p-id": p2pId } });
-    osmOrgDb.create(JSON.stringify(newDoc), function(err, _osmId) {
+    osmOrgDb.create(newDoc, function(err, _osmId) {
       t.error(err);
       osmId = _osmId;
       done();
