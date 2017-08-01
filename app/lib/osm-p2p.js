@@ -167,14 +167,21 @@ function osmp2p(createOsmDb) {
       cb = opts;
       opts = {};
     }
-    console.log("replicate");
 
+    console.log("pauseIndexes");
     pauseIndexes(osmOrgDb);
     process.nextTick(function() {
+      console.log("clearOsmOrgDb");
       clearOsmOrgDb(function() {
+        console.log("start replication");
         netSync.replicate(addr, opts, function() {
+          console.log("resetIndexes");
           resetIndexes(osmOrgDb, function() {
+            console.log("restartIndexes");
             osmOrgDb._restartIndexes();
+            osmOrgDb.ready(function() {
+              console.log("indexes complete");
+            });
             cb();
           });
         });

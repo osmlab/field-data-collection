@@ -11,6 +11,7 @@ import Mapbox, { MapView } from "react-native-mapbox-gl";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Link } from "react-router-native";
 import { connect } from "react-redux";
+import debounce from "debounce";
 
 import getCurrentPosition from "../../lib/get-current-position";
 import { selectOsmFeatures } from "../../selectors";
@@ -74,9 +75,12 @@ class ObservationMapScreen extends Component {
       mapSize: { width: null, height: null },
       userLocation: null
     });
+  }
 
+  componentWillReceiveProps() {
     getCurrentPosition((err, data) => {
-      console.log("getCurrentPosition", data);
+      console.log("getCurrentPosition", err, data);
+
       if (data) {
         this.setState({ userLocation: data.coords });
       }
@@ -105,27 +109,22 @@ class ObservationMapScreen extends Component {
     };
 
     this._map.getBoundsFromScreenCoordinates(rect, bounds => {
-      console.log("bounds from screenCoords", bounds);
-      // TODO: trigger action fetching points within bounds
       var q = [[bounds[0], bounds[2]], [bounds[1], bounds[3]]];
+
       osm.queryOSM(q, (err, results) => {
         console.log("osm.query", err, Object.keys(results));
       });
     });
   };
 
-  onAnnotationPress = e => {
-    console.log("onAnnotationPress", console.log(e));
-  };
-
-  onStartLoadingMap = e => {
+  setFeatures = e => {
     const { setOsmFeatureList } = this.props;
 
     this._map.getBounds(data => {
       var q = [[data[0], data[2]], [data[1], data[3]]];
 
       osm.queryOSM(q, (err, results) => {
-        console.log("full results.length", results.length);
+        // TODO: replace this with filtering based on presets
         const filtered = results.filter(item => {
           return (
             item.type === "node" &&
@@ -135,20 +134,28 @@ class ObservationMapScreen extends Component {
             item.tags.name
           );
         });
-        console.log("filtered.length", filtered.length);
+
         setOsmFeatureList(filtered);
       });
     });
   };
 
-  onGeolocate = (err, data) => {
-    this.setState({ userLocation: data.coords });
+  onStartLoadingMap = e => {
+    this.setFeatures();
+  };
 
-    this._map.setCenterCoordinate(
-      data.coords.latitude,
-      data.coords.longitude,
-      true
-    );
+  onGeolocate = (err, data) => {
+    console.log("onGeolocate", err, data);
+
+    if (data) {
+      this.setState({ userLocation: data.coords });
+
+      this._map.setCenterCoordinate(
+        data.coords.latitude,
+        data.coords.longitude,
+        true
+      );
+    }
   };
 
   onUpdateUserLocation = e => {
@@ -157,7 +164,7 @@ class ObservationMapScreen extends Component {
 
   render() {
     const { featureList } = this.props;
-    console.log("featureList.length", featureList.length);
+
     const annotations = featureList.map(item => {
       return (
         <Annotation
@@ -169,7 +176,7 @@ class ObservationMapScreen extends Component {
         />
       );
     });
-    console.log("annotations.length", annotations.length);
+
     return (
       <View style={[baseStyles.wrapper, { padding: 0 }]}>
         <Header onTogglePress={this.onMenuPress}>
@@ -203,6 +210,7 @@ class ObservationMapScreen extends Component {
             onStartLoadingMap={this.onStartLoadingMap}
             onFinishLoadingMap={this.onFinishLoadingMap}
             onUpdateUserLocation={this.onUpdateUserLocation}
+            onRegionDidChange={debounce(this.setFeatures, 400)}
             initialCenterCoordinate={this.state.center}
             initialZoomLevel={this.state.zoom}
             initialDirection={0}

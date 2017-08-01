@@ -19,9 +19,13 @@ const MESSAGES = {
 };
 
 export default (state = initialState, { error, type }) => {
-  return {
-    ...state,
-    error,
-    message: MESSAGES[type]
-  };
+  if (MESSAGES[type]) {
+    return {
+      ...state,
+      error,
+      message: MESSAGES[type]
+    };
+  }
+
+  return state;
 };

@@ -24,6 +24,7 @@
     "collect-stream": "^1.2.1",
     "concat-stream": "^1.6.0",
     "d64": "^1.0.0",
+    "debounce": "^1.0.2",
     "end-of-stream": "^1.4.0",
     "hyperlog": "github:sethvincent/hyperlog",
     "hyperlog-kdb-index": "4.0.2",
