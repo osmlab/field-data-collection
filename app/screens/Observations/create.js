@@ -15,27 +15,8 @@ import {
 import { baseStyles } from "../../styles";
 
 class AddObservationScreen extends Component {
-  componentDidMount() {
-    // const {
-    //   observation: { tags: observationTags },
-    //   type: { tags }
-    // } = this.props;
-    //
-    // const observationKeys = Object.keys(observationTags);
-    // const typeKeys = Object.keys(tags);
-    // const shared = observationKeys.filter(x => typeKeys.includes(x));
-    // if (
-    //   shared.length === 0 ||
-    //   !shared.some(k => [observationKeys[k], "*"].includes(typeKeys[k]))
-    // ) {
-    //   // initialize a new observation if the type has changed (no shared keys, or if keys are shared, no matches (including wildcards))
-    //   initializeObservation(tags);
-    // }
-  }
-
   renderField(field, index) {
     const { observation, survey, type: { id } } = this.props;
-    console.log("observation renderField", observation);
 
     try {
       const Field = getFieldType(field.type);
@@ -53,8 +34,8 @@ class AddObservationScreen extends Component {
   }
 
   save = () => {
-    const { saveObservation, history } = this.props;
-    saveObservation();
+    const { saveObservation, history, observation } = this.props;
+    saveObservation(observation.nodeId);
     history.push("/");
   };
 
@@ -64,11 +45,9 @@ class AddObservationScreen extends Component {
       history,
       observation,
       surveyId,
-      type: { fields, name }
+      type: { fields, name },
+      observation: { tags }
     } = this.props;
-    const tags = { observation };
-
-    console.log("create.js observation", this.props.observation);
 
     const headerView = (
       <View
@@ -137,12 +116,14 @@ class AddObservationScreen extends Component {
               {fields.map(this.renderField, this)}
             </View>
 
-            <TouchableOpacity onPress={this.save}>
+            <TouchableOpacity
+              onPress={this.save}
+              style={baseStyles.buttonOutline}
+            >
               <Text>Save</Text>
             </TouchableOpacity>
 
             <Text>
-              ok
               {/*Object.keys(tags).reduce(
                 (str, k) => (str += `\n${k}=${tags[k]}`),
                 ""

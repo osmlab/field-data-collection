@@ -10,6 +10,9 @@ class Map extends Component {
   componentWillMount() {}
 
   render() {
+    console.log("this.props.center", this.props.center);
+    const { observation } = this.props;
+
     return (
       <View style={{ height: 100 }}>
         <MapView
@@ -25,10 +28,11 @@ class Map extends Component {
           zoomEnabled={false}
           showsUserLocation={true}
           styleURL="https://openmaptiles.github.io/osm-bright-gl-style/style-cdn.json"
-          userTrackingMode={Mapbox.userTrackingMode.followWithCourse}
           attributionButtonIsHidden={true}
           logoIsHidden={true}
-        />
+        >
+          {this.props.children}
+        </MapView>
       </View>
     );
   }

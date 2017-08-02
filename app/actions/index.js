@@ -51,8 +51,8 @@ const types = {
   SET_OBSERVATIONS_LAST_SYNCED: "SET_OBSERVATIONS_LAST_SYNCED",
   SET_COORDINATOR_TARGET: "SET_COORDINATOR_TARGET",
   UPDATE_OBSERVATION: "UPDATE_OBSERVATION",
-  SET_OBSERVATION_LIST: "SET_OBSERVATION_LIST",
-  CLEAR_OBSERVATION_LIST: "CLEAR_OBSERVATION_LIST",
+  SET_OBSERVATIONS: "SET_OBSERVATIONS",
+  CLEAR_OBSERVATIONS: "CLEAR_OBSERVATIONS",
   SET_OSM_FEATURE_LIST: "SET_OSM_FEATURE_LIST",
   CLEAR_OSM_FEATURE_LIST: "CLEAR_OSM_FEATURE_LIST"
 };
@@ -376,12 +376,13 @@ export const saveObservation = nodeId => (dispatch, getState) => {
   });
 };
 
-export const setObservationList = list => (dispatch, getState) => {
-  return dispatch({ type: types.SET_OBSERVATION_LIST, list });
+export const setObservations = list => (dispatch, getState) => {
+  console.log("setObservations", list.length);
+  return dispatch({ type: types.SET_OBSERVATIONS, list });
 };
 
-export const clearObservationList = () => dispatch => {
-  return dispatch({ type: types.CLEAR_OBSERVATION_LIST });
+export const clearObservations = () => dispatch => {
+  return dispatch({ type: types.CLEAR_OBSERVATIONS });
 };
 
 export const setOsmFeatureList = list => (dispatch, getState) => {

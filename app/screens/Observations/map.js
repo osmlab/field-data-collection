@@ -14,10 +14,11 @@ import { connect } from "react-redux";
 import debounce from "debounce";
 
 import getCurrentPosition from "../../lib/get-current-position";
-import { selectOsmFeatures } from "../../selectors";
-import { setOsmFeatureList, osm } from "../../actions";
+import { selectOsmFeatures, selectObservations } from "../../selectors";
+import { setOsmFeatureList, setObservations, osm } from "../../actions";
 import {
-  Annotation,
+  AnnotationOSM,
+  AnnotationObservation,
   Header,
   SideMenu,
   Text,
@@ -118,39 +119,36 @@ class ObservationMapScreen extends Component {
   };
 
   setFeatures = e => {
-    const { setOsmFeatureList } = this.props;
+    const { setOsmFeatureList, setObservations } = this.props;
 
     this._map.getBounds(data => {
       var q = [[data[0], data[2]], [data[1], data[3]]];
 
-      osm.queryOSM(q, (err, results) => {
-        // TODO: replace this with filtering based on presets
-        const filtered = results.filter(item => {
-          return (
-            item.type === "node" &&
-            item.lat &&
-            item.lon &&
-            item.tags &&
-            item.tags.name
-          );
+      osm.queryObservations(q, (err, observations) => {
+        if (err) console.log(err);
+        osm.queryOSM(q, (err, nodes) => {
+          if (err) console.log(err);
+          // TODO: replace this with filtering based on presets
+          const filtered = nodes.filter(item => {
+            return (
+              item.type === "node" &&
+              item.lat &&
+              item.lon &&
+              item.tags &&
+              item.tags.name
+            );
+          });
+
+          console.log("queryObservations results.length", observations.length);
+          console.log("osm points", err, filtered.length);
+          setOsmFeatureList(filtered);
+          setObservations(observations);
         });
-
-        setOsmFeatureList(filtered);
       });
     });
   };
 
-  onStartLoadingMap = e => {
-    this.setFeatures();
-
-    this._map.getBounds(data => {
-      var q = [[data[0], data[2]], [data[1], data[3]]];
-
-      osm.queryObservations(q, (err, results) => {
-        console.log("observations", err, results);
-      });
-    });
-  };
+  onStartLoadingMap = e => {};
 
   onGeolocate = (err, data) => {
     console.log("onGeolocate", err, data);
@@ -171,11 +169,11 @@ class ObservationMapScreen extends Component {
   };
 
   render() {
-    const { featureList } = this.props;
+    const { featureList, observations } = this.props;
 
-    const annotations = featureList.map(item => {
+    let annotations = featureList.map(item => {
       return (
-        <Annotation
+        <AnnotationOSM
           key={item.id}
           id={item.id}
           radius={8}
@@ -184,6 +182,21 @@ class ObservationMapScreen extends Component {
         />
       );
     });
+
+    console.log("observations.length", observations.length);
+
+    annotations = annotations.concat(
+      observations.map(item => {
+        return (
+          <AnnotationObservation
+            key={item.id}
+            id={item.id}
+            coordinates={{ latitude: item.lat, longitude: item.lon }}
+            onPress={this.onMapPress}
+          />
+        );
+      })
+    );
 
     return (
       <View style={[baseStyles.wrapper, { padding: 0 }]}>
@@ -273,9 +286,11 @@ class ObservationMapScreen extends Component {
 }
 
 const mapStateToProps = state => ({
-  featureList: selectOsmFeatures(state)
+  featureList: selectOsmFeatures(state),
+  observations: selectObservations(state)
 });
 
 export default connect(mapStateToProps, {
-  setOsmFeatureList
+  setOsmFeatureList,
+  setObservations
 })(ObservationMapScreen);

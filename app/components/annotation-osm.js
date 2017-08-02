@@ -15,7 +15,7 @@ import Svg, { G, Path, Circle } from "react-native-svg";
 *   )
 * })
 **/
-export default function Annotation(props) {
+export default function AnnotationOSM(props) {
   const { radius } = props;
   const diameter = radius * 2;
 

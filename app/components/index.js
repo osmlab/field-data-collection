@@ -9,11 +9,13 @@ import { getFieldInput } from "./field-inputs";
 import { getFieldType } from "./fields";
 import StatusBar from "./StatusBar";
 import CategoryList from "./category-list";
-import Annotation from "./annotation";
+import AnnotationOSM from "./annotation-osm";
+import AnnotationObservation from "./annotation-observation";
 import Map from "./map";
 
 export {
-  Annotation,
+  AnnotationOSM,
+  AnnotationObservation,
   Header,
   SideMenu,
   Text,

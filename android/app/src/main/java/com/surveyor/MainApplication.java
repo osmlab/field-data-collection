@@ -3,6 +3,7 @@ package com.surveyor;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.horcrux.svg.SvgPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.tradle.react.UdpSocketsModule;
@@ -45,7 +46,8 @@ public class MainApplication extends Application implements ReactApplication {
         new UdpSocketsModule(),
         new ReactNativeMapboxGLPackage(),
         new ReactNativeLocalizationPackage(),
-        new VectorIconsPackage()
+        new VectorIconsPackage(),
+        new RNDeviceInfo()
       );
     }
   };

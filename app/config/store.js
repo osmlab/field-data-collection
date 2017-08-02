@@ -19,7 +19,7 @@ const store = compose(autoRehydrate())(createStore)(reducers, middleware());
 
 persistStore(store, {
   storage: FilesystemStorage,
-  whitelist: ["surveys", "osm", "coordinator"]
+  whitelist: ["surveys", "osm", "coordinator", "user"]
 });
 
 export default store;

@@ -73,15 +73,14 @@ class NearbyFeatures extends Component {
             <View style={[baseStyles.nearbyPointsDescription]}>
               <TouchableOpacity onPress={this.toggle}>
                 <Text style={[baseStyles.h4]}>Nearby Points</Text>
-
-                {this.props.userLocation &&
-                  <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
-                    <Text>Location: </Text>
-                    <Text>
-                      {this.props.userLocation.latitude.toFixed(2)},{" "}
-                      {this.props.userLocation.longitude.toFixed(2)}
-                    </Text>
-                  </View>}
+                <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+                  {this.props.userLocation
+                    ? <Text>
+                        Location: {this.props.userLocation.latitude.toFixed(2)},{" "}
+                        {this.props.userLocation.longitude.toFixed(2)}
+                      </Text>
+                    : <Text>Geolocating...</Text>}
+                </View>
               </TouchableOpacity>
             </View>
 

@@ -2,9 +2,12 @@ const getGeoJSON = require("osm-p2p-geojson");
 const pump = require("pump");
 const collect = require("collect-stream");
 const through = require("through2");
+const DeviceInfo = require("react-native-device-info");
 const OsmSync = require("./osm-sync");
 const generatePlaceholderOsmId = require("./generate-id");
 const convert = require("./convert-geojson-osmp2p");
+const observationsByDeviceId = require("./observations")
+  .getObservationsByDeviceId;
 
 function osmp2p(createOsmDb) {
   var observationDb = createOsmDb("obs");
@@ -28,9 +31,9 @@ function osmp2p(createOsmDb) {
     queryGeoJSONStream,
     replicate,
     findReplicationTargets,
-    listAnnotations,
     clearAllData,
-    sync: netSync
+    sync: netSync,
+    getObservationsByDeviceId
   };
 
   function ready(cb) {
@@ -66,6 +69,7 @@ function osmp2p(createOsmDb) {
       opts = {};
     }
 
+    console.log("nodeId", nodeId);
     observationDb.get(nodeId, onGotNode.bind(null, "obs"));
     osmOrgDb.get(nodeId, onGotNode.bind(null, "osm"));
 
@@ -87,7 +91,12 @@ function osmp2p(createOsmDb) {
 
       if (--pending === 0) {
         if (res["osm"]) nodeId = (res["osm"].tags || {})["osm-p2p-id"];
-        else nodeId = (res["obs"].tags || {})["osm-p2p-id"];
+        else if (res["obs"]) nodeId = (res["obs"].tags || {})["osm-p2p-id"];
+
+        doc.tags = doc.tags || {};
+        doc.tags.deviceId = DeviceInfo.getUniqueID();
+        doc.timestamp = new Date().toISOString();
+        doc.type = "observation";
 
         observationDb.create(doc, opts, onObservationCreated);
       }
@@ -215,36 +224,8 @@ function osmp2p(createOsmDb) {
     OsmSync.findPeers(opts, cb);
   }
 
-  function listAnnotations(q, cb) {
-    var stream = queryGeoJSONStream(q).pipe(through.obj(eachFeature));
-
-    function eachFeature(data, enc, next) {
-      const type = data.geometry.type.toLowerCase();
-      const coordinates = data.geometry.coordinates;
-
-      if (type === "point" && coordinates) {
-        this.push({
-          id: data.id,
-          type: type,
-          coordinates: coordinates.reverse(),
-          annotationImage: {
-            source: {
-              uri: "https://cldup.com/7NLZklp8zS.png"
-            },
-            height: 25,
-            width: 25
-          }
-        });
-      }
-
-      next();
-    }
-
-    if (cb) {
-      return collect(stream, cb);
-    }
-
-    return stream;
+  function getObservationsByDeviceId(deviceId, cb) {
+    return observationsByDeviceId(deviceId, observationDb, cb);
   }
 }
 

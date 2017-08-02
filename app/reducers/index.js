@@ -6,6 +6,7 @@ import status from "./status";
 import surveys from "./surveys";
 import osm from "./osm";
 import coordinator from "./coordinator";
+import user from "./user";
 
 export default combineReducers({
   // the active observation being collected
@@ -14,5 +15,6 @@ export default combineReducers({
   status,
   surveys,
   osm,
-  coordinator
+  coordinator,
+  user
 });
