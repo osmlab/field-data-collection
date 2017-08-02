@@ -10,7 +10,6 @@ import { baseStyles } from "../../styles";
 class CategoriesScreen extends Component {
   render() {
     const { categories, history, observation } = this.props;
-    console.log("categories observation", observation);
 
     const headerView = (
       <View

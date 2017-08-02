@@ -15,7 +15,7 @@ class ChoosePoint extends Component {
 
   render() {
     const { history, initializeObservation } = this.props;
-    console.log("history?", history);
+
     const headerView = (
       <View
         style={{

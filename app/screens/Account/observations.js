@@ -109,7 +109,7 @@ class MyObservations extends Component {
             const complete = (item.complete || 0) * 10;
             const incomplete = 10 - complete;
             const percentage = complete + "0%";
-            console.log("item", item);
+
             return (
               <View style={[baseStyles.wrapperContent]}>
                 <TouchableOpacity

@@ -80,8 +80,6 @@ class ObservationMapScreen extends Component {
 
   componentWillReceiveProps() {
     getCurrentPosition((err, data) => {
-      console.log("getCurrentPosition", err, data);
-
       if (data) {
         this.setState({ userLocation: data.coords });
       }
@@ -139,8 +137,6 @@ class ObservationMapScreen extends Component {
             );
           });
 
-          console.log("queryObservations results.length", observations.length);
-          console.log("osm points", err, filtered.length);
           setOsmFeatureList(filtered);
           setObservations(observations);
         });
@@ -182,8 +178,6 @@ class ObservationMapScreen extends Component {
         />
       );
     });
-
-    console.log("observations.length", observations.length);
 
     annotations = annotations.concat(
       observations.map(item => {

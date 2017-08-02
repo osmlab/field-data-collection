@@ -114,7 +114,6 @@ const checkRemoteOsmMeta = (target, dispatch, cb) => {
   if (!target || !target.address || !target.port) {
     return getPeerInfo(dispatch, (err, targetIP, targetPort) => {
       if (err) {
-        console.log(err);
         return dispatch({ type: types.DISCOVERING_PEERS_FAILED, error: err });
       }
 
@@ -156,8 +155,6 @@ const checkOsmMeta = (target, getState, dispatch, cb) => {
 };
 
 export const syncData = target => (dispatch, getState) => {
-  console.log("syncData", target);
-
   checkOsmMeta(
     target,
     getState,
@@ -338,7 +335,6 @@ export const listRemoteSurveys = () => (dispatch, getState) => {
 };
 
 export const initializeObservation = (nodeId, observation) => dispatch => {
-  console.log("observation", observation);
   return dispatch({
     type: types.INITIALIZE_OBSERVATION,
     nodeId,
@@ -360,9 +356,7 @@ export const saveObservation = nodeId => (dispatch, getState) => {
     type: types.SAVING_OBSERVATION
   });
 
-  console.log("save observation", observation);
   return osm.createObservation(nodeId, observation, error => {
-    console.log("finished saving observation", error);
     if (error) {
       return dispatch({
         type: types.SAVING_OBSERVATION_FAILED,
@@ -377,7 +371,6 @@ export const saveObservation = nodeId => (dispatch, getState) => {
 };
 
 export const setObservations = list => (dispatch, getState) => {
-  console.log("setObservations", list.length);
   return dispatch({ type: types.SET_OBSERVATIONS, list });
 };
 

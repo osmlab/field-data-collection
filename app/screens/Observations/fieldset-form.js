@@ -10,18 +10,18 @@ import { baseStyles } from "../../styles";
 class FieldsetFormScreen extends Component {
   renderField(field, index) {
     const { observation, updateObservation } = this.props;
-    console.log("what is obs", this.props.observation);
+
     return <Text>hi</Text>;
     try {
-      // const Field = getFieldInput(field.type);
-      // return (
-      //   <Field
-      //     field={field}
-      //     key={index}
-      //     observation={observation}
-      //     updateObservation={updateObservation}
-      //   />
-      // );
+      const Field = getFieldInput(field.type);
+      return (
+        <Field
+          field={field}
+          key={index}
+          observation={observation}
+          updateObservation={updateObservation}
+        />
+      );
     } catch (err) {
       console.warn(err);
 

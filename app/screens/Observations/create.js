@@ -122,13 +122,6 @@ class AddObservationScreen extends Component {
             >
               <Text>Save</Text>
             </TouchableOpacity>
-
-            <Text>
-              {/*Object.keys(tags).reduce(
-                (str, k) => (str += `\n${k}=${tags[k]}`),
-                ""
-              )*/}
-            </Text>
           </View>
         </View>
       </Wrapper>

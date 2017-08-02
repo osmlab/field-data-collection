@@ -10,7 +10,6 @@ class Map extends Component {
   componentWillMount() {}
 
   render() {
-    console.log("this.props.center", this.props.center);
     const { observation } = this.props;
 
     return (

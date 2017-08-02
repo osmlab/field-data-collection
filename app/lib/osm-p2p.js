@@ -69,7 +69,6 @@ function osmp2p(createOsmDb) {
       opts = {};
     }
 
-    console.log("nodeId", nodeId);
     observationDb.get(nodeId, onGotNode.bind(null, "obs"));
     osmOrgDb.get(nodeId, onGotNode.bind(null, "osm"));
 
