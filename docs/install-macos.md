@@ -2,10 +2,11 @@
 
 ## Initial set up
 
-### Install react-native-cli and yarn (if not already installed)
+### Install yarn (if not already installed)
 
 ```
-npm install -g react-native-cli yarn
+brew upgrade
+brew install yarn
 ```
 
 ### Install watchman
@@ -14,6 +15,12 @@ Install `watchman` using [homebrew](https://brew.sh/).
 
 ```
 brew install watchman
+```
+
+Install react-native-cli
+
+```
+yarn global react-native-cli
 ```
 
 ### Clone the repo
@@ -87,17 +94,13 @@ To start the emulator from the command line (it probably won't work), run:
 emulator -avd Surveyor
 ```
 
-With a running [virtual] device, run the following the start the app:
+With a running virtual device, run the following to start the app and see logs:
 
 ```
-react-native run-android
+yarn run android
 ```
 
-Access logs:
-
-```
-react-native log-android
-```
+The above script runs both `react-native run-android` to build the APK and put it on the running virtual device and to tail the logs using `react-native log-android`.
 
 ### Run the project on a real device
 
