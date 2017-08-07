@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import { StyleSheet, View, ListView, TouchableOpacity } from "react-native";
 import Mapbox, { MapView } from "react-native-mapbox-gl";
 
-Mapbox.setAccessToken(
-  "pk.eyJ1Ijoic2V0aHZpbmNlbnQiLCJhIjoiSXZZXzZnUSJ9.Nr_zKa-4Ztcmc1Ypl0k5nw"
-);
+import config from "../../config";
+
+Mapbox.setAccessToken(config.mapboxAccessToken);
 
 class Map extends Component {
   componentWillMount() {}

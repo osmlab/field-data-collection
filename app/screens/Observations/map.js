@@ -28,9 +28,9 @@ import {
 } from "../../components";
 import { baseStyles, colors } from "../../styles";
 
-Mapbox.setAccessToken(
-  "pk.eyJ1Ijoic2V0aHZpbmNlbnQiLCJhIjoiSXZZXzZnUSJ9.Nr_zKa-4Ztcmc1Ypl0k5nw"
-);
+import config from "../../config";
+
+Mapbox.setAccessToken(config.mapboxAccessToken);
 
 const styles = StyleSheet.create({
   map: {
@@ -66,6 +66,7 @@ class ObservationMapScreen extends Component {
     this.setState({
       nearbyFeaturesViewOpen: false,
       showMap: true,
+      mapLoaded: false,
       center: {
         latitude: 47.6685,
         longitude: -122.384
@@ -117,6 +118,9 @@ class ObservationMapScreen extends Component {
   };
 
   setFeatures = e => {
+    // make sure map is loaded before trying to get bounds
+    if (!this.state.mapLoaded) return;
+
     const { setOsmFeatureList, setObservations } = this.props;
 
     this._map.getBounds(data => {
@@ -124,6 +128,7 @@ class ObservationMapScreen extends Component {
 
       osm.queryObservations(q, (err, observations) => {
         if (err) console.log(err);
+
         osm.queryOSM(q, (err, nodes) => {
           if (err) console.log(err);
           // TODO: replace this with filtering based on presets
@@ -144,11 +149,13 @@ class ObservationMapScreen extends Component {
     });
   };
 
-  onStartLoadingMap = e => {};
+  onFinishLoadingMap = e => {
+    this.setState({
+      mapLoaded: true
+    });
+  };
 
   onGeolocate = (err, data) => {
-    console.log("onGeolocate", err, data);
-
     if (data) {
       this.setState({ userLocation: data.coords });
 
@@ -214,7 +221,6 @@ class ObservationMapScreen extends Component {
             }}
             style={styles.map}
             annotations={this.state.annotations}
-            onFinishLoadingMap={this.prepareAnnotations}
             onTap={this.onMapPress}
             onOpenAnnotation={this.onMapPress}
             onLayout={e => {
@@ -222,7 +228,6 @@ class ObservationMapScreen extends Component {
               this.state.mapSize.height = height;
               this.state.mapSize.width = width;
             }}
-            onStartLoadingMap={this.onStartLoadingMap}
             onFinishLoadingMap={this.onFinishLoadingMap}
             onUpdateUserLocation={this.onUpdateUserLocation}
             onRegionDidChange={debounce(this.setFeatures, 400)}

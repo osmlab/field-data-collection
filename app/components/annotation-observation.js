@@ -30,7 +30,7 @@ export default function AnnotationObservation(props) {
         style={{ width: 40, height: 55, paddingTop: 0, paddingLeft: 5 }}
         onPress={props.onPress}
       >
-        <Icon name="location-on" size={30} style={{ color: "#1DE9B6" }} />
+        <Icon name="location-on" size={30} style={{ color: "#6579fc" }} />
       </TouchableOpacity>
     </MapboxAnnotation>
   );
