@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { StyleSheet, View, Button, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import { Link } from "react-router-native";
 
 import { Text, Wrapper } from "../../components";
 import { baseStyles } from "../../styles";
@@ -17,12 +18,13 @@ class AboutScreen extends Component {
           alignItems: "center"
         }}
       >
-        <TouchableOpacity onPress={history.goBack}>
+        <Link to="/">
           <Icon
             name="keyboard-backspace"
             style={[[baseStyles.headerBackIcon]]}
           />
-        </TouchableOpacity>
+        </Link>
+
         <Text style={[baseStyles.h3, baseStyles.headerTitle]}>About</Text>
       </View>
     );

@@ -4,6 +4,7 @@ import Mapbox, { MapView } from "react-native-mapbox-gl";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { connect } from "react-redux";
 import { format } from "date-fns";
+import { Link } from "react-router-native";
 
 import { syncData, getPeerInfo, osm } from "../../actions";
 import { getObservationsByDeviceId } from "../../lib/observations";
@@ -70,12 +71,12 @@ class MyObservations extends Component {
 
     const headerView = (
       <View style={[baseStyles.mainHeader]}>
-        <TouchableOpacity onPress={history.goBack}>
+        <Link to="/">
           <Icon
             name="keyboard-backspace"
             style={[[baseStyles.headerBackIcon]]}
           />
-        </TouchableOpacity>
+        </Link>
 
         <Text style={[baseStyles.h3, baseStyles.headerTitle]}>
           My Observations

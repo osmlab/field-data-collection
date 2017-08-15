@@ -24,9 +24,9 @@ class ChoosePoint extends Component {
           alignItems: "center"
         }}
       >
-        <TouchableOpacity onPress={history.goBack}>
+        <Link to="/">
           <Icon name="keyboard-backspace" style={baseStyles.headerBackIcon} />
-        </TouchableOpacity>
+        </Link>
 
         <Text style={[baseStyles.h3, baseStyles.headerTitle]}>Add</Text>
       </View>
