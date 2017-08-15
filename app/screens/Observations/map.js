@@ -23,7 +23,7 @@ import {
   SideMenu,
   Text,
   Geolocate,
-  NearbyFeatures,
+  MapOverlay,
   StatusBar
 } from "../../components";
 import { baseStyles, colors } from "../../styles";
@@ -35,16 +35,6 @@ Mapbox.setAccessToken(config.mapboxAccessToken);
 const styles = StyleSheet.create({
   map: {
     flex: 1
-  },
-  buttonAdd: {
-    width: 60,
-    height: 60,
-    borderRadius: 80,
-    backgroundColor: "#8212C6",
-    zIndex: 10,
-    position: "absolute",
-    bottom: 95,
-    right: 15
   },
   buttonLegend: {
     position: "absolute",
@@ -76,14 +66,6 @@ class ObservationMapScreen extends Component {
       annotations: [],
       mapSize: { width: null, height: null },
       userLocation: null
-    });
-  }
-
-  componentWillReceiveProps() {
-    getCurrentPosition((err, data) => {
-      if (data) {
-        this.setState({ userLocation: data.coords });
-      }
     });
   }
 
@@ -152,6 +134,12 @@ class ObservationMapScreen extends Component {
   onFinishLoadingMap = e => {
     this.setState({
       mapLoaded: true
+    });
+
+    getCurrentPosition((err, data) => {
+      if (data) {
+        this.setState({ userLocation: data.coords });
+      }
     });
   };
 
@@ -261,21 +249,7 @@ class ObservationMapScreen extends Component {
           />
         </TouchableOpacity>
 
-        <Geolocate onGeolocate={this.onGeolocate} />
-
-        <Link to="/add-observation/choose-point" style={[styles.buttonAdd]}>
-          <Icon
-            name="add"
-            style={{
-              paddingTop: 10,
-              paddingLeft: 10,
-              fontSize: 40,
-              color: "#ffffff"
-            }}
-          />
-        </Link>
-
-        <NearbyFeatures
+        <MapOverlay
           userLocation={this.state.userLocation}
           features={featureList}
         />

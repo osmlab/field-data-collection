@@ -11,6 +11,7 @@ import StatusBar from "./StatusBar";
 import CategoryList from "./category-list";
 import AnnotationOSM from "./annotation-osm";
 import AnnotationObservation from "./annotation-observation";
+import MapOverlay from "./map-overlay";
 import Map from "./map";
 
 export {
@@ -27,5 +28,6 @@ export {
   PercentComplete,
   StatusBar,
   CategoryList,
+  MapOverlay,
   Map
 };

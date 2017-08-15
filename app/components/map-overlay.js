@@ -7,9 +7,14 @@ import {
   Animated
 } from "react-native";
 
+import Icon from "react-native-vector-icons/MaterialIcons";
 import Interactable from "react-native-interactable";
+import { Link } from "react-router-native";
 
 import Text from "./text";
+import Geolocate from "./geolocate";
+import NearbyFeatures from "./nearby-features";
+
 import { colors } from "../styles";
 import { baseStyles } from "../styles";
 
@@ -18,10 +23,10 @@ const Screen = {
   height: Dimensions.get("window").height - 75
 };
 
-class NearbyFeatures extends Component {
+class MapOverlay extends Component {
   constructor(props) {
     super(props);
-    this._deltaY = new Animated.Value(Screen.height - 100);
+    this._deltaY = new Animated.Value(Screen.height - 80);
   }
 
   open = () => {
@@ -50,9 +55,9 @@ class NearbyFeatures extends Component {
 
   render() {
     const { features } = this.props;
-    const initialYPosition = features.length
-      ? Screen.height - 32
-      : Screen.height;
+    const halfOpen = Screen.height - 40;
+    const fullOpen = Screen.height - 210;
+    const closed = Screen.height;
 
     return (
       <View
@@ -64,20 +69,69 @@ class NearbyFeatures extends Component {
           right: 0
         }}
       >
+        <Animated.View
+          style={{
+            position: "absolute",
+            right: 0,
+            bottom: 280,
+            width: 75,
+            height: 140,
+            transform: [
+              {
+                translateY: this._deltaY.interpolate({
+                  inputRange: [fullOpen, halfOpen],
+                  outputRange: [1, 170]
+                })
+              }
+            ]
+          }}
+        >
+          <Geolocate onGeolocate={this.props.onGeolocate} />
+
+          <Link
+            to="/add-observation/choose-point"
+            style={{
+              width: 60,
+              height: 60,
+              borderRadius: 80,
+              backgroundColor: "#8212C6",
+              zIndex: 10,
+              position: "absolute",
+              right: 15,
+              marginTop: 75
+            }}
+          >
+            <Icon
+              name="add"
+              style={{
+                paddingTop: 10,
+                paddingLeft: 10,
+                fontSize: 40,
+                color: "#ffffff"
+              }}
+            />
+          </Link>
+        </Animated.View>
+
         <Interactable.View
+          style={{
+            height: 400
+          }}
           verticalOnly={true}
-          initialPosition={{ y: initialYPosition }}
-          snapPoints={[{ y: Screen.height - 200 }, { y: Screen.height - 32 }]}
-          boundaries={{ top: Screen.height - 210 }}
+          initialPosition={{ y: halfOpen }}
+          snapPoints={[{ y: fullOpen }, { y: halfOpen }, { y: closed }]}
+          boundaries={{ top: fullOpen + 10 }}
           ref={view => {
             this._drawer = view;
           }}
+          animatedValueY={this._deltaY}
         >
           <View style={baseStyles.nearbyPoints}>
             <View style={[baseStyles.nearbyPointsHeader]}>
               <View style={[baseStyles.nearbyPointsDescription]}>
                 <TouchableOpacity onPress={this.toggle}>
                   <Text style={[baseStyles.h4]}>Nearby Points</Text>
+
                   <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
                     {this.props.userLocation
                       ? <Text>
@@ -91,16 +145,16 @@ class NearbyFeatures extends Component {
               </View>
 
               {/*
-            // hide filter button temporarily
-            <View style={{}}>
-              <TouchableOpacity
-                style={[baseStyles.buttonOutline]}
-                onPress={this._onPressButton}
-              >
-                <Text>Filter</Text>
-              </TouchableOpacity>
-            </View>
-            */}
+              // hide filter button temporarily
+              <View style={{}}>
+                <TouchableOpacity
+                  style={[baseStyles.buttonOutline]}
+                  onPress={this._onPressButton}
+                >
+                  <Text>Filter</Text>
+                </TouchableOpacity>
+              </View>
+              */}
             </View>
 
             <ScrollView horizontal={true} width={Screen.width}>
@@ -139,4 +193,4 @@ class NearbyFeatures extends Component {
   }
 }
 
-export default NearbyFeatures;
+export default MapOverlay;

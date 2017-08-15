@@ -9,10 +9,7 @@ const styles = StyleSheet.create({
     height: 60,
     borderRadius: 80,
     backgroundColor: "white",
-    zIndex: 10,
-    position: "absolute",
-    bottom: 165,
-    right: 15
+    zIndex: 10
   }
 });
 
