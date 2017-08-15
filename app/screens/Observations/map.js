@@ -252,6 +252,7 @@ class ObservationMapScreen extends Component {
         <MapOverlay
           userLocation={this.state.userLocation}
           features={featureList}
+          onGeolocate={this.onGeolocate}
         />
       </View>
     );

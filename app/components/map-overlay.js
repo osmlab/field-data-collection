@@ -54,7 +54,7 @@ class MapOverlay extends Component {
   }
 
   render() {
-    const { features } = this.props;
+    const { features, onGeolocate } = this.props;
     const halfOpen = Screen.height - 40;
     const fullOpen = Screen.height - 210;
     const closed = Screen.height;
@@ -86,7 +86,7 @@ class MapOverlay extends Component {
             ]
           }}
         >
-          <Geolocate onGeolocate={this.props.onGeolocate} />
+          <Geolocate onGeolocate={onGeolocate} />
 
           <Link
             to="/add-observation/choose-point"
