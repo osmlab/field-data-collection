@@ -334,29 +334,26 @@ export const listRemoteSurveys = () => (dispatch, getState) => {
   });
 };
 
-export const initializeObservation = (nodeId, observation) => dispatch => {
+export const initializeObservation = observation => dispatch => {
   return dispatch({
     type: types.INITIALIZE_OBSERVATION,
-    nodeId,
     observation
   });
 };
 
-export const updateObservation = (nodeId, observation) => dispatch =>
+export const updateObservation = observation => dispatch =>
   dispatch({
     type: types.UPDATE_OBSERVATION,
-    nodeId,
     observation
   });
 
-export const saveObservation = nodeId => (dispatch, getState) => {
-  const { observation } = selectActiveObservation(getState());
-
+export const saveObservation = observation => (dispatch, getState) => {
   dispatch({
     type: types.SAVING_OBSERVATION
   });
 
-  return osm.createObservation(nodeId, observation, error => {
+  console.log("saveObservation observation", observation);
+  return osm.createObservation(observation, error => {
     if (error) {
       return dispatch({
         type: types.SAVING_OBSERVATION_FAILED,

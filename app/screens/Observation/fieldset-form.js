@@ -3,15 +3,15 @@ import { View } from "react-native";
 import { connect } from "react-redux";
 
 import { updateObservation } from "../../actions";
-import { Text, Wrapper } from "../../components";
+import { Text, Wrapper, getFieldInput } from "../../components";
 import { selectActiveObservation, selectFeatureType } from "../../selectors";
 import { baseStyles } from "../../styles";
 
 class FieldsetFormScreen extends Component {
   renderField(field, index) {
+    console.log("this.props", this.props);
     const { observation, updateObservation } = this.props;
 
-    return <Text>hi</Text>;
     try {
       const Field = getFieldInput(field.type);
       return (

@@ -28,7 +28,7 @@ export default class CategoryList extends Component {
 
   renderItem = (surveyId, sectionId, { item }) =>
     this.isVisible(sectionId)
-      ? <Link to={`/add-observation/${surveyId}/${item.id}`}>
+      ? <Link to={`/observation/${surveyId}/${item.id}`}>
           <Text style={styles.category}>
             {item.name}
           </Text>

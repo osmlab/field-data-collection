@@ -63,57 +63,40 @@ function osmp2p(createOsmDb) {
     observationDb.del(id, opts, cb);
   }
 
-  function createObservation(nodeId, doc, opts, cb) {
+  function createObservation(doc, opts, cb) {
     if (!cb && typeof opts === "function") {
       cb = opts;
       opts = {};
     }
 
-    observationDb.get(nodeId, onGotNode.bind(null, "obs"));
-    osmOrgDb.get(nodeId, onGotNode.bind(null, "osm"));
+    console.log("doc", doc);
+    doc.tags = doc.tags || {};
+    const nodeId = doc.tags["osm-p2p-id"];
 
-    var pending = 2;
-    var res = {};
-    function onGotNode(type, err, heads) {
-      if (err) {
-        pending++;
-        return cb(err);
-      }
-      var docs = Object.keys(heads).map(function(k) {
-        return heads[k];
-      });
-      if (docs.length > 0) {
-        res[type] = docs.sort(
-          (a, b) => (b.timestamp || 0) - (a.timestamp || 0)
-        )[0];
-      }
+    doc.tags.deviceId = DeviceInfo.getUniqueID();
+    doc.timestamp = new Date().toISOString();
+    doc.type = "observation";
 
-      if (--pending === 0) {
-        if (res["osm"]) nodeId = (res["osm"].tags || {})["osm-p2p-id"];
-        else if (res["obs"]) nodeId = (res["obs"].tags || {})["osm-p2p-id"];
-
-        doc.tags = doc.tags || {};
-        doc.tags.deviceId = DeviceInfo.getUniqueID();
-        doc.timestamp = new Date().toISOString();
-        doc.type = "observation";
-
-        observationDb.create(doc, opts, onObservationCreated);
-      }
-    }
+    observationDb.create(doc, opts, onObservationCreated);
 
     function onObservationCreated(err, docId) {
       if (err) return cb(err);
-      var link = {
-        type: "observation-link",
-        obs: docId,
-        link: nodeId
-      };
-      observationDb.create(link, function(err, linkId) {
-        if (err) return cb(err);
-        var res = Object.assign(doc, { id: docId });
-        var linkRes = Object.assign(link, { id: linkId });
-        cb(null, res, linkRes);
-      });
+
+      // create a link to an osm feature only if applicable
+      if (nodeId) {
+        var link = {
+          type: "observation-link",
+          obs: docId,
+          link: nodeId
+        };
+
+        observationDb.create(link, function(err, linkId) {
+          if (err) return cb(err);
+          var res = Object.assign(doc, { id: docId });
+          var linkRes = Object.assign(link, { id: linkId });
+          cb(null, res, linkRes);
+        });
+      }
     }
   }
 

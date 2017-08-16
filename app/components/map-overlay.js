@@ -55,9 +55,8 @@ class MapOverlay extends Component {
 
   render() {
     const { features, onGeolocate } = this.props;
-    const halfOpen = Screen.height - 40;
-    const fullOpen = Screen.height - 210;
-    const closed = Screen.height;
+    const closed = Screen.height - 40;
+    const open = Screen.height - 210;
 
     return (
       <View
@@ -79,7 +78,7 @@ class MapOverlay extends Component {
             transform: [
               {
                 translateY: this._deltaY.interpolate({
-                  inputRange: [fullOpen, halfOpen],
+                  inputRange: [open, closed],
                   outputRange: [1, 170]
                 })
               }
@@ -89,7 +88,7 @@ class MapOverlay extends Component {
           <Geolocate onGeolocate={onGeolocate} />
 
           <Link
-            to="/add-observation/choose-point"
+            to="/observation/choose-point"
             style={{
               width: 60,
               height: 60,
@@ -118,9 +117,9 @@ class MapOverlay extends Component {
             height: 400
           }}
           verticalOnly={true}
-          initialPosition={{ y: halfOpen }}
-          snapPoints={[{ y: fullOpen }, { y: halfOpen }, { y: closed }]}
-          boundaries={{ top: fullOpen + 10 }}
+          initialPosition={{ y: closed }}
+          snapPoints={[{ y: open }, { y: closed }]}
+          boundaries={{ top: open + 10 }}
           ref={view => {
             this._drawer = view;
           }}
@@ -165,11 +164,7 @@ class MapOverlay extends Component {
                       {item.tags.name}
                     </Text>
                     <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
-                      <Text>30cm away</Text>
-                      <View>
-                        <Text>Updated: </Text>
-                        <Text>4/30/17 4:30</Text>
-                      </View>
+                      {/* TODO: info about distance from user & related observations if applicable */}
                     </View>
                     <View
                       style={[

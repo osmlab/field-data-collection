@@ -22,8 +22,8 @@ class AddObservationScreen extends Component {
       const Field = getFieldType(field.type);
 
       return (
-        <Link key={index} to={`/add-observation/${survey}/${id}/fields`}>
-          <Field field={field} observation={observation.observation} />
+        <Link key={index} to={`/observation/${survey}/${id}/fields`}>
+          <Field field={field} observation={observation} />
         </Link>
       );
     } catch (err) {
@@ -35,7 +35,8 @@ class AddObservationScreen extends Component {
 
   save = () => {
     const { saveObservation, history, observation } = this.props;
-    saveObservation(observation.nodeId);
+    console.log("this.props.observation", observation);
+    saveObservation(observation);
     history.push("/");
   };
 
@@ -103,7 +104,7 @@ class AddObservationScreen extends Component {
           <Map />
 
           <View style={[baseStyles.mapEditorBlock]}>
-            <Link to="/add-observation/location">
+            <Link to="/observation/location">
               <Text style={[baseStyles.link]}>+ ADD LOCATION</Text>
             </Link>
           </View>

@@ -1,17 +1,11 @@
 import types from "../actions";
 
-const initialState = {
-  nodeId: null,
-  observation: null
-};
+const initialState = {};
 
-export default (state = initialState, { nodeId, observation, type }) => {
+export default (state = initialState, { observation, type }) => {
   switch (type) {
     case types.INITIALIZE_OBSERVATION:
-      return {
-        nodeId,
-        observation
-      };
+      return observation;
 
     case types.OBSERVATION_SAVED:
       return initialState;

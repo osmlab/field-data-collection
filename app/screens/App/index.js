@@ -8,15 +8,14 @@ import {
 } from "react-router-native";
 
 // Observations
-import ObservationMap from "../Observations/map.js";
-import ObservationList from "../Observations/list.js";
-import AddObservation from "../Observations/create";
-import FieldsetForm from "../Observations/fieldset-form";
-import Categories from "../Observations/categories";
-import ChoosePoint from "../Observations/choose-point";
+import ObservationMap from "../Observation/map.js";
+import Observation from "../Observation/view";
+import FieldsetForm from "../Observation/fieldset-form";
+import Categories from "../Observation/categories";
+import ChoosePoint from "../Observation/choose-point";
 
 // Account
-import MyObservations from "../Account/observations";
+import AccountObservations from "../Account/observations";
 import About from "../Account/about";
 import AddSurvey from "../Account/add-survey";
 import Profile from "../Account/profile";
@@ -34,28 +33,31 @@ export default class App extends Component {
         <AndroidBackButton>
           <Switch>
             <Route path="/" exact component={ObservationMap} />
-            <Route path="/list" component={ObservationList} />
+
             <Route
-              path="/add-observation/choose-point"
+              path="/observation/choose-point"
               exact
               component={ChoosePoint}
             />
             <Route
               exact
-              path="/add-observation/categories"
+              path="/observation/categories"
               component={Categories}
             />
             <Route
               exact
-              path="/add-observation/:surveyId/:type"
-              component={AddObservation}
+              path="/observation/:surveyId/:type"
+              component={Observation}
             />
-            <Route path="/add-observation/details" component={AddObservation} />
+            <Route path="/observation/details" component={Observation} />
             <Route
-              path="/add-observation/:surveyId/:type/fields"
+              path="/observation/:surveyId/:type/fields"
               component={FieldsetForm}
             />
-            <Route path="/account/observations" component={MyObservations} />
+            <Route
+              path="/account/observations"
+              component={AccountObservations}
+            />
             <Route path="/account/about" component={About} />
             <Route path="/account/add-survey" component={AddSurvey} />
             <Route path="/account/profile" component={Profile} />

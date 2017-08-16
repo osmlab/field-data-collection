@@ -17,7 +17,7 @@ import {
 } from "../../components";
 import { baseStyles } from "../../styles";
 
-class MyObservations extends Component {
+class AccountObservations extends Component {
   componentWillMount() {
     const { deviceId } = this.props;
 
@@ -182,4 +182,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, { syncData })(MyObservations);
+export default connect(mapStateToProps, { syncData })(AccountObservations);

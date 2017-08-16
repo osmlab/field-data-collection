@@ -67,12 +67,12 @@ class ChoosePoint extends Component {
                     <TouchableOpacity
                       style={{ padding: 20 }}
                       onPress={() => {
-                        initializeObservation(item.id, {
+                        initializeObservation({
                           lat: item.lat,
                           lon: item.lon,
                           tags: { "osm-p2p-id": item.id }
                         });
-                        history.push("/add-observation/categories");
+                        history.push("/observation/categories");
                       }}
                     >
                       <Text style={baseStyles.h3}>
@@ -96,6 +96,9 @@ class ChoosePoint extends Component {
               left: 0
             }
           ]}
+          onPress={() => {
+            console.log("ok");
+          }}
         >
           <Text style={{ color: "#ffffff" }}>ADD TO A NEW POINT</Text>
         </TouchableOpacity>
