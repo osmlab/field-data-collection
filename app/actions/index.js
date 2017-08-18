@@ -37,6 +37,7 @@ const types = {
   FETCHING_REMOTE_SURVEY_LIST: "FETCHING_REMOTE_SURVEY_LIST",
   FETCHING_REMOTE_SURVEY_LIST_FAILED: "FETCHING_REMOTE_SURVEY_LIST_FAILED",
   INITIALIZE_OBSERVATION: "INITIALIZE_OBSERVATION",
+  SET_ACTIVE_OBSERVATION: "SET_ACTIVE_OBSERVATION",
   RECEIVED_REMOTE_SURVEY_LIST: "RECEIVED_REMOTE_SURVEY_LIST",
   RECEIVED_REMOTE_SURVEY: "RECEIVED_REMOTE_SURVEY",
   SAVING_OBSERVATION: "SAVING_OBSERVATION",
@@ -341,6 +342,12 @@ export const initializeObservation = observation => dispatch => {
   });
 };
 
+export const setActiveObservation = observation => dispatch =>
+  dispatch({
+    type: types.SET_ACTIVE_OBSERVATION,
+    observation
+  });
+
 export const updateObservation = observation => dispatch =>
   dispatch({
     type: types.UPDATE_OBSERVATION,
@@ -352,7 +359,6 @@ export const saveObservation = observation => (dispatch, getState) => {
     type: types.SAVING_OBSERVATION
   });
 
-  console.log("saveObservation observation", observation);
   return osm.createObservation(observation, error => {
     if (error) {
       return dispatch({

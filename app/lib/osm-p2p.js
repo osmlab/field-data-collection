@@ -69,7 +69,6 @@ function osmp2p(createOsmDb) {
       opts = {};
     }
 
-    console.log("doc", doc);
     doc.tags = doc.tags || {};
     const nodeId = doc.tags["osm-p2p-id"];
 

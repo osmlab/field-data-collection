@@ -26,14 +26,15 @@ export default class CategoryList extends Component {
     this.props.categories.length === 1 ||
     this.state.visible.includes(sectionId);
 
-  renderItem = (surveyId, sectionId, { item }) =>
-    this.isVisible(sectionId)
+  renderItem = (surveyId, sectionId, { item }) => {
+    return this.isVisible(sectionId)
       ? <Link to={`/observation/${surveyId}/${item.id}`}>
           <Text style={styles.category}>
             {item.name}
           </Text>
         </Link>
       : null;
+  };
 
   renderSectionHeader = ({ section }) => {
     const { categories } = this.props;

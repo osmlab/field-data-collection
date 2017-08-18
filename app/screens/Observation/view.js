@@ -16,13 +16,13 @@ import { baseStyles } from "../../styles";
 
 class AddObservationScreen extends Component {
   renderField(field, index) {
-    const { observation, survey, type: { id } } = this.props;
+    const { observation, surveyId, type: { id } } = this.props;
 
     try {
       const Field = getFieldType(field.type);
 
       return (
-        <Link key={index} to={`/observation/${survey}/${id}/fields`}>
+        <Link key={index} to={`/observation/${surveyId}/${id}/fields`}>
           <Field field={field} observation={observation} />
         </Link>
       );
@@ -34,8 +34,15 @@ class AddObservationScreen extends Component {
   }
 
   save = () => {
-    const { saveObservation, history, observation } = this.props;
-    console.log("this.props.observation", observation);
+    const {
+      saveObservation,
+      history,
+      observation,
+      surveyId,
+      type
+    } = this.props;
+
+    observation.survey = { id: surveyId, type: type.id };
     saveObservation(observation);
     history.push("/");
   };

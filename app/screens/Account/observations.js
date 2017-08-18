@@ -6,7 +6,12 @@ import { connect } from "react-redux";
 import { format } from "date-fns";
 import { Link } from "react-router-native";
 
-import { syncData, getPeerInfo, osm } from "../../actions";
+import {
+  syncData,
+  setActiveObservation,
+  getPeerInfo,
+  osm
+} from "../../actions";
 import { getObservationsByDeviceId } from "../../lib/observations";
 import {
   Text,
@@ -67,7 +72,7 @@ class AccountObservations extends Component {
   };
 
   render() {
-    const { history } = this.props;
+    const { history, setActiveObservation } = this.props;
 
     const headerView = (
       <View style={[baseStyles.mainHeader]}>
@@ -113,58 +118,65 @@ class AccountObservations extends Component {
 
             return (
               <View style={[baseStyles.wrapperContent]}>
-                <TouchableOpacity
+                <Link
                   style={[baseStyles.surveyCard]}
-                  onPress={() => {
-                    //TODO Link
+                  to={{
+                    pathname: `/observation/${item.survey.id}/${item.survey
+                      .type}`,
+                    state: { observation: item }
                   }}
                 >
-                  <Map
-                    center={{ latitude: item.lat, longitude: item.lon }}
-                    zoom={16}
-                  >
-                    <AnnotationObservation
-                      id={item.id}
-                      coordinates={{ latitude: item.lat, longitude: item.lon }}
-                    />
-                  </Map>
-
-                  <PercentComplete
-                    radius={35}
-                    complete={complete}
-                    incomplete={incomplete}
-                  >
-                    <Text style={[baseStyles.percentCompleteTextSm]}>
-                      <Text style={[baseStyles.percentCompleteTextNumSm]}>
-                        {percentage}
-                      </Text>
-                    </Text>
-                  </PercentComplete>
-
-                  <View style={[baseStyles.surveyCardContent]}>
-                    <Text
-                      style={[baseStyles.h3, baseStyles.headerWithDescription]}
+                  <View>
+                    <Map
+                      center={{ latitude: item.lat, longitude: item.lon }}
+                      zoom={16}
                     >
-                      Observation
-                    </Text>
-                    <View style={[baseStyles.spaceBelow]}>
-                      <View
-                        style={[baseStyles.wrappedItems, baseStyles.spacer]}
-                      >
-                        <Text style={[baseStyles.withPipe]}>
-                          {item.distance} |
+                      <AnnotationObservation
+                        id={item.id}
+                        coordinates={{
+                          latitude: item.lat,
+                          longitude: item.lon
+                        }}
+                      />
+                    </Map>
+
+                    <PercentComplete
+                      radius={35}
+                      complete={complete}
+                      incomplete={incomplete}
+                    >
+                      <Text style={[baseStyles.percentCompleteTextSm]}>
+                        <Text style={[baseStyles.percentCompleteTextNumSm]}>
+                          {percentage}
                         </Text>
+                      </Text>
+                    </PercentComplete>
+
+                    <View style={[baseStyles.surveyCardContent]}>
+                      <Text
+                        style={[
+                          baseStyles.h3,
+                          baseStyles.headerWithDescription
+                        ]}
+                      >
+                        Observation
+                      </Text>
+                      <View style={[baseStyles.spaceBelow]}>
+                        <View
+                          style={[baseStyles.wrappedItems, baseStyles.spacer]}
+                        >
+                          <Text>
+                            Updated:{" "}
+                            {format(item.timestamp, "h:mm aa ddd, MMM D, YYYY")}
+                          </Text>
+                        </View>
                         <Text>
-                          Updated:{" "}
-                          {format(item.timestamp, "h:mm aa ddd, MMM D, YYYY")}
+                          {item.surveyName}
                         </Text>
                       </View>
-                      <Text>
-                        {item.surveyName}
-                      </Text>
                     </View>
                   </View>
-                </TouchableOpacity>
+                </Link>
               </View>
             );
           }}
@@ -182,4 +194,6 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, { syncData })(AccountObservations);
+export default connect(mapStateToProps, { syncData, setActiveObservation })(
+  AccountObservations
+);

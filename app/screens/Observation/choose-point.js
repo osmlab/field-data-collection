@@ -72,6 +72,7 @@ class ChoosePoint extends Component {
                           lon: item.lon,
                           tags: { "osm-p2p-id": item.id }
                         });
+
                         history.push("/observation/categories");
                       }}
                     >

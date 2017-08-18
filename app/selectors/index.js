@@ -83,24 +83,48 @@ export const selectCategories = createSelector(
 );
 
 export const selectUncategorizedTypes = createSelector(
-  [selectObservationTypes, selectCategories],
-  (observationTypes, categories) =>
-    observationTypes.filter(
-      x =>
-        !categories
-          .map(x => x.members)
-          .reduce((arr, val) => arr.concat(val), [])
-          .includes(x.id)
-    )
+  [selectObservationTypes, selectCategories, selectActiveSurveys],
+  (observationTypes, categories, surveys) => {
+    // filter observationTypes to only include uncategorized types
+    const filter = (observationTypes, categories) => {
+      return observationTypes.filter(
+        x =>
+          !categories
+            .map(x => x.members)
+            .reduce((arr, val) => arr.concat(val), [])
+            .includes(x.id)
+      );
+    };
+
+    // reduce to an array of objects
+    const reduce = uncategorized => {
+      var reducedObj = uncategorized.reduce((obj, x) => {
+        if (!obj[x.surveyId]) {
+          obj[x.surveyId] = {
+            name: surveys.find(survey => survey.definition.id === x.surveyId)
+              .definition.name,
+            surveyId: x.surveyId,
+            list: []
+          };
+        }
+
+        obj[x.surveyId].list.push(x);
+        return obj;
+      }, {});
+
+      return Object.keys(reducedObj).map(key => reducedObj[key]);
+    };
+
+    // return types categorized by survey if not categorized
+    return reduce(filter(observationTypes, categories));
+  }
 );
 
 export const selectAllCategories = createSelector(
-  [selectCategories, selectUncategorizedTypes, selectObservationTypes],
-  (categories, uncategorized, observationTypes) =>
-    categories.concat({
-      name: "Other",
-      list: uncategorized.map(({ id, name }) => ({ id, name }))
-    })
+  [selectCategories, selectUncategorizedTypes],
+  (categories, uncategorized) => {
+    return categories.concat(uncategorized);
+  }
 );
 
 export const selectRemoteSurveys = state => state.surveys.remote;

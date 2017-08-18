@@ -9,7 +9,9 @@ class Field extends Component {
     const { field: { key }, updateObservation } = this.props;
 
     updateObservation({
-      [key]: value
+      tags: {
+        [key]: value
+      }
     });
   };
 

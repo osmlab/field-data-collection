@@ -39,25 +39,31 @@ export default class App extends Component {
               exact
               component={ChoosePoint}
             />
+
             <Route
               exact
               path="/observation/categories"
               component={Categories}
             />
+
             <Route
               exact
               path="/observation/:surveyId/:type"
               component={Observation}
             />
+
             <Route path="/observation/details" component={Observation} />
+
             <Route
               path="/observation/:surveyId/:type/fields"
               component={FieldsetForm}
             />
+
             <Route
               path="/account/observations"
               component={AccountObservations}
             />
+
             <Route path="/account/about" component={About} />
             <Route path="/account/add-survey" component={AddSurvey} />
             <Route path="/account/profile" component={Profile} />
