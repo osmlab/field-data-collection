@@ -20,6 +20,7 @@
     "asyncstorage-down": "^4.0.1",
     "babel-plugin-rewrite-require": "^1.9.1",
     "babel-polyfill": "^6.23.0",
+    "babel-preset-es2015": "^6.24.1",
     "bonjour": "github:noffle/bonjour",
     "buffer": "^5.0.6",
     "collect-stream": "^1.2.1",

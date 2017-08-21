@@ -13,20 +13,20 @@ class Map extends Component {
     const { observation } = this.props;
 
     return (
-      <View style={{ height: 100 }}>
+      <View style={{ height: this.props.height || 100 }}>
         <MapView
           ref={map => (this._map = map)}
           style={{ flex: 1, top: 0, bottom: 0 }}
           debugActive={true}
-          direction={10}
           compassIsHidden={false}
           initialCenterCoordinate={this.props.center}
-          initialZoomLevel={this.props.zoom}
+          initialZoomLevel={this.props.zoom || 16}
           rotateEnabled={false}
           scrollEnabled={true}
-          zoomEnabled={false}
+          zoomEnabled={true}
           showsUserLocation={true}
           styleURL={Mapbox.mapStyles.light}
+          userTrackingMode={Mapbox.userTrackingMode.followWithHeading}
           attributionButtonIsHidden={true}
           logoIsHidden={true}
         >

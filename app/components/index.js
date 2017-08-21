@@ -12,6 +12,7 @@ import AnnotationOSM from "./annotation-osm";
 import AnnotationObservation from "./annotation-observation";
 import MapOverlay from "./map-overlay";
 import Map from "./map";
+import LocationModal from "./location-modal";
 
 export {
   AnnotationOSM,
@@ -27,5 +28,6 @@ export {
   StatusBar,
   CategoryList,
   MapOverlay,
-  Map
+  Map,
+  LocationModal
 };

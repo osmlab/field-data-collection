@@ -4,7 +4,7 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import { connect } from "react-redux";
 import { Link } from "react-router-native";
 
-import getBoundsFromPoints from "../../lib/get-bounds-from-points";
+import getCenterOfPoints from "../../lib/get-center-of-points";
 import { initializeObservation } from "../../actions";
 import { selectActiveObservation, selectOsmFeatures } from "../../selectors";
 import { Text, Wrapper, Map, AnnotationOSM } from "../../components";
@@ -16,6 +16,8 @@ class ChoosePoint extends Component {
   render() {
     const { history, featureList, initializeObservation } = this.props;
 
+    const center = getCenterOfPoints(featureList);
+    console.log("center", center);
     let annotations = featureList.map(item => {
       return (
         <AnnotationOSM
@@ -61,7 +63,7 @@ class ChoosePoint extends Component {
               What are you adding an observation to?
             </Text>
 
-            <Map zoom={12}>
+            <Map center={center}>
               {annotations}
             </Map>
           </View>
@@ -105,7 +107,13 @@ class ChoosePoint extends Component {
         <TouchableOpacity
           style={baseStyles.buttonBottom}
           onPress={() => {
-            console.log("ok");
+            initializeObservation({
+              lat: null,
+              lon: null,
+              tags: { "osm-p2p-id": null }
+            });
+
+            history.push("/observation/categories");
           }}
         >
           <Text style={{ color: "#ffffff" }}>ADD TO A NEW POINT</Text>

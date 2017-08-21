@@ -4,8 +4,8 @@ import { connect } from "react-redux";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Link } from "react-router-native";
 
-import { saveObservation } from "../../actions";
-import { Text, Wrapper, Map } from "../../components";
+import { saveObservation, updateObservation } from "../../actions";
+import { Text, Wrapper, Map, LocationModal } from "../../components";
 import { getFieldType } from "../../components/fields";
 import {
   selectActiveObservation,
@@ -14,7 +14,21 @@ import {
 } from "../../selectors";
 import { baseStyles } from "../../styles";
 
-class AddObservationScreen extends Component {
+class ViewObservationScreen extends Component {
+  state = {
+    modalOpen: false
+  };
+
+  closeModal = () =>
+    this.setState({
+      modalOpen: false
+    });
+
+  openModal = () =>
+    this.setState({
+      modalOpen: true
+    });
+
   renderField(field, index) {
     const { observation, surveyId, type: { id } } = this.props;
 
@@ -47,16 +61,26 @@ class AddObservationScreen extends Component {
     history.push("/");
   };
 
+  onUpdateLocation = coordinates => {
+    updateObservation(coordinates);
+  };
+
   renderMap = () => {
     const { observation } = this.props;
+
+    const locationText =
+      observation.lat && observation.on ? "EDIT LOCATION" : "ADD LOCATION";
+
     return (
       <View style={[baseStyles.mapLg]}>
-        <Map />
+        <Map height={250} zoom={14} />
 
         <View style={[baseStyles.mapEditorBlock]}>
-          <Link to="/observation/location">
-            <Text style={[baseStyles.link]}>+ EDIT LOCATION</Text>
-          </Link>
+          <TouchableOpacity onPress={this.openModal}>
+            <Text style={[baseStyles.link]}>
+              + {locationText}
+            </Text>
+          </TouchableOpacity>
         </View>
       </View>
     );
@@ -71,6 +95,8 @@ class AddObservationScreen extends Component {
       type: { fields, name },
       observation: { tags }
     } = this.props;
+
+    const { modalOpen } = this.state;
 
     const headerView = (
       <View
@@ -94,6 +120,8 @@ class AddObservationScreen extends Component {
 
     return (
       <Wrapper headerView={headerView}>
+        {modalOpen && <LocationModal close={this.closeModal} />}
+
         <View
           style={[
             baseStyles.wrapperContentHeader,
@@ -160,5 +188,6 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 export default connect(mapStateToProps, {
-  saveObservation
-})(AddObservationScreen);
+  saveObservation,
+  updateObservation
+})(ViewObservationScreen);
