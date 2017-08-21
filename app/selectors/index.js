@@ -90,7 +90,9 @@ export const selectUncategorizedTypes = createSelector(
       return observationTypes.filter(
         x =>
           !categories
-            .map(x => x.members)
+            .map(x => {
+              return x.members;
+            })
             .reduce((arr, val) => arr.concat(val), [])
             .includes(x.id)
       );
@@ -101,8 +103,13 @@ export const selectUncategorizedTypes = createSelector(
       var reducedObj = uncategorized.reduce((obj, x) => {
         if (!obj[x.surveyId]) {
           obj[x.surveyId] = {
-            name: surveys.find(survey => survey.definition.id === x.surveyId)
-              .definition.name,
+            name: surveys.find(survey => {
+              return (
+                survey &&
+                survey.definition &&
+                survey.definition.id === x.surveyId
+              );
+            }),
             surveyId: x.surveyId,
             list: []
           };

@@ -29,20 +29,20 @@ class SurveyModal extends Component {
         <View style={[baseStyles.wrapperContentMd, baseStyles.modal]}>
           <View style={[baseStyles.wrappedItems]}>
             <Text style={[baseStyles.h2, baseStyles.wrappedItemsLeft]}>
-              Add Surveys
+              Add Survey
             </Text>
+
             <TouchableOpacity onPress={close}>
               <Icon name="clear" style={[[baseStyles.clearIcon]]} />
             </TouchableOpacity>
           </View>
+
           <RemoteSurveyList
             fetch={fetchRemoteSurvey}
             sync={syncData}
             surveys={remoteSurveys}
+            close={close}
           />
-          <TouchableOpacity onPress={close} style={baseStyles.buttonBottom}>
-            <Text style={baseStyles.textWhite}>DONE</Text>
-          </TouchableOpacity>
         </View>
       </Modal>
     );

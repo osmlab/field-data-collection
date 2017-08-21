@@ -6,10 +6,14 @@ import { baseStyles } from "../../styles";
 
 export default class RemoteSurveyList extends Component {
   render() {
-    const { fetch, surveys, sync } = this.props;
+    const { fetch, surveys, sync, close } = this.props;
 
     if (surveys == null || surveys.length === 0) {
-      return null;
+      return (
+        <View>
+          <Text>Loading...</Text>
+        </View>
+      );
     }
 
     return (
@@ -28,6 +32,10 @@ export default class RemoteSurveyList extends Component {
             </Text>
           </TouchableOpacity>
         )}
+
+        <TouchableOpacity onPress={close} style={baseStyles.buttonBottom}>
+          <Text style={baseStyles.textWhite}>DONE</Text>
+        </TouchableOpacity>
       </View>
     );
   }

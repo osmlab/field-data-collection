@@ -26,7 +26,7 @@ class Map extends Component {
           scrollEnabled={true}
           zoomEnabled={false}
           showsUserLocation={true}
-          styleURL="https://openmaptiles.github.io/osm-bright-gl-style/style-cdn.json"
+          styleURL={Mapbox.mapStyles.light}
           attributionButtonIsHidden={true}
           logoIsHidden={true}
         >

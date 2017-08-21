@@ -13,7 +13,6 @@ import { Link } from "react-router-native";
 
 import Text from "./text";
 import Geolocate from "./geolocate";
-import NearbyFeatures from "./nearby-features";
 
 import { colors } from "../styles";
 import { baseStyles } from "../styles";
@@ -55,7 +54,7 @@ class MapOverlay extends Component {
 
   render() {
     const { features, onGeolocate } = this.props;
-    const closed = Screen.height - 40;
+    const closed = Screen.height - 32;
     const open = Screen.height - 210;
 
     return (
@@ -72,14 +71,14 @@ class MapOverlay extends Component {
           style={{
             position: "absolute",
             right: 0,
-            bottom: 280,
+            bottom: 270,
             width: 75,
             height: 140,
             transform: [
               {
                 translateY: this._deltaY.interpolate({
                   inputRange: [open, closed],
-                  outputRange: [1, 170]
+                  outputRange: [1, 180]
                 })
               }
             ]
@@ -172,10 +171,10 @@ class MapOverlay extends Component {
                         { flexDirection: "row", flexWrap: "wrap" }
                       ]}
                     >
-                      <Text style={[baseStyles.metadataText]}>
+                      {/*}<Text style={[baseStyles.metadataText]}>
                         2 Observations
                       </Text>
-                      <Text style={[baseStyles.textAlert]}>(2 incomplete)</Text>
+                      <Text style={[baseStyles.textAlert]}>(2 incomplete)</Text>*/}
                     </View>
                   </View>
                 );

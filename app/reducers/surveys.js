@@ -1,13 +1,9 @@
 import types from "../actions";
 import OSM from "../config/OSM-2.2.2.json";
 
+// TODO: include an OSM survey by default
 const initialState = {
-  available: [
-    {
-      definition: OSM,
-      default: true
-    }
-  ],
+  available: [],
   remote: []
 };
 

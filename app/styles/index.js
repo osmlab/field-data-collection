@@ -205,7 +205,11 @@ const baseStyles = StyleSheet.create({
     alignItems: "center",
     paddingTop: 15,
     paddingBottom: 15,
-    height: 50
+    height: 50,
+    position: "absolute",
+    bottom: 0,
+    right: 0,
+    left: 0
   },
   buttonOutline: {
     borderColor: colors.text.header,
@@ -248,9 +252,8 @@ const baseStyles = StyleSheet.create({
     paddingTop: 13
   },
   nearbyPoints: {
-    backgroundColor: "#ffffff",
+    backgroundColor: "#fdfdfd",
     height: 400,
-    borderColor: colors.text.tertiary,
     elevation: 10
   },
   nearbyPointsHeader: {

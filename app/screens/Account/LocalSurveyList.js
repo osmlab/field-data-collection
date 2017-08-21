@@ -26,15 +26,6 @@ export default class LocalSurveyList extends Component {
             <Text style={[baseStyles.h3, baseStyles.headerWithDescription]}>
               {survey.definition.name}
             </Text>
-            <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
-              <Text>Updated: </Text>
-              <Text>4/30/17 4:30 (TBD)</Text>
-            </View>
-            <View style={[baseStyles.observationBlock]}>
-              <Text style={[baseStyles.metadataText]}>
-                2 Observations (TBD)
-              </Text>
-            </View>
           </View>
         )}
       </View>

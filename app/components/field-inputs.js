@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Picker, Switch, TextInput, View } from "react-native";
+import DatePicker from "react-native-datepicker";
 
 import { Text } from ".";
 import { baseStyles } from "../styles";
@@ -8,10 +9,15 @@ class Field extends Component {
   onValueChange = value => {
     const { field: { key }, updateObservation } = this.props;
 
+    console.log("field key", key);
     updateObservation({
       tags: {
         [key]: value
       }
+    });
+
+    this.setState({
+      value: value
     });
   };
 
@@ -33,7 +39,7 @@ export class CheckField extends Field {
           <Text style={[baseStyles.fieldLabel]}>
             {label} ({key})
           </Text>
-          <Switch onValueChange={this.onValueChange} value={value} />
+          <Switch onValueChange={this.onValueChange} value={this.state.value} />
         </View>
       </View>
     );
@@ -59,12 +65,16 @@ export class PickerField extends Field {
     const { field: { key, label }, observation: { tags } } = this.props;
     const value = tags[key];
 
+    console.log("value", value);
+    console.log("tags", tags);
+
     return (
       <View ref={x => (this._root = x)} style={[baseStyles.field]}>
         <View style={{ flex: 1 }}>
           <Text style={[baseStyles.fieldLabel]}>
             {label} ({key})
           </Text>
+
           <Picker
             onValueChange={this.onValueChange}
             prompt={label}
@@ -73,7 +83,7 @@ export class PickerField extends Field {
               flex: 1
             }}
           >
-            <Picker.Item label="" value={null} />
+            <Picker.Item label="" value={value} />
             {this.getPickerItems()}
           </Picker>
         </View>
@@ -155,6 +165,39 @@ export class TextField extends Field {
   }
 }
 
+export class DateField extends Field {
+  render() {
+    return (
+      <DatePicker
+        style={{ width: 200 }}
+        date={this.props.value}
+        mode="date"
+        placeholder="select date"
+        format="YYYY-MM-DD"
+        minDate="2016-05-01"
+        maxDate="2016-06-01"
+        confirmBtnText="Confirm"
+        cancelBtnText="Cancel"
+        customStyles={{
+          dateIcon: {
+            position: "absolute",
+            left: 0,
+            top: 4,
+            marginLeft: 0
+          },
+          dateInput: {
+            marginLeft: 36
+          }
+          // ... You can check the source to find the other keys.
+        }}
+        onDateChange={date => {
+          this.setState({ date: date });
+        }}
+      />
+    );
+  }
+}
+
 export const getFieldInput = type => {
   switch (type) {
     case "check":
@@ -167,6 +210,9 @@ export const getFieldInput = type => {
       return NumberField;
 
     case "text":
+      return TextField;
+
+    case "textarea":
       return TextField;
 
     default:

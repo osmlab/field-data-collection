@@ -64,7 +64,6 @@ class ObservationMapScreen extends Component {
       zoom: 16,
       userTrackingMode: Mapbox.userTrackingMode.followWithHeading,
       annotations: [],
-      mapSize: { width: null, height: null },
       userLocation: null
     });
   }
@@ -141,6 +140,8 @@ class ObservationMapScreen extends Component {
         this.setState({ userLocation: data.coords });
       }
     });
+
+    this.setFeatures();
   };
 
   onGeolocate = (err, data) => {
@@ -211,11 +212,6 @@ class ObservationMapScreen extends Component {
             annotations={this.state.annotations}
             onTap={this.onMapPress}
             onOpenAnnotation={this.onMapPress}
-            onLayout={e => {
-              const { nativeEvent: { layout: { height, width } } } = e;
-              this.state.mapSize.height = height;
-              this.state.mapSize.width = width;
-            }}
             onFinishLoadingMap={this.onFinishLoadingMap}
             onUpdateUserLocation={this.onUpdateUserLocation}
             onRegionDidChange={debounce(this.setFeatures, 400)}
@@ -226,7 +222,7 @@ class ObservationMapScreen extends Component {
             scrollEnabled
             zoomEnabled
             showsUserLocation={false}
-            styleURL="https://openmaptiles.github.io/osm-bright-gl-style/style-cdn.json"
+            styleURL={Mapbox.mapStyles.light}
             userTrackingMode={this.state.userTrackingMode}
             attributionButtonIsHidden={true}
             logoIsHidden={true}

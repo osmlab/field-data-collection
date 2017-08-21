@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Image, View, TouchableOpacity } from "react-native";
+import { Image, View, TouchableOpacity, ScrollView } from "react-native";
 import { connect } from "react-redux";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Link } from "react-router-native";
@@ -45,6 +45,21 @@ class AddObservationScreen extends Component {
     observation.survey = { id: surveyId, type: type.id };
     saveObservation(observation);
     history.push("/");
+  };
+
+  renderMap = () => {
+    const { observation } = this.props;
+    return (
+      <View style={[baseStyles.mapLg]}>
+        <Map />
+
+        <View style={[baseStyles.mapEditorBlock]}>
+          <Link to="/observation/location">
+            <Text style={[baseStyles.link]}>+ EDIT LOCATION</Text>
+          </Link>
+        </View>
+      </View>
+    );
   };
 
   render() {
@@ -94,7 +109,7 @@ class AddObservationScreen extends Component {
                 baseStyles.headerWithDescription
               ]}
             >
-              {name} ({surveyId})
+              {name}
             </Text>
             {icon &&
               <Image
@@ -107,28 +122,22 @@ class AddObservationScreen extends Component {
               />}
           </View>
         </View>
-        <View style={[baseStyles.mapLg]}>
-          <Map />
 
-          <View style={[baseStyles.mapEditorBlock]}>
-            <Link to="/observation/location">
-              <Text style={[baseStyles.link]}>+ ADD LOCATION</Text>
-            </Link>
-          </View>
-        </View>
+        {this.renderMap()}
+
         <View style={{ marginTop: 20 }}>
           <View style={[baseStyles.wrapperContent]}>
             <Text style={[baseStyles.h3]}>Basic Info</Text>
 
-            <View style={baseStyles.fieldset}>
+            <View style={[baseStyles.fieldset, { marginBottom: 50 }]}>
               {fields.map(this.renderField, this)}
             </View>
 
             <TouchableOpacity
               onPress={this.save}
-              style={baseStyles.buttonOutline}
+              style={baseStyles.buttonBottom}
             >
-              <Text>Save</Text>
+              <Text style={baseStyles.textWhite}>SAVE</Text>
             </TouchableOpacity>
           </View>
         </View>

@@ -1,20 +1,32 @@
 import React, { Component } from "react";
 import { View, TextInput, TouchableOpacity, ScrollView } from "react-native";
-import Mapbox, { MapView } from "react-native-mapbox-gl";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { connect } from "react-redux";
 import { Link } from "react-router-native";
 
+import getBoundsFromPoints from "../../lib/get-bounds-from-points";
 import { initializeObservation } from "../../actions";
 import { selectActiveObservation, selectOsmFeatures } from "../../selectors";
-import { Text, Wrapper, Map } from "../../components";
+import { Text, Wrapper, Map, AnnotationOSM } from "../../components";
 import { baseStyles } from "../../styles";
 
 class ChoosePoint extends Component {
   componentWillMount() {}
 
   render() {
-    const { history, initializeObservation } = this.props;
+    const { history, featureList, initializeObservation } = this.props;
+
+    let annotations = featureList.map(item => {
+      return (
+        <AnnotationOSM
+          key={item.id}
+          id={item.id}
+          radius={8}
+          coordinates={{ latitude: item.lat, longitude: item.lon }}
+          onPress={this.onMapPress}
+        />
+      );
+    });
 
     const headerView = (
       <View
@@ -48,7 +60,10 @@ class ChoosePoint extends Component {
             <Text style={baseStyles.h2}>
               What are you adding an observation to?
             </Text>
-            <Map zoom={12} />
+
+            <Map zoom={12}>
+              {annotations}
+            </Map>
           </View>
 
           <View>
@@ -88,15 +103,7 @@ class ChoosePoint extends Component {
         </View>
 
         <TouchableOpacity
-          style={[
-            baseStyles.buttonBottom,
-            {
-              position: "absolute",
-              bottom: 0,
-              right: 0,
-              left: 0
-            }
-          ]}
+          style={baseStyles.buttonBottom}
           onPress={() => {
             console.log("ok");
           }}
@@ -115,4 +122,6 @@ const mapStateToProps = (state, ownProps) => {
   };
 };
 
-export default connect(mapStateToProps, { initializeObservation })(ChoosePoint);
+export default connect(mapStateToProps, {
+  initializeObservation
+})(ChoosePoint);

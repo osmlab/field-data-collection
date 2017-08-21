@@ -13,9 +13,9 @@ const MESSAGES = {
   [types.FETCHING_REMOTE_SURVEY_FAILED]: "Fetching remote survey failed.",
   [types.FETCHING_REMOTE_SURVEY_LIST_FAILED]:
     "Fetching remote survey list failed.",
-  [types.SYNCING_SURVEY_DATA]: "Syncing survey data...",
-  [types.SYNCING_SURVEY_DATA_FAILED]: "Syncing survey data failed.",
-  [types.FINISHED_SYNCING_SURVEY_DATA]: "Survey data sync complete",
+  [types.SYNCING_SURVEY_DATA]: "Importing survey data...",
+  [types.SYNCING_SURVEY_DATA_FAILED]: "Importing survey data failed.",
+  [types.FINISHED_SYNCING_SURVEY_DATA]: "Survey import complete",
   [types.SAVING_OBSERVATION]: "Saving observation...",
   [types.SAVING_OBSERVATION_FAILED]: "Saving observation failed."
 };

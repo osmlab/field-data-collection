@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View, Dimensions } from "react-native";
 import { connect } from "react-redux";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Link } from "react-router-native";
@@ -10,6 +10,8 @@ import { selectAvailableSurveys } from "../../selectors";
 import { baseStyles } from "../../styles";
 import LocalSurveyList from "./LocalSurveyList";
 import SurveyModal from "./SurveyModal";
+
+const Screen = Dimensions.get("window");
 
 class SurveysScreen extends Component {
   state = {
@@ -54,17 +56,17 @@ class SurveysScreen extends Component {
     );
 
     return (
-      <Wrapper headerView={headerView}>
+      <Wrapper headerView={headerView} style={{ height: Screen.height }}>
         {showModal && <SurveyModal close={this.hideModal} />}
 
         <LocalSurveyList surveys={availableSurveys} />
 
-        <View style={{ flex: 1, alignItems: "stretch" }}>
+        <View style={{ height: Screen.height }}>
           <TouchableOpacity
             style={[baseStyles.buttonBottom]}
             onPress={this.showModal}
           >
-            <Text style={[baseStyles.textWhite]}>ADD NEW SURVEYS</Text>
+            <Text style={[baseStyles.textWhite]}>ADD NEW SURVEY</Text>
           </TouchableOpacity>
         </View>
       </Wrapper>

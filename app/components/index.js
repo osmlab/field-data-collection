@@ -2,7 +2,6 @@ import Header from "./header";
 import SideMenu from "./side-menu";
 import Text from "./text";
 import Wrapper from "./wrapper";
-import NearbyFeatures from "./nearby-features";
 import Geolocate from "./geolocate";
 import PercentComplete from "./percent-complete";
 import { getFieldInput } from "./field-inputs";
@@ -24,7 +23,6 @@ export {
   Geolocate,
   getFieldInput,
   getFieldType,
-  NearbyFeatures,
   PercentComplete,
   StatusBar,
   CategoryList,
