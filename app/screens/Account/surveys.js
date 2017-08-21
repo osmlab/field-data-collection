@@ -61,7 +61,7 @@ class SurveysScreen extends Component {
 
         <LocalSurveyList surveys={availableSurveys} />
 
-        <View style={{ height: Screen.height }}>
+        <View style={{ height: Screen.height - 178 }}>
           <TouchableOpacity
             style={[baseStyles.buttonBottom]}
             onPress={this.showModal}
