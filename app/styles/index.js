@@ -5,6 +5,7 @@ const colors = {
     links: "#8212C6",
     headerBackground: "#6579FC",
     geolocationIconInside: "#C3CAFA",
+    geolocationIcon: "#2C2C2C",
     relatedItemsBackground: "#FDFDFD",
     error: "#FF5C3F",
     chartColor: "#1DE9B6"
@@ -38,6 +39,15 @@ const baseStyles = StyleSheet.create({
   wrapperContentMd: {
     padding: 25
   },
+  wrapperContentMdHeader: {
+    padding: 25,
+    paddingBottom: 10
+  },
+  wrapperContentMdInterior: {
+    padding: 25,
+    paddingTop: 0,
+    paddingBottom: 0
+  },
   wrapperContentLg: {
     paddingBottom: 30,
     paddingTop: 30
@@ -66,11 +76,15 @@ const baseStyles = StyleSheet.create({
   },
 
   //Modal
+  modalBg: {
+    backgroundColor: "rgba(57, 54, 54, .8)",
+    flex: 1
+  },
   modal: {
-    marginTop: 110,
+    marginTop: 20,
     backgroundColor: "#fff",
-    width: 360,
-    height: 600,
+    width: 380,
+    height: 620,
     alignSelf: "center",
     elevation: 15
   },
@@ -194,7 +208,9 @@ const baseStyles = StyleSheet.create({
   },
   clearIcon: {
     fontSize: 28,
-    color: colors.interface.links
+    color: colors.interface.links,
+    justifyContent: "flex-end",
+    flexDirection: "column"
   },
 
   //buttons

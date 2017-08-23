@@ -22,12 +22,12 @@ export default function geolocate(props) {
       }}
     >
       <Icon
-        name="location-searching"
+        name="gps-fixed"
         style={{
-          paddingTop: 10,
-          paddingLeft: 10,
-          fontSize: 40,
-          color: "#cccccc"
+          paddingTop: 12,
+          paddingLeft: 12,
+          fontSize: 35,
+          color: "#2C2C2C"
         }}
       />
     </TouchableOpacity>
