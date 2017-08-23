@@ -89,13 +89,13 @@ class ObservationMapScreen extends Component {
       left: x - 50
     };
 
-    this._map.getBoundsFromScreenCoordinates(rect, bounds => {
-      var q = [[bounds[0], bounds[2]], [bounds[1], bounds[3]]];
-
-      osm.queryOSM(q, (err, results) => {
-        console.log("osm.query", err, Object.keys(results));
-      });
-    });
+    // this._map.getBoundsFromScreenCoordinates(rect, bounds => {
+    //   var q = [[bounds[0], bounds[2]], [bounds[1], bounds[3]]];
+    //
+    //   osm.queryOSM(q, (err, results) => {
+    //     console.log("osm.query", err, Object.keys(results));
+    //   });
+    // });
   };
 
   setFeatures = e => {
@@ -203,7 +203,7 @@ class ObservationMapScreen extends Component {
           onSync={this.prepareAnnotations}
         />
 
-        {this.state.showMap &&
+        {
           <MapView
             ref={map => {
               this._map = map;
@@ -228,7 +228,8 @@ class ObservationMapScreen extends Component {
             logoIsHidden={true}
           >
             {annotations}
-          </MapView>}
+          </MapView>
+        }
 
         <TouchableOpacity
           style={[styles.buttonLegend]}
