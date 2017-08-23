@@ -1,5 +1,10 @@
 import React, { Component } from "react";
-import { TouchableOpacity, View, Dimensions } from "react-native";
+import {
+  TouchableOpacity,
+  View,
+  Dimensions,
+  ActivityIndicator
+} from "react-native";
 import { connect } from "react-redux";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Link } from "react-router-native";
@@ -56,7 +61,11 @@ class SurveysScreen extends Component {
     );
 
     return (
-      <Wrapper headerView={headerView} style={{ height: Screen.height }}>
+      <Wrapper
+        headerView={headerView}
+        style={{ height: Screen.height }}
+        hideStatusBar
+      >
         {showModal && <SurveyModal close={this.hideModal} />}
 
         <LocalSurveyList surveys={availableSurveys} />
