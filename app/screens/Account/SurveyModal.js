@@ -26,23 +26,30 @@ class SurveyModal extends Component {
 
     return (
       <Modal animationType="slide" transparent visible onRequestClose={close}>
-        <View style={[baseStyles.wrapperContentMd, baseStyles.modal]}>
-          <View style={[baseStyles.wrappedItems]}>
-            <Text style={[baseStyles.h2, baseStyles.wrappedItemsLeft]}>
-              Add Survey
-            </Text>
+        <View style={[baseStyles.modalBg]}>
+          <View style={[baseStyles.modal]}>
+            <View
+              style={[
+                baseStyles.wrapperContentMdHeader,
+                baseStyles.wrappedItems
+              ]}
+            >
+              <Text style={[baseStyles.h2, baseStyles.wrappedItemsLeft]}>
+                Add Survey
+              </Text>
 
-            <TouchableOpacity onPress={close}>
-              <Icon name="clear" style={[[baseStyles.clearIcon]]} />
-            </TouchableOpacity>
+              <TouchableOpacity onPress={close}>
+                <Icon name="clear" style={[[baseStyles.clearIcon]]} />
+              </TouchableOpacity>
+            </View>
+
+            <RemoteSurveyList
+              fetch={fetchRemoteSurvey}
+              sync={syncData}
+              surveys={remoteSurveys}
+              close={close}
+            />
           </View>
-
-          <RemoteSurveyList
-            fetch={fetchRemoteSurvey}
-            sync={syncData}
-            surveys={remoteSurveys}
-            close={close}
-          />
         </View>
       </Modal>
     );

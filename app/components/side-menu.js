@@ -92,9 +92,9 @@ class SideMenu extends Component {
           <View style={styles.sideMenu}>
             <Text style={[baseStyles.title, baseStyles.titleMenu]}>Menu</Text>
 
-            <Link to="/account/profile" style={baseStyles.navLink}>
+            {/*<Link to="/account/profile" style={baseStyles.navLink}>
               <Text>Profile</Text>
-            </Link>
+            </Link>*/}
 
             <Link to="/account/observations" style={[baseStyles.navLink]}>
               <Text>My Observations</Text>
@@ -104,13 +104,13 @@ class SideMenu extends Component {
               <Text>Surveys</Text>
             </Link>
 
-            <Link to="/account/settings" style={[baseStyles.navLink]}>
+            {/*<Link to="/account/settings" style={[baseStyles.navLink]}>
               <Text>Settings</Text>
             </Link>
 
             <Link to="/account/about" style={[baseStyles.navLink]}>
               <Text>About</Text>
-            </Link>
+            </Link>*/}
           </View>
         </Interactable.View>
       </View>

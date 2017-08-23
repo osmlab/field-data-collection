@@ -10,32 +10,35 @@ export default class RemoteSurveyList extends Component {
 
     if (surveys == null || surveys.length === 0) {
       return (
-        <View>
+        <View style={[baseStyles.wrapperContentMdInterior]}>
           <Text>Loading...</Text>
         </View>
       );
     }
 
     return (
-      <View style={{}}>
-        {surveys.map((survey, idx) =>
-          <TouchableOpacity
-            key={idx}
-            onPress={() => {
-              fetch(survey.id, survey.url);
-              sync(survey.target);
-            }}
-            style={[baseStyles.touchableLinksWrapper]}
-          >
-            <Text style={[baseStyles.touchableLinks]}>
-              {survey.name} {survey.version}
-            </Text>
+      <View>
+        <View style={[baseStyles.wrapperContentMdInterior]}>
+          {surveys.map((survey, idx) =>
+            <TouchableOpacity
+              key={idx}
+              onPress={() => {
+                fetch(survey.id, survey.url);
+                sync(survey.target);
+              }}
+              style={[baseStyles.touchableLinksWrapper]}
+            >
+              <Text style={[baseStyles.touchableLinks]}>
+                {survey.name} {survey.version}
+              </Text>
+            </TouchableOpacity>
+          )}
+        </View>
+        <View style={{ height: 620 - 219 }}>
+          <TouchableOpacity onPress={close} style={baseStyles.buttonBottom}>
+            <Text style={baseStyles.textWhite}>ADD SURVEY</Text>
           </TouchableOpacity>
-        )}
-
-        <TouchableOpacity onPress={close} style={baseStyles.buttonBottom}>
-          <Text style={baseStyles.textWhite}>DONE</Text>
-        </TouchableOpacity>
+        </View>
       </View>
     );
   }
