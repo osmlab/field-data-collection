@@ -16,8 +16,8 @@ class ChoosePoint extends Component {
   render() {
     const { history, featureList, initializeObservation } = this.props;
 
-    const center = getCenterOfPoints(featureList);
-    console.log("center", center);
+    const center = featureList.length ? getCenterOfPoints(featureList) : false;
+
     let annotations = featureList.map(item => {
       return (
         <AnnotationOSM
@@ -63,7 +63,7 @@ class ChoosePoint extends Component {
               What are you adding an observation to?
             </Text>
 
-            <Map center={center}>
+            <Map>
               {annotations}
             </Map>
           </View>
