@@ -36,6 +36,7 @@ const types = {
   FETCHING_REMOTE_SURVEY_FAILED: "FETCHING_REMOTE_SURVEY_FAILED",
   FETCHING_REMOTE_SURVEY_LIST: "FETCHING_REMOTE_SURVEY_LIST",
   FETCHING_REMOTE_SURVEY_LIST_FAILED: "FETCHING_REMOTE_SURVEY_LIST_FAILED",
+  DELETE_LOCAL_SURVEY: "DELETE_LOCAL_SURVEY",
   INITIALIZE_OBSERVATION: "INITIALIZE_OBSERVATION",
   SET_ACTIVE_OBSERVATION: "SET_ACTIVE_OBSERVATION",
   RECEIVED_REMOTE_SURVEY_LIST: "RECEIVED_REMOTE_SURVEY_LIST",
@@ -254,6 +255,12 @@ const getPeerInfo = (dispatch, callback) => {
 export const clearLocalSurveys = () => (dispatch, getState) =>
   dispatch({
     type: types.CLEAR_LOCAL_SURVEYS
+  });
+
+export const deleteLocalSurvey = surveyId => (dispatch, getState) =>
+  dispatch({
+    type: types.DELETE_LOCAL_SURVEY,
+    id: surveyId
   });
 
 export const clearRemoteSurveys = () => (dispatch, getState) =>
