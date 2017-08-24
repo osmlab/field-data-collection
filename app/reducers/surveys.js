@@ -79,6 +79,12 @@ export default (state = initialState, { id, survey, surveys, type }) => {
         surveyDataSynced: true
       };
 
+    case types.DELETE_LOCAL_SURVEY:
+      return {
+        ...state,
+        available: state.available.filter(s => s.definition.id !== id)
+      };
+
     default:
       return state;
   }
