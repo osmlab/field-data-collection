@@ -26,7 +26,11 @@ class Map extends Component {
           zoomEnabled={true}
           showsUserLocation={true}
           styleURL={Mapbox.mapStyles.light}
-          userTrackingMode={Mapbox.userTrackingMode.followWithHeading}
+          userTrackingMode={
+            !!this.props.center
+              ? Mapbox.userTrackingMode.none
+              : Mapbox.userTrackingMode.followWithHeading
+          }
           attributionButtonIsHidden={true}
           logoIsHidden={true}
         >

@@ -3,6 +3,10 @@ import OSM from "../config/OSM-2.2.2.json";
 
 // TODO: include an OSM survey by default
 const initialState = {
+  fetchingRemoteSurvey: null,
+  remoteSurveyFetched: null,
+  syncingSurveyData: null,
+  surveyDataSynced: null,
   available: [],
   remote: []
 };
@@ -24,6 +28,8 @@ export default (state = initialState, { id, survey, surveys, type }) => {
     case types.FETCHING_REMOTE_SURVEY:
       return {
         ...state,
+        fetchingRemoteSurvey: true,
+        remoteSurveyFetched: false,
         available: state.available.filter(
           ({ definition }) => definition.id !== id
         )
@@ -44,6 +50,8 @@ export default (state = initialState, { id, survey, surveys, type }) => {
     case types.RECEIVED_REMOTE_SURVEY:
       return {
         ...state,
+        fetchingRemoteSurvey: false,
+        remoteSurveyFetched: true,
         available: state.available
           .concat(survey)
           .sort((a, b) =>
@@ -55,6 +63,20 @@ export default (state = initialState, { id, survey, surveys, type }) => {
       return {
         ...state,
         remote: surveys
+      };
+
+    case types.SYNCING_SURVEY_DATA:
+      return {
+        ...state,
+        syncingSurveyData: true,
+        surveyDataSynced: false
+      };
+
+    case types.FINISHED_SYNCING_SURVEY_DATA:
+      return {
+        ...state,
+        syncingSurveyData: false,
+        surveyDataSynced: true
       };
 
     default:

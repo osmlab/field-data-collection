@@ -4,7 +4,8 @@ import {
   TouchableOpacity,
   ScrollView,
   Dimensions,
-  Animated
+  Animated,
+  ActivityIndicator
 } from "react-native";
 
 import Icon from "react-native-vector-icons/MaterialIcons";
@@ -52,8 +53,126 @@ class MapOverlay extends Component {
     });
   }
 
+  renderNearbyPoints = () => {
+    const { features, areaOfInterest, activeSurveys } = this.props;
+
+    if (!activeSurveys.length) {
+      return (
+        <View style={baseStyles.nearbyPoints}>
+          <View style={[baseStyles.nearbyPointsHeader]}>
+            <View
+              style={[baseStyles.nearbyPointsDescription, { paddingTop: 10 }]}
+            >
+              <Link to="/account/surveys">
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "flex-start"
+                  }}
+                >
+                  <Icon name="add" style={{ fontSize: 20 }} />
+                  <Text style={[baseStyles.touchableLinks, { fontSize: 20 }]}>
+                    Add a survey to get started
+                  </Text>
+                </View>
+              </Link>
+            </View>
+          </View>
+        </View>
+      );
+    }
+
+    if (!features.length) {
+      return (
+        <View style={baseStyles.nearbyPoints}>
+          <View style={[baseStyles.nearbyPointsHeader]}>
+            <View
+              style={[
+                baseStyles.nearbyPointsDescription,
+                {
+                  flex: 1,
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "flex-start",
+                  paddingTop: 10
+                }
+              ]}
+            >
+              <ActivityIndicator
+                animating
+                size="large"
+                style={{ marginRight: 15 }}
+              />
+              <Text style={{ fontSize: 20 }}>Loading data</Text>
+            </View>
+          </View>
+        </View>
+      );
+    }
+
+    return (
+      <View style={baseStyles.nearbyPoints}>
+        <View style={[baseStyles.nearbyPointsHeader]}>
+          <View style={[baseStyles.nearbyPointsDescription]}>
+            <TouchableOpacity onPress={this.toggle}>
+              <Text style={[baseStyles.h4]}>Nearby Points</Text>
+
+              <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+                {this.props.userLocation
+                  ? <Text>
+                      Location: {this.props.userLocation.latitude.toFixed(2)},{" "}
+                      {this.props.userLocation.longitude.toFixed(2)}
+                    </Text>
+                  : <Text>Geolocating...</Text>}
+              </View>
+            </TouchableOpacity>
+          </View>
+
+          {/*
+          // hide filter button temporarily
+          <View style={{}}>
+            <TouchableOpacity
+              style={[baseStyles.buttonOutline]}
+              onPress={this._onPressButton}
+            >
+              <Text>Filter</Text>
+            </TouchableOpacity>
+          </View>
+          */}
+        </View>
+
+        <ScrollView horizontal={true} width={Screen.width}>
+          {this.props.features.map(item => {
+            return (
+              <View style={[baseStyles.cardStyle]} key={item.id}>
+                <Text style={[baseStyles.h3]}>
+                  {item.tags.name}
+                </Text>
+                <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+                  {/* TODO: info about distance from user & related observations if applicable */}
+                </View>
+                <View
+                  style={[
+                    baseStyles.observationBlock,
+                    { flexDirection: "row", flexWrap: "wrap" }
+                  ]}
+                >
+                  {/*}<Text style={[baseStyles.metadataText]}>
+                    2 Observations
+                  </Text>
+                  <Text style={[baseStyles.textAlert]}>(2 incomplete)</Text>*/}
+                </View>
+              </View>
+            );
+          })}
+        </ScrollView>
+      </View>
+    );
+  };
+
   render() {
-    const { features, onGeolocate } = this.props;
+    const { onGeolocate } = this.props;
     const closed = Screen.height - 32;
     const open = Screen.height - 210;
 
@@ -124,63 +243,7 @@ class MapOverlay extends Component {
           }}
           animatedValueY={this._deltaY}
         >
-          <View style={baseStyles.nearbyPoints}>
-            <View style={[baseStyles.nearbyPointsHeader]}>
-              <View style={[baseStyles.nearbyPointsDescription]}>
-                <TouchableOpacity onPress={this.toggle}>
-                  <Text style={[baseStyles.h4]}>Nearby Points</Text>
-
-                  <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
-                    {this.props.userLocation
-                      ? <Text>
-                          Location:{" "}
-                          {this.props.userLocation.latitude.toFixed(2)},{" "}
-                          {this.props.userLocation.longitude.toFixed(2)}
-                        </Text>
-                      : <Text>Geolocating...</Text>}
-                  </View>
-                </TouchableOpacity>
-              </View>
-
-              {/*
-              // hide filter button temporarily
-              <View style={{}}>
-                <TouchableOpacity
-                  style={[baseStyles.buttonOutline]}
-                  onPress={this._onPressButton}
-                >
-                  <Text>Filter</Text>
-                </TouchableOpacity>
-              </View>
-              */}
-            </View>
-
-            <ScrollView horizontal={true} width={Screen.width}>
-              {this.props.features.map(item => {
-                return (
-                  <View style={[baseStyles.cardStyle]} key={item.id}>
-                    <Text style={[baseStyles.h3]}>
-                      {item.tags.name}
-                    </Text>
-                    <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
-                      {/* TODO: info about distance from user & related observations if applicable */}
-                    </View>
-                    <View
-                      style={[
-                        baseStyles.observationBlock,
-                        { flexDirection: "row", flexWrap: "wrap" }
-                      ]}
-                    >
-                      {/*}<Text style={[baseStyles.metadataText]}>
-                        2 Observations
-                      </Text>
-                      <Text style={[baseStyles.textAlert]}>(2 incomplete)</Text>*/}
-                    </View>
-                  </View>
-                );
-              })}
-            </ScrollView>
-          </View>
+          {this.renderNearbyPoints()}
         </Interactable.View>
       </View>
     );

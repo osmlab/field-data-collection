@@ -12,7 +12,7 @@ import {
 } from "../../actions";
 import { StatusBar, Text } from "../../components";
 import RemoteSurveyList from "./RemoteSurveyList";
-import { selectRemoteSurveys } from "../../selectors";
+import { selectRemoteSurveys, selectActiveSurveys } from "../../selectors";
 import { baseStyles } from "../../styles";
 
 class SurveyModal extends Component {
@@ -22,7 +22,19 @@ class SurveyModal extends Component {
   }
 
   render() {
-    const { close, fetchRemoteSurvey, remoteSurveys, syncData } = this.props;
+    const {
+      close,
+      fetchRemoteSurvey,
+      remoteSurveys,
+      activeSurveys,
+      syncData,
+      fetchingRemoteSurvey,
+      remoteSurveyFetched,
+      syncingSurveyData,
+      surveyDataSynced
+    } = this.props;
+
+    const loadingSurvey = fetchingRemoteSurvey || syncingSurveyData;
 
     return (
       <Modal animationType="slide" transparent visible onRequestClose={close}>
@@ -35,7 +47,7 @@ class SurveyModal extends Component {
               ]}
             >
               <Text style={[baseStyles.h2, baseStyles.wrappedItemsLeft]}>
-                Add Survey
+                Add Surveys
               </Text>
 
               <TouchableOpacity onPress={close}>
@@ -47,8 +59,41 @@ class SurveyModal extends Component {
               fetch={fetchRemoteSurvey}
               sync={syncData}
               surveys={remoteSurveys}
+              activeSurveys={activeSurveys}
               close={close}
             />
+
+            {loadingSurvey &&
+              <View
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  right: 0,
+                  bottom: 0,
+                  left: 0,
+                  backgroundColor: "rgba(0, 0, 0, 0.5)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center"
+                }}
+              >
+                <View
+                  style={
+                    (
+                      [baseStyles.wrapperContentMdInterior],
+                      {
+                        backgroundColor: "white",
+                        elevation: 2,
+                        padding: 40,
+                        width: 200
+                      }
+                    )
+                  }
+                >
+                  <ActivityIndicator animating size="large" />
+                  <Text style={{ textAlign: "center" }}>Loading survey</Text>
+                </View>
+              </View>}
           </View>
         </View>
       </Modal>
@@ -57,7 +102,9 @@ class SurveyModal extends Component {
 }
 
 const mapStateToProps = state => ({
-  remoteSurveys: selectRemoteSurveys(state)
+  fetchingRemoteSurvey: state.surveys.fetchingRemoteSurvey,
+  remoteSurveys: selectRemoteSurveys(state),
+  activeSurveys: selectActiveSurveys(state)
 });
 
 export default connect(mapStateToProps, {

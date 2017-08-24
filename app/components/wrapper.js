@@ -26,7 +26,8 @@ class Wrapper extends Component {
     };
 
     const headerView = this.props.headerView || <Text>Observe</Text>;
-    const hideStatusBar = this.props.hideStatusBar;
+    const hideStatusBar = true; // TODO: improve statusbar this.props.hideStatusBar;
+    // const hideStatusBar = this.props.hideStatusBar;
 
     return (
       <View style={baseStyles.wrapper}>

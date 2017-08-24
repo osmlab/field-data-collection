@@ -140,17 +140,19 @@ class AccountObservations extends Component {
                       />
                     </Map>
 
-                    <PercentComplete
-                      radius={35}
-                      complete={complete}
-                      incomplete={incomplete}
-                    >
-                      <Text style={[baseStyles.percentCompleteTextSm]}>
-                        <Text style={[baseStyles.percentCompleteTextNumSm]}>
-                          {percentage}
+                    {/* TODO: restore & improve PercentComplete
+                      <PercentComplete
+                        radius={35}
+                        complete={complete}
+                        incomplete={incomplete}
+                      >
+                        <Text style={[baseStyles.percentCompleteTextSm]}>
+                          <Text style={[baseStyles.percentCompleteTextNumSm]}>
+                            {percentage}
+                          </Text>
                         </Text>
-                      </Text>
-                    </PercentComplete>
+                      </PercentComplete>
+                    */}
 
                     <View style={[baseStyles.surveyCardContent]}>
                       <Text

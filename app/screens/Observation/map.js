@@ -14,7 +14,11 @@ import { connect } from "react-redux";
 import debounce from "debounce";
 
 import getCurrentPosition from "../../lib/get-current-position";
-import { selectOsmFeatures, selectObservations } from "../../selectors";
+import {
+  selectOsmFeatures,
+  selectObservations,
+  selectActiveSurveys
+} from "../../selectors";
 import { setOsmFeatureList, setObservations, osm } from "../../actions";
 import {
   AnnotationOSM,
@@ -231,7 +235,8 @@ class ObservationMapScreen extends Component {
           </MapView>
         }
 
-        <TouchableOpacity
+        {/* TODO: restore legend 
+          <TouchableOpacity
           style={[styles.buttonLegend]}
           onPress={this._onPressButton}
         >
@@ -245,11 +250,14 @@ class ObservationMapScreen extends Component {
             }}
           />
         </TouchableOpacity>
+        */}
 
         <MapOverlay
           userLocation={this.state.userLocation}
           features={featureList}
           onGeolocate={this.onGeolocate}
+          activeSurveys={this.props.activeSurveys}
+          areaOfInterest={this.props.areaOfInterest}
         />
       </View>
     );
@@ -258,7 +266,9 @@ class ObservationMapScreen extends Component {
 
 const mapStateToProps = state => ({
   featureList: selectOsmFeatures(state),
-  observations: selectObservations(state)
+  observations: selectObservations(state),
+  areaOfInterest: state.osm.areaOfInterest,
+  activeSurveys: selectActiveSurveys(state)
 });
 
 export default connect(mapStateToProps, {

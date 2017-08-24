@@ -1,10 +1,5 @@
 import React, { Component } from "react";
-import {
-  TouchableOpacity,
-  View,
-  Dimensions,
-  ActivityIndicator
-} from "react-native";
+import { TouchableOpacity, View, Dimensions } from "react-native";
 import { connect } from "react-redux";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Link } from "react-router-native";
@@ -37,6 +32,11 @@ class SurveysScreen extends Component {
   // componentWillMount() {
   //   this.props.clearLocalSurveys();
   // }
+
+  componentWillMount() {
+    const { availableSurveys } = this.props;
+    if (!availableSurveys.length) this.showModal();
+  }
 
   render() {
     const { availableSurveys, history } = this.props;
@@ -75,7 +75,7 @@ class SurveysScreen extends Component {
             style={[baseStyles.buttonBottom]}
             onPress={this.showModal}
           >
-            <Text style={[baseStyles.textWhite]}>ADD NEW SURVEY</Text>
+            <Text style={[baseStyles.textWhite]}>ADD NEW SURVEYS</Text>
           </TouchableOpacity>
         </View>
       </Wrapper>

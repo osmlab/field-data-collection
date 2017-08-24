@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { View } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import { connect } from "react-redux";
+import Icon from "react-native-vector-icons/MaterialIcons";
 
 import { updateObservation } from "../../actions";
 import { Text, Wrapper, getFieldInput } from "../../components";
@@ -38,15 +39,19 @@ class FieldsetFormScreen extends Component {
           style={{
             flexDirection: "row",
             justifyContent: "space-between",
-            alignItems: "center"
+            alignItems: "center",
+            paddingTop: 20,
+            paddingLeft: 20,
+            paddingRight: 10
           }}
         >
           <Text style={[baseStyles.title]}>
             {name}
           </Text>
-          <Text style={{ fontSize: 25 }} onPress={history.goBack}>
-            ⅹ
-          </Text>
+
+          <TouchableOpacity onPress={history.goBack}>
+            <Icon name="clear" style={[[baseStyles.clearIcon]]} />
+          </TouchableOpacity>
         </View>
 
         <View style={[baseStyles.fieldset]}>
