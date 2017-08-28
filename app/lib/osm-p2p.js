@@ -137,13 +137,11 @@ function osmp2p(createOsmDb) {
 
     process.nextTick(function() {
       console.log("start replication");
-      console.time("replication");
       netSync.replicate(addr, opts, function() {
-        console.timeEnd("replication");
         console.log("start index regen");
-        console.time("indexing");
+        console.log("start indexing");
         osmOrgDb.ready(function() {
-          console.timeEnd("indexing");
+          console.log("indexing complete");
         });
         cb();
       });
