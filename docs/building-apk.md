@@ -16,6 +16,14 @@ react-native bundle --dev false --platform android --entry-file index.android.js
 cd android && ./gradlew assembleDebug
 ```
 
+### Install the APK on a device/emulator
+
+```
+adb install app/build/outputs/apk/app-debug.apk
+```
+
+> The above assumes you're still in the `android` directory after completing the build. If you're in the root directory of the project, use `android/app/build/outputs/apk/app-debug.apk` as the path to the APK.
+
 Based on this: https://stackoverflow.com/questions/35283959/build-and-install-unsigned-apk-on-device-without-the-development-server
 
 ## Building APKs for release
