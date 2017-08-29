@@ -5,7 +5,13 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import { Link } from "react-router-native";
 
 import { saveObservation, updateObservation } from "../../actions";
-import { Text, Wrapper, Map, LocationModal } from "../../components";
+import {
+  Text,
+  Wrapper,
+  Map,
+  LocationModal,
+  AnnotationObservation
+} from "../../components";
 import { getFieldType } from "../../components/fields";
 import {
   selectActiveObservation,
@@ -62,7 +68,33 @@ class ViewObservationScreen extends Component {
   };
 
   onUpdateLocation = coordinates => {
-    updateObservation(coordinates);
+    this.setState({ coordinates });
+
+    updateObservation({
+      lat: coordinates.latitude,
+      lon: coordinates.longitude
+    });
+
+    this._map.setCenterCoordinate(
+      coordinates.latitude,
+      coordinates.longitude,
+      true
+    );
+  };
+
+  componentWillMount = () => {
+    const { observation } = this.props;
+
+    this.setState({
+      coordinates: {
+        latitude: observation.lat,
+        longitude: observation.lon
+      }
+    });
+  };
+
+  setRef = map => {
+    this._map = map;
   };
 
   renderMap = () => {
@@ -73,7 +105,17 @@ class ViewObservationScreen extends Component {
 
     return (
       <View style={[baseStyles.mapLg]}>
-        <Map height={250} zoom={14} />
+        <Map
+          mapref={this.setRef}
+          height={250}
+          zoom={14}
+          center={this.state.coordinates}
+        >
+          <AnnotationObservation
+            id="observation"
+            coordinates={this.state.coordinates}
+          />
+        </Map>
 
         <View style={[baseStyles.mapEditorBlock]}>
           <TouchableOpacity onPress={this.openModal}>
@@ -120,7 +162,11 @@ class ViewObservationScreen extends Component {
 
     return (
       <Wrapper headerView={headerView}>
-        {modalOpen && <LocationModal close={this.closeModal} />}
+        {modalOpen &&
+          <LocationModal
+            close={this.closeModal}
+            onUpdateLocation={this.onUpdateLocation}
+          />}
 
         <View
           style={[
