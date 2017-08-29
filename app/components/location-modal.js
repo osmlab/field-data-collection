@@ -18,8 +18,9 @@ class LocationModal extends Component {
     return (
       <Modal animationType="slide" transparent visible onRequestClose={close}>
         <View style={[baseStyles.wrapperContentMd, baseStyles.modal]}>
-          <View style={[baseStyles.wrappedItems]}>
-            <Map height={300} />
+          <View style={{}}>
+            <Text>Choose location</Text>
+            <Map height={300} geolocateIcon />
           </View>
         </View>
       </Modal>
