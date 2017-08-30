@@ -54,7 +54,7 @@ class MapOverlay extends Component {
   }
 
   renderNearbyPoints = () => {
-    const { features, areaOfInterest, activeSurveys } = this.props;
+    const { areaOfInterest, activeSurveys, features, loading } = this.props;
 
     if (!activeSurveys.length) {
       return (
@@ -83,7 +83,7 @@ class MapOverlay extends Component {
       );
     }
 
-    if (features == null) {
+    if (loading) {
       return (
         <View style={baseStyles.nearbyPoints}>
           <View style={[baseStyles.nearbyPointsHeader]}>

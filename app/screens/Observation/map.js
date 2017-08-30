@@ -6,11 +6,17 @@ import debounce from "debounce";
 
 import getCurrentPosition from "../../lib/get-current-position";
 import {
-  selectObservations,
   selectActiveSurveys,
-  selectSelectedFeatures
+  selectLoadingStatus,
+  selectSelectedFeatures,
+  selectVisibleFeatures,
+  selectVisibleObservations
 } from "../../selectors";
-import { selectBbox, updateVisibleBounds } from "../../actions";
+import {
+  initializeObservation,
+  selectBbox,
+  updateVisibleBounds
+} from "../../actions";
 import {
   AnnotationObservation,
   Header,
@@ -67,6 +73,24 @@ class ObservationMapScreen extends Component {
     });
   }
 
+  componentWillUpdate(nextProps, nextState) {
+    const { initializeObservation } = this.props;
+    const { selectedFeatures } = nextProps;
+
+    if (selectedFeatures.length > 0) {
+      // TODO pick the feature closest to the center and/or pass a list somewhere
+      const item = selectedFeatures[0];
+      console.log("initializing observation for", item.tags.name);
+      // initializeObservation({
+      //   lat: item.lat,
+      //   lon: item.lon,
+      //   tags: { "osm-p2p-id": item.id }
+      // });
+      //
+      // history.push("/observation/categories");
+    }
+  }
+
   onMenuPress = () => {
     this._menu.open();
   };
@@ -119,7 +143,8 @@ class ObservationMapScreen extends Component {
 
   render() {
     const {
-      featureList,
+      features,
+      loading,
       observations,
       selectedFeatures,
       updateVisibleBounds
@@ -152,7 +177,7 @@ class ObservationMapScreen extends Component {
     //   })
     // );
 
-    let annotations = observations.map(item => {
+    const annotations = observations.map(item => {
       return (
         <AnnotationObservation
           key={item.id}
@@ -225,10 +250,11 @@ class ObservationMapScreen extends Component {
 
         <MapOverlay
           userLocation={this.state.userLocation}
-          features={featureList}
+          features={features}
           onGeolocate={this.onGeolocate}
           activeSurveys={this.props.activeSurveys}
           areaOfInterest={this.props.areaOfInterest}
+          loading={loading}
         />
       </View>
     );
@@ -236,13 +262,16 @@ class ObservationMapScreen extends Component {
 }
 
 const mapStateToProps = state => ({
-  observations: selectObservations(state),
-  areaOfInterest: state.osm.areaOfInterest,
   activeSurveys: selectActiveSurveys(state),
+  areaOfInterest: state.osm.areaOfInterest,
+  features: selectVisibleFeatures(state),
+  loading: selectLoadingStatus(state),
+  observations: selectVisibleObservations(state),
   selectedFeatures: selectSelectedFeatures(state)
 });
 
 export default connect(mapStateToProps, {
+  initializeObservation,
   selectBbox,
   updateVisibleBounds
 })(ObservationMapScreen);

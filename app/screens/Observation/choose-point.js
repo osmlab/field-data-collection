@@ -6,7 +6,10 @@ import { Link } from "react-router-native";
 
 import getCenterOfPoints from "../../lib/get-center-of-points";
 import { initializeObservation } from "../../actions";
-import { selectActiveObservation, selectOsmFeatures } from "../../selectors";
+import {
+  selectActiveObservation,
+  selectVisibleFeatures
+} from "../../selectors";
 import { Text, Wrapper, Map, AnnotationOSM } from "../../components";
 import { baseStyles } from "../../styles";
 
@@ -14,11 +17,11 @@ class ChoosePoint extends Component {
   componentWillMount() {}
 
   render() {
-    const { history, featureList, initializeObservation } = this.props;
+    const { history, features, initializeObservation } = this.props;
 
-    const center = featureList.length ? getCenterOfPoints(featureList) : false;
+    const center = features.length > 0 ? getCenterOfPoints(features) : false;
 
-    let annotations = featureList.map(item => {
+    let annotations = features.map(item => {
       return (
         <AnnotationOSM
           key={item.id}
@@ -70,7 +73,7 @@ class ChoosePoint extends Component {
 
           <View>
             <ScrollView style={{ marginTop: 6, height: 240 }}>
-              {this.props.featureList.map(item => {
+              {features.map(item => {
                 return (
                   <View
                     key={item.id}
@@ -126,7 +129,7 @@ class ChoosePoint extends Component {
 const mapStateToProps = (state, ownProps) => {
   return {
     observation: selectActiveObservation(state),
-    featureList: selectOsmFeatures(state)
+    features: selectVisibleFeatures(state)
   };
 };
 

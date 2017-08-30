@@ -144,4 +144,11 @@ export const selectObservations = state => state.observations.list;
 
 export const selectUserObservations = state => {};
 
-export const selectSelectedFeatures = state => state.osm.selectedFeatures;
+export const selectSelectedFeatures = state => state.osm.selectedFeatures || [];
+
+export const selectVisibleFeatures = state => state.osm.visibleFeatures || [];
+
+// TODO implement
+export const selectVisibleObservations = state => [];
+
+export const selectLoadingStatus = state => state.osm.loading;

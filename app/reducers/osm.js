@@ -2,7 +2,8 @@ import types from "../actions";
 
 const initialState = {
   areaOfInterest: null,
-  selectedFeatures: null
+  selectedFeatures: null,
+  loading: false
 };
 
 export default (
@@ -36,6 +37,21 @@ export default (
       return {
         ...state,
         visibleBounds: bounds
+      };
+
+    case types.REPLICATION_STARTED:
+    case types.REPLICATION_COMPLETED:
+    case types.INDEXING_STARTED:
+    case types.INDEXING_COMPLETED:
+      return {
+        ...state,
+        loading: true
+      };
+
+    case types.OSM_DATA_CHANGED:
+      return {
+        ...state,
+        loading: false
       };
 
     default:

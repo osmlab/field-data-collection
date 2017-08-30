@@ -430,8 +430,6 @@ export const selectBbox = bounds => dispatch => {
       );
     });
 
-    console.log("osm.query", Object.keys(filtered));
-
     return dispatch({ type: types.BBOX_SELECTED, bounds, results: filtered });
   });
 };
