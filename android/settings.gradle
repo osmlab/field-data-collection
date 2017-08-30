@@ -1,4 +1,4 @@
-rootProject.name = 'Surveyor'
+rootProject.name = 'Observe'
 
 include ':app'
 
