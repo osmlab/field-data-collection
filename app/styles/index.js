@@ -1,4 +1,6 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
+
+const screen = Dimensions.get("window");
 
 const colors = {
   interface: {
@@ -78,13 +80,17 @@ const baseStyles = StyleSheet.create({
   //Modal
   modalBg: {
     backgroundColor: "rgba(57, 54, 54, .8)",
-    flex: 1
+    position: "absolute",
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0
   },
   modal: {
     marginTop: 20,
     backgroundColor: "#fff",
-    width: 380,
-    height: 620,
+    width: screen.width - 40,
+    height: screen.height - 70,
     alignSelf: "center",
     elevation: 15
   },
