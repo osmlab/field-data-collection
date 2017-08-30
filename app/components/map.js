@@ -37,7 +37,6 @@ class Map extends Component {
         <MapView
           ref={this.setRef}
           style={{ flex: 1, top: 0, bottom: 0 }}
-          debugActive={true}
           compassIsHidden={false}
           initialCenterCoordinate={this.props.center}
           initialZoomLevel={this.props.zoom || 16}

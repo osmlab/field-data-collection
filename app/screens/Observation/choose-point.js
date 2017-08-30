@@ -73,7 +73,7 @@ class ChoosePoint extends Component {
               What are you adding an observation to?
             </Text>
 
-            <Map>
+            <Map center={center}>
               {annotations}
             </Map>
           </View>
