@@ -142,6 +142,6 @@ export const selectActiveObservation = state => state.observation;
 
 export const selectObservations = state => state.observations.list;
 
-export const selectOsmFeatures = state => state.osm.featureList;
-
 export const selectUserObservations = state => {};
+
+export const selectSelectedFeatures = state => state.osm.selectedFeatures;

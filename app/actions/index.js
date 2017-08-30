@@ -53,10 +53,15 @@ const types = {
   SET_OBSERVATIONS_LAST_SYNCED: "SET_OBSERVATIONS_LAST_SYNCED",
   SET_COORDINATOR_TARGET: "SET_COORDINATOR_TARGET",
   UPDATE_OBSERVATION: "UPDATE_OBSERVATION",
-  SET_OBSERVATIONS: "SET_OBSERVATIONS",
-  CLEAR_OBSERVATIONS: "CLEAR_OBSERVATIONS",
-  SET_OSM_FEATURE_LIST: "SET_OSM_FEATURE_LIST",
-  CLEAR_OSM_FEATURE_LIST: "CLEAR_OSM_FEATURE_LIST"
+  REPLICATION_STARTED: "REPLICATION_STARTED",
+  REPLICATION_COMPLETED: "REPLICATION_COMPLETED",
+  INDEXING_STARTED: "INDEXING_STARTED",
+  INDEXING_COMPLETED: "INDEXING_COMPLETED",
+  OSM_DATA_CHANGED: "OSM_DATA_CHANGED",
+  VISIBLE_BOUNDS_UPDATED: "VISIBLE_BOUNDS_UPDATED",
+  SELECT_BBOX: "SELECT_BBOX",
+  BBOX_SELECTION_FAILED: "BBOX_SELECTION_FAILED",
+  BBOX_SELECTED: "BBOX_SELECTED"
 };
 
 // fallback to 10.0.2.2 when connecting to the coordinator (host's localhost from the emulator)
@@ -380,18 +385,53 @@ export const saveObservation = observation => (dispatch, getState) => {
   });
 };
 
-export const setObservations = list => (dispatch, getState) => {
-  return dispatch({ type: types.SET_OBSERVATIONS, list });
+export const replicationStarted = () => dispatch =>
+  dispatch({ type: types.REPLICATION_STARTED });
+
+export const replicationCompleted = () => dispatch =>
+  dispatch({ type: types.REPLICATION_COMPLETED });
+
+export const indexingStarted = () => dispatch =>
+  dispatch({ type: types.INDEXING_STARTED });
+
+export const indexingCompleted = () => dispatch =>
+  dispatch({ type: types.INDEXING_COMPLETED });
+
+export const dataChanged = () => dispatch =>
+  dispatch({ type: types.OSM_DATA_CHANGED });
+
+export const updateVisibleBounds = bounds => dispatch => {
+  dispatch({ type: types.VISIBLE_BOUNDS_UPDATED, bounds });
+
+  // TODO query these based on tile coverage
+  // osm.queryObservations(q, (err, observations) => {
+  // osm.queryOSM(q, (err, nodes) => {
 };
 
-export const clearObservations = () => dispatch => {
-  return dispatch({ type: types.CLEAR_OBSERVATIONS });
-};
+export const selectBbox = bounds => dispatch => {
+  dispatch({ type: types.SELECT_BBOX, bounds });
 
-export const setOsmFeatureList = list => (dispatch, getState) => {
-  return dispatch({ type: types.SET_OSM_FEATURE_LIST, list });
-};
+  var q = [[bounds[0], bounds[2]], [bounds[1], bounds[3]]];
 
-export const clearOsmFeatureList = () => dispatch => {
-  return dispatch({ type: types.CLEAR_OSM_FEATURE_LIST });
+  return osm.queryOSM(q, (error, results) => {
+    if (error) {
+      console.warn(error);
+      return dispatch({ type: types.BBOX_SELECTION_FAILED, error });
+    }
+
+    // TODO: replace this with filtering based on presets
+    const filtered = results.filter(item => {
+      return (
+        item.type === "node" &&
+        item.lat &&
+        item.lon &&
+        item.tags &&
+        item.tags.name
+      );
+    });
+
+    console.log("osm.query", Object.keys(filtered));
+
+    return dispatch({ type: types.BBOX_SELECTED, bounds, results: filtered });
+  });
 };

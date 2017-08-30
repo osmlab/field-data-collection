@@ -2,12 +2,12 @@ import types from "../actions";
 
 const initialState = {
   areaOfInterest: null,
-  featureList: []
+  selectedFeatures: null
 };
 
 export default (
   state = initialState,
-  { areaOfInterest, syncDate, list, type }
+  { areaOfInterest, bounds, syncDate, list, results, type }
 ) => {
   switch (type) {
     case types.SET_AREA_OF_INTEREST:
@@ -22,16 +22,20 @@ export default (
         areaOfInterest: null
       };
 
-    case types.SET_OSM_FEATURE_LIST:
+    case types.BBOX_SELECTED:
+      console.log("bbox selected:", bounds);
+      console.log("selected features:", results);
       return {
         ...state,
-        featureList: list
+        selectedBounds: bounds,
+        selectedFeatures: results
       };
 
-    case types.SET_OSM_FEATURE_LIST:
+    case types.VISIBLE_BOUNDS_UPDATED:
+      console.log("Visible bounds updated:", bounds);
       return {
         ...state,
-        featureList: []
+        visibleBounds: bounds
       };
 
     default:
