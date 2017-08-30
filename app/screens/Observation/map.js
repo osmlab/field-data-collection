@@ -103,11 +103,11 @@ class ObservationMapScreen extends Component {
       left: x - 50
     };
 
+    // NOTE this returns (lon, lat, lon, lat)
     this._map.getBoundsFromScreenCoordinates(rect, selectBbox);
   };
 
   onFinishLoadingMap = e => {
-    const { updateVisibleBounds } = this.props;
     this.setState({
       mapLoaded: true
     });
@@ -118,8 +118,10 @@ class ObservationMapScreen extends Component {
       }
     });
 
-    this._map.getBounds(updateVisibleBounds);
+    this.onUpdateBounds();
   };
+
+  onRegionDidChange = info => this.onUpdateBounds();
 
   onGeolocate = (err, data) => {
     if (data) {
@@ -137,16 +139,17 @@ class ObservationMapScreen extends Component {
     console.log("e", e);
   };
 
-  render() {
-    const {
-      features,
-      loading,
-      observations,
-      selectedFeatures,
-      updateVisibleBounds
-    } = this.props;
+  onUpdateBounds = () => {
+    const { updateVisibleBounds } = this.props;
 
-    console.log("selectedFeatures:", selectedFeatures);
+    // NOTE getBounds returns (lat, lon, lat, lon) so we convert it here
+    this._map.getBounds(bounds =>
+      updateVisibleBounds([bounds[1], bounds[0], bounds[3], bounds[2]])
+    );
+  };
+
+  render() {
+    const { features, loading, observations, selectedFeatures } = this.props;
 
     // let annotations = featureList.map(item => {
     //   return (
@@ -210,7 +213,7 @@ class ObservationMapScreen extends Component {
             onOpenAnnotation={this.onMapPress}
             onFinishLoadingMap={this.onFinishLoadingMap}
             onUpdateUserLocation={this.onUpdateUserLocation}
-            onRegionDidChange={debounce(updateVisibleBounds, 400)}
+            onRegionDidChange={debounce(this.onRegionDidChange, 400)}
             initialCenterCoordinate={this.state.center}
             initialZoomLevel={this.state.zoom}
             initialDirection={0}

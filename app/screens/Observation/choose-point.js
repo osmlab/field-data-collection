@@ -18,8 +18,14 @@ class ChoosePoint extends Component {
   componentWillMount() {}
 
   render() {
-    const { history, features, initializeObservation } = this.props;
-
+    const {
+      history,
+      initializeObservation,
+      selectedFeatures,
+      visibleFeatures
+    } = this.props;
+    const features =
+      selectedFeatures.length > 0 ? selectedFeatures : visibleFeatures;
     const center = features.length > 0 ? getCenterOfPoints(features) : false;
 
     let annotations = features.map(item => {
@@ -130,7 +136,8 @@ class ChoosePoint extends Component {
 const mapStateToProps = (state, ownProps) => {
   return {
     observation: selectActiveObservation(state),
-    features: selectSelectedFeatures(state) || selectVisibleFeatures(state)
+    selectedFeatures: selectSelectedFeatures(state),
+    visibleFeatures: selectVisibleFeatures(state)
   };
 };
 

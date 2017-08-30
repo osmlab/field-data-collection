@@ -1,3 +1,4 @@
+import { tileToBBOX } from "@mapbox/tilebelt";
 import eos from "end-of-stream";
 import JSONStream from "JSONStream";
 import once from "once";
@@ -8,7 +9,8 @@ import through2 from "through2";
 import osmp2p from "../lib/osm-p2p";
 import createOsmp2p from "../lib/create-osm-p2p";
 import { findPeers } from "../lib/osm-sync";
-import { timeout } from "../lib";
+import { tilesForBounds, timeout } from "../lib";
+import { selectActiveTileQueries, selectFeatures } from "../selectors";
 
 const Fetch = RNFetchBlob.polyfill.Fetch;
 // replace built-in fetch
@@ -62,7 +64,10 @@ const types = {
   SELECT_BBOX: "SELECT_BBOX",
   BBOX_SELECTION_FAILED: "BBOX_SELECTION_FAILED",
   BBOX_SELECTED: "BBOX_SELECTED",
-  BBOX_CLEARED: "BBOX_CLEARED"
+  BBOX_CLEARED: "BBOX_CLEARED",
+  TILE_QUERY_FAILED: "TILE_QUERY_FAILED",
+  QUERYING_TILE: "QUERYING_TILE",
+  TILE_QUERIED: "TILE_QUERIED"
 };
 
 // fallback to 10.0.2.2 when connecting to the coordinator (host's localhost from the emulator)
@@ -401,8 +406,57 @@ export const indexingCompleted = () => dispatch =>
 export const dataChanged = () => dispatch =>
   dispatch({ type: types.OSM_DATA_CHANGED });
 
+export const queryTileForFeatures = tile => (dispatch, getState) => {
+  const activeTileQueries = selectActiveTileQueries(getState());
+  const features = selectFeatures(getState());
+  const tileKey = tile.join("/");
+
+  // check state to see if this tile is already being queried or exists
+  if (activeTileQueries.includes(tileKey) || features[tileKey] != null) {
+    console.log("skipping", tileKey);
+    return;
+  }
+
+  dispatch({ type: types.QUERYING_TILE, tile });
+
+  const bbox = tileToBBOX(tile);
+
+  console.log("querying OSM for", [[bbox[1], bbox[3]], [bbox[0], bbox[2]]]);
+
+  return osm.queryOSM(
+    [[bbox[1], bbox[3]], [bbox[0], bbox[2]]],
+    (error, results) => {
+      if (error) {
+        console.warn(error);
+        return dispatch({ type: types.TILE_QUERY_FAILED, error });
+      }
+
+      console.log("results for", tileKey, results.length);
+
+      // TODO replace this with filtering based on presets OR store the raw data
+      const filtered = results.filter(item => {
+        return (
+          item.type === "node" &&
+          item.lat &&
+          item.lon &&
+          item.tags &&
+          item.tags.name
+        );
+      });
+
+      console.log("filtered features for", tileKey, filtered.length);
+
+      return dispatch({ type: types.TILE_QUERIED, tile, features: filtered });
+    }
+  );
+};
+
 export const updateVisibleBounds = bounds => dispatch => {
   dispatch({ type: types.VISIBLE_BOUNDS_UPDATED, bounds });
+
+  const tiles = tilesForBounds(bounds);
+
+  tiles.forEach(tile => dispatch(queryTileForFeatures(tile)));
 
   // TODO query these based on tile coverage
   // osm.queryObservations(q, (err, observations) => {

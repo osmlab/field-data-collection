@@ -1,5 +1,7 @@
 import { createSelector } from "reselect";
 
+import { tilesForBounds, timeout } from "../lib";
+
 export const selectAvailableSurveys = state => state.surveys.available;
 
 export const selectCustomSurveys = createSelector(
@@ -144,11 +146,41 @@ export const selectObservations = state => state.observations.list;
 
 export const selectUserObservations = state => {};
 
-export const selectSelectedFeatures = state => state.osm.selectedFeatures || [];
+export const selectSelectedFeatures = state =>
+  state.features.selectedFeatures || [];
 
-export const selectVisibleFeatures = state => state.osm.visibleFeatures || [];
+export const selectVisibleBounds = state => state.features.visibleBounds;
+
+export const selectFeatures = state => state.features.features;
+
+export const selectVisibleFeatures = createSelector(
+  [selectVisibleBounds, selectFeatures],
+  (visibleBounds, features) => {
+    const tiles = tilesForBounds(visibleBounds);
+
+    return tiles
+      .reduce((visibleFeatures, tile) => {
+        visibleFeatures = visibleFeatures.concat(
+          features[tile.join("/")] || []
+        );
+
+        return visibleFeatures;
+      }, [])
+      .filter(
+        ({ lat, lon }) =>
+          // check for containment
+          visibleBounds[0] <= lon &&
+          lon <= visibleBounds[2] &&
+          visibleBounds[1] <= lat &&
+          lat <= visibleBounds[3]
+      );
+  }
+);
 
 // TODO implement
 export const selectVisibleObservations = state => [];
 
-export const selectLoadingStatus = state => state.osm.loading;
+export const selectLoadingStatus = state => state.features.loading;
+
+export const selectActiveTileQueries = state =>
+  state.features.activeTileQueries;
