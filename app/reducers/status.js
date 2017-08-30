@@ -17,7 +17,11 @@ const MESSAGES = {
   [types.SYNCING_SURVEY_DATA_FAILED]: "Importing survey data failed.",
   [types.FINISHED_SYNCING_SURVEY_DATA]: "Survey import complete",
   [types.SAVING_OBSERVATION]: "Saving observation...",
-  [types.SAVING_OBSERVATION_FAILED]: "Saving observation failed."
+  [types.SAVING_OBSERVATION_FAILED]: "Saving observation failed.",
+  [types.REPLICATION_STARTED]: "Replicating OSM data...",
+  [types.REPLICATION_COMPLETED]: "OSM replication completed.",
+  [types.INDEXING_STARTED]: "Indexing OSM data...",
+  [types.INDEXING_COMPLETED]: "OSM indexing completed."
 };
 
 export default (state = initialState, { error, type }) => {

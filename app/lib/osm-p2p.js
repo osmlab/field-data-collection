@@ -18,7 +18,7 @@ function osmp2p(createOsmDb) {
   observationDb.on("error", console.log);
   osmOrgDb.on("error", console.log);
 
-  return {
+  var emitter = Object.assign(new EventEmitter(), {
     ready,
     createNode,
     put,
@@ -33,7 +33,9 @@ function osmp2p(createOsmDb) {
     findReplicationTargets,
     sync: netSync,
     getObservationsByDeviceId
-  };
+  });
+
+  return emitter;
 
   function ready(cb) {
     observationDb.ready(onReady);
@@ -135,13 +137,19 @@ function osmp2p(createOsmDb) {
       opts = {};
     }
 
-    process.nextTick(function() {
+    setImmediate(function() {
+      emitter.emit("replicating");
       console.log("start replication");
       netSync.replicate(addr, opts, function() {
+        emitter.emit("replication-done");
         console.log("start index regen");
         console.log("start indexing");
+        emitter.emit("indexing");
         osmOrgDb.ready(function() {
+          emitter.emit("indexing-done");
           console.log("indexing complete");
+
+          emitter.emit("change");
         });
         cb();
       });

@@ -1,11 +1,21 @@
 import React, { Component } from "react";
 import { Platform, UIManager } from "react-native";
+import { connect } from "react-redux";
 import {
   AndroidBackButton,
   NativeRouter,
   Switch,
   Route
 } from "react-router-native";
+
+import {
+  dataChanged,
+  indexingStarted,
+  indexingCompleted,
+  osm,
+  replicationStarted,
+  replicationCompleted
+} from "../../actions";
 
 // Observations
 import ObservationMap from "../Observation/map.js";
@@ -26,7 +36,40 @@ if (Platform.OS === "android") {
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
-export default class App extends Component {
+export class App extends Component {
+  componentDidMount() {
+    const {
+      dataChanged,
+      indexingCompleted,
+      indexingStarted,
+      replicationCompleted,
+      replicationStarted
+    } = this.props;
+
+    osm.on("replicating", replicationStarted);
+    osm.on("replication-done", replicationCompleted);
+    osm.on("indexing", indexingStarted);
+    osm.on("indexing-done", indexingCompleted);
+    osm.on("change", dataChanged);
+  }
+
+  componentWillUnmount() {
+    const {
+      dataChanged,
+      indexingCompleted,
+      indexingStarted,
+      replicationCompleted,
+      replicationStarted
+    } = this.props;
+
+    // clear event listeners
+    osm.removeListener("replicating", replicationStarted);
+    osm.removeListener("replication-done", replicationCompleted);
+    osm.removeListener("indexing", indexingStarted);
+    osm.removeListener("indexing-done", indexingCompleted);
+    osm.removeListener("change", dataChanged);
+  }
+
   render() {
     return (
       <NativeRouter>
@@ -75,3 +118,11 @@ export default class App extends Component {
     );
   }
 }
+
+export default connect(null, {
+  dataChanged,
+  indexingCompleted,
+  indexingStarted,
+  replicationCompleted,
+  replicationStarted
+})(App);
