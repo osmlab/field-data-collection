@@ -116,8 +116,9 @@ function importify(osm, xmlStream, done) {
   }
 }
 
+// Number -> String
 function hex2dec(h) {
-  return parseInt(h.toUpperCase(), "16");
+  return parseInt(h.toUpperCase(), "16").toString();
 }
 
 var SKIP_PROPS = ["action", "id", "version", "ifUnused", "old_id"];
