@@ -9,7 +9,6 @@ import osmp2p from "../lib/osm-p2p";
 import createOsmp2p from "../lib/create-osm-p2p";
 import { findPeers } from "../lib/osm-sync";
 import { timeout } from "../lib";
-import { selectActiveObservation } from "../selectors";
 
 const Fetch = RNFetchBlob.polyfill.Fetch;
 // replace built-in fetch
@@ -113,6 +112,47 @@ const extractSurveyBundle = (id, bundle, _callback) => {
   bundle.open();
 };
 
+const fetchMeta = (target, cb) => {
+  const url = `http://${target.address}:${target.port}`;
+
+  return fetch(`${url}/osm/meta`)
+    .then(rsp => {
+      if (rsp.status !== 200) {
+        return cb(null, {});
+      }
+
+      return rsp.json().then(data => cb(null, data));
+    })
+    .catch(cb);
+};
+
+const getPeerInfo = (dispatch, callback) => {
+  dispatch({
+    type: types.DISCOVERING_PEERS
+  });
+
+  return findPeers((err, peers) => {
+    if (err) {
+      return callback(err);
+    }
+
+    let targetIP = COORDINATOR_FALLBACK_IP;
+    let targetPort = COORDINATOR_FALLBACK_PORT;
+
+    if (peers.length > 0) {
+      targetIP = peers[0].address;
+      targetPort = peers[0].port;
+    }
+
+    dispatch({
+      type: types.SET_COORDINATOR_TARGET,
+      target: { address: targetIP, port: targetPort }
+    });
+
+    return callback(null, targetIP, targetPort);
+  });
+};
+
 const checkRemoteOsmMeta = (target, dispatch, cb) => {
   if (!target || !target.address || !target.port) {
     return getPeerInfo(dispatch, (err, targetIP, targetPort) => {
@@ -126,20 +166,6 @@ const checkRemoteOsmMeta = (target, dispatch, cb) => {
   }
 
   return fetchMeta(target, cb);
-};
-
-const fetchMeta = (target, cb) => {
-  const url = `http://${target.address}:${target.port}`;
-
-  return fetch(`${url}/osm/meta`)
-    .then(rsp => {
-      if (rsp.status !== 200) {
-        return cb(null, {});
-      }
-
-      return rsp.json().then(data => cb(null, data));
-    })
-    .catch(cb);
 };
 
 const checkOsmMeta = (target, getState, dispatch, cb) => {
@@ -223,33 +249,6 @@ export const syncData = target => (dispatch, getState) => {
       }
     }
   );
-};
-
-const getPeerInfo = (dispatch, callback) => {
-  dispatch({
-    type: types.DISCOVERING_PEERS
-  });
-
-  return findPeers((err, peers) => {
-    if (err) {
-      return callback(err);
-    }
-
-    let targetIP = COORDINATOR_FALLBACK_IP;
-    let targetPort = COORDINATOR_FALLBACK_PORT;
-
-    if (peers.length > 0) {
-      targetIP = peers[0].address;
-      targetPort = peers[0].port;
-    }
-
-    dispatch({
-      type: types.SET_COORDINATOR_TARGET,
-      target: { address: targetIP, port: targetPort }
-    });
-
-    return callback(null, targetIP, targetPort);
-  });
 };
 
 export const clearLocalSurveys = () => (dispatch, getState) =>

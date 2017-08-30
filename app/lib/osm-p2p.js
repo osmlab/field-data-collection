@@ -1,7 +1,7 @@
+const EventEmitter = require("events");
+
 const getGeoJSON = require("osm-p2p-geojson");
 const pump = require("pump");
-const collect = require("collect-stream");
-const through = require("through2");
 const DeviceInfo = require("react-native-device-info");
 const OsmSync = require("./osm-sync");
 const generatePlaceholderOsmId = require("./generate-id");

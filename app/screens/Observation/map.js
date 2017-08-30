@@ -2,14 +2,8 @@ import React, { Component } from "react";
 import {
   StyleSheet,
   View,
-  Button,
-  Dimensions,
-  TouchableOpacity,
-  AsyncStorage
 } from "react-native";
 import Mapbox, { MapView } from "react-native-mapbox-gl";
-import Icon from "react-native-vector-icons/MaterialIcons";
-import { Link } from "react-router-native";
 import { connect } from "react-redux";
 import debounce from "debounce";
 
@@ -26,11 +20,10 @@ import {
   Header,
   SideMenu,
   Text,
-  Geolocate,
   MapOverlay,
   StatusBar
 } from "../../components";
-import { baseStyles, colors } from "../../styles";
+import { baseStyles } from "../../styles";
 
 import config from "../../config";
 
@@ -235,7 +228,7 @@ class ObservationMapScreen extends Component {
           </MapView>
         }
 
-        {/* TODO: restore legend 
+        {/* TODO: restore legend
           <TouchableOpacity
           style={[styles.buttonLegend]}
           onPress={this._onPressButton}
