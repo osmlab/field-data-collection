@@ -8,6 +8,7 @@ import getCenterOfPoints from "../../lib/get-center-of-points";
 import { initializeObservation } from "../../actions";
 import {
   selectActiveObservation,
+  selectSelectedFeatures,
   selectVisibleFeatures
 } from "../../selectors";
 import { Text, Wrapper, Map, AnnotationOSM } from "../../components";
@@ -129,7 +130,7 @@ class ChoosePoint extends Component {
 const mapStateToProps = (state, ownProps) => {
   return {
     observation: selectActiveObservation(state),
-    features: selectVisibleFeatures(state)
+    features: selectSelectedFeatures(state) || selectVisibleFeatures(state)
   };
 };
 

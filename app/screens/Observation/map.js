@@ -53,6 +53,8 @@ const styles = StyleSheet.create({
 
 class ObservationMapScreen extends Component {
   componentWillMount() {
+    const { clearBbox } = this.props;
+
     this.setState({
       nearbyFeaturesViewOpen: false,
       showMap: true,
@@ -66,6 +68,8 @@ class ObservationMapScreen extends Component {
       annotations: [],
       userLocation: null
     });
+
+    clearBbox();
   }
 
   componentWillUnmount() {
@@ -75,22 +79,11 @@ class ObservationMapScreen extends Component {
   }
 
   componentWillUpdate(nextProps, nextState) {
-    const { clearBbox, history, initializeObservation } = this.props;
+    const { history } = this.props;
     const { selectedFeatures } = nextProps;
 
     if (selectedFeatures.length > 0) {
-      // TODO pick the feature closest to the center and/or pass a list somewhere
-      const item = selectedFeatures[0];
-
-      initializeObservation({
-        lat: item.lat,
-        lon: item.lon,
-        tags: { "osm-p2p-id": item.id }
-      });
-
-      history.push("/observation/categories");
-
-      clearBbox();
+      history.push("/observation/choose-point");
     }
   }
 
