@@ -31,7 +31,6 @@ function osmp2p(createOsmDb) {
     queryGeoJSONStream,
     replicate,
     findReplicationTargets,
-    clearAllData,
     sync: netSync,
     getObservationsByDeviceId
   };
@@ -130,73 +129,21 @@ function osmp2p(createOsmDb) {
     return pump(osmStream, geoJSONStream);
   }
 
-  function clearOsmOrgDb(cb) {
-    osmOrgDb.clear(cb);
-  }
-
-  function clearAllData(cb) {
-    console.log("osm.clearAllData");
-    osmOrgDb.clear(onDone);
-    observationDb.clear(onDone);
-
-    var pending = 0;
-    function onDone(err) {
-      if (err) {
-        pending = 0;
-        cb(err);
-      }
-
-      pending++;
-
-      if (pending === 2) {
-        return cb();
-      }
-    }
-  }
-
-  // Reach into an osm-p2p-db and reset all of its indexes, causing a full
-  // re-index of its data.
-  function resetIndexes(osm, cb) {
-    osm.kdb.dex.db.put("seq", 0, done);
-    osm.refs.dex.db.put("seq", 0, done);
-    osm.changeset.dex.db.put("seq", 0, done);
-
-    var pending = 3;
-    function done(err) {
-      if (err) pending++ && cb(err);
-      if (!--pending) cb();
-    }
-  }
-
-  function pauseIndexes(osm) {
-    osm.kdb.dex.pause();
-    osm.refs.dex.pause();
-    osm.changeset.dex.pause();
-  }
-
   function replicate(addr, opts, cb) {
     if (!cb && typeof opts === "function") {
       cb = opts;
       opts = {};
     }
 
-    console.log("pauseIndexes");
-    pauseIndexes(osmOrgDb);
     process.nextTick(function() {
-      console.log("clearOsmOrgDb");
-      clearOsmOrgDb(function() {
-        console.log("start replication");
-        netSync.replicate(addr, opts, function() {
-          console.log("resetIndexes");
-          resetIndexes(osmOrgDb, function() {
-            console.log("restartIndexes");
-            osmOrgDb._restartIndexes();
-            osmOrgDb.ready(function() {
-              console.log("indexes complete");
-            });
-            cb();
-          });
+      console.log("start replication");
+      netSync.replicate(addr, opts, function() {
+        console.log("start index regen");
+        console.log("start indexing");
+        osmOrgDb.ready(function() {
+          console.log("indexing complete");
         });
+        cb();
       });
     });
   }

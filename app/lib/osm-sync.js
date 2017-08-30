@@ -1,7 +1,7 @@
 var Bonjour = require("bonjour");
 var websocket = require("websocket-stream");
 var eos = require("end-of-stream");
-var importer = require("osm-p2p-db-importer");
+const osmImportXml = require("./osm-import");
 
 module.exports = OsmSync;
 
@@ -60,7 +60,7 @@ OsmSync.prototype.replicateOsmOrgDb = function(target, done) {
   var socket = websocket(
     "ws://" + target.address + ":" + target.port + "/replicate/osm"
   );
-  importer.toLevel(this.osmOrgDb.log.db, socket, done);
+  osmImportXml(this.osmOrgDb, socket, done);
 };
 
 OsmSync.findPeers = function(opts, done) {
