@@ -61,7 +61,8 @@ const types = {
   VISIBLE_BOUNDS_UPDATED: "VISIBLE_BOUNDS_UPDATED",
   SELECT_BBOX: "SELECT_BBOX",
   BBOX_SELECTION_FAILED: "BBOX_SELECTION_FAILED",
-  BBOX_SELECTED: "BBOX_SELECTED"
+  BBOX_SELECTED: "BBOX_SELECTED",
+  BBOX_CLEARED: "BBOX_CLEARED"
 };
 
 // fallback to 10.0.2.2 when connecting to the coordinator (host's localhost from the emulator)
@@ -433,3 +434,6 @@ export const selectBbox = bounds => dispatch => {
     return dispatch({ type: types.BBOX_SELECTED, bounds, results: filtered });
   });
 };
+
+export const clearBbox = () => dispatch =>
+  dispatch({ type: types.BBOX_CLEARED });

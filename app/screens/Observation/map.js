@@ -13,6 +13,7 @@ import {
   selectVisibleObservations
 } from "../../selectors";
 import {
+  clearBbox,
   initializeObservation,
   selectBbox,
   updateVisibleBounds
@@ -74,20 +75,22 @@ class ObservationMapScreen extends Component {
   }
 
   componentWillUpdate(nextProps, nextState) {
-    const { initializeObservation } = this.props;
+    const { clearBbox, history, initializeObservation } = this.props;
     const { selectedFeatures } = nextProps;
 
     if (selectedFeatures.length > 0) {
       // TODO pick the feature closest to the center and/or pass a list somewhere
       const item = selectedFeatures[0];
-      console.log("initializing observation for", item.tags.name);
-      // initializeObservation({
-      //   lat: item.lat,
-      //   lon: item.lon,
-      //   tags: { "osm-p2p-id": item.id }
-      // });
-      //
-      // history.push("/observation/categories");
+
+      initializeObservation({
+        lat: item.lat,
+        lon: item.lon,
+        tags: { "osm-p2p-id": item.id }
+      });
+
+      history.push("/observation/categories");
+
+      clearBbox();
     }
   }
 
@@ -271,6 +274,7 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, {
+  clearBbox,
   initializeObservation,
   selectBbox,
   updateVisibleBounds
