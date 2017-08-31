@@ -27,7 +27,14 @@ class MapOverlay extends Component {
   constructor(props) {
     super(props);
     this._deltaY = new Animated.Value(Screen.height - 80);
+    this.items = {};
   }
+
+  setItemRef = key => {
+    return view => {
+      this.items[key] = view;
+    };
+  };
 
   open = () => {
     this._drawer.setVelocity({ y: -1000 });
@@ -59,7 +66,8 @@ class MapOverlay extends Component {
       activeSurveys,
       features,
       loading,
-      querying
+      querying,
+      activeFeature
     } = this.props;
 
     if (!activeSurveys.length) {
@@ -161,10 +169,54 @@ class MapOverlay extends Component {
           */}
         </View>
 
-        <ScrollView horizontal={true} width={Screen.width}>
+        <ScrollView
+          horizontal={true}
+          width={Screen.width}
+          onScroll={e => {
+            const xOffset = e.nativeEvent.contentOffset.x;
+            let active;
+
+            Object.keys(this.items).forEach((key, i) => {
+              const item = this.items[key];
+              const feature = features.find(f => f.id === key);
+
+              item.measure((x, y, w, h, pX, pY) => {
+                if (!active) {
+                  active = { item, pX, feature };
+                }
+
+                // first item needs extra space
+                const isFirstItem = i === 0 && pX >= -10;
+                const isActive =
+                  pX > 0 && (pX <= active.pX || active.pX < 0) && xOffset > 10;
+
+                if (isFirstItem || isActive) {
+                  active = { item, pX, feature };
+                  activeFeature(feature);
+
+                  item.setNativeProps({
+                    style: {
+                      borderColor: "#8212C6"
+                    }
+                  });
+                } else {
+                  item.setNativeProps({
+                    style: {
+                      borderColor: "#ccc"
+                    }
+                  });
+                }
+              });
+            });
+          }}
+        >
           {features.map(item => {
             return (
-              <View style={[baseStyles.cardStyle]} key={item.id}>
+              <View
+                ref={this.setItemRef(item.id)}
+                style={[baseStyles.cardStyle]}
+                key={item.id}
+              >
                 <Text style={[baseStyles.h3]}>
                   {item.tags.name}
                 </Text>

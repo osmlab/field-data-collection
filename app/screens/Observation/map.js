@@ -151,10 +151,17 @@ class ObservationMapScreen extends Component {
     );
   };
 
+  setActiveFeature = feature => {
+    this.setState({ activeFeature: feature });
+  };
+
   render() {
     const { features, loading, observations, querying } = this.props;
 
     let annotations = features.map(item => {
+      const active =
+        this.state.activeFeature && this.state.activeFeature.id === item.id;
+
       return (
         <AnnotationOSM
           key={item.id}
@@ -162,6 +169,7 @@ class ObservationMapScreen extends Component {
           radius={8}
           coordinates={{ latitude: item.lat, longitude: item.lon }}
           onPress={this.onMapPress}
+          active={active}
         />
       );
     });
@@ -247,6 +255,7 @@ class ObservationMapScreen extends Component {
           areaOfInterest={this.props.areaOfInterest}
           loading={loading}
           querying={querying}
+          activeFeature={this.setActiveFeature}
         />
       </View>
     );
