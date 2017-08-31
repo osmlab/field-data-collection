@@ -15,7 +15,14 @@ import { Text, Wrapper, Map, AnnotationOSM } from "../../components";
 import { baseStyles } from "../../styles";
 
 class ChoosePoint extends Component {
-  componentWillMount() {}
+  items = {};
+  state = {};
+
+  setItemRef = key => {
+    return view => {
+      this.items[key] = view;
+    };
+  };
 
   render() {
     const {
@@ -29,6 +36,8 @@ class ChoosePoint extends Component {
     const center = features.length > 0 ? getCenterOfPoints(features) : false;
 
     let annotations = features.map(item => {
+      var active =
+        this.state.activeFeature && this.state.activeFeature.id === item.id;
       return (
         <AnnotationOSM
           key={item.id}
@@ -36,6 +45,7 @@ class ChoosePoint extends Component {
           radius={8}
           coordinates={{ latitude: item.lat, longitude: item.lon }}
           onPress={this.onMapPress}
+          active={active}
         />
       );
     });
@@ -78,11 +88,55 @@ class ChoosePoint extends Component {
             </Map>
           </View>
 
-          <View>
-            <ScrollView style={{ marginTop: 6, height: 240 }}>
+          <View
+            onLayout={e => {
+              this.parentY = e.nativeEvent.layout.y;
+            }}
+          >
+            <ScrollView
+              ref="scrollview"
+              style={{ marginTop: 6, height: 240 }}
+              onScroll={e => {
+                const yOffset = e.nativeEvent.contentOffset.y;
+
+                let active;
+
+                Object.keys(this.items).forEach(key => {
+                  const item = this.items[key];
+                  const feature = features.find(f => f.id === key);
+
+                  item.measure((x, y, w, h, pX, pY) => {
+                    if (!active) {
+                      active = { item, pY, feature };
+                    }
+
+                    const activeDiff = active.pY - this.parentY;
+                    const diff = pY - this.parentY;
+
+                    if (diff > 0 && (diff <= activeDiff || activeDiff < 0)) {
+                      active = { item, pY, feature };
+                      this.setState({ activeFeature: feature });
+
+                      item.setNativeProps({
+                        style: {
+                          borderColor: "#8212C6"
+                        }
+                      });
+                    } else {
+                      item.setNativeProps({
+                        style: {
+                          borderColor: "#ccc"
+                        }
+                      });
+                    }
+                  });
+                });
+              }}
+            >
               {features.map(item => {
                 return (
                   <View
+                    ref={this.setItemRef(item.id)}
                     key={item.id}
                     style={{
                       marginTop: 6,

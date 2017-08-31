@@ -16,8 +16,9 @@ import Svg, { G, Path, Circle } from "react-native-svg";
 * })
 **/
 export default function AnnotationOSM(props) {
-  const { radius } = props;
+  const { radius, active } = props;
   const diameter = radius * 2;
+  const fill = active ? "#8212C6" : "#575456";
 
   return (
     <MapboxAnnotation
@@ -34,7 +35,7 @@ export default function AnnotationOSM(props) {
         onPress={props.onPress}
       >
         <Svg width={diameter} height={diameter}>
-          <Circle cx={radius} cy={radius} r={radius} fill="#575456" />
+          <Circle cx={radius} cy={radius} r={radius} fill={fill} />
         </Svg>
       </TouchableOpacity>
     </MapboxAnnotation>
