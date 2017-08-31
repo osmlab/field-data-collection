@@ -43,17 +43,17 @@ class Map extends Component {
           compassIsHidden={false}
           initialZoomLevel={this.props.zoom || 16}
           rotateEnabled={false}
-          scrollEnabled={true}
-          zoomEnabled={true}
-          showsUserLocation={true}
+          scrollEnabled
+          zoomEnabled
+          showsUserLocation
           styleURL={Mapbox.mapStyles.light}
           userTrackingMode={
             !!this.props.center
               ? Mapbox.userTrackingMode.none
               : Mapbox.userTrackingMode.followWithHeading
           }
-          attributionButtonIsHidden={true}
-          logoIsHidden={true}
+          attributionButtonIsHidden
+          logoIsHidden
           {...optional}
         >
           {this.props.children}
