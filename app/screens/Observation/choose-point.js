@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, TextInput, TouchableOpacity, ScrollView } from "react-native";
+import { View, TouchableOpacity, ScrollView } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { connect } from "react-redux";
 import { Link } from "react-router-native";

@@ -142,16 +142,18 @@ export const selectStatus = state => state.status;
 
 export const selectActiveObservation = state => state.observation;
 
-export const selectObservations = state => state.observations.list;
-
 export const selectUserObservations = state => {};
 
-export const selectSelectedFeatures = state =>
-  state.features.selectedFeatures || [];
+export const selectSelectedFeatures = state => state.features.selected || [];
+
+export const selectSelectedObservations = state =>
+  state.observations.selected || [];
 
 export const selectVisibleBounds = state => state.features.visibleBounds;
 
 export const selectFeatures = state => state.features.features;
+
+export const selectObservations = state => state.observations.observations;
 
 export const selectVisibleFeatures = createSelector(
   [selectVisibleBounds, selectFeatures],
@@ -177,10 +179,34 @@ export const selectVisibleFeatures = createSelector(
   }
 );
 
-// TODO implement
-export const selectVisibleObservations = state => [];
+export const selectVisibleObservations = createSelector(
+  [selectVisibleBounds, selectObservations],
+  (visibleBounds, observations) => {
+    const tiles = tilesForBounds(visibleBounds);
+
+    return tiles
+      .reduce((visibleObservations, tile) => {
+        visibleObservations = visibleObservations.concat(
+          observations[tile.join("/")] || []
+        );
+
+        return visibleObservations;
+      }, [])
+      .filter(
+        ({ lat, lon }) =>
+          // check for containment
+          visibleBounds[0] <= lon &&
+          lon <= visibleBounds[2] &&
+          visibleBounds[1] <= lat &&
+          lat <= visibleBounds[3]
+      );
+  }
+);
 
 export const selectLoadingStatus = state => state.features.loading;
 
-export const selectActiveTileQueries = state =>
+export const selectActiveFeatureTileQueries = state =>
   state.features.activeTileQueries;
+
+export const selectActiveObservationTileQueries = state =>
+  state.observations.activeTileQueries;

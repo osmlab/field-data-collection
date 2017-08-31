@@ -149,7 +149,7 @@ class ObservationMapScreen extends Component {
   };
 
   render() {
-    const { features, loading, observations, selectedFeatures } = this.props;
+    const { features, loading, observations } = this.props;
 
     // let annotations = featureList.map(item => {
     //   return (

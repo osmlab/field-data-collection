@@ -3,36 +3,36 @@ import types from "../actions";
 const initialState = {
   activeTileQueries: [],
   features: {},
-  selectedFeatures: [],
+  selected: [],
   loading: false
 };
 
-export default (
-  state = initialState,
-  { bounds, features, results, tile, type }
-) => {
+export default (state = initialState, { bounds, features, tile, type }) => {
   switch (type) {
     case types.BBOX_CLEARED:
       return {
         ...state,
         selectedBounds: null,
-        selectedFeatures: []
+        selected: []
       };
 
     // TODO this is a component state thing, not a Redux thing (though it is convenient to know what's selected)
     case types.BBOX_SELECTED:
       return {
         ...state,
+        // TODO belongs elsewhere (shared with observations)
         selectedBounds: bounds,
-        selectedFeatures: results
+        selected: features
       };
 
     case types.VISIBLE_BOUNDS_UPDATED:
       return {
         ...state,
+        // TODO belongs elsewhere (shared with observations)
         visibleBounds: bounds
       };
 
+    // TODO belongs elsewhere (shared with observations)
     case types.REPLICATION_STARTED:
     case types.REPLICATION_COMPLETED:
     case types.INDEXING_STARTED:
@@ -46,10 +46,11 @@ export default (
       return {
         ...state,
         features: {},
+        // TODO belongs elsewhere
         loading: false
       };
 
-    case types.QUERYING_TILE:
+    case types.QUERYING_TILE_FOR_FEATURES:
       return {
         ...state,
         activeTileQueries: state.activeTileQueries.includes(tile.join("/"))
@@ -57,7 +58,7 @@ export default (
           : state.activeTileQueries.concat(tile.join("/"))
       };
 
-    case types.TILE_QUERY_FAILED:
+    case types.FEATURE_TILE_QUERY_FAILED:
       return {
         ...state,
         activeTileQueries: state.activeTileQueries.splice(
@@ -66,7 +67,7 @@ export default (
         )
       };
 
-    case types.TILE_QUERIED:
+    case types.TILE_QUERIED_FOR_FEATURES:
       console.log("tile queried:", tile);
       return {
         ...state,

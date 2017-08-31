@@ -1,4 +1,5 @@
 import { tileToBBOX } from "@mapbox/tilebelt";
+import async from "async";
 import eos from "end-of-stream";
 import JSONStream from "JSONStream";
 import once from "once";
@@ -10,7 +11,12 @@ import osmp2p from "../lib/osm-p2p";
 import createOsmp2p from "../lib/create-osm-p2p";
 import { findPeers } from "../lib/osm-sync";
 import { tilesForBounds, timeout } from "../lib";
-import { selectActiveTileQueries, selectFeatures } from "../selectors";
+import {
+  selectActiveFeatureTileQueries,
+  selectActiveObservationTileQueries,
+  selectFeatures,
+  selectObservations
+} from "../selectors";
 
 const Fetch = RNFetchBlob.polyfill.Fetch;
 // replace built-in fetch
@@ -62,12 +68,16 @@ const types = {
   OSM_DATA_CHANGED: "OSM_DATA_CHANGED",
   VISIBLE_BOUNDS_UPDATED: "VISIBLE_BOUNDS_UPDATED",
   SELECT_BBOX: "SELECT_BBOX",
-  BBOX_SELECTION_FAILED: "BBOX_SELECTION_FAILED",
+  BBOX_FEATURE_SELECTION_FAILED: "BBOX_FEATURE_SELECTION_FAILED",
+  BBOX_OBSERVATION_SELECTION_FAILED: "BBOX_OBSERVATION_SELECTION_FAILED",
   BBOX_SELECTED: "BBOX_SELECTED",
   BBOX_CLEARED: "BBOX_CLEARED",
-  TILE_QUERY_FAILED: "TILE_QUERY_FAILED",
-  QUERYING_TILE: "QUERYING_TILE",
-  TILE_QUERIED: "TILE_QUERIED"
+  FEATURE_TILE_QUERY_FAILED: "FEATURE_TILE_QUERY_FAILED",
+  QUERYING_TILE_FOR_FEATURES: "QUERYING_TILE_FOR_FEATURES",
+  TILE_QUERIED_FOR_FEATURES: "TILE_QUERIED_FOR_FEATURES",
+  OBSERVATION_TILE_QUERY_FAILED: "OBSERVATION_TILE_QUERY_FAILED",
+  QUERYING_TILE_FOR_OBSERVATIONS: "QUERYING_TILE_FOR_OBSERVATIONS",
+  TILE_QUERIED_FOR_OBSERVATIONS: "TILE_QUERIED_FOR_OBSERVATIONS"
 };
 
 // fallback to 10.0.2.2 when connecting to the coordinator (host's localhost from the emulator)
@@ -385,6 +395,7 @@ export const saveObservation = observation => (dispatch, getState) => {
       });
     }
 
+    // TODO dispatch an action invalidating the observation tile containing what was just created
     return dispatch({
       type: types.OBSERVATION_SAVED
     });
@@ -407,7 +418,7 @@ export const dataChanged = () => dispatch =>
   dispatch({ type: types.OSM_DATA_CHANGED });
 
 export const queryTileForFeatures = tile => (dispatch, getState) => {
-  const activeTileQueries = selectActiveTileQueries(getState());
+  const activeTileQueries = selectActiveFeatureTileQueries(getState());
   const features = selectFeatures(getState());
   const tileKey = tile.join("/");
 
@@ -417,7 +428,7 @@ export const queryTileForFeatures = tile => (dispatch, getState) => {
     return;
   }
 
-  dispatch({ type: types.QUERYING_TILE, tile });
+  dispatch({ type: types.QUERYING_TILE_FOR_FEATURES, tile });
 
   const bbox = tileToBBOX(tile);
 
@@ -428,7 +439,7 @@ export const queryTileForFeatures = tile => (dispatch, getState) => {
     (error, results) => {
       if (error) {
         console.warn(error);
-        return dispatch({ type: types.TILE_QUERY_FAILED, error });
+        return dispatch({ type: types.FEATURE_TILE_QUERY_FAILED, error });
       }
 
       console.log("results for", tileKey, results.length);
@@ -446,7 +457,50 @@ export const queryTileForFeatures = tile => (dispatch, getState) => {
 
       console.log("filtered features for", tileKey, filtered.length);
 
-      return dispatch({ type: types.TILE_QUERIED, tile, features: filtered });
+      return dispatch({
+        type: types.TILE_QUERIED_FOR_FEATURES,
+        tile,
+        features: filtered
+      });
+    }
+  );
+};
+
+export const queryTileForObservations = tile => (dispatch, getState) => {
+  const activeTileQueries = selectActiveObservationTileQueries(getState());
+  const observations = selectObservations(getState());
+  const tileKey = tile.join("/");
+
+  // check state to see if this tile is already being queried or exists
+  if (activeTileQueries.includes(tileKey) || observations[tileKey] != null) {
+    console.log("skipping", tileKey);
+    return;
+  }
+
+  dispatch({ type: types.QUERYING_TILE_FOR_OBSERVATIONS, tile });
+
+  const bbox = tileToBBOX(tile);
+
+  console.log("querying observations for", [
+    [bbox[1], bbox[3]],
+    [bbox[0], bbox[2]]
+  ]);
+
+  return osm.queryObservations(
+    [[bbox[1], bbox[3]], [bbox[0], bbox[2]]],
+    (error, observations) => {
+      if (error) {
+        console.warn(error);
+        return dispatch({ type: types.OBSERVATION_TILE_QUERY_FAILED, error });
+      }
+
+      console.log("observations for", tileKey, observations.length);
+
+      return dispatch({
+        type: types.TILE_QUERIED_FOR_OBSERVATIONS,
+        tile,
+        observations
+      });
     }
   );
 };
@@ -456,22 +510,18 @@ export const updateVisibleBounds = bounds => dispatch => {
 
   const tiles = tilesForBounds(bounds);
 
-  tiles.forEach(tile => dispatch(queryTileForFeatures(tile)));
-
-  // TODO query these based on tile coverage
-  // osm.queryObservations(q, (err, observations) => {
-  // osm.queryOSM(q, (err, nodes) => {
+  tiles.forEach(tile => {
+    dispatch(queryTileForFeatures(tile));
+    dispatch(queryTileForObservations(tile));
+  });
 };
 
-export const selectBbox = bounds => dispatch => {
-  dispatch({ type: types.SELECT_BBOX, bounds });
-
-  var q = [[bounds[0], bounds[2]], [bounds[1], bounds[3]]];
-
+const queryBboxForFeatures = (q, dispatch, callback) => {
   return osm.queryOSM(q, (error, results) => {
     if (error) {
       console.warn(error);
-      return dispatch({ type: types.BBOX_SELECTION_FAILED, error });
+      dispatch({ type: types.BBOX_FEATURE_SELECTION_FAILED, error });
+      return callback(null, []);
     }
 
     // TODO: replace this with filtering based on presets
@@ -485,8 +535,41 @@ export const selectBbox = bounds => dispatch => {
       );
     });
 
-    return dispatch({ type: types.BBOX_SELECTED, bounds, results: filtered });
+    return callback(null, filtered);
   });
+};
+
+const queryBboxForObservations = (q, dispatch, callback) => {
+  return osm.queryObservations(q, (error, observations) => {
+    if (error) {
+      console.warn(error);
+      dispatch({ type: types.BBOX_OBSERVATION_SELECTION_FAILED, error });
+      return callback(null, []);
+    }
+
+    return callback(null, observations);
+  });
+};
+
+export const selectBbox = bounds => dispatch => {
+  dispatch({ type: types.SELECT_BBOX, bounds });
+
+  var q = [[bounds[0], bounds[2]], [bounds[1], bounds[3]]];
+
+  return async.parallel(
+    {
+      features: async.apply(queryBboxForFeatures, q, dispatch),
+      observations: async.apply(queryBboxForObservations, q, dispatch)
+    },
+    (err, { features, observations }) => {
+      return dispatch({
+        type: types.BBOX_SELECTED,
+        bounds,
+        features,
+        observations
+      });
+    }
+  );
 };
 
 export const clearBbox = () => dispatch =>
