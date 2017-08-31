@@ -44,8 +44,12 @@ export const selectObservationTypes = createSelector(
   selectActiveSurveys,
   surveys =>
     surveys
-      .map(({ definition: { featureTypes, observationTypes } }) =>
-        observationTypes.map(t => featureTypes.find(x => x.id === t))
+      .map(
+        ({ definition: { featureTypes, observationTypes, name: surveyId } }) =>
+          observationTypes.map(t => ({
+            ...featureTypes.find(x => x.id === t),
+            surveyId
+          }))
       )
       .reduce((arr, val) => arr.concat(val), [])
 );
@@ -109,9 +113,9 @@ export const selectUncategorizedTypes = createSelector(
               return (
                 survey &&
                 survey.definition &&
-                survey.definition.id === x.surveyId
+                survey.definition.name === x.surveyId
               );
-            }),
+            }).definition.name,
             surveyId: x.surveyId,
             list: []
           };
