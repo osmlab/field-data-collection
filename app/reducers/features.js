@@ -3,25 +3,13 @@ import types from "../actions";
 const initialState = {
   activeTileQueries: [],
   features: {},
-  selected: [],
   loading: false
 };
 
 export default (state = initialState, { bounds, features, tile, type }) => {
+  let idx;
+
   switch (type) {
-    case types.BBOX_CLEARED:
-      return {
-        ...state,
-        selected: []
-      };
-
-    // TODO this is a component state thing, not a Redux thing (though it is convenient to know what's selected)
-    case types.BBOX_SELECTED:
-      return {
-        ...state,
-        selected: features
-      };
-
     // TODO belongs elsewhere (shared with observations)
     case types.REPLICATION_STARTED:
     case types.REPLICATION_COMPLETED:
@@ -49,22 +37,26 @@ export default (state = initialState, { bounds, features, tile, type }) => {
       };
 
     case types.FEATURE_TILE_QUERY_FAILED:
+      idx = state.activeTileQueries.indexOf(tile.join("/"));
+
       return {
         ...state,
-        activeTileQueries: state.activeTileQueries.splice(
-          state.activeTileQueries.indexOf(tile.join("/")),
-          1
-        )
+        activeTileQueries: [
+          ...state.activeTileQueries.slice(0, idx),
+          ...state.activeTileQueries.slice(idx + 1)
+        ]
       };
 
     case types.TILE_QUERIED_FOR_FEATURES:
-      console.log("tile queried:", tile);
+      console.log("feature tile queried:", tile);
+      idx = state.activeTileQueries.indexOf(tile.join("/"));
+
       return {
         ...state,
-        activeTileQueries: state.activeTileQueries.splice(
-          state.activeTileQueries.indexOf(tile.join("/")),
-          1
-        ),
+        activeTileQueries: [
+          ...state.activeTileQueries.slice(0, idx),
+          ...state.activeTileQueries.slice(idx + 1)
+        ],
         features: {
           ...state.features,
           [tile.join("/")]: features

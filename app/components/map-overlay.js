@@ -54,7 +54,13 @@ class MapOverlay extends Component {
   }
 
   renderNearbyPoints = () => {
-    const { areaOfInterest, activeSurveys, features, loading } = this.props;
+    const {
+      areaOfInterest,
+      activeSurveys,
+      features,
+      loading,
+      querying
+    } = this.props;
 
     if (!activeSurveys.length) {
       return (
@@ -114,7 +120,12 @@ class MapOverlay extends Component {
     return (
       <View style={baseStyles.nearbyPoints}>
         <View style={[baseStyles.nearbyPointsHeader]}>
-          <View style={[baseStyles.nearbyPointsDescription]}>
+          <View
+            style={[
+              baseStyles.nearbyPointsDescription,
+              { flexDirection: "row" }
+            ]}
+          >
             <TouchableOpacity onPress={this.toggle}>
               <Text style={[baseStyles.h4]}>
                 {features.length.toLocaleString()} Nearby Points
@@ -129,6 +140,12 @@ class MapOverlay extends Component {
                   : <Text>Geolocating...</Text>}
               </View>
             </TouchableOpacity>
+            {querying &&
+              <ActivityIndicator
+                animating
+                size="large"
+                style={{ marginLeft: 30 }}
+              />}
           </View>
 
           {/*

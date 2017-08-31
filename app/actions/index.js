@@ -67,9 +67,6 @@ const types = {
   INDEXING_COMPLETED: "INDEXING_COMPLETED",
   OSM_DATA_CHANGED: "OSM_DATA_CHANGED",
   VISIBLE_BOUNDS_UPDATED: "VISIBLE_BOUNDS_UPDATED",
-  SELECT_BBOX: "SELECT_BBOX",
-  BBOX_FEATURE_SELECTION_FAILED: "BBOX_FEATURE_SELECTION_FAILED",
-  BBOX_OBSERVATION_SELECTION_FAILED: "BBOX_OBSERVATION_SELECTION_FAILED",
   BBOX_SELECTED: "BBOX_SELECTED",
   BBOX_CLEARED: "BBOX_CLEARED",
   FEATURE_TILE_QUERY_FAILED: "FEATURE_TILE_QUERY_FAILED",
@@ -432,8 +429,6 @@ export const queryTileForFeatures = tile => (dispatch, getState) => {
 
   const bbox = tileToBBOX(tile);
 
-  console.log("querying OSM for", [[bbox[1], bbox[3]], [bbox[0], bbox[2]]]);
-
   return osm.queryOSM(
     [[bbox[1], bbox[3]], [bbox[0], bbox[2]]],
     (error, results) => {
@@ -481,11 +476,6 @@ export const queryTileForObservations = tile => (dispatch, getState) => {
 
   const bbox = tileToBBOX(tile);
 
-  console.log("querying observations for", [
-    [bbox[1], bbox[3]],
-    [bbox[0], bbox[2]]
-  ]);
-
   return osm.queryObservations(
     [[bbox[1], bbox[3]], [bbox[0], bbox[2]]],
     (error, observations) => {
@@ -505,71 +495,22 @@ export const queryTileForObservations = tile => (dispatch, getState) => {
   );
 };
 
-export const updateVisibleBounds = bounds => dispatch => {
-  dispatch({ type: types.VISIBLE_BOUNDS_UPDATED, bounds });
-
-  const tiles = tilesForBounds(bounds);
-
+const queryTiles = tiles => dispatch =>
   tiles.forEach(tile => {
     dispatch(queryTileForFeatures(tile));
     dispatch(queryTileForObservations(tile));
   });
-};
 
-const queryBboxForFeatures = (q, dispatch, callback) => {
-  return osm.queryOSM(q, (error, results) => {
-    if (error) {
-      console.warn(error);
-      dispatch({ type: types.BBOX_FEATURE_SELECTION_FAILED, error });
-      return callback(null, []);
-    }
+export const updateVisibleBounds = bounds => dispatch => {
+  dispatch({ type: types.VISIBLE_BOUNDS_UPDATED, bounds });
 
-    // TODO: replace this with filtering based on presets
-    const filtered = results.filter(item => {
-      return (
-        item.type === "node" &&
-        item.lat &&
-        item.lon &&
-        item.tags &&
-        item.tags.name
-      );
-    });
-
-    return callback(null, filtered);
-  });
-};
-
-const queryBboxForObservations = (q, dispatch, callback) => {
-  return osm.queryObservations(q, (error, observations) => {
-    if (error) {
-      console.warn(error);
-      dispatch({ type: types.BBOX_OBSERVATION_SELECTION_FAILED, error });
-      return callback(null, []);
-    }
-
-    return callback(null, observations);
-  });
+  return queryTiles(tilesForBounds(bounds))(dispatch);
 };
 
 export const selectBbox = bounds => dispatch => {
-  dispatch({ type: types.SELECT_BBOX, bounds });
+  dispatch({ type: types.BBOX_SELECTED, bounds });
 
-  var q = [[bounds[0], bounds[2]], [bounds[1], bounds[3]]];
-
-  return async.parallel(
-    {
-      features: async.apply(queryBboxForFeatures, q, dispatch),
-      observations: async.apply(queryBboxForObservations, q, dispatch)
-    },
-    (err, { features, observations }) => {
-      return dispatch({
-        type: types.BBOX_SELECTED,
-        bounds,
-        features,
-        observations
-      });
-    }
-  );
+  return queryTiles(tilesForBounds(bounds))(dispatch);
 };
 
 export const clearBbox = () => dispatch =>

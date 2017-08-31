@@ -1,6 +1,6 @@
 import { createSelector } from "reselect";
 
-import { tilesForBounds, timeout } from "../lib";
+import { tilesForBounds } from "../lib";
 
 export const selectAvailableSurveys = state => state.surveys.available;
 
@@ -144,16 +144,62 @@ export const selectActiveObservation = state => state.observation;
 
 export const selectUserObservations = state => {};
 
-export const selectSelectedFeatures = state => state.features.selected || [];
-
-export const selectSelectedObservations = state =>
-  state.observations.selected || [];
+export const selectSelectedBounds = state => state.bounds.selected;
 
 export const selectVisibleBounds = state => state.bounds.visible;
 
 export const selectFeatures = state => state.features.features;
 
 export const selectObservations = state => state.observations.observations;
+
+export const selectSelectedFeatures = createSelector(
+  [selectSelectedBounds, selectFeatures],
+  (selectedBounds, features) => {
+    console.log("selectedBounds:", selectedBounds);
+    const tiles = tilesForBounds(selectedBounds);
+
+    return tiles
+      .reduce((selectedFeatures, tile) => {
+        selectedFeatures = selectedFeatures.concat(
+          features[tile.join("/")] || []
+        );
+
+        return selectedFeatures;
+      }, [])
+      .filter(
+        ({ lat, lon }) =>
+          // check for containment
+          selectedBounds[0] <= lon &&
+          lon <= selectedBounds[2] &&
+          selectedBounds[1] <= lat &&
+          lat <= selectedBounds[3]
+      );
+  }
+);
+
+export const selectSelectedObservations = createSelector(
+  [selectSelectedBounds, selectObservations],
+  (selectedBounds, observations) => {
+    const tiles = tilesForBounds(selectedBounds);
+
+    return tiles
+      .reduce((selectedObservations, tile) => {
+        selectedObservations = selectedObservations.concat(
+          observations[tile.join("/")] || []
+        );
+
+        return selectedObservations;
+      }, [])
+      .filter(
+        ({ lat, lon }) =>
+          // check for containment
+          selectedBounds[0] <= lon &&
+          lon <= selectedBounds[2] &&
+          selectedBounds[1] <= lat &&
+          lat <= selectedBounds[3]
+      );
+  }
+);
 
 export const selectVisibleFeatures = createSelector(
   [selectVisibleBounds, selectFeatures],
@@ -210,3 +256,9 @@ export const selectActiveFeatureTileQueries = state =>
 
 export const selectActiveObservationTileQueries = state =>
   state.observations.activeTileQueries;
+
+export const selectIsQuerying = createSelector(
+  [selectActiveFeatureTileQueries, selectActiveObservationTileQueries],
+  (featureQueries, observationQueries) =>
+    featureQueries.length + observationQueries.length > 0
+);

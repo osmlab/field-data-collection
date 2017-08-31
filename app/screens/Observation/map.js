@@ -8,6 +8,7 @@ import getCurrentPosition from "../../lib/get-current-position";
 import {
   selectActiveSurveys,
   selectLoadingStatus,
+  selectIsQuerying,
   selectSelectedFeatures,
   selectVisibleFeatures,
   selectVisibleObservations
@@ -104,8 +105,9 @@ class ObservationMapScreen extends Component {
       left: x - 50
     };
 
-    // NOTE this returns (lon, lat, lon, lat)
-    this._map.getBoundsFromScreenCoordinates(rect, selectBbox);
+    this._map.getBoundsFromScreenCoordinates(rect, bounds =>
+      selectBbox([bounds[1], bounds[0], bounds[3], bounds[2]])
+    );
   };
 
   onFinishLoadingMap = e => {
@@ -150,7 +152,7 @@ class ObservationMapScreen extends Component {
   };
 
   render() {
-    const { features, loading, observations } = this.props;
+    const { features, loading, observations, querying } = this.props;
 
     let annotations = features.map(item => {
       return (
@@ -244,6 +246,7 @@ class ObservationMapScreen extends Component {
           activeSurveys={this.props.activeSurveys}
           areaOfInterest={this.props.areaOfInterest}
           loading={loading}
+          querying={querying}
         />
       </View>
     );
@@ -256,6 +259,7 @@ const mapStateToProps = state => ({
   features: selectVisibleFeatures(state),
   loading: selectLoadingStatus(state),
   observations: selectVisibleObservations(state),
+  querying: selectIsQuerying(state),
   selectedFeatures: selectSelectedFeatures(state)
 });
 
