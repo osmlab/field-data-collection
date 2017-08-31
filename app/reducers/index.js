@@ -1,5 +1,6 @@
 import { combineReducers } from "redux";
 
+import bounds from "./bounds";
 import features from "./features";
 import observation from "./observation";
 import observations from "./observations";
@@ -10,6 +11,7 @@ import coordinator from "./coordinator";
 import user from "./user";
 
 export default combineReducers({
+  bounds,
   features,
   // the active observation being collected
   observation,

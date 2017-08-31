@@ -149,7 +149,7 @@ export const selectSelectedFeatures = state => state.features.selected || [];
 export const selectSelectedObservations = state =>
   state.observations.selected || [];
 
-export const selectVisibleBounds = state => state.features.visibleBounds;
+export const selectVisibleBounds = state => state.bounds.visible;
 
 export const selectFeatures = state => state.features.features;
 

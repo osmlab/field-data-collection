@@ -12,7 +12,6 @@ export default (state = initialState, { bounds, features, tile, type }) => {
     case types.BBOX_CLEARED:
       return {
         ...state,
-        selectedBounds: null,
         selected: []
       };
 
@@ -20,16 +19,7 @@ export default (state = initialState, { bounds, features, tile, type }) => {
     case types.BBOX_SELECTED:
       return {
         ...state,
-        // TODO belongs elsewhere (shared with observations)
-        selectedBounds: bounds,
         selected: features
-      };
-
-    case types.VISIBLE_BOUNDS_UPDATED:
-      return {
-        ...state,
-        // TODO belongs elsewhere (shared with observations)
-        visibleBounds: bounds
       };
 
     // TODO belongs elsewhere (shared with observations)
