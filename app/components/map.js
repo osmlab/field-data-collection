@@ -30,29 +30,31 @@ class Map extends Component {
   };
 
   render() {
-    const { observation, geolocateIcon, newPointPin } = this.props;
+    const { observation, geolocateIcon, newPointPin, center } = this.props;
+
+    const optional = {};
+    if (center) optional.initialCenterCoordinate = center;
 
     return (
       <View style={{ height: this.props.height || 100 }}>
         <MapView
           ref={this.setRef}
           style={{ flex: 1, top: 0, bottom: 0 }}
-          debugActive={true}
           compassIsHidden={false}
-          initialCenterCoordinate={this.props.center}
           initialZoomLevel={this.props.zoom || 16}
           rotateEnabled={false}
-          scrollEnabled={true}
-          zoomEnabled={true}
-          showsUserLocation={true}
+          scrollEnabled
+          zoomEnabled
+          showsUserLocation
           styleURL={Mapbox.mapStyles.light}
           userTrackingMode={
             !!this.props.center
               ? Mapbox.userTrackingMode.none
               : Mapbox.userTrackingMode.followWithHeading
           }
-          attributionButtonIsHidden={true}
-          logoIsHidden={true}
+          attributionButtonIsHidden
+          logoIsHidden
+          {...optional}
         >
           {this.props.children}
         </MapView>

@@ -1,12 +1,16 @@
 import React, { Component } from "react";
-import { View, TextInput, TouchableOpacity, ScrollView } from "react-native";
+import { View, TouchableOpacity, ScrollView } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { connect } from "react-redux";
 import { Link } from "react-router-native";
 
 import getCenterOfPoints from "../../lib/get-center-of-points";
 import { initializeObservation } from "../../actions";
-import { selectActiveObservation, selectOsmFeatures } from "../../selectors";
+import {
+  selectActiveObservation,
+  selectSelectedFeatures,
+  selectVisibleFeatures
+} from "../../selectors";
 import { Text, Wrapper, Map, AnnotationOSM } from "../../components";
 import { baseStyles } from "../../styles";
 
@@ -14,11 +18,17 @@ class ChoosePoint extends Component {
   componentWillMount() {}
 
   render() {
-    const { history, featureList, initializeObservation } = this.props;
+    const {
+      history,
+      initializeObservation,
+      selectedFeatures,
+      visibleFeatures
+    } = this.props;
+    const features =
+      selectedFeatures.length > 0 ? selectedFeatures : visibleFeatures;
+    const center = features.length > 0 ? getCenterOfPoints(features) : false;
 
-    const center = featureList.length ? getCenterOfPoints(featureList) : false;
-
-    let annotations = featureList.map(item => {
+    let annotations = features.map(item => {
       return (
         <AnnotationOSM
           key={item.id}
@@ -63,14 +73,14 @@ class ChoosePoint extends Component {
               What are you adding an observation to?
             </Text>
 
-            <Map>
+            <Map center={center}>
               {annotations}
             </Map>
           </View>
 
           <View>
             <ScrollView style={{ marginTop: 6, height: 240 }}>
-              {this.props.featureList.map(item => {
+              {features.map(item => {
                 return (
                   <View
                     key={item.id}
@@ -126,7 +136,8 @@ class ChoosePoint extends Component {
 const mapStateToProps = (state, ownProps) => {
   return {
     observation: selectActiveObservation(state),
-    featureList: selectOsmFeatures(state)
+    selectedFeatures: selectSelectedFeatures(state),
+    visibleFeatures: selectVisibleFeatures(state)
   };
 };
 

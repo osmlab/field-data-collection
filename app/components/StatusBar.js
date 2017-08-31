@@ -4,14 +4,12 @@ import { connect } from "react-redux";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
 import { selectStatus } from "../selectors";
-import { baseStyles } from "../styles";
 import Text from "./text";
 
 class StatusBar extends Component {
-  componentWillMount() {
-    const { status } = this.props;
-    this.setState({ open: false });
-  }
+  state = {
+    open: false
+  };
 
   close = () => {
     this.setState({ open: false });

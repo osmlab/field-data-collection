@@ -2,11 +2,12 @@ import types from "../actions";
 
 const initialState = {
   activeTileQueries: [],
-  observations: {},
-  selected: []
+  features: {},
+  selected: [],
+  loading: false
 };
 
-export default (state = initialState, { bounds, observations, tile, type }) => {
+export default (state = initialState, { bounds, features, tile, type }) => {
   switch (type) {
     case types.BBOX_CLEARED:
       return {
@@ -18,17 +19,28 @@ export default (state = initialState, { bounds, observations, tile, type }) => {
     case types.BBOX_SELECTED:
       return {
         ...state,
-        selected: observations
+        selected: features
+      };
+
+    // TODO belongs elsewhere (shared with observations)
+    case types.REPLICATION_STARTED:
+    case types.REPLICATION_COMPLETED:
+    case types.INDEXING_STARTED:
+    case types.INDEXING_COMPLETED:
+      return {
+        ...state,
+        loading: true
       };
 
     case types.OSM_DATA_CHANGED:
-    case types.OBSERVATION_SAVED:
       return {
         ...state,
-        observations: {}
+        features: {},
+        // TODO belongs elsewhere
+        loading: false
       };
 
-    case types.QUERYING_TILE_FOR_OBSERVATIONS:
+    case types.QUERYING_TILE_FOR_FEATURES:
       return {
         ...state,
         activeTileQueries: state.activeTileQueries.includes(tile.join("/"))
@@ -36,7 +48,7 @@ export default (state = initialState, { bounds, observations, tile, type }) => {
           : state.activeTileQueries.concat(tile.join("/"))
       };
 
-    case types.OBSERVATION_TILE_QUERY_FAILED:
+    case types.FEATURE_TILE_QUERY_FAILED:
       return {
         ...state,
         activeTileQueries: state.activeTileQueries.splice(
@@ -45,7 +57,7 @@ export default (state = initialState, { bounds, observations, tile, type }) => {
         )
       };
 
-    case types.TILE_QUERIED_FOR_OBSERVATIONS:
+    case types.TILE_QUERIED_FOR_FEATURES:
       console.log("tile queried:", tile);
       return {
         ...state,
@@ -53,9 +65,9 @@ export default (state = initialState, { bounds, observations, tile, type }) => {
           state.activeTileQueries.indexOf(tile.join("/")),
           1
         ),
-        observations: {
-          ...state.observations,
-          [tile.join("/")]: observations
+        features: {
+          ...state.features,
+          [tile.join("/")]: features
         }
       };
 

@@ -54,7 +54,7 @@ class MapOverlay extends Component {
   }
 
   renderNearbyPoints = () => {
-    const { features, areaOfInterest, activeSurveys } = this.props;
+    const { areaOfInterest, activeSurveys, features, loading } = this.props;
 
     if (!activeSurveys.length) {
       return (
@@ -83,7 +83,7 @@ class MapOverlay extends Component {
       );
     }
 
-    if (!features.length) {
+    if (loading) {
       return (
         <View style={baseStyles.nearbyPoints}>
           <View style={[baseStyles.nearbyPointsHeader]}>
@@ -116,7 +116,9 @@ class MapOverlay extends Component {
         <View style={[baseStyles.nearbyPointsHeader]}>
           <View style={[baseStyles.nearbyPointsDescription]}>
             <TouchableOpacity onPress={this.toggle}>
-              <Text style={[baseStyles.h4]}>Nearby Points</Text>
+              <Text style={[baseStyles.h4]}>
+                {features.length.toLocaleString()} Nearby Points
+              </Text>
 
               <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
                 {this.props.userLocation
@@ -143,7 +145,7 @@ class MapOverlay extends Component {
         </View>
 
         <ScrollView horizontal={true} width={Screen.width}>
-          {this.props.features.map(item => {
+          {features.map(item => {
             return (
               <View style={[baseStyles.cardStyle]} key={item.id}>
                 <Text style={[baseStyles.h3]}>

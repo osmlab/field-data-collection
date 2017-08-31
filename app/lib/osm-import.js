@@ -25,7 +25,7 @@ function importify(osm, xmlStream, done) {
     )
       return next();
 
-    idToP2pId[change.id] = hex2dec(randomBytes(8).toString("hex"));
+    idToP2pId[change.id] = hex2dec(randomBytes(8).toString("hex")).toString();
     if (!isSatisfiable(change)) {
       pending.push(change);
       return next();
@@ -59,15 +59,10 @@ function importify(osm, xmlStream, done) {
   }
 
   function isSatisfiable(change) {
-    var res = true;
-    (change.nodes || []).forEach(function(id, idx) {
-      if (!idToP2pId[id]) res = false;
-    });
-    (change.members || []).forEach(function(ref, idx) {
-      if (!idToP2pId[ref.ref]) res = false;
-    });
-
-    return res;
+    return (
+      (change.nodes || []).every(id => idToP2pId[id] != null) &&
+      (change.members || []).every(({ ref }) => idToP2pId[ref] != null)
+    );
   }
 
   /**
@@ -116,9 +111,8 @@ function importify(osm, xmlStream, done) {
   }
 }
 
-// Number -> String
 function hex2dec(h) {
-  return parseInt(h.toUpperCase(), "16").toString();
+  return parseInt(h, 16);
 }
 
 var SKIP_PROPS = ["action", "id", "version", "ifUnused", "old_id"];

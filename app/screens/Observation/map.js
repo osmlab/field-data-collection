@@ -1,36 +1,33 @@
 import React, { Component } from "react";
-import {
-  StyleSheet,
-  View,
-  Button,
-  Dimensions,
-  TouchableOpacity,
-  AsyncStorage
-} from "react-native";
+import { StyleSheet, View } from "react-native";
 import Mapbox, { MapView } from "react-native-mapbox-gl";
-import Icon from "react-native-vector-icons/MaterialIcons";
-import { Link } from "react-router-native";
 import { connect } from "react-redux";
 import debounce from "debounce";
 
 import getCurrentPosition from "../../lib/get-current-position";
 import {
-  selectOsmFeatures,
-  selectObservations,
-  selectActiveSurveys
+  selectActiveSurveys,
+  selectLoadingStatus,
+  selectSelectedFeatures,
+  selectVisibleFeatures,
+  selectVisibleObservations
 } from "../../selectors";
-import { setOsmFeatureList, setObservations, osm } from "../../actions";
 import {
-  AnnotationOSM,
+  clearBbox,
+  initializeObservation,
+  selectBbox,
+  updateVisibleBounds
+} from "../../actions";
+import {
   AnnotationObservation,
+  AnnotationOSM,
   Header,
   SideMenu,
   Text,
-  Geolocate,
   MapOverlay,
   StatusBar
 } from "../../components";
-import { baseStyles, colors } from "../../styles";
+import { baseStyles } from "../../styles";
 
 import config from "../../config";
 
@@ -57,6 +54,8 @@ const styles = StyleSheet.create({
 
 class ObservationMapScreen extends Component {
   componentWillMount() {
+    const { clearBbox } = this.props;
+
     this.setState({
       nearbyFeaturesViewOpen: false,
       showMap: true,
@@ -70,6 +69,8 @@ class ObservationMapScreen extends Component {
       annotations: [],
       userLocation: null
     });
+
+    clearBbox();
   }
 
   componentWillUnmount() {
@@ -78,11 +79,21 @@ class ObservationMapScreen extends Component {
     });
   }
 
+  componentWillUpdate(nextProps, nextState) {
+    const { history } = this.props;
+    const { selectedFeatures } = nextProps;
+
+    if (selectedFeatures.length > 0) {
+      history.push("/observation/choose-point");
+    }
+  }
+
   onMenuPress = () => {
     this._menu.open();
   };
 
   onMapPress = e => {
+    const { selectBbox } = this.props;
     const x = e.screenCoordX;
     const y = e.screenCoordY;
 
@@ -93,45 +104,8 @@ class ObservationMapScreen extends Component {
       left: x - 50
     };
 
-    // this._map.getBoundsFromScreenCoordinates(rect, bounds => {
-    //   var q = [[bounds[0], bounds[2]], [bounds[1], bounds[3]]];
-    //
-    //   osm.queryOSM(q, (err, results) => {
-    //     console.log("osm.query", err, Object.keys(results));
-    //   });
-    // });
-  };
-
-  setFeatures = e => {
-    // make sure map is loaded before trying to get bounds
-    if (!this.state.mapLoaded) return;
-
-    const { setOsmFeatureList, setObservations } = this.props;
-
-    this._map.getBounds(data => {
-      var q = [[data[0], data[2]], [data[1], data[3]]];
-
-      osm.queryObservations(q, (err, observations) => {
-        if (err) console.log(err);
-
-        osm.queryOSM(q, (err, nodes) => {
-          if (err) console.log(err);
-          // TODO: replace this with filtering based on presets
-          const filtered = nodes.filter(item => {
-            return (
-              item.type === "node" &&
-              item.lat &&
-              item.lon &&
-              item.tags &&
-              item.tags.name
-            );
-          });
-
-          setOsmFeatureList(filtered);
-          setObservations(observations);
-        });
-      });
-    });
+    // NOTE this returns (lon, lat, lon, lat)
+    this._map.getBoundsFromScreenCoordinates(rect, selectBbox);
   };
 
   onFinishLoadingMap = e => {
@@ -145,8 +119,10 @@ class ObservationMapScreen extends Component {
       }
     });
 
-    this.setFeatures();
+    this.onUpdateBounds();
   };
+
+  onRegionDidChange = info => this.onUpdateBounds();
 
   onGeolocate = (err, data) => {
     if (data) {
@@ -164,10 +140,19 @@ class ObservationMapScreen extends Component {
     console.log("e", e);
   };
 
-  render() {
-    const { featureList, observations } = this.props;
+  onUpdateBounds = () => {
+    const { updateVisibleBounds } = this.props;
 
-    let annotations = featureList.map(item => {
+    // NOTE getBounds returns (lat, lon, lat, lon) so we convert it here
+    this._map.getBounds(bounds =>
+      updateVisibleBounds([bounds[1], bounds[0], bounds[3], bounds[2]])
+    );
+  };
+
+  render() {
+    const { features, loading, observations } = this.props;
+
+    let annotations = features.map(item => {
       return (
         <AnnotationOSM
           key={item.id}
@@ -218,7 +203,7 @@ class ObservationMapScreen extends Component {
             onOpenAnnotation={this.onMapPress}
             onFinishLoadingMap={this.onFinishLoadingMap}
             onUpdateUserLocation={this.onUpdateUserLocation}
-            onRegionDidChange={debounce(this.setFeatures, 400)}
+            onRegionDidChange={debounce(this.onRegionDidChange, 400)}
             initialCenterCoordinate={this.state.center}
             initialZoomLevel={this.state.zoom}
             initialDirection={0}
@@ -235,7 +220,7 @@ class ObservationMapScreen extends Component {
           </MapView>
         }
 
-        {/* TODO: restore legend 
+        {/* TODO: restore legend
           <TouchableOpacity
           style={[styles.buttonLegend]}
           onPress={this._onPressButton}
@@ -254,10 +239,11 @@ class ObservationMapScreen extends Component {
 
         <MapOverlay
           userLocation={this.state.userLocation}
-          features={featureList}
+          features={features}
           onGeolocate={this.onGeolocate}
           activeSurveys={this.props.activeSurveys}
           areaOfInterest={this.props.areaOfInterest}
+          loading={loading}
         />
       </View>
     );
@@ -265,13 +251,17 @@ class ObservationMapScreen extends Component {
 }
 
 const mapStateToProps = state => ({
-  featureList: selectOsmFeatures(state),
-  observations: selectObservations(state),
+  activeSurveys: selectActiveSurveys(state),
   areaOfInterest: state.osm.areaOfInterest,
-  activeSurveys: selectActiveSurveys(state)
+  features: selectVisibleFeatures(state),
+  loading: selectLoadingStatus(state),
+  observations: selectVisibleObservations(state),
+  selectedFeatures: selectSelectedFeatures(state)
 });
 
 export default connect(mapStateToProps, {
-  setOsmFeatureList,
-  setObservations
+  clearBbox,
+  initializeObservation,
+  selectBbox,
+  updateVisibleBounds
 })(ObservationMapScreen);

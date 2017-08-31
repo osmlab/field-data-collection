@@ -1,5 +1,7 @@
 import { createSelector } from "reselect";
 
+import { tilesForBounds, timeout } from "../lib";
+
 export const selectAvailableSurveys = state => state.surveys.available;
 
 export const selectCustomSurveys = createSelector(
@@ -53,7 +55,7 @@ export const selectCategories = createSelector(
   (surveys, observationTypes) =>
     surveys
       .map(({ definition: { categories, name: surveyId } }) =>
-        categories
+        (categories || [])
           .reduce((arr, { icon, members, name }) => {
             const cat = arr.find(x => x.name === name);
 
@@ -140,8 +142,71 @@ export const selectStatus = state => state.status;
 
 export const selectActiveObservation = state => state.observation;
 
-export const selectObservations = state => state.observations.list;
-
-export const selectOsmFeatures = state => state.osm.featureList;
-
 export const selectUserObservations = state => {};
+
+export const selectSelectedFeatures = state => state.features.selected || [];
+
+export const selectSelectedObservations = state =>
+  state.observations.selected || [];
+
+export const selectVisibleBounds = state => state.bounds.visible;
+
+export const selectFeatures = state => state.features.features;
+
+export const selectObservations = state => state.observations.observations;
+
+export const selectVisibleFeatures = createSelector(
+  [selectVisibleBounds, selectFeatures],
+  (visibleBounds, features) => {
+    const tiles = tilesForBounds(visibleBounds);
+
+    return tiles
+      .reduce((visibleFeatures, tile) => {
+        visibleFeatures = visibleFeatures.concat(
+          features[tile.join("/")] || []
+        );
+
+        return visibleFeatures;
+      }, [])
+      .filter(
+        ({ lat, lon }) =>
+          // check for containment
+          visibleBounds[0] <= lon &&
+          lon <= visibleBounds[2] &&
+          visibleBounds[1] <= lat &&
+          lat <= visibleBounds[3]
+      );
+  }
+);
+
+export const selectVisibleObservations = createSelector(
+  [selectVisibleBounds, selectObservations],
+  (visibleBounds, observations) => {
+    const tiles = tilesForBounds(visibleBounds);
+
+    return tiles
+      .reduce((visibleObservations, tile) => {
+        visibleObservations = visibleObservations.concat(
+          observations[tile.join("/")] || []
+        );
+
+        return visibleObservations;
+      }, [])
+      .filter(
+        ({ lat, lon }) =>
+          // check for containment
+          visibleBounds[0] <= lon &&
+          lon <= visibleBounds[2] &&
+          visibleBounds[1] <= lat &&
+          lat <= visibleBounds[3]
+      );
+  }
+);
+
+export const selectLoadingStatus = state => state.features.loading;
+
+export const selectActiveFeatureTileQueries = state =>
+  state.features.activeTileQueries;
+
+export const selectActiveObservationTileQueries = state =>
+  state.observations.activeTileQueries;
