@@ -144,7 +144,7 @@ export const selectRemoteSurveys = state => state.surveys.remote;
 
 export const selectStatus = state => state.status;
 
-export const selectActiveObservation = state => state.observation;
+export const selectActiveObservation = state => state.observation.active;
 
 export const selectUserObservations = state => {};
 
@@ -152,14 +152,13 @@ export const selectSelectedBounds = state => state.bounds.selected;
 
 export const selectVisibleBounds = state => state.bounds.visible;
 
-export const selectFeatures = state => state.features.features;
+export const selectFeatureTiles = state => state.features.features;
 
-export const selectObservations = state => state.observations.observations;
+export const selectObservationTiles = state => state.observations.observations;
 
 export const selectSelectedFeatures = createSelector(
-  [selectSelectedBounds, selectFeatures],
+  [selectSelectedBounds, selectFeatureTiles],
   (selectedBounds, features) => {
-    console.log("selectedBounds:", selectedBounds);
     const tiles = tilesForBounds(selectedBounds);
 
     return tiles
@@ -182,7 +181,7 @@ export const selectSelectedFeatures = createSelector(
 );
 
 export const selectSelectedObservations = createSelector(
-  [selectSelectedBounds, selectObservations],
+  [selectSelectedBounds, selectObservationTiles],
   (selectedBounds, observations) => {
     const tiles = tilesForBounds(selectedBounds);
 
@@ -206,7 +205,7 @@ export const selectSelectedObservations = createSelector(
 );
 
 export const selectVisibleFeatures = createSelector(
-  [selectVisibleBounds, selectFeatures],
+  [selectVisibleBounds, selectFeatureTiles],
   (visibleBounds, features) => {
     const tiles = tilesForBounds(visibleBounds);
 
@@ -230,7 +229,7 @@ export const selectVisibleFeatures = createSelector(
 );
 
 export const selectVisibleObservations = createSelector(
-  [selectVisibleBounds, selectObservations],
+  [selectVisibleBounds, selectObservationTiles],
   (visibleBounds, observations) => {
     const tiles = tilesForBounds(visibleBounds);
 

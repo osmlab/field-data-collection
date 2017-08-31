@@ -1,24 +1,39 @@
 import types from "../actions";
 
-const initialState = {};
+const initialState = {
+  active: null
+};
 
 export default (state = initialState, { observation, type }) => {
   switch (type) {
     case types.INITIALIZE_OBSERVATION:
-      return observation;
+      return {
+        ...state,
+        active: observation
+      };
 
     case types.SET_ACTIVE_OBSERVATION:
-      return observation;
+      return {
+        ...state,
+        active: observation
+      };
 
     case types.OBSERVATION_SAVED:
       return initialState;
 
     case types.UPDATE_OBSERVATION:
-      const tags = state.tags;
-      Object.assign(state, observation);
-      Object.assign(state.tags, tags, observation.tags);
+      return {
+        ...state,
+        active: {
+          ...state.active,
+          ...observation,
+          tags: {
+            ...state.active.tags,
+            ...observation.tags
+          }
+        }
+      };
 
-      return state;
     default:
       return state;
   }
