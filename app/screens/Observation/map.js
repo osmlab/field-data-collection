@@ -20,6 +20,7 @@ import {
 } from "../../actions";
 import {
   AnnotationObservation,
+  AnnotationOSM,
   Header,
   SideMenu,
   Text,
@@ -151,41 +152,30 @@ class ObservationMapScreen extends Component {
   render() {
     const { features, loading, observations } = this.props;
 
-    // let annotations = featureList.map(item => {
-    //   return (
-    //     <AnnotationOSM
-    //       key={item.id}
-    //       id={item.id}
-    //       radius={8}
-    //       coordinates={{ latitude: item.lat, longitude: item.lon }}
-    //       onPress={this.onMapPress}
-    //     />
-    //   );
-    // });
-    //
-    // annotations = annotations.concat(
-    //   observations.map(item => {
-    //     return (
-    //       <AnnotationObservation
-    //         key={item.id}
-    //         id={item.id}
-    //         coordinates={{ latitude: item.lat, longitude: item.lon }}
-    //         onPress={this.onMapPress}
-    //       />
-    //     );
-    //   })
-    // );
-
-    const annotations = observations.map(item => {
+    let annotations = features.map(item => {
       return (
-        <AnnotationObservation
+        <AnnotationOSM
           key={item.id}
           id={item.id}
+          radius={8}
           coordinates={{ latitude: item.lat, longitude: item.lon }}
           onPress={this.onMapPress}
         />
       );
     });
+
+    annotations = annotations.concat(
+      observations.map(item => {
+        return (
+          <AnnotationObservation
+            key={item.id}
+            id={item.id}
+            coordinates={{ latitude: item.lat, longitude: item.lon }}
+            onPress={this.onMapPress}
+          />
+        );
+      })
+    );
 
     return (
       <View style={[baseStyles.wrapper, { padding: 0 }]}>
