@@ -9,6 +9,7 @@ import {
   selectActiveSurveys,
   selectLoadingStatus,
   selectIsQuerying,
+  selectSelectedBounds,
   selectSelectedFeatures,
   selectVisibleFeatures,
   selectVisibleObservations
@@ -83,10 +84,14 @@ class ObservationMapScreen extends Component {
 
   componentWillUpdate(nextProps, nextState) {
     const { history } = this.props;
-    const { selectedFeatures } = nextProps;
+    const { selectedBounds, selectedFeatures } = nextProps;
 
     if (selectedFeatures.length > 0) {
-      history.push("/observation/choose-point");
+      return history.push("/observation/choose-point");
+    }
+
+    if (selectedBounds !== null) {
+      return history.push("/observation/choose-point");
     }
   }
 
@@ -291,6 +296,7 @@ const mapStateToProps = state => ({
   loading: selectLoadingStatus(state),
   observations: selectVisibleObservations(state),
   querying: selectIsQuerying(state),
+  selectedBounds: selectSelectedBounds(state),
   selectedFeatures: selectSelectedFeatures(state)
 });
 
