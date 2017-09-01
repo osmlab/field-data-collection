@@ -1,5 +1,6 @@
+import debounce from "debounce";
 import React, { Component } from "react";
-import { StyleSheet, View, ListView, TouchableOpacity } from "react-native";
+import { View } from "react-native";
 import Mapbox, { MapView } from "react-native-mapbox-gl";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
@@ -30,10 +31,22 @@ class Map extends Component {
   };
 
   render() {
-    const { observation, geolocateIcon, newPointPin, center } = this.props;
+    const {
+      center,
+      geolocateIcon,
+      newPointPin,
+      onRegionDidChange
+    } = this.props;
 
     const optional = {};
-    if (center) optional.initialCenterCoordinate = center;
+
+    if (center) {
+      optional.initialCenterCoordinate = center;
+    }
+
+    if (onRegionDidChange) {
+      optional.onRegionDidChange = debounce(onRegionDidChange, 400);
+    }
 
     return (
       <View style={{ height: this.props.height || 100 }}>
