@@ -17,6 +17,7 @@ import {
   clearBbox,
   initializeObservation,
   selectBbox,
+  setActiveObservation,
   updateVisibleBounds
 } from "../../actions";
 import {
@@ -94,6 +95,27 @@ class ObservationMapScreen extends Component {
   };
 
   onMapPress = e => {
+    const { history, observations, setActiveObservation } = this.props;
+    console.log("onMapPress:", e);
+
+    if (e.id != null) {
+      console.log("element id:", e.id);
+      const [type, id] = e.id.split("-");
+
+      if (type === "observation") {
+        console.log("displaying observation", id)
+        const observation = observations.find(o => o.id === id);
+
+        if (observation !== null) {
+          setActiveObservation(observation)
+
+          return history.push(`/observation/${observation.survey.id}/${observation.survey.type}`);
+        } else {
+          console.warn("Unable to find observation", id)
+        }
+      }
+    }
+
     const { selectBbox } = this.props;
     const x = e.screenCoordX;
     const y = e.screenCoordY;
@@ -158,7 +180,7 @@ class ObservationMapScreen extends Component {
       return (
         <AnnotationOSM
           key={item.id}
-          id={item.id}
+          id={`feature-${item.id}`}
           radius={8}
           coordinates={{ latitude: item.lat, longitude: item.lon }}
           onPress={this.onMapPress}
@@ -171,7 +193,7 @@ class ObservationMapScreen extends Component {
         return (
           <AnnotationObservation
             key={item.id}
-            id={item.id}
+            id={`observation-${item.id}`}
             coordinates={{ latitude: item.lat, longitude: item.lon }}
             onPress={this.onMapPress}
           />
@@ -267,5 +289,6 @@ export default connect(mapStateToProps, {
   clearBbox,
   initializeObservation,
   selectBbox,
+  setActiveObservation,
   updateVisibleBounds
 })(ObservationMapScreen);

@@ -44,8 +44,12 @@ export const selectObservationTypes = createSelector(
   selectActiveSurveys,
   surveys =>
     surveys
-      .map(({ definition: { featureTypes, observationTypes } }) =>
-        observationTypes.map(t => featureTypes.find(x => x.id === t))
+      .map(
+        ({ definition: { featureTypes, observationTypes, name: surveyId } }) =>
+          observationTypes.map(t => ({
+            ...featureTypes.find(x => x.id === t),
+            surveyId
+          }))
       )
       .reduce((arr, val) => arr.concat(val), [])
 );
@@ -109,9 +113,9 @@ export const selectUncategorizedTypes = createSelector(
               return (
                 survey &&
                 survey.definition &&
-                survey.definition.id === x.surveyId
+                survey.definition.name === x.surveyId
               );
-            }),
+            }).definition.name,
             surveyId: x.surveyId,
             list: []
           };
@@ -140,7 +144,7 @@ export const selectRemoteSurveys = state => state.surveys.remote;
 
 export const selectStatus = state => state.status;
 
-export const selectActiveObservation = state => state.observation;
+export const selectActiveObservation = state => state.observation.active;
 
 export const selectUserObservations = state => {};
 
@@ -148,14 +152,13 @@ export const selectSelectedBounds = state => state.bounds.selected;
 
 export const selectVisibleBounds = state => state.bounds.visible;
 
-export const selectFeatures = state => state.features.features;
+export const selectFeatureTiles = state => state.features.features;
 
-export const selectObservations = state => state.observations.observations;
+export const selectObservationTiles = state => state.observations.observations;
 
 export const selectSelectedFeatures = createSelector(
-  [selectSelectedBounds, selectFeatures],
+  [selectSelectedBounds, selectFeatureTiles],
   (selectedBounds, features) => {
-    console.log("selectedBounds:", selectedBounds);
     const tiles = tilesForBounds(selectedBounds);
 
     return tiles
@@ -178,7 +181,7 @@ export const selectSelectedFeatures = createSelector(
 );
 
 export const selectSelectedObservations = createSelector(
-  [selectSelectedBounds, selectObservations],
+  [selectSelectedBounds, selectObservationTiles],
   (selectedBounds, observations) => {
     const tiles = tilesForBounds(selectedBounds);
 
@@ -202,7 +205,7 @@ export const selectSelectedObservations = createSelector(
 );
 
 export const selectVisibleFeatures = createSelector(
-  [selectVisibleBounds, selectFeatures],
+  [selectVisibleBounds, selectFeatureTiles],
   (visibleBounds, features) => {
     const tiles = tilesForBounds(visibleBounds);
 
@@ -226,7 +229,7 @@ export const selectVisibleFeatures = createSelector(
 );
 
 export const selectVisibleObservations = createSelector(
-  [selectVisibleBounds, selectObservations],
+  [selectVisibleBounds, selectObservationTiles],
   (visibleBounds, observations) => {
     const tiles = tilesForBounds(visibleBounds);
 

@@ -18,7 +18,7 @@ import {
 } from "../../actions";
 
 // Observations
-import ObservationMap from "../Observation/map.js";
+import ObservationMap from "../Observation/map";
 import Observation from "../Observation/view";
 import FieldsetForm from "../Observation/fieldset-form";
 import Categories from "../Observation/categories";
@@ -94,8 +94,6 @@ export class App extends Component {
               path="/observation/:surveyId/:type"
               component={Observation}
             />
-
-            <Route path="/observation/details" component={Observation} />
 
             <Route
               path="/observation/:surveyId/:type/fields"

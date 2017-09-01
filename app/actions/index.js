@@ -1,5 +1,4 @@
 import { tileToBBOX } from "@mapbox/tilebelt";
-import async from "async";
 import eos from "end-of-stream";
 import JSONStream from "JSONStream";
 import once from "once";
@@ -14,8 +13,8 @@ import { tilesForBounds, timeout } from "../lib";
 import {
   selectActiveFeatureTileQueries,
   selectActiveObservationTileQueries,
-  selectFeatures,
-  selectObservations
+  selectFeatureTiles,
+  selectObservationTiles
 } from "../selectors";
 
 const Fetch = RNFetchBlob.polyfill.Fetch;
@@ -74,7 +73,9 @@ const types = {
   TILE_QUERIED_FOR_FEATURES: "TILE_QUERIED_FOR_FEATURES",
   OBSERVATION_TILE_QUERY_FAILED: "OBSERVATION_TILE_QUERY_FAILED",
   QUERYING_TILE_FOR_OBSERVATIONS: "QUERYING_TILE_FOR_OBSERVATIONS",
-  TILE_QUERIED_FOR_OBSERVATIONS: "TILE_QUERIED_FOR_OBSERVATIONS"
+  TILE_QUERIED_FOR_OBSERVATIONS: "TILE_QUERIED_FOR_OBSERVATIONS",
+  ACTIVATING_OBSERVATION: "ACTIVATING_OBSERVATION",
+  ACTIVATING_OBSERVATION_FAILED: "ACTIVATING_OBSERVATION_FAILED"
 };
 
 // fallback to 10.0.2.2 when connecting to the coordinator (host's localhost from the emulator)
@@ -416,12 +417,11 @@ export const dataChanged = () => dispatch =>
 
 export const queryTileForFeatures = tile => (dispatch, getState) => {
   const activeTileQueries = selectActiveFeatureTileQueries(getState());
-  const features = selectFeatures(getState());
+  const features = selectFeatureTiles(getState());
   const tileKey = tile.join("/");
 
   // check state to see if this tile is already being queried or exists
   if (activeTileQueries.includes(tileKey) || features[tileKey] != null) {
-    console.log("skipping", tileKey);
     return;
   }
 
@@ -463,12 +463,11 @@ export const queryTileForFeatures = tile => (dispatch, getState) => {
 
 export const queryTileForObservations = tile => (dispatch, getState) => {
   const activeTileQueries = selectActiveObservationTileQueries(getState());
-  const observations = selectObservations(getState());
+  const observations = selectObservationTiles(getState());
   const tileKey = tile.join("/");
 
   // check state to see if this tile is already being queried or exists
   if (activeTileQueries.includes(tileKey) || observations[tileKey] != null) {
-    console.log("skipping", tileKey);
     return;
   }
 
