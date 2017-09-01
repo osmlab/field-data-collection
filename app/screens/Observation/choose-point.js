@@ -8,10 +8,17 @@ import getCenterOfPoints from "../../lib/get-center-of-points";
 import { initializeObservation } from "../../actions";
 import {
   selectActiveObservation,
+  selectSelectedBounds,
   selectSelectedFeatures,
   selectVisibleFeatures
 } from "../../selectors";
-import { Text, Wrapper, Map, AnnotationOSM } from "../../components";
+import {
+  Text,
+  Wrapper,
+  Map,
+  AnnotationObservation,
+  AnnotationOSM
+} from "../../components";
 import { baseStyles } from "../../styles";
 
 class ChoosePoint extends Component {
@@ -24,31 +31,57 @@ class ChoosePoint extends Component {
     };
   };
 
+  onRegionDidChange = ({ latitude, longitude }) =>
+    this.setState({
+      center: {
+        latitude,
+        longitude
+      }
+    });
+
   render() {
     const {
       history,
       initializeObservation,
+      selectedBounds,
       selectedFeatures,
       visibleFeatures
     } = this.props;
     const features =
       selectedFeatures.length > 0 ? selectedFeatures : visibleFeatures;
-    const center = features.length > 0 ? getCenterOfPoints(features) : false;
 
-    let annotations = features.map(item => {
-      var active =
-        this.state.activeFeature && this.state.activeFeature.id === item.id;
-      return (
-        <AnnotationOSM
-          key={item.id}
-          id={item.id}
-          radius={8}
-          coordinates={{ latitude: item.lat, longitude: item.lon }}
-          onPress={this.onMapPress}
-          active={active}
-        />
+    let { center } = this.state;
+
+    if (center == null) {
+      if (features.length > 0) {
+        center = getCenterOfPoints(features);
+      } else if (selectedBounds != null) {
+        const [minX, minY, maxX, maxY] = selectedBounds;
+        center = {
+          latitude: (minY + maxY) / 2,
+          longitude: (minX + maxX) / 2
+        };
+      }
+    }
+
+    let annotations = features
+      .map(item => {
+        var active =
+          this.state.activeFeature && this.state.activeFeature.id === item.id;
+        return (
+          <AnnotationOSM
+            key={item.id}
+            id={item.id}
+            radius={8}
+            coordinates={{ latitude: item.lat, longitude: item.lon }}
+            onPress={this.onMapPress}
+            active={active}
+          />
+        );
+      })
+      .concat(
+        <AnnotationObservation key="center" id="center" coordinates={center} />
       );
-    });
 
     const headerView = (
       <View
@@ -83,7 +116,7 @@ class ChoosePoint extends Component {
               What are you adding an observation to?
             </Text>
 
-            <Map center={center}>
+            <Map center={center} onRegionDidChange={this.onRegionDidChange}>
               {annotations}
             </Map>
           </View>
@@ -172,8 +205,8 @@ class ChoosePoint extends Component {
           style={baseStyles.buttonBottom}
           onPress={() => {
             initializeObservation({
-              lat: null,
-              lon: null,
+              lat: center.latitude,
+              lon: center.longitude,
               tags: { "osm-p2p-id": null }
             });
 
@@ -190,6 +223,7 @@ class ChoosePoint extends Component {
 const mapStateToProps = (state, ownProps) => {
   return {
     observation: selectActiveObservation(state),
+    selectedBounds: selectSelectedBounds(state),
     selectedFeatures: selectSelectedFeatures(state),
     visibleFeatures: selectVisibleFeatures(state)
   };
