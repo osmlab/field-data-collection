@@ -62,7 +62,8 @@ class ViewObservationScreen extends Component {
       type
     } = this.props;
 
-    observation.survey = { id: surveyId, type: type.id };
+    observation.tags.surveyId = surveyId;
+    observation.tags.surveyType = type.id;
     saveObservation(observation);
     history.push("/");
   };
