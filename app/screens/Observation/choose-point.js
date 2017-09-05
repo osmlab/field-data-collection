@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity, ScrollView } from "react-native";
+import { View, TouchableOpacity, ScrollView, Dimensions } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { connect } from "react-redux";
 import { Link } from "react-router-native";
@@ -20,6 +20,8 @@ import {
   AnnotationOSM
 } from "../../components";
 import { baseStyles } from "../../styles";
+
+const Screen = Dimensions.get("window");
 
 class ChoosePoint extends Component {
   items = {};
@@ -100,13 +102,14 @@ class ChoosePoint extends Component {
     );
 
     return (
-      <Wrapper style={[]} headerView={headerView}>
+      <Wrapper style={[baseStyles.wrapper]} headerView={headerView}>
         <ScrollView
           style={[
             baseStyles.wrapperContent,
             {
               flex: 1,
-              flexDirection: "column"
+              flexDirection: "column",
+              height: Screen.height - 85
             }
           ]}
         >
@@ -131,7 +134,7 @@ class ChoosePoint extends Component {
           >
             <ScrollView
               ref="scrollview"
-              style={{ marginTop: 6, height: 240 }}
+              style={{ marginTop: 6, height: 310 }}
               onScroll={e => {
                 const yOffset = e.nativeEvent.contentOffset.y;
 
@@ -203,21 +206,28 @@ class ChoosePoint extends Component {
             </ScrollView>
           </View>
         </ScrollView>
-
-        <TouchableOpacity
-          style={baseStyles.buttonBottom}
-          onPress={() => {
-            initializeObservation({
-              lat: center.latitude,
-              lon: center.longitude,
-              tags: { "osm-p2p-id": null }
-            });
-
-            history.push("/observation/categories");
+        <View
+          style={{
+            position: "absolute",
+            bottom: 0,
+            flexDirection: "row"
           }}
         >
-          <Text style={{ color: "#fff" }}>I'M ADDING A NEW POINT</Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={baseStyles.buttonBottom}
+            onPress={() => {
+              initializeObservation({
+                lat: center.latitude,
+                lon: center.longitude,
+                tags: { "osm-p2p-id": null }
+              });
+
+              history.push("/observation/categories");
+            }}
+          >
+            <Text style={[baseStyles.textWhite]}>I'M ADDING A NEW POINT</Text>
+          </TouchableOpacity>
+        </View>
       </Wrapper>
     );
   }

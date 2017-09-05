@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { TouchableOpacity, View, Dimensions } from "react-native";
+import { TouchableOpacity, View, Dimensions, ScrollView } from "react-native";
 import { connect } from "react-redux";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Link } from "react-router-native";
@@ -61,16 +61,27 @@ class SurveysScreen extends Component {
     );
 
     return (
-      <Wrapper
-        headerView={headerView}
-        style={{ height: Screen.height }}
-        hideStatusBar
-      >
-        {showModal && <SurveyModal close={this.hideModal} />}
+      <Wrapper style={[baseStyles.wrapper]}>
+        <ScrollView
+          headerView={headerView}
+          style={{
+            flex: 1,
+            flexDirection: "column",
+            height: Screen.height - 85
+          }}
+          hideStatusBar
+        >
+          {showModal && <SurveyModal close={this.hideModal} />}
 
-        <LocalSurveyList surveys={availableSurveys} />
-
-        <View style={{ height: Screen.height - 178 }}>
+          <LocalSurveyList surveys={availableSurveys} />
+        </ScrollView>
+        <View
+          style={{
+            position: "absolute",
+            bottom: 0,
+            flexDirection: "row"
+          }}
+        >
           <TouchableOpacity
             style={[baseStyles.buttonBottom]}
             onPress={this.showModal}
