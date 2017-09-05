@@ -162,7 +162,7 @@ class ViewObservationScreen extends Component {
     );
 
     return (
-      <Wrapper headerView={headerView}>
+      <Wrapper style={[baseStyles.wrapper]} headerView={headerView}>
         {modalOpen &&
           <LocationModal
             close={this.closeModal}
