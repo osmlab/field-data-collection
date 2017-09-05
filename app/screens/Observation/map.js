@@ -84,15 +84,20 @@ class ObservationMapScreen extends Component {
   }
 
   componentWillUpdate(nextProps, nextState) {
-    const { history } = this.props;
+    const { history, observations } = this.props;
     const { selectedBounds, selectedFeatures } = nextProps;
 
+    const location = {
+      pathname: "/observation/choose-point",
+      state: { observations }
+    };
+
     if (selectedFeatures.length > 0) {
-      return history.push("/observation/choose-point");
+      return history.push(location);
     }
 
     if (selectedBounds !== null) {
-      return history.push("/observation/choose-point");
+      return history.push(location);
     }
   }
 
@@ -113,12 +118,13 @@ class ObservationMapScreen extends Component {
         const observation = observations.find(o => o.id === id);
 
         if (observation !== null) {
-          setActiveObservation(observation);
-
-          return history.push(
-            `/observation/${observation.tags.surveyId}/${observation.tags
-              .surveyType}`
-          );
+          // TODO: restore ability to press an observation
+          // setActiveObservation(observation);
+          //
+          // return history.push(
+          //   `/observation/${observation.tags.surveyId}/${observation.tags
+          //     .surveyType}`
+          // );
         } else {
           console.warn("Unable to find observation", id);
         }

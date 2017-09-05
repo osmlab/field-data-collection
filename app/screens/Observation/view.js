@@ -131,7 +131,6 @@ class ViewObservationScreen extends Component {
 
   render() {
     const {
-      icon,
       history,
       observation,
       surveyId,
@@ -186,15 +185,6 @@ class ViewObservationScreen extends Component {
             >
               {name}
             </Text>
-            {icon &&
-              <Image
-                source={{ uri: icon.src }}
-                style={{
-                  width: 100,
-                  height: 50,
-                  resizeMode: Image.resizeMode.contain
-                }}
-              />}
           </View>
         </View>
 
@@ -227,7 +217,6 @@ const mapStateToProps = (state, ownProps) => {
   const featureType = selectFeatureType(type, state);
 
   return {
-    icon: selectIcon(featureType.icon, state),
     observation: selectActiveObservation(state),
     surveyId,
     type: featureType
