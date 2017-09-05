@@ -6,8 +6,7 @@ const DeviceInfo = require("react-native-device-info");
 const OsmSync = require("./osm-sync");
 const generatePlaceholderOsmId = require("./generate-id");
 const convert = require("./convert-geojson-osmp2p");
-const observationsByDeviceId = require("./observations")
-  .getObservationsByDeviceId;
+const obs = require("./observations");
 
 function osmp2p(createOsmDb) {
   var observationDb = createOsmDb("obs");
@@ -32,7 +31,8 @@ function osmp2p(createOsmDb) {
     replicate,
     findReplicationTargets,
     sync: netSync,
-    getObservationsByDeviceId
+    getObservationsByDeviceId,
+    getObservationsBySurveyId
   });
 
   return emitter;
@@ -161,7 +161,11 @@ function osmp2p(createOsmDb) {
   }
 
   function getObservationsByDeviceId(deviceId, cb) {
-    return observationsByDeviceId(deviceId, observationDb, cb);
+    return obs.getObservationsByDeviceId(deviceId, observationDb, cb);
+  }
+
+  function getObservationsBySurveyId(surveyId, cb) {
+    return obs.getObservationsBySurveyId(surveyId, observationDb, cb);
   }
 }
 

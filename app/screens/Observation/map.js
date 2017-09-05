@@ -12,7 +12,8 @@ import {
   selectSelectedBounds,
   selectSelectedFeatures,
   selectVisibleFeatures,
-  selectVisibleObservations
+  selectVisibleObservations,
+  selectVisibleObservationsByNode
 } from "../../selectors";
 import {
   clearBbox,
@@ -108,15 +109,18 @@ class ObservationMapScreen extends Component {
       const [type, id] = e.id.split("-");
 
       if (type === "observation") {
-        console.log("displaying observation", id)
+        console.log("displaying observation", id);
         const observation = observations.find(o => o.id === id);
 
         if (observation !== null) {
-          setActiveObservation(observation)
+          setActiveObservation(observation);
 
-          return history.push(`/observation/${observation.survey.id}/${observation.survey.type}`);
+          return history.push(
+            `/observation/${observation.tags.surveyId}/${observation.tags
+              .surveyType}`
+          );
         } else {
-          console.warn("Unable to find observation", id)
+          console.warn("Unable to find observation", id);
         }
       }
     }
@@ -277,6 +281,7 @@ class ObservationMapScreen extends Component {
         <MapOverlay
           userLocation={this.state.userLocation}
           features={features}
+          observations={observations}
           onGeolocate={this.onGeolocate}
           activeSurveys={this.props.activeSurveys}
           areaOfInterest={this.props.areaOfInterest}

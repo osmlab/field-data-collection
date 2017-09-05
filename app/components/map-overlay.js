@@ -65,10 +65,18 @@ class MapOverlay extends Component {
       areaOfInterest,
       activeSurveys,
       features,
+      observations,
       loading,
       querying,
       activeFeature
     } = this.props;
+
+    features.forEach(feature => {
+      feature.observations = observations.filter(
+        obs => obs.tags["osm-p2p-id"] === feature.id
+      );
+      return feature;
+    });
 
     if (!activeSurveys.length) {
       return (
@@ -229,10 +237,10 @@ class MapOverlay extends Component {
                     { flexDirection: "row", flexWrap: "wrap" }
                   ]}
                 >
-                  {/*}<Text style={[baseStyles.metadataText]}>
-                    2 Observations
+                  <Text style={[baseStyles.metadataText]}>
+                    {item.observations.length} Observations
                   </Text>
-                  <Text style={[baseStyles.textAlert]}>(2 incomplete)</Text>*/}
+                  {/*<Text style={[baseStyles.textAlert]}>(2 incomplete)</Text>*/}
                 </View>
               </View>
             );

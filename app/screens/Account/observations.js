@@ -121,8 +121,8 @@ class AccountObservations extends Component {
                 <Link
                   style={[baseStyles.surveyCard]}
                   to={{
-                    pathname: `/observation/${item.survey.id}/${item.survey
-                      .type}`,
+                    pathname: `/observation/${item.tags.surveyId}/${item.tags
+                      .surveyType}`,
                     state: { observation: item }
                   }}
                 >
