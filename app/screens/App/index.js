@@ -32,6 +32,9 @@ import Profile from "../Account/profile";
 import Settings from "../Account/settings";
 import Surveys from "../Account/surveys";
 
+// OSM features
+import ViewOsmFeature from "../OsmFeature/view";
+
 if (Platform.OS === "android") {
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
@@ -76,6 +79,8 @@ export class App extends Component {
         <AndroidBackButton>
           <Switch>
             <Route path="/" exact component={ObservationMap} />
+
+            <Route path="/feature/:id" exact component={ViewOsmFeature} />
 
             <Route
               path="/observation/choose-point"
