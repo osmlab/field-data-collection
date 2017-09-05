@@ -228,10 +228,10 @@ const baseStyles = StyleSheet.create({
     paddingTop: 15,
     paddingBottom: 15,
     height: 50,
-    position: "absolute",
     bottom: 0,
     right: 0,
-    left: 0
+    left: 0,
+    color: "#fff"
   },
   buttonOutline: {
     borderColor: colors.text.header,
@@ -359,6 +359,13 @@ const baseStyles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0
+  },
+  mapInternal: {
+    height: 150,
+    borderColor: "#DBDADA",
+    borderWidth: 0.5,
+    marginBottom: 5,
+    marginTop: 3
   },
 
   syncHeader: {
