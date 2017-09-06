@@ -44,6 +44,7 @@ class ChoosePoint extends Component {
   render() {
     const {
       history,
+      initializeObservation,
       selectedBounds,
       selectedFeatures,
       visibleFeatures,
@@ -240,6 +241,7 @@ class ChoosePoint extends Component {
           <TouchableOpacity
             style={baseStyles.buttonBottom}
             onPress={() => {
+              console.log("center", center);
               initializeObservation({
                 lat: center.latitude,
                 lon: center.longitude,

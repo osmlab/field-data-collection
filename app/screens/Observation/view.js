@@ -85,7 +85,7 @@ class ViewObservationScreen extends Component {
 
   componentWillMount = () => {
     const { observation } = this.props;
-
+    console.log("observation", observation);
     this.setState({
       coordinates: {
         latitude: observation.lat,

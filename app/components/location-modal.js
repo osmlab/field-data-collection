@@ -12,7 +12,7 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import { Text, Map } from "./index";
 import { baseStyles } from "../styles";
 
-const screenHeight = Dimensions.get("window").height;
+const screen = Dimensions.get("window");
 
 class LocationModal extends Component {
   setRef = map => {
@@ -43,14 +43,24 @@ class LocationModal extends Component {
 
             <View style={{ flex: 1 }}>
               <Map
-                height={screenHeight - 130}
+                height={screen.height - 200}
                 mapref={this.setRef}
                 geolocateIcon
                 newPointPin
               />
 
               <TouchableOpacity
-                style={baseStyles.buttonBottom}
+                style={{
+                  backgroundColor: "#8212C6",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  paddingTop: 15,
+                  paddingBottom: 15,
+                  height: 50,
+                  color: "#fff",
+                  width: screen.width
+                }}
                 onPress={() => {
                   this._map.getCenterCoordinateZoomLevel(data => {
                     onUpdateLocation(data);
