@@ -225,7 +225,13 @@ class MapOverlay extends Component {
                 style={[baseStyles.cardStyle]}
                 key={item.id}
               >
-                <Text style={[baseStyles.h3, baseStyles.headerWithDescription]}>
+                <Text
+                  style={[
+                    baseStyles.h3,
+                    baseStyles.headerWithDescription,
+                    baseStyles.headerLink
+                  ]}
+                >
                   {item.tags.name}
                 </Text>
                 <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
