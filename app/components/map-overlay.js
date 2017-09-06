@@ -298,7 +298,10 @@ class MapOverlay extends Component {
           <Geolocate onGeolocate={onGeolocate} />
 
           <Link
-            to="/observation/choose-point"
+            to={{
+              pathname: "/observation/choose-point",
+              state: { addPoint: true }
+            }}
             style={{
               width: 60,
               height: 60,

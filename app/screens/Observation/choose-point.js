@@ -55,6 +55,8 @@ class ChoosePoint extends Component {
       observations = location.state.observations;
     }
 
+    const { addPoint } = location.state;
+
     const features =
       selectedFeatures.length > 0 ? selectedFeatures : visibleFeatures;
 
@@ -198,12 +200,22 @@ class ChoosePoint extends Component {
                     <TouchableOpacity
                       style={{ padding: 13, paddingLeft: 18, paddingRight: 18 }}
                       onPress={() => {
-                        const location = {
-                          pathname: `/feature/${item.id}`,
-                          state: { feature: item }
-                        };
+                        if (addPoint) {
+                          initializeObservation({
+                            lat: center.latitude,
+                            lon: center.longitude,
+                            tags: { "osm-p2p-id": item.id }
+                          });
 
-                        history.push(location);
+                          history.push({
+                            pathname: "/observation/categories"
+                          });
+                        } else {
+                          history.push({
+                            pathname: `/feature/${item.id}`,
+                            state: { feature: item }
+                          });
+                        }
                       }}
                     >
                       <Text style={[baseStyles.h3, baseStyles.headerLink]}>
