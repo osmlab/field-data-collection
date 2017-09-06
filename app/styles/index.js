@@ -1,6 +1,7 @@
 import { StyleSheet, Dimensions } from "react-native";
 
 const screen = Dimensions.get("window");
+const Screen = Dimensions.get("window");
 
 const colors = {
   interface: {
@@ -98,7 +99,9 @@ const baseStyles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
     paddingTop: 10,
-    paddingBottom: 10
+    paddingBottom: 10,
+    paddingLeft: 25,
+    paddingRight: 25
   },
   touchableLinks: {
     fontSize: 22
@@ -219,16 +222,14 @@ const baseStyles = StyleSheet.create({
   //buttons
   buttonBottom: {
     backgroundColor: colors.interface.links,
-    flexDirection: "row",
+    flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
     paddingTop: 15,
     paddingBottom: 15,
     height: 50,
-    bottom: 0,
-    right: 0,
-    left: 0,
-    color: "#fff"
+    color: "#fff",
+    width: Screen.width
   },
   buttonOutline: {
     borderColor: colors.text.header,

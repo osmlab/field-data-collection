@@ -162,7 +162,7 @@ class ViewObservationScreen extends Component {
     );
 
     return (
-      <Wrapper headerView={headerView}>
+      <Wrapper style={[baseStyles.wrapper]} headerView={headerView}>
         {modalOpen &&
           <LocationModal
             close={this.closeModal}
@@ -207,14 +207,18 @@ class ViewObservationScreen extends Component {
             <View style={[baseStyles.fieldset, { marginBottom: 50 }]}>
               {fields.map(this.renderField, this)}
             </View>
-
-            <TouchableOpacity
-              onPress={this.save}
-              style={baseStyles.buttonBottom}
-            >
-              <Text style={baseStyles.textWhite}>SAVE</Text>
-            </TouchableOpacity>
           </View>
+        </View>
+        <View
+          style={{
+            position: "absolute",
+            bottom: 0,
+            flexDirection: "row"
+          }}
+        >
+          <TouchableOpacity onPress={this.save} style={baseStyles.buttonBottom}>
+            <Text style={baseStyles.textWhite}>SAVE</Text>
+          </TouchableOpacity>
         </View>
       </Wrapper>
     );
