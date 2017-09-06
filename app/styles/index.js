@@ -288,7 +288,7 @@ const baseStyles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#ccc",
     alignContent: "center",
-    height: 150,
+    height: 130,
     padding: 20,
     marginLeft: 15,
     marginRight: 15,
