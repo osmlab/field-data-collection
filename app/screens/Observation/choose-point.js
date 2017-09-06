@@ -81,24 +81,20 @@ class ChoosePoint extends Component {
       }
     }
 
-    let annotations = features
-      .map(item => {
-        var active =
-          this.state.activeFeature && this.state.activeFeature.id === item.id;
-        return (
-          <AnnotationOSM
-            key={item.id}
-            id={item.id}
-            radius={8}
-            coordinates={{ latitude: item.lat, longitude: item.lon }}
-            onPress={this.onMapPress}
-            active={active}
-          />
-        );
-      })
-      .concat(
-        <AnnotationObservation key="center" id="center" coordinates={center} />
+    let annotations = features.map(item => {
+      var active =
+        this.state.activeFeature && this.state.activeFeature.id === item.id;
+      return (
+        <AnnotationOSM
+          key={item.id}
+          id={item.id}
+          radius={8}
+          coordinates={{ latitude: item.lat, longitude: item.lon }}
+          onPress={this.onMapPress}
+          active={active}
+        />
       );
+    });
 
     const headerView = (
       <View
@@ -165,7 +161,7 @@ class ChoosePoint extends Component {
                     const activeDiff = active.pY - this.parentY;
                     const diff = pY - this.parentY;
 
-                    if (diff > 0 && (diff <= activeDiff || activeDiff < 0)) {
+                    if (diff > 10 && (diff <= activeDiff || activeDiff < 10)) {
                       active = { item, pY, feature };
                       this.setState({ activeFeature: feature });
 

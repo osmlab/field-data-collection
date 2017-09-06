@@ -17,7 +17,6 @@ import {
 } from "../../selectors";
 import {
   clearBbox,
-  initializeObservation,
   selectBbox,
   setActiveObservation,
   updateVisibleBounds
@@ -313,7 +312,6 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, {
   clearBbox,
-  initializeObservation,
   selectBbox,
   setActiveObservation,
   updateVisibleBounds
