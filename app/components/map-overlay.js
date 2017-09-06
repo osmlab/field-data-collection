@@ -225,7 +225,13 @@ class MapOverlay extends Component {
                 style={[baseStyles.cardStyle]}
                 key={item.id}
               >
-                <Text style={[baseStyles.h3]}>
+                <Text
+                  style={[
+                    baseStyles.h3,
+                    baseStyles.headerWithDescription,
+                    baseStyles.headerLink
+                  ]}
+                >
                   {item.tags.name}
                 </Text>
                 <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
@@ -252,7 +258,7 @@ class MapOverlay extends Component {
 
   render() {
     const { onGeolocate } = this.props;
-    const closed = Screen.height - 32;
+    const closed = Screen.height - 45;
     const open = Screen.height - 210;
 
     return (

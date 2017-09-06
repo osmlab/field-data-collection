@@ -151,9 +151,6 @@ const baseStyles = StyleSheet.create({
   spacer: {
     marginBottom: 2
   },
-  observationBlock: {
-    marginTop: 10
-  },
   textAlert: {
     fontStyle: "italic",
     color: colors.interface.error
@@ -228,10 +225,10 @@ const baseStyles = StyleSheet.create({
     paddingTop: 15,
     paddingBottom: 15,
     height: 50,
-    position: "absolute",
     bottom: 0,
     right: 0,
-    left: 0
+    left: 0,
+    color: "#fff"
   },
   buttonOutline: {
     borderColor: colors.text.header,
@@ -290,11 +287,12 @@ const baseStyles = StyleSheet.create({
   cardStyle: {
     borderWidth: 1,
     borderColor: "#ccc",
-    padding: 15,
     alignContent: "center",
-    height: 200,
+    height: 130,
     padding: 20,
-    paddingTop: 30
+    marginLeft: 15,
+    marginRight: 15,
+    width: screen.width - 75
   },
   surveyCard: {
     borderWidth: 1,
@@ -359,6 +357,13 @@ const baseStyles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0
+  },
+  mapInternal: {
+    height: 150,
+    borderColor: "#DBDADA",
+    borderWidth: 0.5,
+    marginBottom: 5,
+    marginTop: 3
   },
 
   syncHeader: {

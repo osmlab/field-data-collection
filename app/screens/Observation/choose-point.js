@@ -100,14 +100,13 @@ class ChoosePoint extends Component {
     );
 
     return (
-      <Wrapper headerView={headerView}>
-        <View
+      <Wrapper style={[]} headerView={headerView}>
+        <ScrollView
           style={[
             baseStyles.wrapperContent,
             {
               flex: 1,
-              flexDirection: "column",
-              paddingBottom: 65
+              flexDirection: "column"
             }
           ]}
         >
@@ -116,7 +115,11 @@ class ChoosePoint extends Component {
               What are you adding an observation to?
             </Text>
 
-            <Map center={center} onRegionDidChange={this.onRegionDidChange}>
+            <Map
+              style={[baseStyles.mapInternal]}
+              center={center}
+              onRegionDidChange={this.onRegionDidChange}
+            >
               {annotations}
             </Map>
           </View>
@@ -179,7 +182,7 @@ class ChoosePoint extends Component {
                     }}
                   >
                     <TouchableOpacity
-                      style={{ padding: 20 }}
+                      style={{ padding: 13, paddingLeft: 18, paddingRight: 18 }}
                       onPress={() => {
                         initializeObservation({
                           lat: item.lat,
@@ -190,7 +193,7 @@ class ChoosePoint extends Component {
                         history.push("/observation/categories");
                       }}
                     >
-                      <Text style={baseStyles.h3}>
+                      <Text style={[baseStyles.h3, baseStyles.headerLink]}>
                         {item.tags.name}
                       </Text>
                     </TouchableOpacity>
@@ -199,7 +202,7 @@ class ChoosePoint extends Component {
               })}
             </ScrollView>
           </View>
-        </View>
+        </ScrollView>
 
         <TouchableOpacity
           style={baseStyles.buttonBottom}
@@ -213,7 +216,7 @@ class ChoosePoint extends Component {
             history.push("/observation/categories");
           }}
         >
-          <Text style={{ color: "#ffffff" }}>ADD TO A NEW POINT</Text>
+          <Text style={{ color: "#fff" }}>I'M ADDING A NEW POINT</Text>
         </TouchableOpacity>
       </Wrapper>
     );
