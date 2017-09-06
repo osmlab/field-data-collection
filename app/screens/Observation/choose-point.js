@@ -44,7 +44,6 @@ class ChoosePoint extends Component {
   render() {
     const {
       history,
-      initializeObservation,
       selectedBounds,
       selectedFeatures,
       visibleFeatures,
@@ -96,6 +95,12 @@ class ChoosePoint extends Component {
         />
       );
     });
+
+    if (!addPoint) {
+      annotations = annotations.concat(
+        <AnnotationObservation key="center" id="center" coordinates={center} />
+      );
+    }
 
     const headerView = (
       <View
