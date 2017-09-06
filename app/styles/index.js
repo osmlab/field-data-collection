@@ -151,9 +151,6 @@ const baseStyles = StyleSheet.create({
   spacer: {
     marginBottom: 2
   },
-  observationBlock: {
-    marginTop: 10
-  },
   textAlert: {
     fontStyle: "italic",
     color: colors.interface.error
@@ -290,11 +287,12 @@ const baseStyles = StyleSheet.create({
   cardStyle: {
     borderWidth: 1,
     borderColor: "#ccc",
-    padding: 15,
     alignContent: "center",
-    height: 200,
+    height: 150,
     padding: 20,
-    paddingTop: 30
+    marginLeft: 15,
+    marginRight: 15,
+    width: screen.width - 75
   },
   surveyCard: {
     borderWidth: 1,
