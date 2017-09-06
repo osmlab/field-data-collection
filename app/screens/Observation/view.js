@@ -105,12 +105,7 @@ class ViewObservationScreen extends Component {
       observation.lat && observation.on ? "EDIT LOCATION" : "ADD LOCATION";
 
     return (
-      <View
-        style={[
-          baseStyles.mapLg,
-          { borderBottomWidth: 0.5, borderBottomWidthColor: "#858585" }
-        ]}
-      >
+      <View style={[baseStyles.mapLg]}>
         <Map
           mapref={this.setRef}
           height={250}

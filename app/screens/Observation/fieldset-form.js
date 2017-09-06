@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity, ScrollView } from "react-native";
 import { connect } from "react-redux";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
@@ -48,9 +48,9 @@ class FieldsetFormScreen extends Component {
             </TouchableOpacity>
           </View>
 
-          <View style={[baseStyles.fieldset]}>
+          <ScrollView style={[baseStyles.fieldset]}>
             {fields.map(this.renderField, this)}
-          </View>
+          </ScrollView>
         </View>
       </View>
     );

@@ -61,7 +61,7 @@ class SurveysScreen extends Component {
     );
 
     return (
-      <Wrapper style={[baseStyles.wrapper]}>
+      <Wrapper style={[baseStyles.wrapper]} headerView={headerView}>
         <ScrollView
           headerView={headerView}
           style={{
