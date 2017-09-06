@@ -268,6 +268,7 @@ const baseStyles = StyleSheet.create({
   field: {
     backgroundColor: "white",
     padding: 15,
+    paddingRight: 5,
     borderBottomWidth: 1,
     borderBottomColor: "#ccc",
     justifyContent: "space-between",
@@ -393,6 +394,12 @@ const baseStyles = StyleSheet.create({
   },
   wrappedItemsSm: {
     flex: 0.1
+  },
+  wrappedItemsExLg: {
+    flex: 0.91
+  },
+  wrappedItemsExSm: {
+    flex: 0.09
   },
 
   formArrowCategories: {

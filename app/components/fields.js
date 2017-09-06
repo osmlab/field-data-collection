@@ -18,7 +18,7 @@ export class CheckField extends Field {
 
     return (
       <View ref={x => (this._root = x)} style={[baseStyles.field]}>
-        <View>
+        <View style={[baseStyles.wrappedItemsLg]}>
           <Text style={[baseStyles.h5]}>
             {label.toUpperCase()}
           </Text>
@@ -26,7 +26,7 @@ export class CheckField extends Field {
             {value}
           </Text>
         </View>
-        <View>
+        <View style={[baseStyles.wrappedItemsSm]}>
           <Icon name="keyboard-arrow-right" style={[[baseStyles.formArrow]]} />
         </View>
       </View>
@@ -44,7 +44,7 @@ export class ComboField extends Field {
 
     return (
       <View ref={x => (this._root = x)} style={[baseStyles.field]}>
-        <View>
+        <View style={[baseStyles.wrappedItemsLg]}>
           <Text style={[baseStyles.h5]}>
             {label.toUpperCase()}
           </Text>
@@ -52,8 +52,11 @@ export class ComboField extends Field {
             {value || placeholder}
           </Text>
         </View>
-        <View>
-          <Icon name="keyboard-arrow-right" style={[[baseStyles.formArrow]]} />
+        <View style={[baseStyles.wrappedItemsSm]}>
+          <Icon
+            name="keyboard-arrow-right"
+            style={[[baseStyles.formArrowCategories]]}
+          />
         </View>
       </View>
     );
@@ -70,7 +73,7 @@ export class NumberField extends Field {
 
     return (
       <View ref={x => (this._root = x)} style={[baseStyles.field]}>
-        <View>
+        <View style={[baseStyles.wrappedItemsLg]}>
           <Text style={[baseStyles.h5]}>
             {label.toUpperCase()}
           </Text>
@@ -79,8 +82,11 @@ export class NumberField extends Field {
             {value || placeholder}
           </Text>
         </View>
-        <View>
-          <Icon name="keyboard-arrow-right" style={[[baseStyles.formArrow]]} />
+        <View style={[baseStyles.wrappedItemsSm]}>
+          <Icon
+            name="keyboard-arrow-right"
+            style={[[baseStyles.formArrowCategories]]}
+          />
         </View>
       </View>
     );

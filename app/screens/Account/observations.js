@@ -158,7 +158,8 @@ class AccountObservations extends Component {
                       <Text
                         style={[
                           baseStyles.h3,
-                          baseStyles.headerWithDescription
+                          baseStyles.headerWithDescription,
+                          baseStyles.headerLink
                         ]}
                       >
                         Observation

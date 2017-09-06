@@ -37,7 +37,7 @@ export class CheckField extends Field {
       <View ref={x => (this._root = x)} style={[baseStyles.field]}>
         <View>
           <Text style={[baseStyles.fieldLabel]}>
-            {label} ({key})
+            {label}
           </Text>
           <Switch onValueChange={this.onValueChange} value={this.state.value} />
         </View>
@@ -147,7 +147,7 @@ export class TextField extends Field {
       <View ref={x => (this._root = x)} style={[baseStyles.field]}>
         <View style={{ flex: 1 }}>
           <Text style={baseStyles.fieldLabel}>
-            {label} ({key})
+            {label}
           </Text>
           <TextInput
             autoCapitalize="none"
