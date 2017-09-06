@@ -44,6 +44,7 @@ class ChoosePoint extends Component {
   render() {
     const {
       history,
+      initializeObservation,
       selectedBounds,
       selectedFeatures,
       visibleFeatures,
