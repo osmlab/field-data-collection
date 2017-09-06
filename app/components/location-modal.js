@@ -32,7 +32,7 @@ class LocationModal extends Component {
                 baseStyles.wrappedItems
               ]}
             >
-              <Text style={[baseStyles.h2, baseStyles.wrappedItemsLeft]}>
+              <Text style={[baseStyles.h3, baseStyles.wrappedItemsLeft]}>
                 Choose location
               </Text>
 
@@ -43,33 +43,30 @@ class LocationModal extends Component {
 
             <View style={{ flex: 1 }}>
               <Map
-                height={screen.height - 200}
+                height={screen.height - 180}
                 mapref={this.setRef}
                 geolocateIcon
                 newPointPin
               />
-
-              <TouchableOpacity
+              <View
                 style={{
-                  backgroundColor: "#8212C6",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  paddingTop: 15,
-                  paddingBottom: 15,
-                  height: 50,
-                  color: "#fff",
-                  width: screen.width
-                }}
-                onPress={() => {
-                  this._map.getCenterCoordinateZoomLevel(data => {
-                    onUpdateLocation(data);
-                    close();
-                  });
+                  position: "absolute",
+                  bottom: 0,
+                  flexDirection: "row"
                 }}
               >
-                <Text style={{ color: "#ffffff" }}>SAVE LOCATION</Text>
-              </TouchableOpacity>
+                <TouchableOpacity
+                  style={[baseStyles.buttonBottom, { width: screen.width }]}
+                  onPress={() => {
+                    this._map.getCenterCoordinateZoomLevel(data => {
+                      onUpdateLocation(data);
+                      close();
+                    });
+                  }}
+                >
+                  <Text style={baseStyles.textWhite}>SAVE LOCATION</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
         </View>

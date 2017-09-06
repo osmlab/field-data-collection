@@ -22,7 +22,12 @@ class LocationScreen extends Component {
 
   render() {
     return (
-      <View style={[baseStyles.wrapper, { padding: 0 }]}>
+      <View
+        style={[
+          baseStyles.wrapper,
+          { padding: 0, borderBottomWidth: 0.5, borderBottomColor: "#E6E6DF" }
+        ]}
+      >
         <MapView
           ref={map => {
             this._map = map;

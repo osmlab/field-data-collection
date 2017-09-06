@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity, ScrollView } from "react-native";
 import { connect } from "react-redux";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
@@ -33,11 +33,22 @@ class CategoriesScreen extends Component {
 
     return (
       <Wrapper headerView={headerView}>
-        <View style={[baseStyles.wrapperContent]}>
-          <Text style={baseStyles.title}>What do you want to add?</Text>
-
-          <CategoryList categories={categories} />
+        <View style={[baseStyles.wrapperContentHeader, baseStyles.headerPage]}>
+          <View style={[baseStyles.headerPageText]}>
+            <Text
+              style={[
+                baseStyles.h2,
+                baseStyles.textWhite,
+                baseStyles.headerWithDescription
+              ]}
+            >
+              What type of observation are you adding?
+            </Text>
+          </View>
         </View>
+        <ScrollView style={baseStyles.wrapperPadding}>
+          <CategoryList categories={categories} />
+        </ScrollView>
       </Wrapper>
     );
   }

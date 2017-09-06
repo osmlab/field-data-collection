@@ -44,7 +44,8 @@ const baseStyles = StyleSheet.create({
   },
   wrapperContentMdHeader: {
     padding: 25,
-    paddingBottom: 10
+    paddingBottom: 10,
+    paddingTop: 18
   },
   wrapperContentMdInterior: {
     padding: 25,
@@ -76,6 +77,15 @@ const baseStyles = StyleSheet.create({
   },
   mainHeaderSpace: {
     marginTop: 20
+  },
+  WrapperListItem: {
+    padding: 20,
+    paddingTop: 10,
+    paddingBottom: 10
+  },
+  wrapperPadding: {
+    paddingTop: 15,
+    paddingBottom: 15
   },
 
   //Modal
@@ -378,7 +388,17 @@ const baseStyles = StyleSheet.create({
   wrappedItemsLeft: {
     flex: 0.75
   },
+  wrappedItemsLg: {
+    flex: 0.9
+  },
+  wrappedItemsSm: {
+    flex: 0.1
+  },
 
+  formArrowCategories: {
+    fontSize: 28,
+    color: colors.interface.links
+  },
   formArrow: {
     fontSize: 28,
     color: colors.interface.links,

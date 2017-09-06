@@ -20,7 +20,7 @@ export class CheckField extends Field {
       <View ref={x => (this._root = x)} style={[baseStyles.field]}>
         <View>
           <Text style={[baseStyles.h5]}>
-            {label.toUpperCase()} ({key})
+            {label.toUpperCase()}
           </Text>
           <Text style={[baseStyles.fieldValue]}>
             {value}
@@ -46,7 +46,7 @@ export class ComboField extends Field {
       <View ref={x => (this._root = x)} style={[baseStyles.field]}>
         <View>
           <Text style={[baseStyles.h5]}>
-            {label.toUpperCase()} ({key})
+            {label.toUpperCase()}
           </Text>
           <Text style={[baseStyles.fieldValue]}>
             {value || placeholder}
@@ -72,7 +72,7 @@ export class NumberField extends Field {
       <View ref={x => (this._root = x)} style={[baseStyles.field]}>
         <View>
           <Text style={[baseStyles.h5]}>
-            {label.toUpperCase()} ({key})
+            {label.toUpperCase()}
           </Text>
           <Text style={[baseStyles.fieldValue]}>
             {/* TODO grey out placeholder if used */}
@@ -99,7 +99,7 @@ export class TextField extends Field {
       <View ref={x => (this._root = x)} style={[baseStyles.field]}>
         <View>
           <Text style={[baseStyles.h5]}>
-            {label.toUpperCase()} ({key})
+            {label.toUpperCase()}
           </Text>
           <Text style={[baseStyles.fieldValue]}>
             {/* TODO grey out placeholder if used */}

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { SectionList, StyleSheet, TouchableOpacity } from "react-native";
+import { SectionList, StyleSheet, TouchableOpacity, View } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Link } from "react-router-native";
 
@@ -8,11 +8,11 @@ import { baseStyles } from "../styles";
 
 const styles = StyleSheet.create({
   category: {
-    borderColor: "#ccc",
+    borderColor: "#E5E5E5",
     borderWidth: 1,
-    padding: 5,
-    paddingLeft: 20,
-    height: 40
+    padding: 20,
+    marginLeft: 55,
+    marginRight: 20
   }
 });
 
@@ -49,9 +49,15 @@ export default class CategoryList extends Component {
       : "keyboard-arrow-right";
 
     return (
-      <TouchableOpacity onPress={() => this.toggleVisibility(section.key)}>
-        <Text style={baseStyles.h2}>
-          <Icon name={arrowDirection} style={{ fontSize: 26, height: 40 }} />
+      <TouchableOpacity
+        style={[baseStyles.WrapperListItem, { flex: 1, flexDirection: "row" }]}
+        onPress={() => this.toggleVisibility(section.key)}
+      >
+        <Icon
+          name={arrowDirection}
+          style={[baseStyles.formArrowCategories, baseStyles.wrappedItemsSm]}
+        />
+        <Text style={[baseStyles.h3, baseStyles.wrappedItemsLg]}>
           {section.key}
         </Text>
       </TouchableOpacity>

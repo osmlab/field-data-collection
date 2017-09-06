@@ -34,30 +34,25 @@ class FieldsetFormScreen extends Component {
     const { history, type: { fields, name } } = this.props;
 
     return (
-      <Wrapper>
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            paddingTop: 20,
-            paddingLeft: 20,
-            paddingRight: 10
-          }}
-        >
-          <Text style={[baseStyles.title]}>
-            {name}
-          </Text>
+      <View style={[baseStyles.modalBg]}>
+        <View style={[baseStyles.modal]}>
+          <View
+            style={[baseStyles.wrapperContentMdHeader, baseStyles.wrappedItems]}
+          >
+            <Text style={[baseStyles.h3, baseStyles.wrappedItemsLeft]}>
+              Basic Information
+            </Text>
 
-          <TouchableOpacity onPress={history.goBack}>
-            <Icon name="clear" style={[[baseStyles.clearIcon]]} />
-          </TouchableOpacity>
-        </View>
+            <TouchableOpacity onPress={history.goBack}>
+              <Icon name="clear" style={[[baseStyles.clearIcon]]} />
+            </TouchableOpacity>
+          </View>
 
-        <View style={[baseStyles.fieldset]}>
-          {fields.map(this.renderField, this)}
+          <View style={[baseStyles.fieldset]}>
+            {fields.map(this.renderField, this)}
+          </View>
         </View>
-      </Wrapper>
+      </View>
     );
   }
 }
