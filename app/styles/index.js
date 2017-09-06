@@ -44,7 +44,8 @@ const baseStyles = StyleSheet.create({
   },
   wrapperContentMdHeader: {
     padding: 25,
-    paddingBottom: 10
+    paddingBottom: 10,
+    paddingTop: 18
   },
   wrapperContentMdInterior: {
     padding: 25,

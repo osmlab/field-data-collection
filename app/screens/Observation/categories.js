@@ -33,11 +33,21 @@ class CategoriesScreen extends Component {
 
     return (
       <Wrapper headerView={headerView}>
-        <View style={[baseStyles.wrapperContent]}>
-          <Text style={baseStyles.title}>What do you want to add?</Text>
-
-          <CategoryList categories={categories} />
+        <View style={[baseStyles.wrapperContentHeader, baseStyles.headerPage]}>
+          <View style={[baseStyles.headerPageText]}>
+            <Text
+              style={[
+                baseStyles.h2,
+                baseStyles.textWhite,
+                baseStyles.headerWithDescription
+              ]}
+            >
+              What do you want to add?
+            </Text>
+          </View>
         </View>
+
+        <CategoryList categories={categories} />
       </Wrapper>
     );
   }
