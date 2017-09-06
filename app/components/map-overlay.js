@@ -225,15 +225,22 @@ class MapOverlay extends Component {
                 style={[baseStyles.cardStyle]}
                 key={item.id}
               >
-                <Text
-                  style={[
-                    baseStyles.h3,
-                    baseStyles.headerWithDescription,
-                    baseStyles.headerLink
-                  ]}
+                <Link
+                  to={{
+                    pathname: `/feature/${item.id}`,
+                    state: { feature: item }
+                  }}
                 >
-                  {item.tags.name}
-                </Text>
+                  <Text
+                    style={[
+                      baseStyles.h3,
+                      baseStyles.headerWithDescription,
+                      baseStyles.headerLink
+                    ]}
+                  >
+                    {item.tags.name}
+                  </Text>
+                </Link>
                 <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
                   {/* TODO: info about distance from user & related observations if applicable */}
                 </View>
