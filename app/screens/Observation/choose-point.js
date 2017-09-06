@@ -44,13 +44,26 @@ class ChoosePoint extends Component {
   render() {
     const {
       history,
-      initializeObservation,
       selectedBounds,
       selectedFeatures,
-      visibleFeatures
+      visibleFeatures,
+      location
     } = this.props;
+
+    let observations = [];
+    if (location.state && location.state.observations) {
+      observations = location.state.observations;
+    }
+
     const features =
       selectedFeatures.length > 0 ? selectedFeatures : visibleFeatures;
+
+    features.forEach(feature => {
+      feature.observations = observations.filter(
+        obs => obs.tags["osm-p2p-id"] === feature.id
+      );
+      return feature;
+    });
 
     let { center } = this.state;
 
@@ -97,7 +110,9 @@ class ChoosePoint extends Component {
           <Icon name="keyboard-backspace" style={baseStyles.headerBackIcon} />
         </Link>
 
-        <Text style={[baseStyles.h3, baseStyles.headerTitle]}>Add</Text>
+        <Text style={[baseStyles.h3, baseStyles.headerTitle]}>
+          Choose Point
+        </Text>
       </View>
     );
 
@@ -114,10 +129,6 @@ class ChoosePoint extends Component {
           ]}
         >
           <View>
-            <Text style={baseStyles.h2}>
-              What are you adding an observation to?
-            </Text>
-
             <Map
               style={[baseStyles.mapInternal]}
               center={center}
@@ -187,13 +198,12 @@ class ChoosePoint extends Component {
                     <TouchableOpacity
                       style={{ padding: 13, paddingLeft: 18, paddingRight: 18 }}
                       onPress={() => {
-                        initializeObservation({
-                          lat: item.lat,
-                          lon: item.lon,
-                          tags: { "osm-p2p-id": item.id }
-                        });
+                        const location = {
+                          pathname: `/feature/${item.id}`,
+                          state: { feature: item }
+                        };
 
-                        history.push("/observation/categories");
+                        history.push(location);
                       }}
                     >
                       <Text style={[baseStyles.h3, baseStyles.headerLink]}>
