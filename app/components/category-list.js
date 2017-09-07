@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     borderColor: "#E5E5E5",
     borderWidth: 1,
     padding: 20,
-    marginLeft: 55,
+    marginLeft: 20,
     marginRight: 20
   }
 });
@@ -44,11 +44,6 @@ export default class CategoryList extends Component {
 
   renderSectionHeader = ({ section }) => {
     const { categories } = this.props;
-
-    if (categories.length === 1) {
-      // never show the header when only 1 category exists
-      return null;
-    }
 
     const arrowDirection = this.isVisible(section.key)
       ? "keyboard-arrow-down"
@@ -89,6 +84,7 @@ export default class CategoryList extends Component {
 
     return (
       <SectionList
+        style={{ marginBottom: 100 }}
         keyExtractor={(item, idx) => idx}
         renderSectionHeader={this.renderSectionHeader}
         sections={categories.map(({ list: data, name: key, surveyId }) => ({

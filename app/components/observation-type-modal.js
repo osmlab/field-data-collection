@@ -28,7 +28,7 @@ class ObservationTypeModal extends Component {
               </TouchableOpacity>
             </View>
 
-            <View style={{ flex: 1 }}>
+            <View style={{ marginLeft: 0, paddingLeft: 0 }}>
               <CategoryList categories={categories} onSelect={onSelect} />
             </View>
           </View>

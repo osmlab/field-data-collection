@@ -228,28 +228,15 @@ class ViewObservationScreen extends Component {
           ]}
         >
           <View style={[baseStyles.headerPageText]}>
-            {fields != null &&
-              <Text
-                style={[
-                  baseStyles.h2,
-                  baseStyles.textWhite,
-                  baseStyles.headerWithDescription
-                ]}
-              >
-                {name}
-              </Text>}
-            {fields == null &&
-              <TouchableOpacity onPress={this.openObservationTypeModal}>
-                <Text
-                  style={[
-                    baseStyles.h2,
-                    baseStyles.textWhite,
-                    baseStyles.headerWithDescription
-                  ]}
-                >
-                  Select observation type
-                </Text>
-              </TouchableOpacity>}
+            <Text
+              style={[
+                baseStyles.h2,
+                baseStyles.textWhite,
+                baseStyles.headerWithDescription
+              ]}
+            >
+              {fields != null ? name : "Create observation"}
+            </Text>
           </View>
         </View>
 
@@ -265,8 +252,16 @@ class ViewObservationScreen extends Component {
                   {fields.map(this.renderField, this)}
                 </View>
               </View>}
+
+            {fields == null &&
+              <TouchableOpacity onPress={this.openObservationTypeModal}>
+                <Text style={[baseStyles.h3, baseStyles.headerLink]}>
+                  Select observation type
+                </Text>
+              </TouchableOpacity>}
           </View>
         </View>
+
         {fields != null &&
           <View
             style={{
