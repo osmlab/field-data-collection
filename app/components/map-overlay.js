@@ -282,14 +282,14 @@ class MapOverlay extends Component {
           style={{
             position: "absolute",
             right: 0,
-            bottom: 270,
+            bottom: 280,
             width: 75,
             height: 140,
             transform: [
               {
                 translateY: this._deltaY.interpolate({
                   inputRange: [open, closed],
-                  outputRange: [1, 180]
+                  outputRange: [1, 170]
                 })
               }
             ]
