@@ -211,7 +211,7 @@ class ChoosePoint extends Component {
                           });
 
                           history.push({
-                            pathname: "/observation/categories"
+                            pathname: "/observation"
                           });
                         } else {
                           history.push({
@@ -248,7 +248,7 @@ class ChoosePoint extends Component {
                 tags: { "osm-p2p-id": null }
               });
 
-              history.push("/observation/categories");
+              history.push("/observation");
             }}
           >
             <Text style={[baseStyles.textWhite]}>I'M ADDING A NEW POINT</Text>

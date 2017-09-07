@@ -93,7 +93,7 @@ class ViewOsmFeature extends Component {
       }
     });
 
-    history.push("/observation/categories");
+    history.push("/observation");
   };
 
   setRef = map => {

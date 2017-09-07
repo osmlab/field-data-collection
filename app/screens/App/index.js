@@ -21,7 +21,6 @@ import {
 import ObservationMap from "../Observation/map";
 import Observation from "../Observation/view";
 import FieldsetForm from "../Observation/fieldset-form";
-import Categories from "../Observation/categories";
 import ChoosePoint from "../Observation/choose-point";
 
 // Account
@@ -88,11 +87,7 @@ export class App extends Component {
               component={ChoosePoint}
             />
 
-            <Route
-              exact
-              path="/observation/categories"
-              component={Categories}
-            />
+            <Route exact path="/observation" component={Observation} />
 
             <Route
               exact

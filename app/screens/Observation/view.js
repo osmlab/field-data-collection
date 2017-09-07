@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Image, View, TouchableOpacity, ScrollView } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import { connect } from "react-redux";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Link } from "react-router-native";
@@ -10,33 +10,65 @@ import {
   Wrapper,
   Map,
   LocationModal,
+  ObservationTypeModal,
   AnnotationObservation
 } from "../../components";
 import { getFieldType } from "../../components/fields";
 import {
   selectActiveObservation,
-  selectFeatureType,
-  selectIcon
+  selectAllCategories,
+  selectFeatureType
 } from "../../selectors";
 import { baseStyles } from "../../styles";
 
 class ViewObservationScreen extends Component {
   state = {
-    modalOpen: false
+    locationModalOpen: false,
+    openObservationTypeModalOpen: false
   };
 
-  closeModal = () =>
+  closeLocationModal = () =>
     this.setState({
-      modalOpen: false
+      locationModalOpen: false
     });
 
-  openModal = () =>
+  closeObservationTypeModal = () =>
     this.setState({
-      modalOpen: true
+      observationTypeModalOpen: false
     });
+
+  openLocationModal = () =>
+    this.setState({
+      locationModalOpen: true
+    });
+
+  openObservationTypeModal = () =>
+    this.setState({
+      observationTypeModalOpen: true
+    });
+
+  onObservationTypeSelected = type => {
+    const { observation, updateObservation } = this.props;
+
+    updateObservation({
+      ...observation,
+      tags: {
+        ...observation.tags,
+        ...type.tags,
+        surveyId: type.surveyId,
+        surveyType: type.id
+      }
+    });
+
+    this.closeObservationTypeModal();
+  };
 
   renderField(field, index) {
-    const { observation, surveyId, type: { id } } = this.props;
+    const {
+      observation,
+      observation: { tags: { surveyId } },
+      type: { id }
+    } = this.props;
 
     try {
       const Field = getFieldType(field.type);
@@ -54,16 +86,8 @@ class ViewObservationScreen extends Component {
   }
 
   save = () => {
-    const {
-      saveObservation,
-      history,
-      observation,
-      surveyId,
-      type
-    } = this.props;
+    const { saveObservation, history, observation } = this.props;
 
-    observation.tags.surveyId = surveyId;
-    observation.tags.surveyType = type.id;
     saveObservation(observation);
     history.push("/");
   };
@@ -85,14 +109,31 @@ class ViewObservationScreen extends Component {
 
   componentWillMount = () => {
     const { observation } = this.props;
-    console.log("observation", observation);
-    this.setState({
-      coordinates: {
-        latitude: observation.lat,
-        longitude: observation.lon
-      }
-    });
+
+    if (observation != null) {
+      this.setState({
+        coordinates: {
+          latitude: observation.lat,
+          longitude: observation.lon
+        }
+      });
+    }
   };
+
+  componentWillUpdate(nextProps, nextState) {
+    const { observation } = this.props;
+    const { nextObservation } = nextProps;
+
+    if (observation == null && nextObservation != null) {
+      // center the newly-active observation
+      this.setState({
+        coordinates: {
+          latitude: observation.lat,
+          longitude: observation.lon
+        }
+      });
+    }
+  }
 
   setRef = map => {
     this._map = map;
@@ -119,7 +160,7 @@ class ViewObservationScreen extends Component {
         </Map>
 
         <View style={[baseStyles.mapEditorBlock]}>
-          <TouchableOpacity onPress={this.openModal}>
+          <TouchableOpacity onPress={this.openLocationModal}>
             <Text style={[baseStyles.link]}>
               + {locationText}
             </Text>
@@ -131,14 +172,18 @@ class ViewObservationScreen extends Component {
 
   render() {
     const {
+      categories,
       history,
       observation,
-      surveyId,
-      type: { fields, name },
-      observation: { tags }
+      type: { fields, name }
     } = this.props;
 
-    const { modalOpen } = this.state;
+    if (observation == null) {
+      console.log("waiting for observation to become active...");
+      return null;
+    }
+
+    const { locationModalOpen, observationTypeModalOpen } = this.state;
 
     const headerView = (
       <View
@@ -162,10 +207,17 @@ class ViewObservationScreen extends Component {
 
     return (
       <Wrapper style={[baseStyles.wrapper]} headerView={headerView}>
-        {modalOpen &&
+        {locationModalOpen &&
           <LocationModal
-            close={this.closeModal}
+            close={this.closeLocationModal}
             onUpdateLocation={this.onUpdateLocation}
+          />}
+
+        {observationTypeModalOpen &&
+          <ObservationTypeModal
+            categories={categories}
+            close={this.closeObservationTypeModal}
+            onSelect={this.onObservationTypeSelected}
           />}
 
         <View
@@ -176,15 +228,28 @@ class ViewObservationScreen extends Component {
           ]}
         >
           <View style={[baseStyles.headerPageText]}>
-            <Text
-              style={[
-                baseStyles.h2,
-                baseStyles.textWhite,
-                baseStyles.headerWithDescription
-              ]}
-            >
-              {name}
-            </Text>
+            {fields != null &&
+              <Text
+                style={[
+                  baseStyles.h2,
+                  baseStyles.textWhite,
+                  baseStyles.headerWithDescription
+                ]}
+              >
+                {name}
+              </Text>}
+            {fields == null &&
+              <TouchableOpacity onPress={this.openObservationTypeModal}>
+                <Text
+                  style={[
+                    baseStyles.h2,
+                    baseStyles.textWhite,
+                    baseStyles.headerWithDescription
+                  ]}
+                >
+                  Select observation type
+                </Text>
+              </TouchableOpacity>}
           </View>
         </View>
 
@@ -192,38 +257,48 @@ class ViewObservationScreen extends Component {
 
         <View style={{ marginTop: 20 }}>
           <View style={[baseStyles.wrapperContent]}>
-            <Text style={[baseStyles.h3]}>Basic Info</Text>
+            {fields != null &&
+              <View>
+                <Text style={[baseStyles.h3]}>Basic Info</Text>
 
-            <View style={[baseStyles.fieldset, { marginBottom: 50 }]}>
-              {fields.map(this.renderField, this)}
-            </View>
+                <View style={[baseStyles.fieldset, { marginBottom: 50 }]}>
+                  {fields.map(this.renderField, this)}
+                </View>
+              </View>}
           </View>
         </View>
-        <View
-          style={{
-            position: "absolute",
-            bottom: 0,
-            flexDirection: "row"
-          }}
-        >
-          <TouchableOpacity onPress={this.save} style={baseStyles.buttonBottom}>
-            <Text style={baseStyles.textWhite}>SAVE</Text>
-          </TouchableOpacity>
-        </View>
+        {fields != null &&
+          <View
+            style={{
+              position: "absolute",
+              bottom: 0,
+              flexDirection: "row"
+            }}
+          >
+            <TouchableOpacity
+              onPress={this.save}
+              style={baseStyles.buttonBottom}
+            >
+              <Text style={baseStyles.textWhite}>SAVE</Text>
+            </TouchableOpacity>
+          </View>}
       </Wrapper>
     );
   }
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const { match: { params: { surveyId, type } } } = ownProps;
+  const observation = selectActiveObservation(state);
+  let type = {};
 
-  const featureType = selectFeatureType(type, state);
+  if (observation != null) {
+    type = selectFeatureType(observation.tags.surveyType, state) || {};
+  }
 
   return {
-    observation: selectActiveObservation(state),
-    surveyId,
-    type: featureType
+    categories: selectAllCategories(state),
+    observation,
+    type
   };
 };
 

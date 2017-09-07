@@ -13,6 +13,7 @@ import AnnotationObservation from "./annotation-observation";
 import MapOverlay from "./map-overlay";
 import Map from "./map";
 import LocationModal from "./location-modal";
+import ObservationTypeModal from "./observation-type-modal";
 
 export {
   AnnotationOSM,
@@ -29,5 +30,6 @@ export {
   CategoryList,
   MapOverlay,
   Map,
-  LocationModal
+  LocationModal,
+  ObservationTypeModal
 };
