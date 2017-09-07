@@ -20,7 +20,7 @@ brew install watchman
 Install react-native-cli
 
 ```
-yarn global react-native-cli
+yarn global add react-native-cli
 ```
 
 ### Clone the repo
