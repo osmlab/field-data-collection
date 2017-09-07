@@ -1,215 +1,111 @@
 # Survey Definitions
 
-See [`sri_lanka.yaml`](../data/surveys/sri_lanka.yaml) for a concrete example,
-formatted as YAML.
+Surveys consist of [iD](https://github.com/openstreetmap/id)-compatible presets
+alongside a metadata file.
 
-Theoretical survey to support GFDRR's [Safer
-Schools](https://www.gfdrr.org/global-program-for-safer-schools) program.
-
-```javascript
-{
-  // survey schema version
-  "schema_version": "0.0.1",
-
-  // survey version
-  "version": "0.0.1",
-
-  // English language display name for this survey.
-  "name": "Safer Schools",
-
-  // Armenian language display name for this survey.
-  "name:hy": "ավելի ապահով Դպրոցներ",
-
-  // Survey description
-  "description": "GFDRR Safer Schools",
-
-  // Can observations be made without knowing who users are?
-  "anonymous": true,
-
-  // Are observations created for this survey editable?
-  "editable": true,
-
-  // feature types that we a) know about, b) can modify, c) can associate
-  // observations with
-  "feature_types": [
-    {
-      "id": "amenity=school",
-
-      // preset name
-      "preset": "amenity/school",
-
-      // fields to exclude from the default preset (amenity/school, in this case)
-      "exclude": [
-        "operator"
-      ],
-
-      // additional fields
-      "include": [
-        {
-          // custom type
-          "type": "students",
-
-          // exclude this from data submitted to OSM
-          "private": true
-        },
-        {
-          "type": "notes",
-
-          // override the default key name (from the field configuration)
-          "key": "gfdrr:notes",
-          "private": true
-        }
-      ],
-
-      // related feature types that can be suggested for creation or association
-      // of new observations (edits)
-      "related": [
-        "building=school"
-      ],
-    },
-    {
-      // contrived example to show off extend
-      "id": "amenity=dayschool",
-      "preset": "amenity/dayschool",
-
-      // inherit all fields / options from another feature type (or types, if an
-      // array)
-      "extend": "amenity=school"
-    },
-    {
-      "id": "building=school",
-      "preset": "building/school",
-
-      // additional fields not included in the preset by default
-      "include": [
-        "building:condition",
-        "building:material",
-        "roof:material",
-        {
-          "type": "notes",
-          "private": true
-
-          // provide / override options for this field
-          "options": [
-            "slate",
-            "thatch",
-            "turf"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "leisure=pitch",
-      "preset": "leisure/pitch",
-
-      // provide / override options for fields associated with the preset
-      "options": {
-        "sport": [
-          "softball",
-          "baseball",
-          "t-ball"
-        ]
-      }
-
-      "name": "Playing Field", // override preset name
-      "include": [
-        {
-          "type": "notes",
-          "private": true
-        }
-      ]
-    },
-    {
-      // private observation type that can have further observations associated with it (??)
-      "id": "environment=standing_water",
-      "preset": "environment/standing_water",
-
-      "private": true
-    }
-  ],
-
-  // feature types that can be created (if this is empty or absent, features can
-  // only be edited)
-  "observation_types": [
-    // aliases to previous-defined feature types
-    "amenity=school",
-    "building=school",
-    "environment=standing_water"
-  ],
-
-  "sync": {
-    "mode": "server", // standalone | peer | server
-    "endpoints": {
-      "osm": "https://api.openstreetmap.org/",
-      "coordinator": "http://birch.local:8000/"
-    },
-    "p2p": {
-      "hash": "ca5cade5"
-    }
-  },
-
-  // TODO document the list of types that Surveyor understands
-  "attachments": [
-    {
-      "type": "mbtiles",
-      "source": "https://s3.amazonaws.com/surveyor-assets/armenia.mbtiles"
-    },
-    {
-      // ID that can be referenced in feature_types or observation_types when
-      // specifying attachments to collect
-      "id": "sample-form",
-      "type": "xform",
-      "source": "https://s3.amazonaws.com/surveyor-assets/sample-form.xml"
-    }
-  ],
-
-  "imagery": [
-    "http://tile.openstreetmap.org/{z}/{x}/{y}.png", // URL template
-    "http://tile.opencyclemap.org/index.json", // TileJSON
-    {
-      // inline TileJSON
-      "name": "Hillshade",
-      "bounds": [
-        -180,
-        -85.05113,
-        180,
-        85.05113
-      ],
-      "maxzoom": 22,
-      "minzoom": 0,
-      "tiles": [
-        "http://something.cloudfront.net/hillshade/{z}/{x}/{y}.png"
-      ]
-    }
-  ],
-
-  "meta": {
-    // these can also be objects containing name, email, url, similar to how
-    // package.json handles people
-    "coordinator": "Seth Fitzsimmons <seth@mojodna.net>",
-    "organization": "OpenStreetMap (https://openstreetmap.org/)"
-    // ...other metadata
-  },
-}
-```
-
-Also available as YAML for readability purposes. This demonstrates how related
-observations could be defined.
+The simplest possible metadata file looks like this:
 
 ```yaml
-name: Monitoring
+schema_version: 0.0.1
+version: 2.4.1
 
-presets:
-  oil_spill:
-    private: true
-    related:
-      - groundwater_pollution
-
-  trash:
-    private: true
-
-  groundwater_pollution:
-    private: true
-    related:
-      - oil_spill
+name: OSM
+description: Default OSM presets from iD
 ```
+
+If placed alongside iD's default presets in
+[`data/presets`](https://github.com/openstreetmap/iD/tree/master/data/presets)
+as `survey.yaml`, [Field Data
+Coordinator](https://github.com/osmlab/field-data-coordinator/) can import it
+and make all iD OSM presets available available as both recognized feature and
+observation types.
+
+![](import.png)
+
+Additional sample survey definitions are available in [`../data/surveys`](../data/surveys):
+
+* `hfh_inspections` - building inspections for Habitat for Humanity
+* `sri_lanka` - a Sri Lanka building survey
+
+`hfh_inspections` does not contain any presets derived from iD, as none of the feature / observation types match what's contained in OSM (although OSM-style tagging is still used for observation metadata); each JSON file was hand-crafted (copy/pasted from others and adapted) to match the specific needs of that survey.
+
+`sri_lanka` is derived from iD's presets--existing presets were copied from the
+iD git repository and modified (tags added / removed and options added, e.g.
+[`fields/building.json`](../data/surveys/sri_lanka/fields/building.json)).
+
+Here's a simplified, annotated version of the Sri Lanka survey:
+
+```yaml
+# derived from
+# https://wiki.openstreetmap.org/wiki/Sri_Lanka_Tagging_Guidelines#Building_Characteristics
+
+# survey definition schema version (for compatible with future versions of
+# tools)
+schema_version: 0.0.1
+# survey version
+version: 0.0.1
+
+# survey name
+name: Sri Lanka Building Survey
+# survey description
+description: >
+  Collection of exposure information for buildings in the flood-prone Attanagalu
+  Oya river basin.
+
+# feature types that observations can be attached to (currently: all named
+# nodes)
+feature_types:
+  # unique id for this feature type (to be referenced from observation_types)
+  #
+  # if this is omitted, all presets present on the filesystem will be loaded,
+  # using `<key>[=<value>]` as their id
+  #
+  # n.b. this is not included in the list of observation types (so new
+  # observations can't be created as this type), as more specific building types
+  # are available
+  - id: building
+    # preset path (maps to presets/building.json)
+    preset: building
+
+  # feature type id
+  - id: amenity=place_of_worship
+    # preset path (presets/amenity/place_of_worship.json)
+    preset: amenity/place_of_worship
+
+  # ...
+
+# list of observation types (structured survey responses)
+# this is a subset of feature_types, so each type can be referred to using a
+# feature id
+#
+# if this is omitted, all feature types can be created as observations
+observation_types:
+  # feature type id
+  - amenity=place_of_worship
+
+  # ...
+
+# survey metadata
+meta:
+  # person coordinating the survey
+  coordinator: Robert Banick
+  # organization coordinating the survey
+  organization: GFDRR
+```
+
+Optional icons and categories
+([`presets/categories/*.json`](https://github.com/openstreetmap/iD/tree/master/data/presets/categories))
+can also be provided to group and illustrate presets.
+
+The simplest way to create a new survey is to copy the preset files used by an
+existing survey and to modify them to meet your needs. Barring that, iD presets
+represent a good starting point.
+
+## Command Line
+
+[`observe-tools`](../tools) includes a pair of command line utilities for working with survey definitions:
+
+* `compile-survey.js` - compiles a YAML survey definition + directory containing
+  preset JSON files into a self-contained JSON survey definition (matching what
+  would be created by Field Data Coordinator).
+* `dump-survey.js` - output a JSON survey definition as Markdown.
