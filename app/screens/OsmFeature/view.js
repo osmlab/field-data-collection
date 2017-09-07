@@ -1,5 +1,11 @@
 import React, { Component } from "react";
-import { Image, View, TouchableOpacity } from "react-native";
+import {
+  Image,
+  View,
+  TouchableOpacity,
+  Dimensions,
+  ScrollView
+} from "react-native";
 import { connect } from "react-redux";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Link } from "react-router-native";
@@ -9,6 +15,8 @@ import { initializeObservation, setActiveObservation } from "../../actions";
 import { Text, Wrapper, Map, AnnotationOSM } from "../../components";
 import { selectFeatureType } from "../../selectors";
 import { baseStyles } from "../../styles";
+
+const Screen = Dimensions.get("window");
 
 class ViewOsmFeature extends Component {
   coordinatesToString = coords => {
@@ -43,39 +51,50 @@ class ViewOsmFeature extends Component {
 
     return (
       <Wrapper headerView={headerView}>
-        <View
-          style={[
-            baseStyles.wrapperContentHeader,
-            baseStyles.headerPage,
-            { flexWrap: "wrap", flex: 1, flexDirection: "row" }
-          ]}
+        <ScrollView
+          style={{
+            flex: 1,
+            flexDirection: "column",
+            height: Screen.height - 85
+          }}
         >
-          <View style={[baseStyles.headerPageText]}>
-            <Text
-              style={[
-                baseStyles.h2,
-                baseStyles.textWhite,
-                baseStyles.headerWithDescription
-              ]}
-            >
-              {featureName}
-            </Text>
+          <View
+            style={[
+              baseStyles.wrapperContentHeader,
+              baseStyles.headerPage,
+              { paddingBottom: 30 }
+            ]}
+          >
+            <View style={[]}>
+              <Text
+                style={[baseStyles.h2, baseStyles.textWhite, { paddingTop: 6 }]}
+              >
+                {featureName}
+              </Text>
+            </View>
           </View>
-        </View>
 
-        {this.renderMap()}
+          {this.renderMap()}
 
-        <View style={{ marginTop: 20 }}>
-          <View style={[baseStyles.wrapperContent]}>
-            {this.renderObservations()}
-
-            <TouchableOpacity
-              onPress={this.addNewObservation}
-              style={baseStyles.buttonBottom}
-            >
-              <Text style={baseStyles.textWhite}>ADD NEW OBSERVATION</Text>
-            </TouchableOpacity>
+          <View style={{ marginTop: 20 }}>
+            <View style={[baseStyles.wrapperContent]}>
+              {this.renderObservations()}
+            </View>
           </View>
+        </ScrollView>
+        <View
+          style={{
+            position: "absolute",
+            bottom: 0,
+            flexDirection: "row"
+          }}
+        >
+          <TouchableOpacity
+            onPress={this.addNewObservation}
+            style={baseStyles.buttonBottom}
+          >
+            <Text style={baseStyles.textWhite}>ADD NEW OBSERVATION</Text>
+          </TouchableOpacity>
         </View>
       </Wrapper>
     );
@@ -165,7 +184,11 @@ class ViewOsmFeature extends Component {
         );
       });
     } else {
-      observationList = <Text>None yet. Create a new one</Text>;
+      observationList = (
+        <Text style={[baseStyles.metadataText]}>
+          None yet. Create a new one
+        </Text>
+      );
     }
 
     return (
