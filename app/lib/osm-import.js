@@ -26,7 +26,11 @@ function importify(osm, xmlStream, done) {
       return next();
 
     // skip unnamed + nnn-node features
-    if (change.type !== "node" || change.tags.name == null) {
+    if (
+      change.type !== "node" ||
+      change.tags == null ||
+      change.tags.name == null
+    ) {
       return next();
     }
 
