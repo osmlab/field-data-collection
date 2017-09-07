@@ -27,13 +27,19 @@ export default class CategoryList extends Component {
     this.state.visible.includes(sectionId);
 
   renderItem = (surveyId, sectionId, { item }) => {
-    return this.isVisible(sectionId)
-      ? <Link to={`/observation/${surveyId}/${item.id}`}>
+    const { onSelect } = this.props;
+
+    if (this.isVisible(sectionId)) {
+      return (
+        <TouchableOpacity onPress={() => onSelect(item)}>
           <Text style={styles.category}>
             {item.name}
           </Text>
-        </Link>
-      : null;
+        </TouchableOpacity>
+      );
+    }
+
+    return null;
   };
 
   renderSectionHeader = ({ section }) => {

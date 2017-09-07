@@ -211,7 +211,7 @@ class ChoosePoint extends Component {
                           });
 
                           history.push({
-                            pathname: "/observation/categories"
+                            pathname: "/observation"
                           });
                         } else {
                           history.push({
