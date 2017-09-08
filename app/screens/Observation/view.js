@@ -17,7 +17,8 @@ import { getFieldType } from "../../components/fields";
 import {
   selectActiveObservation,
   selectAllCategories,
-  selectFeatureType
+  selectFeatureType,
+  selectUser
 } from "../../selectors";
 import { baseStyles } from "../../styles";
 
@@ -86,7 +87,10 @@ class ViewObservationScreen extends Component {
   }
 
   save = () => {
-    const { saveObservation, history, observation } = this.props;
+    const { saveObservation, history, observation, user } = this.props;
+
+    observation.tags.userName = user.name || "";
+    observation.tags.userEmail = user.email || "";
 
     saveObservation(observation);
     history.push("/");
@@ -284,6 +288,7 @@ class ViewObservationScreen extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   const observation = selectActiveObservation(state);
+  const user = selectUser(state);
   let type = {};
 
   if (observation != null) {
@@ -293,6 +298,7 @@ const mapStateToProps = (state, ownProps) => {
   return {
     categories: selectAllCategories(state),
     observation,
+    user,
     type
   };
 };
