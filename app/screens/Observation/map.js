@@ -62,7 +62,6 @@ class ObservationMapScreen extends Component {
     this.setState({
       nearbyFeaturesViewOpen: false,
       showMap: true,
-      mapLoaded: false,
       center: {
         latitude: 47.6685,
         longitude: -122.384
@@ -147,10 +146,6 @@ class ObservationMapScreen extends Component {
   };
 
   onFinishLoadingMap = e => {
-    this.setState({
-      mapLoaded: true
-    });
-
     getCurrentPosition((err, data) => {
       if (data) {
         this.setState({ userLocation: data.coords });
@@ -182,9 +177,11 @@ class ObservationMapScreen extends Component {
     const { updateVisibleBounds } = this.props;
 
     // NOTE getBounds returns (lat, lon, lat, lon) so we convert it here
-    this._map.getBounds(bounds =>
-      updateVisibleBounds([bounds[1], bounds[0], bounds[3], bounds[2]])
-    );
+    if (this.map) {
+      this._map.getBounds(bounds =>
+        updateVisibleBounds([bounds[1], bounds[0], bounds[3], bounds[2]])
+      );
+    }
   };
 
   setActiveFeature = feature => {
