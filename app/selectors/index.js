@@ -2,6 +2,8 @@ import { createSelector } from "reselect";
 
 import { tilesForBounds } from "../lib";
 
+export const selectUser = state => state.user;
+
 export const selectAvailableSurveys = state => state.surveys.available;
 
 export const selectCustomSurveys = createSelector(

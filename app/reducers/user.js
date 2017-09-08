@@ -10,7 +10,7 @@ const initialState = {
 
 export default (state = initialState, { name, email, type }) => {
   switch (type) {
-    case types.SET_USER_INFO:
+    case types.SET_PROFILE_INFO:
       return {
         ...state,
         name,
