@@ -25,6 +25,15 @@ function importify(osm, xmlStream, done) {
     )
       return next();
 
+    // skip unnamed + nnn-node features
+    if (
+      change.type !== "node" ||
+      change.tags == null ||
+      change.tags.name == null
+    ) {
+      return next();
+    }
+
     idToP2pId[change.id] = hex2dec(randomBytes(8).toString("hex")).toString();
     if (!isSatisfiable(change)) {
       pending.push(change);
