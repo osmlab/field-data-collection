@@ -75,7 +75,9 @@ const types = {
   QUERYING_TILE_FOR_OBSERVATIONS: "QUERYING_TILE_FOR_OBSERVATIONS",
   TILE_QUERIED_FOR_OBSERVATIONS: "TILE_QUERIED_FOR_OBSERVATIONS",
   ACTIVATING_OBSERVATION: "ACTIVATING_OBSERVATION",
-  ACTIVATING_OBSERVATION_FAILED: "ACTIVATING_OBSERVATION_FAILED"
+  ACTIVATING_OBSERVATION_FAILED: "ACTIVATING_OBSERVATION_FAILED",
+  SET_PROFILE_INFO: "SET_PROFILE_INFO",
+  SAVING_PROFILE_COMPLETED: "SAVING_PROFILE_COMPLETED"
 };
 
 // fallback to 10.0.2.2 when connecting to the coordinator (host's localhost from the emulator)
@@ -398,6 +400,16 @@ export const saveObservation = observation => (dispatch, getState) => {
       type: types.OBSERVATION_SAVED
     });
   });
+};
+
+export const setProfileInfo = ({ name, email }) => dispatch => {
+  dispatch({
+    type: types.SET_PROFILE_INFO,
+    name,
+    email
+  });
+
+  return dispatch({ type: types.SAVING_PROFILE_COMPLETED });
 };
 
 export const replicationStarted = () => dispatch =>

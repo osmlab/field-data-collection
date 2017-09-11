@@ -92,9 +92,9 @@ class SideMenu extends Component {
           <View style={styles.sideMenu}>
             <Text style={[baseStyles.title, baseStyles.titleMenu]}>Menu</Text>
 
-            {/*<Link to="/account/profile" style={baseStyles.navLink}>
+            <Link to="/account/profile" style={baseStyles.navLink}>
               <Text>Profile</Text>
-            </Link>*/}
+            </Link>
 
             <Link to="/account/observations" style={[baseStyles.navLink]}>
               <Text>My Observations</Text>
