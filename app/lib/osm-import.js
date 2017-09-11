@@ -90,7 +90,7 @@ function importify(osm, xmlStream, done) {
       if (SKIP_PROPS.indexOf(prop) > -1) return;
       op.value[prop === "nodes" ? "refs" : prop] = change[prop];
     });
-    op.value.timestamp = new Date().toISOString();
+    op.value.timestamp = op.value.timestamp || new Date().toISOString();
 
     var key = idToP2pId[change.id];
     (change.nodes || []).forEach(function(id, idx) {
