@@ -238,7 +238,6 @@ const baseStyles = StyleSheet.create({
     paddingTop: 15,
     paddingBottom: 15,
     height: 50,
-    color: "#fff",
     width: Screen.width
   },
   buttonOutline: {
