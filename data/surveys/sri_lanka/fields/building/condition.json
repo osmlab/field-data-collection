@@ -8,5 +8,6 @@
             "average",
             "poor"
         ]
-    }
+    },
+    "private": true
 }
