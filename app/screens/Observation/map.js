@@ -177,7 +177,7 @@ class ObservationMapScreen extends Component {
     const { updateVisibleBounds } = this.props;
 
     // NOTE getBounds returns (lat, lon, lat, lon) so we convert it here
-    if (this.map) {
+    if (this._map) {
       this._map.getBounds(bounds =>
         updateVisibleBounds([bounds[1], bounds[0], bounds[3], bounds[2]])
       );
