@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity, Alert } from "react-native";
 import { connect } from "react-redux";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Link } from "react-router-native";
@@ -92,8 +92,21 @@ class ViewObservationScreen extends Component {
     observation.tags.userName = user.name || "";
     observation.tags.userEmail = user.email || "";
 
-    saveObservation(observation);
-    history.push("/");
+    if (observation.lat && observation.lon) {
+      return saveObservation(observation);
+    }
+
+    // alert user if lat/lon don't exist
+    Alert.alert(
+      `Location required`,
+      "Make sure to add a location before saving the observation.",
+      [
+        {
+          text: "Add location",
+          onPress: () => this.openLocationModal()
+        }
+      ]
+    );
   };
 
   onUpdateLocation = coordinates => {
