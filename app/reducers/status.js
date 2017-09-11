@@ -22,7 +22,6 @@ const MESSAGES = {
   [types.REPLICATION_COMPLETED]: "OSM replication completed.",
   [types.INDEXING_STARTED]: "Indexing OSM data...",
   [types.INDEXING_COMPLETED]: "OSM indexing completed.",
-  [types.SAVING_PROFILE]: "Saving profile...",
   [types.SAVING_PROFILE_COMPLETED]: "Profile saved!"
 };
 

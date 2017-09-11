@@ -77,7 +77,6 @@ const types = {
   ACTIVATING_OBSERVATION: "ACTIVATING_OBSERVATION",
   ACTIVATING_OBSERVATION_FAILED: "ACTIVATING_OBSERVATION_FAILED",
   SET_PROFILE_INFO: "SET_PROFILE_INFO",
-  SAVING_PROFILE: "SAVING_PROFILE",
   SAVING_PROFILE_COMPLETED: "SAVING_PROFILE_COMPLETED"
 };
 
@@ -404,8 +403,6 @@ export const saveObservation = observation => (dispatch, getState) => {
 };
 
 export const setProfileInfo = ({ name, email }) => dispatch => {
-  dispatch({ type: types.SAVING_PROFILE });
-
   dispatch({
     type: types.SET_PROFILE_INFO,
     name,
