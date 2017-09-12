@@ -6,7 +6,10 @@ import { connect } from "react-redux";
 import { format } from "date-fns";
 import { Link } from "react-router-native";
 
-import calculateCompleteness from "../../lib/calculate-completeness";
+import {
+  pickSurvey,
+  calculateCompleteness
+} from "../../lib/calculate-completeness";
 
 import {
   syncData,
@@ -36,7 +39,8 @@ class AccountObservations extends Component {
 
     osm.getObservationsByDeviceId(deviceId, (err, results) => {
       let resultsWithCompleteness = results.map(result => {
-        let percentage = calculateCompleteness(types, result);
+        let survey = pickSurvey(types, result);
+        let percentage = calculateCompleteness(survey, result);
         result.percentage = percentage;
         return result;
       });
