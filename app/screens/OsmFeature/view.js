@@ -13,7 +13,11 @@ import { format } from "date-fns";
 
 import { initializeObservation, setActiveObservation } from "../../actions";
 import { Text, Wrapper, Map, AnnotationOSM } from "../../components";
-import { selectFeatureType } from "../../selectors";
+import {
+  pickSurvey,
+  calculateCompleteness
+} from "../../lib/calculate-completeness";
+import { selectFeatureTypes } from "../../selectors";
 import { baseStyles } from "../../styles";
 
 const Screen = Dimensions.get("window");
@@ -144,7 +148,7 @@ class ViewOsmFeature extends Component {
   };
 
   renderObservations = () => {
-    const { history, location, setActiveObservation } = this.props;
+    const { history, location, setActiveObservation, types } = this.props;
     const { feature: { observations } } = location.state;
     let observationList;
 
@@ -154,6 +158,8 @@ class ViewOsmFeature extends Component {
         const surveyType = obs.tags.surveyType;
 
         console.log("obs", obs);
+        const survey = pickSurvey(types, obs);
+        const percent = calculateCompleteness(survey, obs);
 
         return (
           <TouchableOpacity
@@ -171,6 +177,9 @@ class ViewOsmFeature extends Component {
                 <Text style={[baseStyles.fieldValue]}>Observation</Text>
                 <Text style={{ fontSize: 12 }}>
                   Updated: {format(obs.timestamp, "h:mm aa ddd, MMM D, YYYY")}
+                </Text>
+                <Text style={{ fontSize: 12 }}>
+                  Completeness: {percent + "%"}
                 </Text>
               </View>
               <View>
@@ -203,7 +212,9 @@ class ViewOsmFeature extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  return {};
+  return {
+    types: selectFeatureTypes(state)
+  };
 };
 
 export default connect(mapStateToProps, {
