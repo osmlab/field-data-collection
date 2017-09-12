@@ -7,7 +7,7 @@ function toOSM(feature, type) {
   var observation = {
     id: feature.id,
     tags: feature.properties,
-    timestamp: new Date().toISOString()
+    timestamp: feature.timestamp || new Date().toISOString()
   };
 
   if (feature.type === "Point") {
