@@ -179,7 +179,7 @@ class ViewOsmFeature extends Component {
                   Updated: {format(obs.timestamp, "h:mm aa ddd, MMM D, YYYY")}
                 </Text>
                 <Text style={{ fontSize: 12 }}>
-                  Completeness: {percent + "%"}
+                  {percent + "%"} complete.
                 </Text>
               </View>
               <View>
