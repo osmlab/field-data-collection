@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { View, Alert } from "react-native";
 import { connect } from "react-redux";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import { Link } from "react-router-native";
 
 import { osm } from "../../actions";
 
@@ -49,55 +50,60 @@ class LocalSurveyList extends Component {
             : 0;
 
           return (
-            <View
-              key={idx}
-              style={[
-                baseStyles.wrapperContent,
-                baseStyles.wrapperContentLg,
-                baseStyles.listBlock
-              ]}
-            >
+            <Link to={`/account/surveys/${survey.definition.name}`}>
               <View
+                key={idx}
                 style={[
-                  {
-                    flex: 1,
-                    flexDirection: "row",
-                    justifyContent: "space-between"
-                  }
+                  baseStyles.wrapperContent,
+                  baseStyles.wrapperContentLg,
+                  baseStyles.listBlock
                 ]}
               >
-                <Text style={[baseStyles.h3, baseStyles.headerWithDescription]}>
-                  {survey.definition.name}
-                </Text>
+                <View
+                  style={[
+                    {
+                      flex: 1,
+                      flexDirection: "row",
+                      justifyContent: "space-between"
+                    }
+                  ]}
+                >
+                  <Text
+                    style={[baseStyles.h3, baseStyles.headerWithDescription]}
+                  >
+                    {survey.definition.name}
+                  </Text>
 
-                <Icon
-                  name="delete"
-                  style={[[baseStyles.headerBackIcon]]}
-                  onPress={() => {
-                    Alert.alert(
-                      `Delete ${survey.definition.name}?`,
-                      "This will remove the survey from your phone, but not your observations",
-                      [
-                        {
-                          text: "Cancel",
-                          onPress: () => console.log("Cancel Pressed"),
-                          style: "cancel"
-                        },
-                        {
-                          text: "Delete survey",
-                          onPress: () => deleteLocalSurvey(survey.definition.id)
-                        }
-                      ]
-                    );
-                  }}
-                />
+                  <Icon
+                    name="delete"
+                    style={[[baseStyles.headerBackIcon]]}
+                    onPress={() => {
+                      Alert.alert(
+                        `Delete ${survey.definition.name}?`,
+                        "This will remove the survey from your phone, but not your observations",
+                        [
+                          {
+                            text: "Cancel",
+                            onPress: () => console.log("Cancel Pressed"),
+                            style: "cancel"
+                          },
+                          {
+                            text: "Delete survey",
+                            onPress: () =>
+                              deleteLocalSurvey(survey.definition.id)
+                          }
+                        ]
+                      );
+                    }}
+                  />
+                </View>
+                <View style={{ flex: 1, flexDirection: "column" }}>
+                  <Text style={{ flex: 1 }}>
+                    {observationCount} Observations
+                  </Text>
+                </View>
               </View>
-              <View style={{ flex: 1, flexDirection: "column" }}>
-                <Text style={{ flex: 1 }}>
-                  {observationCount} Observations
-                </Text>
-              </View>
-            </View>
+            </Link>
           );
         })}
       </View>

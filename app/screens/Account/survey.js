@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import {
   StyleSheet,
   View,
@@ -35,7 +36,7 @@ class SurveysScreen extends Component {
 
     return (
       <Wrapper headerView={headerView}>
-        <View style={[]}>
+        <View>
           <View
             style={[baseStyles.wrapperContentHeader, baseStyles.headerPage]}
           >
@@ -60,7 +61,6 @@ class SurveysScreen extends Component {
               <View style={[baseStyles.map]}>
                 <Text>Map</Text>
               </View>
-              <PercentComplete />
               <View style={[baseStyles.surveyCardContent]}>
                 <Text style={[baseStyles.h3, baseStyles.headerWithDescription]}>
                   Name of Observation
@@ -91,4 +91,8 @@ const styles = StyleSheet.create({
   }
 });
 
-export default SurveysScreen;
+const mapStateToProps = state => {
+  return {};
+};
+
+export default connect(mapStateToProps)(SurveysScreen);
