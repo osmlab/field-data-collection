@@ -118,12 +118,15 @@ class AccountObservations extends Component {
 
             return (
               <View style={[baseStyles.wrapperContent]}>
-                <Link
+                <TouchableOpacity
                   style={[baseStyles.surveyCard]}
-                  to={{
-                    pathname: `/observation/${item.tags.surveyId}/${item.tags
-                      .surveyType}`,
-                    state: { observation: item }
+                  onPress={() => {
+                    setActiveObservation(item);
+
+                    history.push({
+                      pathname: `/observation/${item.tags.surveyId}/${item.tags
+                        .surveyType}`
+                    });
                   }}
                 >
                   <View>
@@ -179,7 +182,7 @@ class AccountObservations extends Component {
                       </View>
                     </View>
                   </View>
-                </Link>
+                </TouchableOpacity>
               </View>
             );
           }}
