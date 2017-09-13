@@ -4,7 +4,8 @@ import {
   StyleSheet,
   Dimensions,
   TouchableOpacity,
-  Button
+  Button,
+  ScrollView
 } from "react-native";
 import Interactable from "react-native-interactable";
 import { Link } from "react-router-native";
@@ -30,13 +31,11 @@ const styles = StyleSheet.create({
     borderLeftWidth: 0.5
   },
   sideMenu: {
-    left: 0,
     width: SideMenuWidth,
-    flex: 1,
     backgroundColor: "#fff",
-    borderWidth: 1,
-    borderColor: "#ccc",
-    elevation: 10
+    flex: 1,
+    flexDirection: "column",
+    height: Screen.height - 85
   }
 });
 
@@ -89,7 +88,7 @@ class SideMenu extends Component {
           initialPosition={{ x: Screen.width }}
           style={{ zIndex: 1005 }}
         >
-          <View style={styles.sideMenu}>
+          <ScrollView style={styles.sideMenu}>
             <Text style={[baseStyles.title, baseStyles.titleMenu]}>Menu</Text>
 
             <Link to="/account/profile" style={baseStyles.navLink}>
@@ -106,11 +105,28 @@ class SideMenu extends Component {
 
             {/*<Link to="/account/settings" style={[baseStyles.navLink]}>
               <Text>Settings</Text>
-            </Link>
+            </Link>*/}
 
             <Link to="/account/about" style={[baseStyles.navLink]}>
               <Text>About</Text>
-            </Link>*/}
+            </Link>
+          </ScrollView>
+          <View
+            style={{
+              position: "absolute",
+              bottom: 0,
+              flexDirection: "row"
+            }}
+          >
+            <Link
+              to={{
+                pathname: "/observation/choose-point",
+                state: { addPoint: true }
+              }}
+              style={[baseStyles.buttonBottom, { width: SideMenuWidth }]}
+            >
+              <Text style={[baseStyles.textWhite]}>ADD AN OBSERVATION</Text>
+            </Link>
           </View>
         </Interactable.View>
       </View>
