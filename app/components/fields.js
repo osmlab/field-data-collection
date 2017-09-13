@@ -37,10 +37,14 @@ export class CheckField extends Field {
 export class ComboField extends Field {
   render() {
     const {
-      field: { default: placeholder, key, label },
+      field: { default: placeholder, key, label, strings: { options } },
       observation: { tags }
     } = this.props;
-    const value = tags[key];
+
+    let value = tags[key];
+    if (!Array.isArray(options)) {
+      value = options[tags[key]];
+    }
 
     return (
       <View ref={x => (this._root = x)} style={[baseStyles.field]}>
