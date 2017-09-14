@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Link } from "react-router-native";
 
+import { calculateCompleteness } from "../../lib/calculate-completeness";
 import { saveObservation, updateObservation } from "../../actions";
 import {
   Text,
@@ -11,7 +12,8 @@ import {
   Map,
   LocationModal,
   ObservationTypeModal,
-  AnnotationObservation
+  AnnotationObservation,
+  PercentComplete
 } from "../../components";
 import { getFieldType } from "../../components/fields";
 import {
@@ -200,6 +202,10 @@ class ViewObservationScreen extends Component {
       return null;
     }
 
+    const percent = calculateCompleteness(fields, observation);
+    const complete = parseInt(percent / 10, 10);
+    const incomplete = 10 - complete;
+
     const { locationModalOpen, observationTypeModalOpen } = this.state;
 
     const headerView = (
@@ -224,6 +230,20 @@ class ViewObservationScreen extends Component {
 
     return (
       <Wrapper style={[baseStyles.wrapper]} headerView={headerView}>
+        {fields /* Don't render if we don't have a survey type yet */
+          ? <PercentComplete
+              radius={35}
+              complete={complete}
+              incomplete={incomplete}
+            >
+              <Text style={[baseStyles.percentCompleteTextSm]}>
+                <Text style={[baseStyles.percentCompleteTextNumSm]}>
+                  {percent + "%"}
+                </Text>
+              </Text>
+            </PercentComplete>
+          : <View />}
+
         {locationModalOpen &&
           <LocationModal
             close={this.closeLocationModal}

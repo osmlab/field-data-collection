@@ -7,12 +7,17 @@ import { format } from "date-fns";
 import { Link } from "react-router-native";
 
 import {
+  pickSurvey,
+  calculateCompleteness
+} from "../../lib/calculate-completeness";
+
+import {
   syncData,
   setActiveObservation,
   getPeerInfo,
   osm
 } from "../../actions";
-import { getObservationsByDeviceId } from "../../lib/observations";
+import { selectFeatureTypes } from "../../selectors";
 import {
   Text,
   Wrapper,
@@ -24,7 +29,7 @@ import { baseStyles } from "../../styles";
 
 class AccountObservations extends Component {
   componentWillMount() {
-    const { deviceId } = this.props;
+    const { deviceId, types } = this.props;
 
     const ds = new ListView.DataSource({
       rowHasChanged: (r1, r2) => r1 !== r2
@@ -33,8 +38,15 @@ class AccountObservations extends Component {
     this.setState({ observations: ds.cloneWithRows([]) });
 
     osm.getObservationsByDeviceId(deviceId, (err, results) => {
+      let resultsWithCompleteness = results.map(result => {
+        let survey = pickSurvey(types, result);
+        let percentage = calculateCompleteness(survey, result);
+        result.percentage = percentage;
+        return result;
+      });
+
       this.setState({
-        observations: ds.cloneWithRows(results)
+        observations: ds.cloneWithRows(resultsWithCompleteness)
       });
     });
   }
@@ -112,9 +124,9 @@ class AccountObservations extends Component {
           noScroll={true}
           renderRow={item => {
             // TODO: calculate based on number of tags in survey
-            const complete = (item.complete || 0) * 10;
+            const percentage = item.percentage + "%";
+            const complete = parseInt(item.percentage / 10, 10);
             const incomplete = 10 - complete;
-            const percentage = complete + "0%";
 
             return (
               <View style={[baseStyles.wrapperContent]}>
@@ -143,7 +155,7 @@ class AccountObservations extends Component {
                       />
                     </Map>
 
-                    {/* TODO: restore & improve PercentComplete
+                    {
                       <PercentComplete
                         radius={35}
                         complete={complete}
@@ -155,7 +167,7 @@ class AccountObservations extends Component {
                           </Text>
                         </Text>
                       </PercentComplete>
-                    */}
+                    }
 
                     <View style={[baseStyles.surveyCardContent]}>
                       <Text
@@ -194,6 +206,7 @@ class AccountObservations extends Component {
 
 const mapStateToProps = state => {
   return {
+    types: selectFeatureTypes(state),
     observationsLastSynced: state.coordinator.observationsLastSynced,
     coordinatorTarget: state.coordinator.coordinatorTarget,
     deviceId: state.user.deviceId
