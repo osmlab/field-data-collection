@@ -4,7 +4,8 @@ import {
   View,
   Dimensions,
   ActivityIndicator,
-  ScrollView
+  ScrollView,
+  TextInput
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
@@ -24,12 +25,49 @@ export default class RemoteSurveyList extends Component {
     });
   };
 
+  onAddressInput = address => {
+    this.setState({ address });
+  };
+
+  onAddressSubmit = e => {
+    this.props.listRemoteSurveys(this.state.address);
+  };
+
+  componentWillMount() {
+    this.setState({
+      address: "http://10.0.2.2:3211"
+    });
+  }
+
   render() {
-    const { fetch, surveys, sync, close } = this.props;
+    const { fetch, surveys, sync, close, fetchingListFailed } = this.props;
+
+    if (fetchingListFailed) {
+      return (
+        <View style={baseStyles.wrapperContentMdInterior}>
+          <Text style={baseStyles.h3}>Connect Manually</Text>
+          <Text>Enter the full address of the Observe desktop app</Text>
+          <TextInput
+            ref={view => (this.addressInput = view)}
+            onSubmitEditing={this.onAddressSubmit}
+            onChangeText={this.onAddressInput}
+            value={this.state.address}
+            underlineColorAndroid="#ccc"
+            autoFocus
+          />
+          <TouchableOpacity
+            onPress={this.onAddressSubmit}
+            style={baseStyles.buttonContent}
+          >
+            <Text style={{ color: "white" }}>Get survey list</Text>
+          </TouchableOpacity>
+        </View>
+      );
+    }
 
     if (surveys == null || surveys.length === 0) {
       return (
-        <View style={[baseStyles.wrapperContentMdInterior]}>
+        <View style={baseStyles.wrapperContentMdInterior}>
           <ActivityIndicator
             style={{ marginTop: 50, marginBottom: 20 }}
             animating

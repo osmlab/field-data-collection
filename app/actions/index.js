@@ -325,10 +325,39 @@ export const fetchRemoteSurvey = (id, url) => (dispatch, getState) => {
     );
 };
 
-export const listRemoteSurveys = () => (dispatch, getState) => {
+export const listRemoteSurveys = address => (dispatch, getState) => {
+  const send = (type, ip, port) => {
+    return timeout(fetch(`http://${ip}:${port}/surveys/list`), 1000)
+      .then(rsp => rsp.json())
+      .then(surveys => {
+        dispatch({
+          type: types.RECEIVED_REMOTE_SURVEY_LIST,
+          surveys: surveys.map(x => ({
+            ...x,
+            url: `http://${ip}:${port}/surveys/${x.id}`,
+            target: {
+              address: ip,
+              port: port
+            }
+          }))
+        });
+      })
+      .catch(error => {
+        dispatch({
+          type: types.FETCHING_REMOTE_SURVEY_LIST_FAILED,
+          error,
+          failedConnectionType: type
+        });
+      });
+  };
+
+  if (address) {
+    const [ip, port] = address.replace(/^https?\:\/\//, "").split(":");
+    return send("manual", ip, port);
+  }
+
   return getPeerInfo(dispatch, (err, targetIP, targetPort) => {
     if (err) {
-      console.warn(err);
       return dispatch({
         type: types.DISCOVERING_PEERS_FAILED,
         error: err
@@ -339,27 +368,7 @@ export const listRemoteSurveys = () => (dispatch, getState) => {
       type: types.FETCHING_REMOTE_SURVEY_LIST
     });
 
-    return timeout(fetch(`http://${targetIP}:${targetPort}/surveys/list`), 1000)
-      .then(rsp => rsp.json())
-      .then(surveys =>
-        dispatch({
-          type: types.RECEIVED_REMOTE_SURVEY_LIST,
-          surveys: surveys.map(x => ({
-            ...x,
-            url: `http://${targetIP}:${targetPort}/surveys/${x.id}`,
-            target: {
-              address: targetIP,
-              port: targetPort
-            }
-          }))
-        })
-      )
-      .catch(error =>
-        dispatch({
-          type: types.FETCHING_REMOTE_SURVEY_LIST_FAILED,
-          error
-        })
-      );
+    return send("mdns", targetIP, targetPort);
   });
 };
 

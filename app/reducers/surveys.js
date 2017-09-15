@@ -7,11 +7,17 @@ const initialState = {
   remoteSurveyFetched: null,
   syncingSurveyData: null,
   surveyDataSynced: null,
+  fetchingListFailed: null,
+  mdnsConnectionFailed: null,
+  manualConnectionFailed: null,
   available: [],
   remote: []
 };
 
-export default (state = initialState, { id, survey, surveys, type }) => {
+export default (
+  state = initialState,
+  { id, survey, surveys, type, failedConnectionType }
+) => {
   switch (type) {
     case types.CLEAR_LOCAL_SURVEYS:
       return {
@@ -44,7 +50,10 @@ export default (state = initialState, { id, survey, surveys, type }) => {
     case types.FETCHING_REMOTE_SURVEY_LIST_FAILED:
       return {
         ...state,
-        remote: []
+        remote: [],
+        fetchingListFailed: true,
+        mdnsConnectionFailed: failedConnectionType === "mdns",
+        manualConnectionFailed: failedConnectionType === "manual"
       };
 
     case types.RECEIVED_REMOTE_SURVEY:
@@ -62,7 +71,10 @@ export default (state = initialState, { id, survey, surveys, type }) => {
     case types.RECEIVED_REMOTE_SURVEY_LIST:
       return {
         ...state,
-        remote: surveys
+        remote: surveys,
+        fetchingListFailed: null,
+        mdnsConnectionFailed: null,
+        manualConnectionFailed: null
       };
 
     case types.SYNCING_SURVEY_DATA:
