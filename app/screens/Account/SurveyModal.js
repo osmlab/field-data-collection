@@ -18,7 +18,7 @@ import { baseStyles } from "../../styles";
 class SurveyModal extends Component {
   componentWillMount() {
     this.props.clearRemoteSurveys();
-    this.props.listRemoteSurveys();
+    if (!this.props.mdnsConnectionFailed) this.props.listRemoteSurveys();
   }
 
   render() {
@@ -29,9 +29,11 @@ class SurveyModal extends Component {
       activeSurveys,
       syncData,
       fetchingRemoteSurvey,
+      fetchingListFailed,
       remoteSurveyFetched,
       syncingSurveyData,
-      surveyDataSynced
+      surveyDataSynced,
+      listRemoteSurveys
     } = this.props;
 
     const loadingSurvey = fetchingRemoteSurvey || syncingSurveyData;
@@ -61,6 +63,8 @@ class SurveyModal extends Component {
               surveys={remoteSurveys}
               activeSurveys={activeSurveys}
               close={close}
+              fetchingListFailed={fetchingListFailed}
+              listRemoteSurveys={listRemoteSurveys}
             />
 
             {loadingSurvey &&
@@ -78,17 +82,15 @@ class SurveyModal extends Component {
                 }}
               >
                 <View
-                  style={
-                    (
-                      [baseStyles.wrapperContentMdInterior],
-                      {
-                        backgroundColor: "white",
-                        elevation: 2,
-                        padding: 40,
-                        width: 200
-                      }
-                    )
-                  }
+                  style={[
+                    baseStyles.wrapperContentMdInterior,
+                    {
+                      backgroundColor: "white",
+                      elevation: 2,
+                      padding: 40,
+                      width: 200
+                    }
+                  ]}
                 >
                   <ActivityIndicator animating size="large" />
                   <Text style={{ textAlign: "center" }}>Loading survey</Text>
@@ -103,6 +105,9 @@ class SurveyModal extends Component {
 
 const mapStateToProps = state => ({
   fetchingRemoteSurvey: state.surveys.fetchingRemoteSurvey,
+  fetchingListFailed: state.surveys.fetchingListFailed,
+  mdnsConnectionFailed: state.surveys.mdnsConnectionFailed,
+  manualConnectionFailed: state.surveys.manualConnectionFailed,
   remoteSurveys: selectRemoteSurveys(state),
   activeSurveys: selectActiveSurveys(state)
 });
