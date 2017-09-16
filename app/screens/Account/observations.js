@@ -127,11 +127,6 @@ class AccountObservations extends Component {
                 <TouchableOpacity
                   style={[baseStyles.surveyCard]}
                   onPress={() => {
-                    console.log(item);
-                    console.log(
-                      `/observation/${item.tags.surveyId}/${item.tags
-                        .surveyType}`
-                    );
                     setActiveObservation(item);
 
                     history.push({

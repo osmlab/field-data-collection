@@ -74,108 +74,101 @@ class SurveysScreen extends Component {
     );
 
     return (
-      <Wrapper headerView={headerView}>
-        <View>
-          <View
-            style={[baseStyles.wrapperContentHeader, baseStyles.headerPage]}
+      <Wrapper style={[baseStyles.wrapper]} headerView={headerView}>
+        <View style={[baseStyles.wrapperContentHeader, baseStyles.headerPage]}>
+          <Text
+            style={[
+              baseStyles.h2,
+              baseStyles.textWhite,
+              baseStyles.headerWithDescription
+            ]}
           >
-            <Text
-              style={[
-                baseStyles.h2,
-                baseStyles.textWhite,
-                baseStyles.headerWithDescription
-              ]}
-            >
-              {surveyId}
-            </Text>
-            <Text style={[baseStyles.metadataText, baseStyles.textWhite]}>
-              {`${numObservations || 0} observations`}
-            </Text>
-          </View>
-          <View style={[baseStyles.wrapperContent]}>
-            <ListView
-              style={[baseStyles.listView]}
-              dataSource={observations}
-              noScroll={true}
-              renderRow={item => {
-                const percentage = item.percentage + "%";
-                const complete = parseInt(item.percentage / 10, 10);
-                const incomplete = 10 - complete;
+            {surveyId}
+          </Text>
+          <Text style={[baseStyles.metadataText, baseStyles.textWhite]}>
+            {`${numObservations || 0} observations`}
+          </Text>
+        </View>
+        <ListView
+          style={[baseStyles.listView]}
+          dataSource={observations}
+          noScroll={true}
+          renderRow={item => {
+            const percentage = item.percentage + "%";
+            const complete = parseInt(item.percentage / 10, 10);
+            const incomplete = 10 - complete;
 
-                return (
-                  <TouchableOpacity
-                    style={[baseStyles.surveyCard]}
-                    onPress={() => {
-                      setActiveObservation(item);
+            return (
+              <View style={[baseStyles.wrapperContent]}>
+                <TouchableOpacity
+                  style={[baseStyles.surveyCard]}
+                  onPress={() => {
+                    setActiveObservation(item);
 
-                      history.push({
-                        pathname: `/observation/${item.tags.surveyId}/${item
-                          .tags.surveyType}`
-                      });
-                    }}
-                  >
-                    <View>
-                      <Map
-                        center={{ latitude: item.lat, longitude: item.lon }}
-                        zoom={16}
+                    history.push({
+                      pathname: `/observation/${item.tags.surveyId}/${item.tags
+                        .surveyType}`
+                    });
+                  }}
+                >
+                  <View>
+                    <Map
+                      center={{ latitude: item.lat, longitude: item.lon }}
+                      zoom={16}
+                    >
+                      <AnnotationObservation
+                        id={item.id}
+                        coordinates={{
+                          latitude: item.lat,
+                          longitude: item.lon
+                        }}
+                      />
+                    </Map>
+
+                    {
+                      <PercentComplete
+                        radius={35}
+                        complete={complete}
+                        incomplete={incomplete}
                       >
-                        <AnnotationObservation
-                          id={item.id}
-                          coordinates={{
-                            latitude: item.lat,
-                            longitude: item.lon
-                          }}
-                        />
-                      </Map>
-
-                      {
-                        <PercentComplete
-                          radius={35}
-                          complete={complete}
-                          incomplete={incomplete}
-                        >
-                          <Text style={[baseStyles.percentCompleteTextSm]}>
-                            <Text style={[baseStyles.percentCompleteTextNumSm]}>
-                              {percentage}
-                            </Text>
+                        <Text style={[baseStyles.percentCompleteTextSm]}>
+                          <Text style={[baseStyles.percentCompleteTextNumSm]}>
+                            {percentage}
                           </Text>
-                        </PercentComplete>
-                      }
-
-                      <View style={[baseStyles.surveyCardContent]}>
-                        <Text
-                          style={[
-                            baseStyles.h3,
-                            baseStyles.headerWithDescription,
-                            baseStyles.headerLink
-                          ]}
-                        >
-                          Observation
                         </Text>
-                        <View style={[baseStyles.spaceBelow]}>
-                          <View
-                            style={[baseStyles.wrappedItems, baseStyles.spacer]}
-                          >
-                            <Text>
-                              Updated:{" "}
-                              {format(
-                                item.timestamp,
-                                "h:mm aa ddd, MMM D, YYYY"
-                              )}
-                            </Text>
-                          </View>
+                      </PercentComplete>
+                    }
+
+                    <View style={[baseStyles.surveyCardContent]}>
+                      <Text
+                        style={[
+                          baseStyles.h3,
+                          baseStyles.headerWithDescription,
+                          baseStyles.headerLink
+                        ]}
+                      >
+                        Observation
+                      </Text>
+                      <View style={[baseStyles.spaceBelow]}>
+                        <View
+                          style={[baseStyles.wrappedItems, baseStyles.spacer]}
+                        >
                           <Text>
-                            {item.surveyName}
+                            Updated:{" "}
+                            {format(item.timestamp, "h:mm aa ddd, MMM D, YYYY")}
                           </Text>
                         </View>
+                        <Text>
+                          {item.surveyName}
+                        </Text>
                       </View>
                     </View>
-                  </TouchableOpacity>
-                );
-              }}
-            />
-          </View>
-        </View>
+                  </View>
+                </TouchableOpacity>
+              </View>
+            );
+          }}
+        />
       </Wrapper>
     );
   }
