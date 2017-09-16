@@ -1,20 +1,59 @@
+import { format } from "date-fns";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import {
-  StyleSheet,
-  View,
-  Button,
-  TouchableOpacity,
-  TouchableHighlight
-} from "react-native";
+import { View, ListView, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
-import { Text, Wrapper, PercentComplete } from "../../components";
+import {
+  Text,
+  Wrapper,
+  PercentComplete,
+  AnnotationObservation,
+  Map
+} from "../../components";
 import { baseStyles } from "../../styles";
 
+import {
+  pickSurveyType,
+  calculateCompleteness
+} from "../../lib/calculate-completeness";
+
+import { osm, setActiveObservation } from "../../actions";
+
+import { selectActiveSurveys } from "../../selectors";
+
 class SurveysScreen extends Component {
+  componentWillMount() {
+    const { surveys, match: { params: { surveyId } } } = this.props;
+    let { definition: { featureTypes } } = surveys.find(survey => {
+      return survey && survey.definition && survey.definition.name === surveyId;
+    });
+
+    const ds = new ListView.DataSource({
+      rowHasChanged: (r1, r2) => r1 !== r2
+    });
+
+    this.setState({ observations: ds.cloneWithRows([]) });
+
+    osm.getObservationsBySurveyId(surveyId, (err, observations) => {
+      let resultsWithCompleteness = observations.map(observation => {
+        // For each observation, pick the correct fields for that observation's
+        // type and calculate completeness
+        let surveyFields = pickSurveyType(featureTypes, observation);
+        let percentage = calculateCompleteness(surveyFields, observation);
+        return Object.assign({}, observation, { percentage });
+      });
+
+      this.setState({
+        observations: ds.cloneWithRows(resultsWithCompleteness),
+        numObservations: resultsWithCompleteness.length
+      });
+    });
+  }
+
   render() {
-    const { history } = this.props;
+    const { history, match: { params: { surveyId } } } = this.props;
+    const { observations, numObservations } = this.state;
 
     const headerView = (
       <View
@@ -47,37 +86,94 @@ class SurveysScreen extends Component {
                 baseStyles.headerWithDescription
               ]}
             >
-              Survey Name
+              {surveyId}
             </Text>
             <Text style={[baseStyles.metadataText, baseStyles.textWhite]}>
-              2 observations
+              {`${numObservations || 0} observations`}
             </Text>
           </View>
           <View style={[baseStyles.wrapperContent]}>
-            <TouchableOpacity
-              style={[baseStyles.surveyCard]}
-              onPress={() => {}}
-            >
-              <View style={[baseStyles.map]}>
-                <Text>Map</Text>
-              </View>
-              <View style={[baseStyles.surveyCardContent]}>
-                <Text style={[baseStyles.h3, baseStyles.headerWithDescription]}>
-                  Name of Observation
-                </Text>
-                <View
-                  style={[
-                    baseStyles.spaceBelow,
-                    { flexDirection: "row", flexWrap: "wrap" }
-                  ]}
-                >
-                  <Text style={[baseStyles.withPipe]}>30cm away |</Text>
-                  <Text>Updated: </Text>
-                  <Text>4/30/17 4:30</Text>
-                </View>
-                <Text>Category</Text>
-              </View>
-            </TouchableOpacity>
+            <ListView
+              style={[baseStyles.listView]}
+              dataSource={observations}
+              noScroll={true}
+              renderRow={item => {
+                const percentage = item.percentage + "%";
+                const complete = parseInt(item.percentage / 10, 10);
+                const incomplete = 10 - complete;
+
+                return (
+                  <TouchableOpacity
+                    style={[baseStyles.surveyCard]}
+                    onPress={() => {
+                      setActiveObservation(item);
+
+                      history.push({
+                        pathname: `/observation/${item.tags.surveyId}/${item
+                          .tags.surveyType}`
+                      });
+                    }}
+                  >
+                    <View>
+                      <Map
+                        center={{ latitude: item.lat, longitude: item.lon }}
+                        zoom={16}
+                      >
+                        <AnnotationObservation
+                          id={item.id}
+                          coordinates={{
+                            latitude: item.lat,
+                            longitude: item.lon
+                          }}
+                        />
+                      </Map>
+
+                      {
+                        <PercentComplete
+                          radius={35}
+                          complete={complete}
+                          incomplete={incomplete}
+                        >
+                          <Text style={[baseStyles.percentCompleteTextSm]}>
+                            <Text style={[baseStyles.percentCompleteTextNumSm]}>
+                              {percentage}
+                            </Text>
+                          </Text>
+                        </PercentComplete>
+                      }
+
+                      <View style={[baseStyles.surveyCardContent]}>
+                        <Text
+                          style={[
+                            baseStyles.h3,
+                            baseStyles.headerWithDescription,
+                            baseStyles.headerLink
+                          ]}
+                        >
+                          Observation
+                        </Text>
+                        <View style={[baseStyles.spaceBelow]}>
+                          <View
+                            style={[baseStyles.wrappedItems, baseStyles.spacer]}
+                          >
+                            <Text>
+                              Updated:{" "}
+                              {format(
+                                item.timestamp,
+                                "h:mm aa ddd, MMM D, YYYY"
+                              )}
+                            </Text>
+                          </View>
+                          <Text>
+                            {item.surveyName}
+                          </Text>
+                        </View>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                );
+              }}
+            />
           </View>
         </View>
       </Wrapper>
@@ -85,14 +181,12 @@ class SurveysScreen extends Component {
   }
 }
 
-const styles = StyleSheet.create({
-  subtitle: {
-    fontSize: 17
-  }
-});
-
 const mapStateToProps = state => {
-  return {};
+  return {
+    surveys: selectActiveSurveys(state)
+  };
 };
 
-export default connect(mapStateToProps)(SurveysScreen);
+export default connect(mapStateToProps, { setActiveObservation })(
+  SurveysScreen
+);

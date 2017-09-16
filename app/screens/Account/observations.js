@@ -1,22 +1,16 @@
 import React, { Component } from "react";
-import { StyleSheet, View, ListView, TouchableOpacity } from "react-native";
-import Mapbox, { MapView } from "react-native-mapbox-gl";
+import { View, ListView, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { connect } from "react-redux";
 import { format } from "date-fns";
 import { Link } from "react-router-native";
 
 import {
-  pickSurvey,
+  pickSurveyType,
   calculateCompleteness
 } from "../../lib/calculate-completeness";
 
-import {
-  syncData,
-  setActiveObservation,
-  getPeerInfo,
-  osm
-} from "../../actions";
+import { syncData, setActiveObservation, osm } from "../../actions";
 import { selectFeatureTypes } from "../../selectors";
 import {
   Text,
@@ -39,7 +33,7 @@ class AccountObservations extends Component {
 
     osm.getObservationsByDeviceId(deviceId, (err, results) => {
       let resultsWithCompleteness = results.map(result => {
-        let survey = pickSurvey(types, result);
+        let survey = pickSurveyType(types, result);
         let percentage = calculateCompleteness(survey, result);
         result.percentage = percentage;
         return result;
@@ -133,6 +127,11 @@ class AccountObservations extends Component {
                 <TouchableOpacity
                   style={[baseStyles.surveyCard]}
                   onPress={() => {
+                    console.log(item);
+                    console.log(
+                      `/observation/${item.tags.surveyId}/${item.tags
+                        .surveyType}`
+                    );
                     setActiveObservation(item);
 
                     history.push({

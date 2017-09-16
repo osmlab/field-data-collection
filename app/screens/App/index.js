@@ -88,7 +88,7 @@ export class App extends Component {
               component={ChoosePoint}
             />
 
-            <Route path="/account/surveys/:survey" component={Survey} />
+            <Route path="/account/surveys/:surveyId" component={Survey} />
 
             <Route exact path="/observation" component={Observation} />
 

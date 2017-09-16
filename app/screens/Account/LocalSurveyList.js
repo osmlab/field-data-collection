@@ -16,7 +16,7 @@ class LocalSurveyList extends Component {
     this.state = { surveys: {} };
 
     // get observations of each survey
-    surveys.map(survey => {
+    surveys.forEach(survey => {
       const surveyId = survey.definition.name;
       osm.getObservationsBySurveyId(surveyId, (err, observations) => {
         const surveys = this.state.surveys;
