@@ -176,7 +176,6 @@ class SurveysScreen extends Component {
         <TouchableOpacity
           style={[baseStyles.wrapperContent]}
           onPress={() => {
-            console.log("survey", surveyName, surveyId);
             Alert.alert(
               `Delete ${surveyName}?`,
               "This will remove the survey from your phone, but not your observations",
