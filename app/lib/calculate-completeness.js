@@ -6,7 +6,7 @@
  * @param {Object} observation 
  * @return {Array}
  */
-function pickSurvey(allSurveyFields, observation) {
+function pickSurveyType(allSurveyFields, observation) {
   const surveyType = observation.tags.surveyType;
   for (let i = 0; i < allSurveyFields.length; i++) {
     if (allSurveyFields[i].id === surveyType) {
@@ -33,5 +33,5 @@ function calculateCompleteness(surveyFields, observation) {
 
 module.exports = {
   calculateCompleteness,
-  pickSurvey
+  pickSurveyType
 };

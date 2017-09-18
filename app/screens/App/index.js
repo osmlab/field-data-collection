@@ -30,6 +30,7 @@ import AddSurvey from "../Account/add-survey";
 import Profile from "../Account/profile";
 import Settings from "../Account/settings";
 import Surveys from "../Account/surveys";
+import Survey from "../Account/survey";
 
 // OSM features
 import ViewOsmFeature from "../OsmFeature/view";
@@ -86,6 +87,8 @@ export class App extends Component {
               exact
               component={ChoosePoint}
             />
+
+            <Route path="/account/surveys/:surveyId" component={Survey} />
 
             <Route exact path="/observation" component={Observation} />
 
