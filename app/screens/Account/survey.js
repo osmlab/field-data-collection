@@ -1,7 +1,7 @@
 import { format } from "date-fns";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { View, ListView, TouchableOpacity } from "react-native";
+import { View, ListView, TouchableOpacity, Alert } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
 import {
@@ -18,14 +18,14 @@ import {
   calculateCompleteness
 } from "../../lib/calculate-completeness";
 
-import { osm, setActiveObservation } from "../../actions";
+import { osm, setActiveObservation, deleteLocalSurvey } from "../../actions";
 
 import { selectActiveSurveys } from "../../selectors";
 
 class SurveysScreen extends Component {
   componentWillMount() {
     const { surveys, match: { params: { surveyId } } } = this.props;
-    let { definition: { featureTypes } } = surveys.find(survey => {
+    let { definition: { featureTypes, id } } = surveys.find(survey => {
       return survey && survey.definition && survey.definition.name === surveyId;
     });
 
@@ -33,7 +33,11 @@ class SurveysScreen extends Component {
       rowHasChanged: (r1, r2) => r1 !== r2
     });
 
-    this.setState({ observations: ds.cloneWithRows([]) });
+    this.setState({
+      observations: ds.cloneWithRows([]),
+      surveyName: surveyId,
+      surveyId: id
+    });
 
     osm.getObservationsBySurveyId(surveyId, (err, observations) => {
       let resultsWithCompleteness = observations.map(observation => {
@@ -52,8 +56,8 @@ class SurveysScreen extends Component {
   }
 
   render() {
-    const { history, match: { params: { surveyId } } } = this.props;
-    const { observations, numObservations } = this.state;
+    const { history, setActiveObservation, deleteLocalSurvey } = this.props;
+    const { observations, numObservations, surveyId, surveyName } = this.state;
 
     const headerView = (
       <View
@@ -83,7 +87,7 @@ class SurveysScreen extends Component {
               baseStyles.headerWithDescription
             ]}
           >
-            {surveyId}
+            {surveyName}
           </Text>
           <Text style={[baseStyles.metadataText, baseStyles.textWhite]}>
             {`${numObservations || 0} observations`}
@@ -106,8 +110,8 @@ class SurveysScreen extends Component {
                     setActiveObservation(item);
 
                     history.push({
-                      pathname: `/observation/${item.tags.surveyId}/${item.tags
-                        .surveyType}`
+                      pathname: `/observation/${item.tags.surveyName}/${item
+                        .tags.surveyType}`
                     });
                   }}
                 >
@@ -169,6 +173,34 @@ class SurveysScreen extends Component {
             );
           }}
         />
+        <TouchableOpacity
+          style={[baseStyles.wrapperContent]}
+          onPress={() => {
+            console.log("survey", surveyName, surveyId);
+            Alert.alert(
+              `Delete ${surveyName}?`,
+              "This will remove the survey from your phone, but not your observations",
+              [
+                {
+                  text: "Cancel",
+                  onPress: () => console.log("Cancel Pressed"),
+                  style: "cancel"
+                },
+                {
+                  text: "Delete survey",
+                  onPress: () => {
+                    deleteLocalSurvey(surveyId);
+                    history.push("/account/surveys");
+                  }
+                }
+              ]
+            );
+          }}
+        >
+          <Text style={[baseStyles.h3, baseStyles.headerLink]}>
+            Delete Survey
+          </Text>
+        </TouchableOpacity>
       </Wrapper>
     );
   }
@@ -180,6 +212,7 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, { setActiveObservation })(
-  SurveysScreen
-);
+export default connect(mapStateToProps, {
+  setActiveObservation,
+  deleteLocalSurvey
+})(SurveysScreen);
