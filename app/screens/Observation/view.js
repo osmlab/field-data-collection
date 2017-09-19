@@ -89,7 +89,7 @@ class ViewObservationScreen extends Component {
   }
 
   save = () => {
-    const { saveObservation, history, observation, user } = this.props;
+    const { saveObservation, observation, user } = this.props;
 
     observation.tags.userName = user.name || "";
     observation.tags.userEmail = user.email || "";

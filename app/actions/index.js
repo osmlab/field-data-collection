@@ -406,7 +406,8 @@ export const saveObservation = observation => (dispatch, getState) => {
 
     // TODO dispatch an action invalidating the observation tile containing what was just created
     return dispatch({
-      type: types.OBSERVATION_SAVED
+      type: types.OBSERVATION_SAVED,
+      observation
     });
   });
 };
