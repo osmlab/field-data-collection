@@ -19,7 +19,10 @@ export default (state = initialState, { observation, type }) => {
       };
 
     case types.OBSERVATION_SAVED:
-      return initialState;
+      return {
+        ...state,
+        active: observation
+      };
 
     case types.UPDATE_OBSERVATION:
       return {
