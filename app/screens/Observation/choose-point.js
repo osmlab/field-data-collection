@@ -48,7 +48,8 @@ class ChoosePoint extends Component {
       selectedBounds,
       selectedFeatures,
       visibleFeatures,
-      location
+      location,
+      deviceId
     } = this.props;
 
     let observations = [];
@@ -99,7 +100,12 @@ class ChoosePoint extends Component {
 
     if (!addPoint) {
       annotations = annotations.concat(
-        <AnnotationObservation key="center" id="center" coordinates={center} />
+        <AnnotationObservation
+          key="center"
+          id="center"
+          owner={deviceId}
+          coordinates={center}
+        />
       );
     }
 
@@ -264,7 +270,8 @@ const mapStateToProps = (state, ownProps) => {
     observation: selectActiveObservation(state),
     selectedBounds: selectSelectedBounds(state),
     selectedFeatures: selectSelectedFeatures(state),
-    visibleFeatures: selectVisibleFeatures(state)
+    visibleFeatures: selectVisibleFeatures(state),
+    deviceId: state.user.deviceId
   };
 };
 
