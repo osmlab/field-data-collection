@@ -51,7 +51,16 @@ class ViewObservationScreen extends Component {
     });
 
   onObservationTypeSelected = type => {
-    const { observation, updateObservation } = this.props;
+    const { observation, updateObservation, type: { fields } } = this.props;
+
+    // Clear previous fields if they exist
+    if (fields && fields.length > 0) {
+      fields.forEach(({ key }) => {
+        if (observation.tags[key]) {
+          delete observation.tags[key];
+        }
+      });
+    }
 
     updateObservation({
       ...observation,
@@ -281,6 +290,12 @@ class ViewObservationScreen extends Component {
 
         <View style={{ marginTop: 20 }}>
           <View style={[baseStyles.wrapperContent]}>
+            <TouchableOpacity onPress={this.openObservationTypeModal}>
+              <Text style={[baseStyles.h3, baseStyles.headerLink]}>
+                Select observation type
+              </Text>
+            </TouchableOpacity>
+
             {fields != null &&
               <View>
                 <Text style={[baseStyles.h3]}>Basic Info</Text>
@@ -289,13 +304,6 @@ class ViewObservationScreen extends Component {
                   {fields.map(this.renderField, this)}
                 </View>
               </View>}
-
-            {fields == null &&
-              <TouchableOpacity onPress={this.openObservationTypeModal}>
-                <Text style={[baseStyles.h3, baseStyles.headerLink]}>
-                  Select observation type
-                </Text>
-              </TouchableOpacity>}
           </View>
         </View>
 
