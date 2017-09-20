@@ -35,7 +35,7 @@ export default class RemoteSurveyList extends Component {
 
   componentWillMount() {
     this.setState({
-      address: "http://10.0.2.2:3211"
+      address: "http://10.0.2.2:3210"
     });
   }
 
