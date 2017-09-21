@@ -11,6 +11,7 @@ const initialState = {
   mdnsConnectionFailed: null,
   manualConnectionFailed: null,
   available: [],
+  active: [],
   remote: []
 };
 
@@ -96,6 +97,26 @@ export default (
         ...state,
         available: state.available.filter(s => s.definition.id !== id)
       };
+
+    /**
+       * state.active is a list of survey ids
+       * that the user has toggled on in Account/Surveys
+       * 
+       */
+    case types.TOGGLE_SURVEY_ACTIVITY:
+      // Check if state.active contains the survey
+      let isActive = !!state.active.find(v => v === id);
+      if (isActive) {
+        return {
+          ...state,
+          active: state.active.filter(v => v !== id)
+        };
+      } else {
+        return {
+          ...state,
+          active: [...state.active, id]
+        };
+      }
 
     default:
       return state;

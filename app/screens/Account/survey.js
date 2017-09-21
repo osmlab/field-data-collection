@@ -20,7 +20,7 @@ import {
 
 import { osm, setActiveObservation, deleteLocalSurvey } from "../../actions";
 
-import { selectActiveSurveys } from "../../selectors";
+import { selectAvailableSurveys } from "../../selectors";
 
 class SurveysScreen extends Component {
   componentWillMount() {
@@ -207,7 +207,7 @@ class SurveysScreen extends Component {
 
 const mapStateToProps = state => {
   return {
-    surveys: selectActiveSurveys(state)
+    surveys: selectAvailableSurveys(state)
   };
 };
 

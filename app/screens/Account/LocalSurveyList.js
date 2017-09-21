@@ -1,12 +1,11 @@
 import React, { Component } from "react";
-import { View, Alert } from "react-native";
+import { View, Switch } from "react-native";
 import { connect } from "react-redux";
-import Icon from "react-native-vector-icons/MaterialIcons";
 import { Link } from "react-router-native";
+import { toggleSurveyActivity } from "../../actions";
 
 import { osm } from "../../actions";
 
-import { deleteLocalSurvey } from "../../actions";
 import { Text } from "../../components";
 import { baseStyles } from "../../styles";
 
@@ -36,7 +35,7 @@ class LocalSurveyList extends Component {
   }
 
   render() {
-    const { surveys, deleteLocalSurvey } = this.props;
+    const { surveys, toggleSurveyActivity } = this.props;
 
     if (surveys == null || surveys.length === 0) {
       return null;
@@ -74,26 +73,10 @@ class LocalSurveyList extends Component {
                     {survey.definition.name}
                   </Text>
 
-                  <Icon
-                    name="delete"
-                    style={[[baseStyles.headerBackIcon]]}
-                    onPress={() => {
-                      Alert.alert(
-                        `Delete ${survey.definition.name}?`,
-                        "This will remove the survey from your phone, but not your observations",
-                        [
-                          {
-                            text: "Cancel",
-                            onPress: () => console.log("Cancel Pressed"),
-                            style: "cancel"
-                          },
-                          {
-                            text: "Delete survey",
-                            onPress: () =>
-                              deleteLocalSurvey(survey.definition.id)
-                          }
-                        ]
-                      );
+                  <Switch
+                    value={survey.active}
+                    onValueChange={() => {
+                      toggleSurveyActivity(survey.definition.id);
                     }}
                   />
                 </View>
@@ -115,4 +98,6 @@ const mapStateToProps = state => {
   return {};
 };
 
-export default connect(mapStateToProps, { deleteLocalSurvey })(LocalSurveyList);
+export default connect(mapStateToProps, { toggleSurveyActivity })(
+  LocalSurveyList
+);
