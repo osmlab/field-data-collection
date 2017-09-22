@@ -54,7 +54,7 @@ class LocalSurveyList extends Component {
             : 0;
 
           return (
-            <Link to={`/account/surveys/${survey.definition.name}`}>
+            <View>
               <View
                 key={idx}
                 style={[
@@ -72,11 +72,13 @@ class LocalSurveyList extends Component {
                     }
                   ]}
                 >
-                  <Text
-                    style={[baseStyles.h3, baseStyles.headerWithDescription]}
-                  >
-                    {survey.definition.name}
-                  </Text>
+                  <Link to={`/account/surveys/${survey.definition.name}`}>
+                    <Text
+                      style={[baseStyles.h3, baseStyles.headerWithDescription]}
+                    >
+                      {survey.definition.name}
+                    </Text>
+                  </Link>
 
                   <Switch
                     value={survey.active}
@@ -92,8 +94,11 @@ class LocalSurveyList extends Component {
                     {observationCount} Observations
                   </Text>
                 </View>
+                <Link to={`/account/surveys/${survey.definition.name}`}>
+                  <Text>Edit</Text>
+                </Link>
               </View>
-            </Link>
+            </View>
           );
         })}
       </View>
