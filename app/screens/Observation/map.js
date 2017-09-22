@@ -149,10 +149,9 @@ class ObservationMapScreen extends Component {
     getCurrentPosition((err, data) => {
       if (data) {
         this.setState({ userLocation: data.coords });
+        this.onUpdateBounds();
       }
     });
-
-    this.onUpdateBounds();
   };
 
   onRegionDidChange = info => this.onUpdateBounds();
@@ -176,9 +175,9 @@ class ObservationMapScreen extends Component {
   onUpdateBounds = () => {
     const { updateVisibleBounds } = this.props;
 
-    // NOTE getBounds returns (lat, lon, lat, lon) so we convert it here
     if (this._map) {
       this._map.getBounds(bounds =>
+        // NOTE getBounds returns (lat, lon, lat, lon) so we convert it here
         updateVisibleBounds([bounds[1], bounds[0], bounds[3], bounds[2]])
       );
     }
