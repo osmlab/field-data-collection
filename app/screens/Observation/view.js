@@ -281,7 +281,9 @@ class ViewObservationScreen extends Component {
                 baseStyles.headerWithDescription
               ]}
             >
-              {fields != null ? name : "Create observation"}
+              {fields != null
+                ? "Add Observation Details"
+                : "Create Observation"}
             </Text>
           </View>
         </View>
@@ -290,14 +292,28 @@ class ViewObservationScreen extends Component {
 
         <View style={{ marginTop: 20 }}>
           <View style={[baseStyles.wrapperContent]}>
-            <TouchableOpacity onPress={this.openObservationTypeModal}>
-              <Text style={[baseStyles.h3, baseStyles.headerLink]}>
-                Select observation type
-              </Text>
+            <TouchableOpacity
+              onPress={this.openObservationTypeModal}
+              style={[baseStyles.fieldset]}
+            >
+              <View style={[baseStyles.field]}>
+                <View>
+                  <Text style={[baseStyles.h5]}>SELECT OBSERVATION TYPE</Text>
+                  <Text style={[baseStyles.fieldValue]}>
+                    {name}
+                  </Text>
+                </View>
+                <View>
+                  <Icon
+                    name="keyboard-arrow-right"
+                    style={baseStyles.fieldArrow}
+                  />
+                </View>
+              </View>
             </TouchableOpacity>
 
             {fields != null &&
-              <View>
+              <View style={{ marginTop: 20 }}>
                 <Text style={[baseStyles.h3]}>Basic Info</Text>
 
                 <View style={[baseStyles.fieldset, { marginBottom: 50 }]}>
