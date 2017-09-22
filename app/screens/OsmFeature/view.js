@@ -14,7 +14,7 @@ import { format } from "date-fns";
 import { initializeObservation, setActiveObservation } from "../../actions";
 import { Text, Wrapper, Map, AnnotationOSM } from "../../components";
 import {
-  pickSurvey,
+  pickSurveyType,
   calculateCompleteness
 } from "../../lib/calculate-completeness";
 import { selectFeatureTypes } from "../../selectors";
@@ -158,7 +158,7 @@ class ViewOsmFeature extends Component {
         const surveyType = obs.tags.surveyType;
 
         console.log("obs", obs);
-        const survey = pickSurvey(types, obs);
+        const survey = pickSurveyType(types, obs);
         const percent = calculateCompleteness(survey, obs);
 
         return (
