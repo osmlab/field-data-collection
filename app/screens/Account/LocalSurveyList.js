@@ -5,6 +5,7 @@ import { Link } from "react-router-native";
 import { toggleSurveyActivity } from "../../actions";
 
 import { osm } from "../../actions";
+import { selectActiveSurveyIds } from "../../selectors";
 
 import { Text } from "../../components";
 import { baseStyles } from "../../styles";
@@ -35,7 +36,11 @@ class LocalSurveyList extends Component {
   }
 
   render() {
-    const { surveys, toggleSurveyActivity } = this.props;
+    const { surveys, toggleSurveyActivity, activeIds } = this.props;
+
+    // We want to disable the toggles if there is only one
+    // active id left
+    let disableToggle = activeIds.length <= 1;
 
     if (surveys == null || surveys.length === 0) {
       return null;
@@ -75,6 +80,7 @@ class LocalSurveyList extends Component {
 
                   <Switch
                     value={survey.active}
+                    disabled={survey.active && disableToggle} // Only disable active surveys
                     onValueChange={() => {
                       toggleSurveyActivity(survey.definition.id);
                     }}
@@ -95,7 +101,9 @@ class LocalSurveyList extends Component {
 }
 
 const mapStateToProps = state => {
-  return {};
+  return {
+    activeIds: selectActiveSurveyIds(state).filter(x => x) // filter out null ids
+  };
 };
 
 export default connect(mapStateToProps, { toggleSurveyActivity })(

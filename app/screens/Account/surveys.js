@@ -75,6 +75,10 @@ class SurveysScreen extends Component {
           {showModal && <SurveyModal close={this.hideModal} />}
 
           <LocalSurveyList surveys={availableSurveys} />
+          <Text style={[baseStyles.wrapperContent]}>
+            Choose which surveys to edit and show on the map. One survey has to
+            be active at any time.
+          </Text>
         </ScrollView>
         <View
           style={{
