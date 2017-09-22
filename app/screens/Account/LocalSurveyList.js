@@ -82,7 +82,8 @@ class LocalSurveyList extends Component {
                     value={survey.active}
                     disabled={survey.active && disableToggle} // Only disable active surveys
                     onValueChange={() => {
-                      toggleSurveyActivity(survey.definition.id);
+                      let { name, id } = survey.definition;
+                      toggleSurveyActivity(name || id);
                     }}
                   />
                 </View>

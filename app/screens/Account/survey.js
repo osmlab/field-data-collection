@@ -26,7 +26,8 @@ class SurveysScreen extends Component {
   componentWillMount() {
     const { surveys, match: { params: { surveyId } } } = this.props;
     let { definition: { featureTypes, id } } = surveys.find(survey => {
-      return survey && survey.definition && survey.definition.name === surveyId;
+      let { name, id } = survey.definition;
+      return surveyId === (name || id);
     });
 
     const ds = new ListView.DataSource({
