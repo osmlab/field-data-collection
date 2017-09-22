@@ -400,15 +400,15 @@ const baseStyles = StyleSheet.create({
   wrappedItemsExSm: {
     flex: 0.09
   },
-
   formArrowCategories: {
     fontSize: 28,
-    color: colors.interface.links
+    color: colors.interface.links,
+    paddingTop: 4
   },
   formArrow: {
     fontSize: 28,
     color: colors.interface.links,
-    paddingTop: 6
+    paddingTop: 4
   }
 });
 

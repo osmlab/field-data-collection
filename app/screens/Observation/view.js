@@ -292,21 +292,24 @@ class ViewObservationScreen extends Component {
 
         <View style={{ marginTop: 20 }}>
           <View style={[baseStyles.wrapperContent]}>
+            <Text style={[baseStyles.h4, { marginBottom: 8 }]}>
+              Select Observation Type
+            </Text>
             <TouchableOpacity
               onPress={this.openObservationTypeModal}
-              style={[baseStyles.fieldset]}
+              style={[baseStyles.fieldset, { marginBottom: 20 }]}
             >
               <View style={[baseStyles.field]}>
-                <View>
-                  <Text style={[baseStyles.h5]}>SELECT OBSERVATION TYPE</Text>
+                <View style={[baseStyles.wrappedItemsLg]}>
+                  <Text style={[baseStyles.h5]}>TYPE</Text>
                   <Text style={[baseStyles.fieldValue]}>
                     {name}
                   </Text>
                 </View>
-                <View>
+                <View style={baseStyles.wrappedItemsSm}>
                   <Icon
                     name="keyboard-arrow-right"
-                    style={baseStyles.fieldArrow}
+                    style={baseStyles.formArrowCategories}
                   />
                 </View>
               </View>
@@ -314,7 +317,9 @@ class ViewObservationScreen extends Component {
 
             {fields != null &&
               <View style={{ marginTop: 20 }}>
-                <Text style={[baseStyles.h3]}>Basic Info</Text>
+                <Text style={[baseStyles.h4, { marginBottom: 8 }]}>
+                  Basic Information
+                </Text>
 
                 <View style={[baseStyles.fieldset, { marginBottom: 50 }]}>
                   {fields.map(this.renderField, this)}
