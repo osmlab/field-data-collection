@@ -51,7 +51,16 @@ class ViewObservationScreen extends Component {
     });
 
   onObservationTypeSelected = type => {
-    const { observation, updateObservation } = this.props;
+    const { observation, updateObservation, type: { fields } } = this.props;
+
+    // Clear previous fields if they exist
+    if (fields && fields.length > 0) {
+      fields.forEach(({ key }) => {
+        if (observation.tags[key]) {
+          delete observation.tags[key];
+        }
+      });
+    }
 
     updateObservation({
       ...observation,
@@ -274,7 +283,9 @@ class ViewObservationScreen extends Component {
                 baseStyles.headerWithDescription
               ]}
             >
-              {fields != null ? name : "Create observation"}
+              {fields != null
+                ? "Add Observation Details"
+                : "Create Observation"}
             </Text>
           </View>
         </View>
@@ -283,21 +294,39 @@ class ViewObservationScreen extends Component {
 
         <View style={{ marginTop: 20 }}>
           <View style={[baseStyles.wrapperContent]}>
+            <Text style={[baseStyles.h4, { marginBottom: 8 }]}>
+              Select Observation Type
+            </Text>
+            <TouchableOpacity
+              onPress={this.openObservationTypeModal}
+              style={[baseStyles.fieldset, { marginBottom: 20 }]}
+            >
+              <View style={[baseStyles.field]}>
+                <View style={[baseStyles.wrappedItemsLg]}>
+                  <Text style={[baseStyles.h5]}>TYPE</Text>
+                  <Text style={[baseStyles.fieldValue]}>
+                    {name}
+                  </Text>
+                </View>
+                <View style={baseStyles.wrappedItemsSm}>
+                  <Icon
+                    name="keyboard-arrow-right"
+                    style={baseStyles.formArrowCategories}
+                  />
+                </View>
+              </View>
+            </TouchableOpacity>
+
             {fields != null &&
-              <View>
-                <Text style={[baseStyles.h3]}>Basic Info</Text>
+              <View style={{ marginTop: 20 }}>
+                <Text style={[baseStyles.h4, { marginBottom: 8 }]}>
+                  Basic Information
+                </Text>
 
                 <View style={[baseStyles.fieldset, { marginBottom: 50 }]}>
                   {fields.map(this.renderField, this)}
                 </View>
               </View>}
-
-            {fields == null &&
-              <TouchableOpacity onPress={this.openObservationTypeModal}>
-                <Text style={[baseStyles.h3, baseStyles.headerLink]}>
-                  Select observation type
-                </Text>
-              </TouchableOpacity>}
           </View>
         </View>
 

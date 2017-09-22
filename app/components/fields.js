@@ -27,7 +27,10 @@ export class CheckField extends Field {
           </Text>
         </View>
         <View style={[baseStyles.wrappedItemsSm]}>
-          <Icon name="keyboard-arrow-right" style={[[baseStyles.formArrow]]} />
+          <Icon
+            name="keyboard-arrow-right"
+            style={[[baseStyles.formArrowCategories]]}
+          />
         </View>
       </View>
     );
@@ -107,7 +110,7 @@ export class TextField extends Field {
 
     return (
       <View ref={x => (this._root = x)} style={[baseStyles.field]}>
-        <View>
+        <View style={[baseStyles.wrappedItemsLg]}>
           <Text style={[baseStyles.h5]}>
             {label.toUpperCase()}
           </Text>
@@ -116,8 +119,11 @@ export class TextField extends Field {
             {value || placeholder}
           </Text>
         </View>
-        <View>
-          <Icon name="keyboard-arrow-right" style={baseStyles.fieldArrow} />
+        <View style={[baseStyles.wrappedItemsSm]}>
+          <Icon
+            name="keyboard-arrow-right"
+            style={baseStyles.formArrowCategories}
+          />
         </View>
       </View>
     );
