@@ -10,6 +10,16 @@ import { selectActiveSurveyIds } from "../../selectors";
 import { Text } from "../../components";
 import { baseStyles } from "../../styles";
 
+/* Switch background */
+const ON_COLOR_DISABLED = "#CCE1D1";
+const ON_COLOR = "#B2DFDB";
+const OFF_COLOR = "#B2B2B2";
+
+/* Switch thumb */
+const ON_COLOR_DISABLED_THUMB = "#90C7A2";
+const ON_COLOR_THUMB = "#009388";
+const OFF_COLOR_THUMB = "#ECECEC";
+
 class LocalSurveyList extends Component {
   componentWillMount() {
     const { surveys } = this.props;
@@ -41,6 +51,7 @@ class LocalSurveyList extends Component {
     // We want to disable the toggles if there is only one
     // active id left
     let disableToggle = activeIds.length <= 1;
+    const onTintColor = disableToggle ? ON_COLOR_DISABLED : ON_COLOR;
 
     if (surveys == null || surveys.length === 0) {
       return null;
@@ -49,6 +60,15 @@ class LocalSurveyList extends Component {
     return (
       <View style={{}}>
         {surveys.map((survey, idx) => {
+          let thumbTintColor = ON_COLOR_THUMB;
+          if (survey.active) {
+            thumbTintColor = disableToggle
+              ? ON_COLOR_DISABLED_THUMB
+              : ON_COLOR_THUMB;
+          } else {
+            thumbTintColor = OFF_COLOR_THUMB;
+          }
+
           const observationCount = this.state.surveys[survey.definition.name]
             ? this.state.surveys[survey.definition.name].observations.length
             : 0;
@@ -81,6 +101,9 @@ class LocalSurveyList extends Component {
                   </Link>
 
                   <Switch
+                    onTintColor={onTintColor}
+                    tintColor={OFF_COLOR}
+                    thumbTintColor={thumbTintColor}
                     value={survey.active}
                     disabled={survey.active && disableToggle} // Only disable active surveys
                     onValueChange={() => {
