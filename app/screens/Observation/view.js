@@ -112,6 +112,7 @@ class ViewObservationScreen extends Component {
   };
 
   onUpdateLocation = coordinates => {
+    const { updateObservation } = this.props;
     this.setState({ coordinates });
 
     updateObservation({
@@ -159,10 +160,10 @@ class ViewObservationScreen extends Component {
   };
 
   renderMap = () => {
-    const { observation } = this.props;
+    const { observation, user: { deviceId } } = this.props;
 
     const locationText =
-      observation.lat && observation.on ? "EDIT LOCATION" : "ADD LOCATION";
+      observation.lat && observation.lon ? "EDIT LOCATION" : "ADD LOCATION";
 
     return (
       <View style={[baseStyles.mapLg]}>
@@ -174,6 +175,7 @@ class ViewObservationScreen extends Component {
         >
           <AnnotationObservation
             id="observation"
+            owner={deviceId}
             coordinates={this.state.coordinates}
           />
         </Map>

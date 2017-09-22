@@ -213,6 +213,7 @@ class ObservationMapScreen extends Component {
           <AnnotationObservation
             key={item.id}
             id={`observation-${item.id}`}
+            owner={item.tags.deviceId}
             coordinates={{ latitude: item.lat, longitude: item.lon }}
             onPress={this.onMapPress}
           />

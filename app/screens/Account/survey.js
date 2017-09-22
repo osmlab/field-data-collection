@@ -122,6 +122,7 @@ class SurveysScreen extends Component {
                     >
                       <AnnotationObservation
                         id={item.id}
+                        owner={item.tags.deviceId}
                         coordinates={{
                           latitude: item.lat,
                           longitude: item.lon

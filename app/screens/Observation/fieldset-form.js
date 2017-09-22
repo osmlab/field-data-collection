@@ -10,7 +10,6 @@ import { baseStyles } from "../../styles";
 
 class FieldsetFormScreen extends Component {
   renderField(field, index) {
-    console.log("this.props", this.props);
     const { observation, updateObservation } = this.props;
 
     try {
