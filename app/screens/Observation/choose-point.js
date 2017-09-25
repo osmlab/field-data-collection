@@ -140,6 +140,9 @@ class ChoosePoint extends Component {
           ]}
         >
           <View>
+            <Text style={[baseStyles.h3, baseStyles.headerTitle]}>
+              Confirm your point selection or create a new point.
+            </Text>
             <Map
               style={[baseStyles.mapInternal]}
               center={center}

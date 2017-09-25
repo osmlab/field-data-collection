@@ -242,12 +242,13 @@ const baseStyles = StyleSheet.create({
   },
   buttonOutline: {
     borderColor: colors.text.header,
-    borderWidth: 1,
-    paddingTop: 3,
-    paddingBottom: 3,
-    paddingLeft: 12,
-    paddingRight: 12,
-    borderRadius: 4
+    borderWidth: 2,
+    paddingTop: 12,
+    paddingBottom: 10,
+    paddingLeft: 25,
+    paddingRight: 25,
+    borderRadius: 4,
+    fontWeight: "bold"
   },
   buttonContent: {
     backgroundColor: colors.interface.links,
@@ -256,6 +257,11 @@ const baseStyles = StyleSheet.create({
     paddingLeft: 20,
     paddingRight: 20,
     borderRadius: 4
+  },
+  buttonContentWrapper: {
+    flexWrap: "wrap",
+    alignItems: "flex-start",
+    flexDirection: "row"
   },
 
   //Fieldset
@@ -383,7 +389,9 @@ const baseStyles = StyleSheet.create({
     flex: 1
   },
   syncHeaderText: {
-    paddingTop: 10
+    paddingTop: 10,
+    flex: 1,
+    flexDirection: "row"
   },
   wrappedItemsLeft: {
     flex: 0.75
