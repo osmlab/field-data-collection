@@ -258,6 +258,11 @@ const baseStyles = StyleSheet.create({
     paddingRight: 20,
     borderRadius: 4
   },
+  buttonContentWrapper: {
+    flexWrap: "wrap",
+    alignItems: "flex-start",
+    flexDirection: "row"
+  },
 
   //Fieldset
   fieldset: {
@@ -384,7 +389,9 @@ const baseStyles = StyleSheet.create({
     flex: 1
   },
   syncHeaderText: {
-    paddingTop: 10
+    paddingTop: 10,
+    flex: 1,
+    flexDirection: "row"
   },
   wrappedItemsLeft: {
     flex: 0.75

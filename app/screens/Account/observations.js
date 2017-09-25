@@ -50,17 +50,13 @@ class AccountObservations extends Component {
   };
 
   renderLastSynced = () => {
-    const styles = [
-      baseStyles.wrappedItems,
-      baseStyles.wrappedItemsLeft,
-      baseStyles.syncHeaderText
-    ];
+    const styles = [baseStyles.syncHeaderText];
 
     if (this.props.observationsLastSynced) {
       return (
         <View style={styles}>
-          <Text style={{ fontSize: 12 }}>Last Synced: </Text>
-          <Text style={{ fontSize: 12 }}>
+          <Text style={{ fontSize: 13 }}>Last Synced: </Text>
+          <Text style={{ fontSize: 13 }}>
             {format(
               this.props.observationsLastSynced,
               "h:mm aa ddd, MMM D, YYYY"
@@ -98,17 +94,22 @@ class AccountObservations extends Component {
     const { observations } = this.state;
 
     return (
-      <Wrapper style={[baseStyles.mainHeaderSpace]} headerView={headerView}>
-        <View style={[baseStyles.wrapperContentSm]}>
-          <View style={[baseStyles.wrappedItems, baseStyles.syncHeader]}>
+      <Wrapper headerView={headerView}>
+        <View style={[baseStyles.wrapperContentSm, { marginBottom: 20 }]}>
+          <View>
+            <Text style={[baseStyles.spaceBelow]}>
+              Sync new updates from the Observe Coordinator and push your
+              updates to midigate data loss.
+            </Text>
+            <View style={[baseStyles.buttonContentWrapper]}>
+              <TouchableOpacity
+                style={[baseStyles.buttonContent]}
+                onPress={this.onPressSync}
+              >
+                <Text style={[baseStyles.textWhite]}>Sync Data</Text>
+              </TouchableOpacity>
+            </View>
             {this.renderLastSynced()}
-
-            <TouchableOpacity
-              style={[baseStyles.buttonContent]}
-              onPress={this.onPressSync}
-            >
-              <Text style={[baseStyles.textWhite]}>Sync Data</Text>
-            </TouchableOpacity>
           </View>
         </View>
 

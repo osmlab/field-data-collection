@@ -176,10 +176,7 @@ class SurveysScreen extends Component {
           }}
         />
         <View
-          style={[
-            baseStyles.wrapperContent,
-            { flexWrap: "wrap", alignItems: "flex-start", flexDirection: "row" }
-          ]}
+          style={[baseStyles.wrapperContent, baseStyles.buttonContentWrapper]}
         >
           <TouchableOpacity
             style={[baseStyles.buttonOutline, { marginBottom: 40 }]}
