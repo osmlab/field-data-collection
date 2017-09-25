@@ -5,21 +5,29 @@ import { tilesForBounds } from "../lib";
 export const selectUser = state => state.user;
 
 export const selectAvailableSurveys = state => state.surveys.available;
+export const selectActiveSurveyIds = state => state.surveys.active;
 
-export const selectCustomSurveys = createSelector(
-  selectAvailableSurveys,
-  surveys => surveys.filter(x => !x.default)
+/**
+ * Selector that combines survey data with whether that
+ * survey is active
+ */
+export const selectSurveysWithActivity = createSelector(
+  [selectAvailableSurveys, selectActiveSurveyIds],
+  (surveys, activeIds) => {
+    return surveys.map(survey => {
+      let { name, id } = survey.definition;
+      var isActive = !!activeIds.find(i => i === (name || id));
+      return Object.assign({}, { active: isActive }, survey);
+    });
+  }
 );
 
-export const selectDefaultSurveys = createSelector(
-  selectAvailableSurveys,
-  surveys => surveys.filter(x => x.default)
-);
-
+/**
+ * Selector to filter surveys by activity
+ */
 export const selectActiveSurveys = createSelector(
-  [selectCustomSurveys, selectDefaultSurveys],
-  (customSurveys, defaultSurveys) =>
-    customSurveys.length > 0 ? customSurveys : defaultSurveys
+  selectSurveysWithActivity,
+  surveys => surveys.filter(s => s.active)
 );
 
 export const selectFeatureTypes = createSelector(selectActiveSurveys, surveys =>
@@ -231,8 +239,8 @@ export const selectVisibleFeatures = createSelector(
 );
 
 export const selectVisibleObservations = createSelector(
-  [selectVisibleBounds, selectObservationTiles],
-  (visibleBounds, observations) => {
+  [selectVisibleBounds, selectObservationTiles, selectActiveSurveyIds],
+  (visibleBounds, observations, activeIds) => {
     const tiles = tilesForBounds(visibleBounds);
 
     return tiles
@@ -243,6 +251,9 @@ export const selectVisibleObservations = createSelector(
 
         return visibleObservations;
       }, [])
+      .filter(obs => {
+        return !!activeIds.find(i => i === obs.tags.surveyId);
+      })
       .filter(
         ({ lat, lon }) =>
           // check for containment

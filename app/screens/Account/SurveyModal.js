@@ -12,7 +12,7 @@ import {
 } from "../../actions";
 import { StatusBar, Text } from "../../components";
 import RemoteSurveyList from "./RemoteSurveyList";
-import { selectRemoteSurveys, selectActiveSurveys } from "../../selectors";
+import { selectRemoteSurveys, selectAvailableSurveys } from "../../selectors";
 import { baseStyles } from "../../styles";
 
 class SurveyModal extends Component {
@@ -26,7 +26,7 @@ class SurveyModal extends Component {
       close,
       fetchRemoteSurvey,
       remoteSurveys,
-      activeSurveys,
+      availableSurveys,
       syncData,
       fetchingRemoteSurvey,
       fetchingListFailed,
@@ -61,7 +61,7 @@ class SurveyModal extends Component {
               fetch={fetchRemoteSurvey}
               sync={syncData}
               surveys={remoteSurveys}
-              activeSurveys={activeSurveys}
+              availableSurveys={availableSurveys}
               close={close}
               fetchingListFailed={fetchingListFailed}
               listRemoteSurveys={listRemoteSurveys}
@@ -109,7 +109,7 @@ const mapStateToProps = state => ({
   mdnsConnectionFailed: state.surveys.mdnsConnectionFailed,
   manualConnectionFailed: state.surveys.manualConnectionFailed,
   remoteSurveys: selectRemoteSurveys(state),
-  activeSurveys: selectActiveSurveys(state)
+  availableSurveys: selectAvailableSurveys(state)
 });
 
 export default connect(mapStateToProps, {

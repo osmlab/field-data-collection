@@ -6,7 +6,7 @@ import { Link } from "react-router-native";
 
 import { clearLocalSurveys } from "../../actions";
 import { Text, Wrapper } from "../../components";
-import { selectAvailableSurveys } from "../../selectors";
+import { selectSurveysWithActivity } from "../../selectors";
 import { baseStyles } from "../../styles";
 import LocalSurveyList from "./LocalSurveyList";
 import SurveyModal from "./SurveyModal";
@@ -35,11 +35,12 @@ class SurveysScreen extends Component {
 
   componentWillMount() {
     const { availableSurveys } = this.props;
+    console.log(availableSurveys);
     if (!availableSurveys.length) this.showModal();
   }
 
   render() {
-    const { availableSurveys, history } = this.props;
+    const { availableSurveys } = this.props;
     const { showModal } = this.state;
 
     const headerView = (
@@ -71,8 +72,11 @@ class SurveysScreen extends Component {
           }}
           hideStatusBar
         >
+          <Text style={[baseStyles.wrapperContent]}>
+            Choose a survey you'd like to add observations to. Please note, at
+            leaset one survey has to be active at any time.
+          </Text>
           {showModal && <SurveyModal close={this.hideModal} />}
-
           <LocalSurveyList surveys={availableSurveys} />
         </ScrollView>
         <View
@@ -95,7 +99,7 @@ class SurveysScreen extends Component {
 }
 
 const mapStateToProps = state => ({
-  availableSurveys: selectAvailableSurveys(state)
+  availableSurveys: selectSurveysWithActivity(state)
 });
 
 export default connect(mapStateToProps, { clearLocalSurveys })(SurveysScreen);
