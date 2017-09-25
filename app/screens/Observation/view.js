@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { View, TouchableOpacity, Alert } from "react-native";
 import { connect } from "react-redux";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import { format } from "date-fns";
 import { Link } from "react-router-native";
 
 import { calculateCompleteness } from "../../lib/calculate-completeness";
@@ -287,6 +288,17 @@ class ViewObservationScreen extends Component {
                 ? "Add Observation Details"
                 : "Create Observation"}
             </Text>
+            {fields != null
+              ? <Text style={[baseStyles.textWhite, { fontSize: 12 }]}>
+                  {" "}Survey: {observation.tags.surveyId}
+                </Text>
+              : <View />}
+            {observation.timestamp != null
+              ? <Text style={[baseStyles.textWhite, { fontSize: 12 }]}>
+                  {" "}Updated:{" "}
+                  {format(observation.timestamp, "h:mm aa ddd, MMM D, YYYY")}
+                </Text>
+              : <View />}
           </View>
         </View>
 
