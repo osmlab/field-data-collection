@@ -175,33 +175,38 @@ class SurveysScreen extends Component {
             );
           }}
         />
-        <TouchableOpacity
-          style={[baseStyles.wrapperContent]}
-          onPress={() => {
-            Alert.alert(
-              `Delete ${surveyName}?`,
-              "This will remove the survey from your phone, but not your observations",
-              [
-                {
-                  text: "Cancel",
-                  onPress: () => console.log("Cancel Pressed"),
-                  style: "cancel"
-                },
-                {
-                  text: "Delete survey",
-                  onPress: () => {
-                    deleteLocalSurvey(surveyId);
-                    history.push("/account/surveys");
-                  }
-                }
-              ]
-            );
-          }}
+        <View
+          style={[
+            baseStyles.wrapperContent,
+            { flexWrap: "wrap", alignItems: "flex-start", flexDirection: "row" }
+          ]}
         >
-          <Text style={[baseStyles.h3, baseStyles.headerLink]}>
-            Delete Survey
-          </Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={[baseStyles.buttonOutline, { marginBottom: 40 }]}
+            onPress={() => {
+              Alert.alert(
+                `Delete ${surveyName}?`,
+                "This will remove the survey from your phone, but not your observations",
+                [
+                  {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel"
+                  },
+                  {
+                    text: "Delete survey",
+                    onPress: () => {
+                      deleteLocalSurvey(surveyId);
+                      history.push("/account/surveys");
+                    }
+                  }
+                ]
+              );
+            }}
+          >
+            <Text>DELETE SURVEY</Text>
+          </TouchableOpacity>
+        </View>
       </Wrapper>
     );
   }

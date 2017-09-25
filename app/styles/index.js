@@ -242,12 +242,13 @@ const baseStyles = StyleSheet.create({
   },
   buttonOutline: {
     borderColor: colors.text.header,
-    borderWidth: 1,
-    paddingTop: 3,
-    paddingBottom: 3,
-    paddingLeft: 12,
-    paddingRight: 12,
-    borderRadius: 4
+    borderWidth: 2,
+    paddingTop: 12,
+    paddingBottom: 10,
+    paddingLeft: 25,
+    paddingRight: 25,
+    borderRadius: 4,
+    fontWeight: "bold"
   },
   buttonContent: {
     backgroundColor: colors.interface.links,
