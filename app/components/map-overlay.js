@@ -7,6 +7,9 @@ import {
   Animated,
   ActivityIndicator
 } from "react-native";
+import turf from "turf";
+
+import { max as maxDate, distanceInWordsToNow } from "date-fns";
 
 import Icon from "react-native-vector-icons/MaterialIcons";
 import Interactable from "react-native-interactable";
@@ -68,7 +71,8 @@ class MapOverlay extends Component {
       observations,
       loading,
       querying,
-      activeFeature
+      activeFeature,
+      userLocation
     } = this.props;
 
     features.forEach(feature => {
@@ -133,6 +137,12 @@ class MapOverlay extends Component {
       );
     }
 
+    if (userLocation) {
+      const userLatitude = userLocation.latitude;
+      const userLongitude = userLocation.longitude;
+      var origin = turf.point([userLongitude, userLatitude]);
+    }
+
     return (
       <View style={baseStyles.nearbyPoints}>
         <View style={[baseStyles.nearbyPointsHeader]}>
@@ -148,10 +158,10 @@ class MapOverlay extends Component {
               </Text>
 
               <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
-                {this.props.userLocation
+                {userLocation
                   ? <Text>
-                      Location: {this.props.userLocation.latitude.toFixed(2)},{" "}
-                      {this.props.userLocation.longitude.toFixed(2)}
+                      Location: {userLocation.latitude.toFixed(2)},{" "}
+                      {userLocation.longitude.toFixed(2)}
                     </Text>
                   : <Text>Geolocating...</Text>}
               </View>
@@ -219,6 +229,31 @@ class MapOverlay extends Component {
           }}
         >
           {features.map(item => {
+            /** Calculate distance from user */
+            let distanceLabel = "km";
+            let distance = 0;
+            if (item.lon && item.lat && origin) {
+              const location = turf.point([item.lon, item.lat]);
+              distance = turf.distance(origin, location);
+
+              if (distance < 1) {
+                distance *= 1000;
+                distanceLabel = "m";
+              }
+            }
+
+            /** Calculate last updated */
+            let dates = [];
+            item.observations.forEach(obs => {
+              dates.push(obs.timestamp);
+            });
+            let lastUpdated = "";
+            if (dates.length) {
+              lastUpdated = ` | Updated: ${distanceInWordsToNow(
+                maxDate(dates)
+              )} ago`;
+            }
+
             return (
               <View
                 ref={this.setItemRef(item.id)}
@@ -242,7 +277,12 @@ class MapOverlay extends Component {
                   </Text>
                 </Link>
                 <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
-                  {/* TODO: info about distance from user & related observations if applicable */}
+                  <Text>
+                    {`${distance.toFixed(2)} ${distanceLabel}`} away
+                  </Text>
+                  <Text>
+                    {lastUpdated}
+                  </Text>
                 </View>
                 <View
                   style={[
@@ -264,7 +304,7 @@ class MapOverlay extends Component {
   };
 
   render() {
-    const { onGeolocate } = this.props;
+    const { onGeolocate, observations } = this.props;
     const closed = Screen.height - 45;
     const open = Screen.height - 210;
 
@@ -300,7 +340,7 @@ class MapOverlay extends Component {
           <Link
             to={{
               pathname: "/observation/choose-point",
-              state: { addPoint: true }
+              state: { addPoint: true, observations: observations }
             }}
             style={{
               width: 60,
