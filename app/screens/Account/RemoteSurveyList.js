@@ -15,14 +15,11 @@ import { baseStyles } from "../../styles";
 const Screen = Dimensions.get("window");
 
 export default class RemoteSurveyList extends Component {
-  isActive = survey => {
-    const { activeSurveys } = this.props;
+  isAvailable = survey => {
+    const { availableSurveys } = this.props;
 
     // TODO: check version of survey
-    return !!activeSurveys.find(s => {
-      console.log(s.definition.name, survey.name);
-      return s.definition.name === survey.name;
-    });
+    return !!availableSurveys.find(s => s.definition.name === survey.name);
   };
 
   onAddressInput = address => {
@@ -88,13 +85,13 @@ export default class RemoteSurveyList extends Component {
           }}
         >
           {surveys.map((survey, idx) => {
-            const active = this.isActive(survey);
+            const available = this.isAvailable(survey);
 
             return (
               <TouchableOpacity
                 key={idx}
                 onPress={() => {
-                  if (active) return;
+                  if (available) return;
 
                   fetch(survey.id, survey.url);
                   sync(survey.target);
@@ -105,7 +102,7 @@ export default class RemoteSurveyList extends Component {
                   {survey.name} {survey.version}
                 </Text>
 
-                {active &&
+                {available &&
                   <View
                     style={{
                       flex: 1,

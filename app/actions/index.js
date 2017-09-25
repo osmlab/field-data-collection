@@ -43,6 +43,7 @@ const types = {
   FETCHING_REMOTE_SURVEY_LIST: "FETCHING_REMOTE_SURVEY_LIST",
   FETCHING_REMOTE_SURVEY_LIST_FAILED: "FETCHING_REMOTE_SURVEY_LIST_FAILED",
   DELETE_LOCAL_SURVEY: "DELETE_LOCAL_SURVEY",
+  TOGGLE_SURVEY_ACTIVITY: "TOGGLE_SURVEY_ACTIVITY",
   INITIALIZE_OBSERVATION: "INITIALIZE_OBSERVATION",
   SET_ACTIVE_OBSERVATION: "SET_ACTIVE_OBSERVATION",
   RECEIVED_REMOTE_SURVEY_LIST: "RECEIVED_REMOTE_SURVEY_LIST",
@@ -270,6 +271,13 @@ export const syncData = target => (dispatch, getState) => {
       }
     }
   );
+};
+
+export const toggleSurveyActivity = surveyId => dispatch => {
+  dispatch({
+    type: types.TOGGLE_SURVEY_ACTIVITY,
+    id: surveyId
+  });
 };
 
 export const clearLocalSurveys = () => (dispatch, getState) =>
