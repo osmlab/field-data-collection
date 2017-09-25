@@ -11,13 +11,13 @@ import { Text } from "../../components";
 import { baseStyles } from "../../styles";
 
 /* Switch background */
-const ON_COLOR_DISABLED = "#CCE1D1";
-const ON_COLOR = "#B2DFDB";
+const ON_COLOR_DISABLED = "#CAFAEE";
+const ON_COLOR = "#1DE9B6";
 const OFF_COLOR = "#B2B2B2";
 
 /* Switch thumb */
-const ON_COLOR_DISABLED_THUMB = "#90C7A2";
-const ON_COLOR_THUMB = "#009388";
+const ON_COLOR_DISABLED_THUMB = "#F5F7F7";
+const ON_COLOR_THUMB = "#ffffff";
 const OFF_COLOR_THUMB = "#ECECEC";
 
 class LocalSurveyList extends Component {
@@ -94,7 +94,11 @@ class LocalSurveyList extends Component {
                 >
                   <Link to={`/account/surveys/${survey.definition.name}`}>
                     <Text
-                      style={[baseStyles.h3, baseStyles.headerWithDescription]}
+                      style={[
+                        baseStyles.h3,
+                        baseStyles.headerWithDescription,
+                        baseStyles.headerLink
+                      ]}
                     >
                       {survey.definition.name}
                     </Text>
@@ -117,8 +121,11 @@ class LocalSurveyList extends Component {
                     {observationCount} Observations
                   </Text>
                 </View>
-                <Link to={`/account/surveys/${survey.definition.name}`}>
-                  <Text>Edit</Text>
+                <Link
+                  style={{ marginTop: 10 }}
+                  to={`/account/surveys/${survey.definition.name}`}
+                >
+                  <Text style={[baseStyles.link]}>Edit</Text>
                 </Link>
               </View>
             </View>
