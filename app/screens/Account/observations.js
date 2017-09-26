@@ -5,6 +5,8 @@ import { connect } from "react-redux";
 import { format } from "date-fns";
 import { Link } from "react-router-native";
 
+import { compareDesc } from "date-fns";
+
 import {
   pickSurveyType,
   calculateCompleteness
@@ -38,6 +40,10 @@ class AccountObservations extends Component {
         result.percentage = percentage;
         return result;
       });
+
+      resultsWithCompleteness.sort((a, b) =>
+        compareDesc(a.timestamp, b.timestamp)
+      );
 
       this.setState({
         observations: ds.cloneWithRows(resultsWithCompleteness)
