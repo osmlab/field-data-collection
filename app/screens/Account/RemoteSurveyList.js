@@ -138,7 +138,10 @@ export default class RemoteSurveyList extends Component {
             flexDirection: "row"
           }}
         >
-          <TouchableOpacity onPress={close} style={baseStyles.buttonBottom}>
+          <TouchableOpacity
+            onPress={close}
+            style={[baseStyles.buttonBottom, { width: Screen.width - 40 }]}
+          >
             <Text style={baseStyles.textWhite}>ADD SURVEYS</Text>
           </TouchableOpacity>
         </View>

@@ -290,7 +290,9 @@ const baseStyles = StyleSheet.create({
   nearbyPoints: {
     backgroundColor: "#fdfdfd",
     height: 400,
-    elevation: 10
+    elevation: 10,
+    borderTopWidth: 1,
+    borderTopColor: "#E5E5E5"
   },
   nearbyPointsHeader: {
     padding: 20,
@@ -307,9 +309,12 @@ const baseStyles = StyleSheet.create({
     alignContent: "center",
     height: 130,
     padding: 20,
+    paddingTop: 15,
     marginLeft: 15,
     marginRight: 15,
-    width: screen.width - 75
+    width: screen.width - 75,
+    elevation: 3,
+    backgroundColor: "#fff"
   },
   surveyCard: {
     borderWidth: 1,

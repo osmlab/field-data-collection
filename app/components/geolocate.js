@@ -9,7 +9,9 @@ const styles = StyleSheet.create({
     height: 60,
     borderRadius: 80,
     backgroundColor: "white",
-    zIndex: 10
+    zIndex: 10,
+    borderColor: "#D3D3D3",
+    borderWidth: 1
   }
 });
 
