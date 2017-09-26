@@ -202,7 +202,8 @@ const baseStyles = StyleSheet.create({
 
   headerPage: {
     backgroundColor: colors.interface.headerBackground,
-    marginBottom: 0
+    marginBottom: 0,
+    position: "relative"
   },
   headerPageText: {
     flex: 0.75,
@@ -327,12 +328,12 @@ const baseStyles = StyleSheet.create({
     paddingBottom: 25
   },
   percentCompleteWrapper: {
-    top: 65,
     right: 15,
-    position: "absolute"
+    position: "absolute",
+    paddingTop: 35
   },
   percentComplete: {
-    backgroundColor: "#ffffff",
+    backgroundColor: "#6579FC",
     width: 70,
     height: 70,
     borderRadius: 80,
