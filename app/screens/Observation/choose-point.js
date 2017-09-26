@@ -3,6 +3,8 @@ import { View, TouchableOpacity, ScrollView, Dimensions } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { connect } from "react-redux";
 import { Link } from "react-router-native";
+import turf from "turf";
+import { max as maxDate, distanceInWordsToNow } from "date-fns";
 
 import getCenterOfPoints from "../../lib/get-center-of-points";
 import { initializeObservation } from "../../actions";
@@ -127,6 +129,8 @@ class ChoosePoint extends Component {
       </View>
     );
 
+    var origin = turf.point([center.longitude, center.latitude]);
+
     return (
       <Wrapper style={[baseStyles.wrapper]} headerView={headerView}>
         <ScrollView
@@ -198,6 +202,30 @@ class ChoosePoint extends Component {
               }}
             >
               {features.map(item => {
+                /** Calculate distance from user */
+                let distanceLabel = "km";
+                let distance = 0;
+                if (item.lon && item.lat && origin) {
+                  const location = turf.point([item.lon, item.lat]);
+                  distance = turf.distance(origin, location);
+
+                  if (distance < 1) {
+                    distance *= 1000;
+                    distanceLabel = "m";
+                  }
+                }
+
+                /** Calculate last updated */
+                let dates = [];
+                item.observations.forEach(obs => {
+                  dates.push(obs.timestamp);
+                });
+                let lastUpdated = "";
+                if (dates.length) {
+                  lastUpdated = ` | Updated: ${distanceInWordsToNow(
+                    maxDate(dates)
+                  )} ago`;
+                }
                 return (
                   <View
                     ref={this.setItemRef(item.id)}
@@ -231,8 +259,16 @@ class ChoosePoint extends Component {
                       }}
                     >
                       <Text style={[baseStyles.h3, baseStyles.headerLink]}>
-                        {item.tags.name}
+                        {" "}{item.tags.name}
                       </Text>
+                      <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+                        <Text>
+                          {`${distance.toFixed(2)} ${distanceLabel}`} away
+                        </Text>
+                        <Text>
+                          {lastUpdated}
+                        </Text>
+                      </View>
                     </TouchableOpacity>
                   </View>
                 );

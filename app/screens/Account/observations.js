@@ -180,6 +180,13 @@ class AccountObservations extends Component {
                           style={[baseStyles.wrappedItems, baseStyles.spacer]}
                         >
                           <Text>
+                            Survey: {item.tags.surveyId}
+                          </Text>
+                        </View>
+                        <View
+                          style={[baseStyles.wrappedItems, baseStyles.spacer]}
+                        >
+                          <Text>
                             Updated:{" "}
                             {format(item.timestamp, "h:mm aa ddd, MMM D, YYYY")}
                           </Text>
