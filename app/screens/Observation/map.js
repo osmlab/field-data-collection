@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import { StyleSheet, View, Image } from "react-native";
+import { StyleSheet, View, Image, TouchableOpacity } from "react-native";
 import Mapbox, { MapView } from "react-native-mapbox-gl";
 import { connect } from "react-redux";
 import debounce from "debounce";
 
+import Icon from "react-native-vector-icons/MaterialIcons";
 import getCurrentPosition from "../../lib/get-current-position";
 import {
   selectActiveSurveys,
@@ -31,8 +32,10 @@ import {
   StatusBar
 } from "../../components";
 import { baseStyles } from "../../styles";
+import { colors } from "../../styles";
 
 import config from "../../config";
+import LegendModal from "./LegendModal";
 
 Mapbox.setAccessToken(config.mapboxAccessToken);
 
@@ -60,6 +63,20 @@ const styles = StyleSheet.create({
 });
 
 class ObservationMapScreen extends Component {
+  state = {
+    showModal: false
+  };
+
+  hideModal = () =>
+    this.setState({
+      showModal: false
+    });
+
+  showModal = () =>
+    this.setState({
+      showModal: true
+    });
+
   componentWillMount() {
     const { clearBbox } = this.props;
 
@@ -193,6 +210,7 @@ class ObservationMapScreen extends Component {
 
   render() {
     const { features, loading, observations, querying } = this.props;
+    const { showModal } = this.state;
 
     let annotations = features.map(item => {
       const active =
@@ -247,38 +265,35 @@ class ObservationMapScreen extends Component {
           onSync={this.prepareAnnotations}
         />
 
-        {
-          <MapView
-            ref={map => {
-              this._map = map;
-            }}
-            style={styles.map}
-            annotations={this.state.annotations}
-            onTap={this.onMapPress}
-            onOpenAnnotation={this.onMapPress}
-            onFinishLoadingMap={this.onFinishLoadingMap}
-            onUpdateUserLocation={this.onUpdateUserLocation}
-            onRegionDidChange={debounce(this.onRegionDidChange, 400)}
-            initialCenterCoordinate={this.state.center}
-            initialZoomLevel={this.state.zoom}
-            initialDirection={0}
-            rotateEnabled={false}
-            scrollEnabled
-            zoomEnabled
-            showsUserLocation={false}
-            styleURL={Mapbox.mapStyles.light}
-            userTrackingMode={this.state.userTrackingMode}
-            attributionButtonIsHidden={true}
-            logoIsHidden={true}
-          >
-            {annotations}
-          </MapView>
-        }
-
-        {/* TODO: restore legend
-          <TouchableOpacity
+        <MapView
+          ref={map => {
+            this._map = map;
+          }}
+          style={styles.map}
+          annotations={this.state.annotations}
+          onTap={this.onMapPress}
+          onOpenAnnotation={this.onMapPress}
+          onFinishLoadingMap={this.onFinishLoadingMap}
+          onUpdateUserLocation={this.onUpdateUserLocation}
+          onRegionDidChange={debounce(this.onRegionDidChange, 400)}
+          initialCenterCoordinate={this.state.center}
+          initialZoomLevel={this.state.zoom}
+          initialDirection={0}
+          rotateEnabled={false}
+          scrollEnabled
+          zoomEnabled
+          showsUserLocation={false}
+          styleURL={Mapbox.mapStyles.light}
+          userTrackingMode={this.state.userTrackingMode}
+          attributionButtonIsHidden={true}
+          logoIsHidden={true}
+        >
+          {annotations}
+        </MapView>
+        {showModal && <LegendModal close={this.hideModal} />}
+        <TouchableOpacity
           style={[styles.buttonLegend]}
-          onPress={this._onPressButton}
+          onPress={this.showModal}
         >
           <Icon
             name="info"
@@ -290,7 +305,6 @@ class ObservationMapScreen extends Component {
             }}
           />
         </TouchableOpacity>
-        */}
 
         <MapOverlay
           userLocation={this.state.userLocation}
