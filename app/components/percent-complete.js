@@ -9,11 +9,9 @@ import { baseStyles } from "../styles";
 class PercentComplete extends Component {
   render() {
     return (
-      <View style={baseStyles.percentCompleteWrapper}>
-        <View style={baseStyles.percentComplete}>
-          <PieChart {...this.props} />
-          {this.props.children}
-        </View>
+      <View style={baseStyles.percentComplete}>
+        <PieChart {...this.props} />
+        {this.props.children}
       </View>
     );
   }

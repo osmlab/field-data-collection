@@ -158,40 +158,39 @@ class AccountObservations extends Component {
                     </Map>
 
                     {
-                      <PercentComplete
-                        radius={35}
-                        complete={complete}
-                        incomplete={incomplete}
+                      <View
+                        style={[
+                          baseStyles.percentCompleteWrapper,
+                          { marginTop: 60 }
+                        ]}
                       >
-                        <Text style={[baseStyles.percentCompleteTextSm]}>
-                          <Text style={[baseStyles.percentCompleteTextNumSm]}>
-                            {percentage}
+                        <PercentComplete
+                          radius={35}
+                          complete={complete}
+                          incomplete={incomplete}
+                        >
+                          <Text style={[baseStyles.percentCompleteTextSm]}>
+                            <Text style={[baseStyles.percentCompleteTextNumSm]}>
+                              {percentage}
+                            </Text>
                           </Text>
-                        </Text>
-                      </PercentComplete>
+                        </PercentComplete>
+                      </View>
                     }
 
                     <View style={[baseStyles.surveyCardContent]}>
-                      <Text
-                        style={[
-                          baseStyles.h3,
-                          baseStyles.headerWithDescription,
-                          baseStyles.headerLink
-                        ]}
-                      >
+                      <Text style={[baseStyles.h3, baseStyles.headerLink]}>
                         Observation
                       </Text>
                       <View style={[baseStyles.spaceBelow]}>
                         <View
-                          style={[baseStyles.wrappedItems, baseStyles.spacer]}
+                          style={[baseStyles.wrappedItems, { marginBottom: 5 }]}
                         >
                           <Text>
                             Survey: {item.tags.surveyId}
                           </Text>
                         </View>
-                        <View
-                          style={[baseStyles.wrappedItems, baseStyles.spacer]}
-                        >
+                        <View style={[baseStyles.wrappedItems]}>
                           <Text>
                             Updated:{" "}
                             {format(item.timestamp, "h:mm aa ddd, MMM D, YYYY")}

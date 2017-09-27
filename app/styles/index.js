@@ -325,15 +325,16 @@ const baseStyles = StyleSheet.create({
   },
   surveyCardContent: {
     padding: 20,
-    paddingBottom: 25
+    paddingBottom: 12,
+    paddingRight: 22,
+    paddingLeft: 22
   },
   percentCompleteWrapper: {
     right: 15,
-    position: "absolute",
-    paddingTop: 35
+    position: "absolute"
   },
   percentComplete: {
-    backgroundColor: "#6579FC",
+    backgroundColor: "#fff",
     width: 70,
     height: 70,
     borderRadius: 80,

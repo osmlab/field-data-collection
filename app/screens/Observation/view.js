@@ -286,24 +286,21 @@ class ViewObservationScreen extends Component {
                 </Text>
               : <View />}
           </View>
-          {fields /* Don't render if we don't have a survey type yet */
-            ? <PercentComplete
-                radius={35}
-                complete={complete}
-                incomplete={incomplete}
-              >
-                <Text style={[baseStyles.percentCompleteTextSm]}>
-                  <Text
-                    style={[
-                      baseStyles.percentCompleteTextNumSm,
-                      { color: "#fff" }
-                    ]}
-                  >
-                    {percent + "%"}
+          <View style={[baseStyles.percentCompleteWrapper, { paddingTop: 35 }]}>
+            {fields /* Don't render if we don't have a survey type yet */
+              ? <PercentComplete
+                  radius={35}
+                  complete={complete}
+                  incomplete={incomplete}
+                >
+                  <Text style={[baseStyles.percentCompleteTextSm]}>
+                    <Text style={[baseStyles.percentCompleteTextNumSm]}>
+                      {percent + "%"}
+                    </Text>
                   </Text>
-                </Text>
-              </PercentComplete>
-            : <View />}
+                </PercentComplete>
+              : <View />}
+          </View>
         </View>
         <View style={{ borderBottomWidth: 1, borderBottomColor: "#D6D5D5" }}>
           {this.renderMap()}
