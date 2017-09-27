@@ -202,7 +202,8 @@ const baseStyles = StyleSheet.create({
 
   headerPage: {
     backgroundColor: colors.interface.headerBackground,
-    marginBottom: 0
+    marginBottom: 0,
+    position: "relative"
   },
   headerPageText: {
     flex: 0.75,
@@ -290,7 +291,9 @@ const baseStyles = StyleSheet.create({
   nearbyPoints: {
     backgroundColor: "#fdfdfd",
     height: 400,
-    elevation: 10
+    elevation: 10,
+    borderTopWidth: 1,
+    borderTopColor: "#E5E5E5"
   },
   nearbyPointsHeader: {
     padding: 20,
@@ -307,9 +310,12 @@ const baseStyles = StyleSheet.create({
     alignContent: "center",
     height: 130,
     padding: 20,
+    paddingTop: 15,
     marginLeft: 15,
     marginRight: 15,
-    width: screen.width - 75
+    width: screen.width - 75,
+    elevation: 3,
+    backgroundColor: "#fff"
   },
   surveyCard: {
     borderWidth: 1,
@@ -319,15 +325,16 @@ const baseStyles = StyleSheet.create({
   },
   surveyCardContent: {
     padding: 20,
-    paddingBottom: 25
+    paddingBottom: 12,
+    paddingRight: 22,
+    paddingLeft: 22
   },
   percentCompleteWrapper: {
-    top: 65,
     right: 15,
     position: "absolute"
   },
   percentComplete: {
-    backgroundColor: "#ffffff",
+    backgroundColor: "#fff",
     width: 70,
     height: 70,
     borderRadius: 80,

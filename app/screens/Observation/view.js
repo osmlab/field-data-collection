@@ -242,20 +242,6 @@ class ViewObservationScreen extends Component {
 
     return (
       <Wrapper style={[baseStyles.wrapper]} headerView={headerView}>
-        {fields /* Don't render if we don't have a survey type yet */
-          ? <PercentComplete
-              radius={35}
-              complete={complete}
-              incomplete={incomplete}
-            >
-              <Text style={[baseStyles.percentCompleteTextSm]}>
-                <Text style={[baseStyles.percentCompleteTextNumSm]}>
-                  {percent + "%"}
-                </Text>
-              </Text>
-            </PercentComplete>
-          : <View />}
-
         {locationModalOpen &&
           <LocationModal
             close={this.closeLocationModal}
@@ -289,22 +275,37 @@ class ViewObservationScreen extends Component {
                 : "Create Observation"}
             </Text>
             {fields != null
-              ? <Text style={[baseStyles.textWhite, { fontSize: 12 }]}>
+              ? <Text style={{ color: "#E9E9E9", marginBottom: 5 }}>
                   {" "}Survey: {observation.tags.surveyId}
                 </Text>
               : <View />}
             {observation.timestamp != null
-              ? <Text style={[baseStyles.textWhite, { fontSize: 12 }]}>
+              ? <Text style={{ color: "#E9E9E9" }}>
                   {" "}Updated:{" "}
                   {format(observation.timestamp, "h:mm aa ddd, MMM D, YYYY")}
                 </Text>
               : <View />}
           </View>
+          <View style={[baseStyles.percentCompleteWrapper, { paddingTop: 35 }]}>
+            {fields /* Don't render if we don't have a survey type yet */
+              ? <PercentComplete
+                  radius={35}
+                  complete={complete}
+                  incomplete={incomplete}
+                >
+                  <Text style={[baseStyles.percentCompleteTextSm]}>
+                    <Text style={[baseStyles.percentCompleteTextNumSm]}>
+                      {percent + "%"}
+                    </Text>
+                  </Text>
+                </PercentComplete>
+              : <View />}
+          </View>
         </View>
-
-        {this.renderMap()}
-
-        <View style={{ marginTop: 20 }}>
+        <View style={{ borderBottomWidth: 1, borderBottomColor: "#D6D5D5" }}>
+          {this.renderMap()}
+        </View>
+        <View style={{ marginTop: 30 }}>
           <View style={[baseStyles.wrapperContent]}>
             <Text style={[baseStyles.h4, { marginBottom: 8 }]}>
               Select Observation Type

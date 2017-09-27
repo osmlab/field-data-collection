@@ -30,7 +30,13 @@ export default function AnnotationObservation(props) {
       }}
     >
       <TouchableOpacity
-        style={{ width: 40, height: 55, paddingTop: 0, paddingLeft: 5 }}
+        style={{
+          width: 40,
+          height: 55,
+          paddingTop: 0,
+          paddingLeft: 5,
+          zindex: 20
+        }}
         onPress={props.onPress}
       >
         {props.owner === myDevice

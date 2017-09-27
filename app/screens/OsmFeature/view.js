@@ -77,10 +77,10 @@ class ViewOsmFeature extends Component {
               </Text>
             </View>
           </View>
-
-          {this.renderMap()}
-
-          <View style={{ marginTop: 20 }}>
+          <View style={{ borderBottomWidth: 1, borderBottomColor: "#D6D5D5" }}>
+            {this.renderMap()}
+          </View>
+          <View style={{ marginTop: 30 }}>
             <View style={[baseStyles.wrapperContent]}>
               {this.renderObservations()}
             </View>
@@ -174,11 +174,13 @@ class ViewOsmFeature extends Component {
           >
             <View ref={x => (this._root = x)} style={[baseStyles.field]}>
               <View>
-                <Text style={[baseStyles.fieldValue]}>Observation</Text>
-                <Text style={{ fontSize: 12 }}>
+                <Text style={[baseStyles.h4, baseStyles.headerWithDescription]}>
+                  Observation
+                </Text>
+                <Text style={[{ marginBottom: 10 }]}>
                   Updated: {format(obs.timestamp, "h:mm aa ddd, MMM D, YYYY")}
                 </Text>
-                <Text style={{ fontSize: 12 }}>
+                <Text>
                   {percent + "%"} complete.
                 </Text>
               </View>

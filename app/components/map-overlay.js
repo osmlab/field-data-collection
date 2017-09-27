@@ -290,7 +290,7 @@ class MapOverlay extends Component {
                     { flexDirection: "row", flexWrap: "wrap" }
                   ]}
                 >
-                  <Text style={[baseStyles.metadataText]}>
+                  <Text style={[baseStyles.metadataText, { marginTop: 10 }]}>
                     {item.observations.length} Observations
                   </Text>
                   {/*<Text style={[baseStyles.textAlert]}>(2 incomplete)</Text>*/}
