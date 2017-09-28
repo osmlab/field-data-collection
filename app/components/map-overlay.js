@@ -31,6 +31,8 @@ class MapOverlay extends Component {
     super(props);
     this._deltaY = new Animated.Value(Screen.height - 80);
     this.items = {};
+    this.shouldOpen = false;
+    this.shouldScrollback = false;
   }
 
   setItemRef = key => {
@@ -48,6 +50,7 @@ class MapOverlay extends Component {
 
   close = () => {
     this._drawer.setVelocity({ y: 1000 });
+    this._scrollView.scrollTo({ x: 0 });
     this.setState({
       drawerOpen: false
     });
@@ -59,28 +62,83 @@ class MapOverlay extends Component {
 
   componentWillMount() {
     this.setState({
-      drawerOpen: false
+      drawerOpen: false,
+      features: []
     });
   }
 
-  renderNearbyPoints = () => {
-    const {
-      areaOfInterest,
-      activeSurveys,
-      features,
-      observations,
-      loading,
-      querying,
-      activeFeature,
-      userLocation
-    } = this.props;
-
+  componentWillReceiveProps(nextProps) {
+    let { features, observations, pressedFeature } = nextProps;
     features.forEach(feature => {
       feature.observations = observations.filter(
         obs => obs.tags["osm-p2p-id"] === feature.id
       );
       return feature;
     });
+
+    let sortedFeatures = features.slice(0).sort((a, b) => {
+      if (a.id < b.id) {
+        return -1;
+      }
+      if (a.id > b.id) {
+        return 1;
+      }
+      return 0;
+    });
+
+    let shouldUpdate = false;
+
+    // If the user has selected a feature, we want to put that at the top of
+    // the list
+    if (pressedFeature) {
+      let firstIndex = sortedFeatures.findIndex(
+        feature => feature.id === pressedFeature.id
+      );
+      if (firstIndex > -1) {
+        let firstFeature = sortedFeatures[firstIndex];
+        sortedFeatures.splice(firstIndex, 1);
+        sortedFeatures.unshift(firstFeature);
+      }
+
+      shouldUpdate =
+        !this.state.pressedFeature ||
+        pressedFeature.id !== this.state.pressedFeature.id;
+      this.shouldOpen = shouldUpdate && !this.drawerOpen;
+      this.shouldScrollback = shouldUpdate;
+    }
+
+    let prevFeatures = this.state.features.slice(0);
+    if (prevFeatures.length !== sortedFeatures.length) {
+      shouldUpdate = true;
+    }
+
+    if (shouldUpdate) {
+      this.setState({
+        features: sortedFeatures,
+        pressedFeature
+      });
+    }
+  }
+
+  componentDidUpdate() {
+    if (!this.state.drawerOpen && this.shouldOpen) {
+      this.open();
+    }
+    if (this.shouldScrollback && this._drawer) {
+      this._scrollView.scrollTo({ x: 0 });
+    }
+  }
+
+  renderNearbyPoints = () => {
+    const {
+      activeSurveys,
+      loading,
+      querying,
+      activeFeature,
+      userLocation
+    } = this.props;
+
+    let features = this.state.features;
 
     if (!activeSurveys.length) {
       return (
@@ -188,6 +246,7 @@ class MapOverlay extends Component {
         </View>
 
         <ScrollView
+          ref={scrollview => (this._scrollView = scrollview)}
           horizontal={true}
           width={Screen.width}
           onScroll={e => {
@@ -197,6 +256,7 @@ class MapOverlay extends Component {
             Object.keys(this.items).forEach((key, i) => {
               const item = this.items[key];
               const feature = features.find(f => f.id === key);
+              if (!item) return;
 
               item.measure((x, y, w, h, pX, pY) => {
                 if (!active) {
@@ -371,6 +431,7 @@ class MapOverlay extends Component {
           }}
           verticalOnly={true}
           initialPosition={{ y: closed }}
+          dragEnabled={false}
           snapPoints={[{ y: open }, { y: closed }]}
           boundaries={{ top: open + 10 }}
           ref={view => {
