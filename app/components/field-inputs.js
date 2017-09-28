@@ -9,7 +9,6 @@ class Field extends Component {
   onValueChange = value => {
     const { field: { key }, updateObservation } = this.props;
 
-    console.log("field key", key);
     updateObservation({
       tags: {
         [key]: value
@@ -64,9 +63,6 @@ export class PickerField extends Field {
   render() {
     const { field: { key, label }, observation: { tags } } = this.props;
     const value = tags[key];
-
-    console.log("value", value);
-    console.log("tags", tags);
 
     return (
       <View ref={x => (this._root = x)} style={[baseStyles.field]}>
@@ -166,34 +162,49 @@ export class TextField extends Field {
 }
 
 export class DateField extends Field {
+  componentWillMount() {
+    this.state = { value: new Date() };
+    this.onValueChange(this.state.value);
+  }
+
   render() {
+    const {
+      field: { key, label, placeholder },
+      focusNextField,
+      observation: { tags }
+    } = this.props;
+
     return (
-      <DatePicker
-        style={{ width: 200 }}
-        date={this.props.value}
-        mode="date"
-        placeholder="select date"
-        format="YYYY-MM-DD"
-        minDate="2016-05-01"
-        maxDate="2016-06-01"
-        confirmBtnText="Confirm"
-        cancelBtnText="Cancel"
-        customStyles={{
-          dateIcon: {
-            position: "absolute",
-            left: 0,
-            top: 4,
-            marginLeft: 0
-          },
-          dateInput: {
-            marginLeft: 36
-          }
-          // ... You can check the source to find the other keys.
-        }}
-        onDateChange={date => {
-          this.setState({ date: date });
-        }}
-      />
+      <View ref={x => (this._root = x)} style={[baseStyles.field]}>
+        <View style={{ flex: 1 }}>
+          <Text style={baseStyles.fieldLabel}>
+            {label}
+          </Text>
+          <DatePicker
+            style={{ width: 200 }}
+            date={this.state.value}
+            mode="date"
+            placeholder="select date"
+            format="YYYY-MM-DD"
+            confirmBtnText="Confirm"
+            cancelBtnText="Cancel"
+            customStyles={{
+              dateIcon: {
+                position: "absolute",
+                left: 0,
+                top: 4,
+                marginLeft: 0
+              },
+              dateInput: {
+                marginLeft: 36
+              }
+            }}
+            onDateChange={date => {
+              this.onValueChange(date);
+            }}
+          />
+        </View>
+      </View>
     );
   }
 }
@@ -214,6 +225,9 @@ export const getFieldInput = type => {
 
     case "textarea":
       return TextField;
+
+    case "date":
+      return DateField;
 
     default:
       throw new Error(`Unsupported field type: ${type}`);
