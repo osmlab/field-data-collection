@@ -67,7 +67,8 @@ const styles = StyleSheet.create({
 
 class ObservationMapScreen extends Component {
   state = {
-    showModal: false
+    showModal: false,
+    pressedFeature: null
   };
 
   hideModal = () =>
@@ -109,17 +110,8 @@ class ObservationMapScreen extends Component {
     const { history, observations } = this.props;
     const { selectedBounds, selectedFeatures } = nextProps;
 
-    const location = {
-      pathname: "/observation/choose-point",
-      state: { observations }
-    };
-
-    if (selectedFeatures.length > 0) {
-      return history.push(location);
-    }
-
-    if (selectedBounds !== null) {
-      return history.push(location);
+    if (selectedFeatures.length > 0 && this._overlay) {
+      this._overlay.open();
     }
   }
 
@@ -130,10 +122,12 @@ class ObservationMapScreen extends Component {
   onMapPress = e => {
     const {
       history,
+      features,
       observations,
       setActiveObservation,
       notifyActiveSurveys
     } = this.props;
+
     console.log("onMapPress:", e);
 
     if (e.id != null) {
@@ -141,20 +135,23 @@ class ObservationMapScreen extends Component {
       const [type, id] = e.id.split("-");
 
       if (type === "observation") {
-        console.log("displaying observation", id);
         const observation = observations.find(o => o.id === id);
-
-        if (observation !== null) {
-          // TODO: restore ability to press an observation
-          // setActiveObservation(observation);
-          //
-          // return history.push(
-          //   `/observation/${observation.tags.surveyId}/${observation.tags
-          //     .surveyType}`
-          // );
-        } else {
-          console.warn("Unable to find observation", id);
+        const featureId = observation.tags["osm-p2p-id"];
+        const feature = features.find(f => f.id === featureId);
+        this.setState({
+          pressedFeature: feature
+        });
+      } else if (type === "feature") {
+        const feature = features.find(f => f.id === id);
+        if (feature !== null) {
+          this.setState({
+            pressedFeature: feature
+          });
         }
+      } else {
+        this.setState({
+          pressedFeature: null
+        });
       }
     }
 
@@ -381,6 +378,7 @@ class ObservationMapScreen extends Component {
           onGeolocate={this.onGeolocate}
           activeSurveys={this.props.activeSurveys}
           areaOfInterest={this.props.areaOfInterest}
+          pressedFeature={this.state.pressedFeature}
           loading={loading}
           querying={querying}
           activeFeature={this.setActiveFeature}
