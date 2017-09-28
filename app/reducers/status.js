@@ -26,13 +26,20 @@ const MESSAGES = {
   [types.OBSERVATION_SAVED]: "Observation saved!"
 };
 
-export default (state = initialState, { error, type }) => {
+export default (state = initialState, { error, type, message }) => {
   if (MESSAGES[type]) {
     return {
       ...state,
       error,
       message: MESSAGES[type]
     };
+  } else if (type === types.NOTIFY_ACTIVE_SURVEYS) {
+    return {
+      ...state,
+      message: message
+    };
+  } else if (type === types.CLEAR_STATUS) {
+    return initialState;
   }
 
   return state;

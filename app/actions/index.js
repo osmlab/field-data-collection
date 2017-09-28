@@ -78,7 +78,9 @@ const types = {
   ACTIVATING_OBSERVATION: "ACTIVATING_OBSERVATION",
   ACTIVATING_OBSERVATION_FAILED: "ACTIVATING_OBSERVATION_FAILED",
   SET_PROFILE_INFO: "SET_PROFILE_INFO",
-  SAVING_PROFILE_COMPLETED: "SAVING_PROFILE_COMPLETED"
+  SAVING_PROFILE_COMPLETED: "SAVING_PROFILE_COMPLETED",
+  NOTIFY_ACTIVE_SURVEYS: "NOTIFY_ACTIVE_SURVEYS",
+  CLEAR_STATUS: "CLEAR_STATUS"
 };
 
 // fallback to 10.0.2.2 when connecting to the coordinator (host's localhost from the emulator)
@@ -544,3 +546,12 @@ export const selectBbox = bounds => dispatch => {
 
 export const clearBbox = () => dispatch =>
   dispatch({ type: types.BBOX_CLEARED });
+
+export const notifyActiveSurveys = message => dispatch => {
+  console.log("notifyActiveSurveys", message);
+  dispatch({ type: types.NOTIFY_ACTIVE_SURVEYS, message });
+};
+
+export const clearStatus = () => dispatch => {
+  dispatch({ type: types.CLEAR_STATUS });
+};

@@ -3,6 +3,7 @@ import { StyleSheet, View, Image, TouchableOpacity } from "react-native";
 import Mapbox, { MapView } from "react-native-mapbox-gl";
 import { connect } from "react-redux";
 import debounce from "debounce";
+import { Link } from "react-router-native";
 
 import Icon from "react-native-vector-icons/MaterialIcons";
 import getCurrentPosition from "../../lib/get-current-position";
@@ -20,7 +21,9 @@ import {
   clearBbox,
   selectBbox,
   setActiveObservation,
-  updateVisibleBounds
+  updateVisibleBounds,
+  notifyActiveSurveys,
+  clearStatus
 } from "../../actions";
 import {
   AnnotationObservation,
@@ -79,7 +82,7 @@ class ObservationMapScreen extends Component {
     });
 
   componentWillMount() {
-    const { clearBbox } = this.props;
+    const { clearBbox, notifyActiveSurveys } = this.props;
 
     this.setState({
       nearbyFeaturesViewOpen: false,
@@ -117,7 +120,14 @@ class ObservationMapScreen extends Component {
   };
 
   onMapPress = e => {
-    const { features, observations } = this.props;
+    const {
+      history,
+      features,
+      observations,
+      setActiveObservation,
+      notifyActiveSurveys
+    } = this.props;
+
     console.log("onMapPress:", e);
 
     if (e.id != null) {
@@ -162,12 +172,72 @@ class ObservationMapScreen extends Component {
   };
 
   onFinishLoadingMap = e => {
+    const {
+      history,
+      clearStatus,
+      notifyActiveSurveys,
+      activeSurveys
+    } = this.props;
+
     getCurrentPosition((err, data) => {
       if (data) {
         this.setState({ userLocation: data.coords });
         this.onUpdateBounds();
       }
     });
+
+    const length = activeSurveys.length;
+
+    if (!length) {
+      return notifyActiveSurveys(
+        <Text>
+          <Text style={{ color: "white", fontWeight: "bold" }}>
+            No active Surveys
+          </Text>
+          <Text
+            style={{
+              color: "white",
+              fontSize: 10,
+              textDecorationLine: "underline"
+            }}
+            onPress={() => {
+              clearStatus();
+              history.push("/account/surveys");
+            }}
+          >
+            Import one now
+          </Text>
+        </Text>
+      );
+    }
+
+    const msg =
+      length === 1 ? activeSurveys[0].definition.name : `${length} surveys`;
+
+    notifyActiveSurveys(
+      <View style={{ flex: 1, flexDirection: "row" }}>
+        <Text style={{ color: "white", fontWeight: "bold" }}>Mapping to: </Text>
+        <Text style={{ color: "white" }}>
+          {msg}
+        </Text>
+        <Text
+          style={{
+            color: "white",
+            fontSize: 12,
+            textDecorationLine: "underline",
+            fontStyle: "italic",
+            marginLeft: 5,
+            marginTop: 3
+          }}
+          onPress={() => {
+            clearStatus();
+            history.push("/account/surveys");
+          }}
+        >
+          Change
+        </Text>
+      </View>
+    );
   };
 
   onRegionDidChange = info => this.onUpdateBounds();
@@ -333,5 +403,7 @@ export default connect(mapStateToProps, {
   clearBbox,
   selectBbox,
   setActiveObservation,
-  updateVisibleBounds
+  updateVisibleBounds,
+  notifyActiveSurveys,
+  clearStatus
 })(ObservationMapScreen);

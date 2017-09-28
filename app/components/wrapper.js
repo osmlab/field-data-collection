@@ -34,13 +34,13 @@ class Wrapper extends Component {
           {headerView}
         </Header>
 
-        {!hideStatusBar && <StatusBar />}
-
         <SideMenu
           ref={menu => {
             this._menu = menu;
           }}
         />
+
+        {!hideStatusBar && <StatusBar />}
 
         <ScrollView
           {...this.props}
