@@ -4,6 +4,7 @@ import { View } from "react-native";
 import { Text } from ".";
 import { baseStyles } from "../styles";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import { format } from "date-fns";
 
 class Field extends Component {
   setNativeProps(nativeProps) {
@@ -130,6 +131,38 @@ export class TextField extends Field {
   }
 }
 
+export class DateField extends Field {
+  render() {
+    const {
+      field: { key, label, placeholder },
+      observation: { tags }
+    } = this.props;
+    const value = tags[key]
+      ? format(tags[key] || placeholder, "h:mm aa ddd, MMM D, YYYY")
+      : null;
+
+    return (
+      <View ref={x => (this._root = x)} style={[baseStyles.field]}>
+        <View style={[baseStyles.wrappedItemsLg]}>
+          <Text style={[baseStyles.h5]}>
+            {label.toUpperCase()}
+          </Text>
+          <Text style={[baseStyles.fieldValue]}>
+            {/* TODO grey out placeholder if used */}
+            {value}
+          </Text>
+        </View>
+        <View style={[baseStyles.wrappedItemsSm]}>
+          <Icon
+            name="keyboard-arrow-right"
+            style={baseStyles.formArrowCategories}
+          />
+        </View>
+      </View>
+    );
+  }
+}
+
 export const getFieldType = type => {
   switch (type) {
     case "check":
@@ -143,6 +176,12 @@ export const getFieldType = type => {
 
     case "text":
       return TextField;
+
+    case "textarea":
+      return TextField;
+
+    case "date":
+      return DateField;
 
     default:
       throw new Error(`Unsupported field type: ${type}`);
