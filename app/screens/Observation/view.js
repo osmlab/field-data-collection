@@ -219,6 +219,7 @@ class ViewObservationScreen extends Component {
     const incomplete = 10 - complete;
 
     const { locationModalOpen, observationTypeModalOpen } = this.state;
+    console.log("OBSERVATION NAME", observation.tags);
 
     const headerView = (
       <View
@@ -235,7 +236,7 @@ class ViewObservationScreen extends Component {
           />
         </TouchableOpacity>
         <Text style={[baseStyles.h3, baseStyles.headerTitle]}>
-          Add Observation
+          {observation.id != null ? "Observation" : "New Observation"}
         </Text>
       </View>
     );
@@ -270,9 +271,9 @@ class ViewObservationScreen extends Component {
                 baseStyles.headerWithDescription
               ]}
             >
-              {fields != null
-                ? "Add Observation Details"
-                : "Create Observation"}
+              {observation.id != null
+                ? "Observation Details"
+                : "Add Observation Details"}
             </Text>
             {fields != null
               ? <Text style={{ color: "#E9E9E9", marginBottom: 5 }}>
