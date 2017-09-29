@@ -367,9 +367,10 @@ class MapOverlay extends Component {
   };
 
   render() {
-    const { onGeolocate, observations } = this.props;
+    const { onGeolocate, observations, userLocation, history } = this.props;
     const closed = Screen.height - 45;
     const open = Screen.height - 210;
+    let features = this.state.features;
 
     return (
       <View
@@ -400,10 +401,25 @@ class MapOverlay extends Component {
         >
           <Geolocate onGeolocate={onGeolocate} />
 
-          <Link
-            to={{
-              pathname: "/observation/choose-point",
-              state: { addPoint: true, observations: observations }
+          <TouchableOpacity
+            onPress={() => {
+              if (features.length > 0) {
+                history.push("/observation/choose-point", {
+                  addPoint: true,
+                  observations: observations
+                });
+              } else {
+                if (userLocation) {
+                  const userLatitude = userLocation.latitude;
+                  const userLongitude = userLocation.longitude;
+                  this.props.initializeObservation({
+                    lat: userLatitude,
+                    lon: userLongitude,
+                    tags: { "osm-p2p-id": null }
+                  });
+                  history.push("/observation");
+                }
+              }
             }}
             style={{
               width: 60,
@@ -425,7 +441,7 @@ class MapOverlay extends Component {
                 color: "#ffffff"
               }}
             />
-          </Link>
+          </TouchableOpacity>
         </Animated.View>
 
         <Interactable.View
