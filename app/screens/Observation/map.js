@@ -23,7 +23,8 @@ import {
   setActiveObservation,
   updateVisibleBounds,
   notifyActiveSurveys,
-  clearStatus
+  clearStatus,
+  initializeObservation
 } from "../../actions";
 import {
   AnnotationObservation,
@@ -379,6 +380,8 @@ class ObservationMapScreen extends Component {
           activeSurveys={this.props.activeSurveys}
           areaOfInterest={this.props.areaOfInterest}
           pressedFeature={this.state.pressedFeature}
+          initializeObservation={this.props.initializeObservation}
+          history={this.props.history}
           loading={loading}
           querying={querying}
           activeFeature={this.setActiveFeature}
@@ -405,5 +408,6 @@ export default connect(mapStateToProps, {
   setActiveObservation,
   updateVisibleBounds,
   notifyActiveSurveys,
-  clearStatus
+  clearStatus,
+  initializeObservation
 })(ObservationMapScreen);

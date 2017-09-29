@@ -120,12 +120,11 @@ class SideMenu extends Component {
           >
             <Link
               to={{
-                pathname: "/observation/choose-point",
-                state: { addPoint: true }
+                pathname: "/"
               }}
               style={[baseStyles.buttonBottom, { width: SideMenuWidth }]}
             >
-              <Text style={[baseStyles.textWhite]}>ADD AN OBSERVATION</Text>
+              <Text style={[baseStyles.textWhite]}>GO TO MAP</Text>
             </Link>
           </View>
         </Interactable.View>
