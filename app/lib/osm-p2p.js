@@ -81,6 +81,7 @@ function osmp2p(createOsmDb) {
 
     function onObservationCreated(err, docId) {
       if (err) return cb(err);
+      var res = Object.assign(doc, { id: docId });
 
       // create a link to an osm feature only if applicable
       if (nodeId) {
@@ -90,13 +91,14 @@ function osmp2p(createOsmDb) {
           link: nodeId
         };
 
-        observationDb.create(link, function(err, linkId) {
+        return observationDb.create(link, function(err, linkId) {
           if (err) return cb(err);
-          var res = Object.assign(doc, { id: docId });
           var linkRes = Object.assign(link, { id: linkId });
           cb(null, res, linkRes);
         });
       }
+
+      cb(null, res);
     }
   }
 
