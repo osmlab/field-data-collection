@@ -351,7 +351,10 @@ class MapOverlay extends Component {
                   ]}
                 >
                   <Text style={[baseStyles.metadataText, { marginTop: 10 }]}>
-                    {item.observations.length} Observations
+                    {item.observations.length}{" "}
+                    {item.observations.length === 1
+                      ? "Observation"
+                      : "Observations"}
                   </Text>
                   {/*<Text style={[baseStyles.textAlert]}>(2 incomplete)</Text>*/}
                 </View>
