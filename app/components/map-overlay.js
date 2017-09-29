@@ -305,7 +305,7 @@ class MapOverlay extends Component {
             /** Calculate last updated */
             let dates = [];
             item.observations.forEach(obs => {
-              dates.push(obs.timestamp);
+              if (obs.timestamp) dates.push(obs.timestamp);
             });
             let lastUpdated = "";
             if (dates.length) {
@@ -337,10 +337,10 @@ class MapOverlay extends Component {
                   </Text>
                 </Link>
                 <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
-                  <Text>
+                  <Text style={{ fontSize: 13 }}>
                     {`${distance.toFixed(2)} ${distanceLabel}`} away
                   </Text>
-                  <Text>
+                  <Text style={{ fontSize: 13 }}>
                     {lastUpdated}
                   </Text>
                 </View>
