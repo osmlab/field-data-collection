@@ -832,10 +832,6 @@ babel-plugin-transform-regenerator@^6.5.0:
   dependencies:
     regenerator-transform "0.9.11"
 
-babel-plugin-transform-remove-console@^6.8.5:
-  version "6.8.5"
-  resolved "https://registry.yarnpkg.com/babel-plugin-transform-remove-console/-/babel-plugin-transform-remove-console-6.8.5.tgz#fde9d2d3d725530b0fadd8d31078402410386810"
-
 babel-plugin-transform-strict-mode@^6.24.1:
   version "6.24.1"
   resolved "https://registry.yarnpkg.com/babel-plugin-transform-strict-mode/-/babel-plugin-transform-strict-mode-6.24.1.tgz#d5faf7aa578a65bbe591cf5edae04a0c67020758"
@@ -5856,9 +5852,9 @@ react-native-localization@^0.1.30:
   version "0.1.30"
   resolved "https://registry.yarnpkg.com/react-native-localization/-/react-native-localization-0.1.30.tgz#7e831ec9cf6b74d658f11bd49092221bdbccd5a9"
 
-"react-native-mapbox-gl@https://github.com/sethvincent/react-native-mapbox-gl/archive/field-data.tar.gz":
+react-native-mapbox-gl@sethvincent/react-native-mapbox-gl#field-data:
   version "5.2.1"
-  resolved "https://github.com/sethvincent/react-native-mapbox-gl/archive/field-data.tar.gz#c6f45ff9bf2c62676e4f44020f7e3fc024fce90f"
+  resolved "https://codeload.github.com/sethvincent/react-native-mapbox-gl/tar.gz/02fdc71383e934ffa2e60e68b154e2a7625f2020"
   dependencies:
     babel-eslint "^6.1.2"
     lodash "^4.13.1"
