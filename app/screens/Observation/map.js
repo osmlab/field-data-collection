@@ -180,6 +180,8 @@ class ObservationMapScreen extends Component {
       activeSurveys
     } = this.props;
 
+    this._mapLoaded = true;
+
     getCurrentPosition((err, data) => {
       if (data) {
         this.setState({ userLocation: data.coords });
@@ -262,7 +264,7 @@ class ObservationMapScreen extends Component {
   onUpdateBounds = () => {
     const { updateVisibleBounds } = this.props;
 
-    if (this._map) {
+    if (this._map && this._mapLoaded) {
       this._map.getBounds(bounds =>
         // NOTE getBounds returns (lat, lon, lat, lon) so we convert it here
         updateVisibleBounds([bounds[1], bounds[0], bounds[3], bounds[2]])
