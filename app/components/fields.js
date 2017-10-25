@@ -41,13 +41,14 @@ export class CheckField extends Field {
 export class ComboField extends Field {
   render() {
     const {
-      field: { default: placeholder, key, label, strings: { options } },
+      field: { default: placeholder, key, label, strings },
       observation: { tags }
     } = this.props;
 
     let value = tags[key];
-    if (!Array.isArray(options)) {
-      value = options[tags[key]];
+
+    if (strings && strings.options && !Array.isArray(strings.options)) {
+      value = strings.options[tags[key]];
     }
 
     return (
@@ -173,6 +174,9 @@ export const getFieldType = type => {
 
     case "number":
       return NumberField;
+
+    case "localized":
+      return TextField;
 
     case "text":
       return TextField;

@@ -92,7 +92,7 @@ export class ComboField extends Field {
   render() {
     const { field: { strings } } = this.props;
 
-    if (strings != null && strings.options != null) {
+    if (strings && strings.options) {
       return <PickerField {...this.props} />;
     }
 
@@ -216,6 +216,9 @@ export const getFieldInput = type => {
 
     case "combo":
       return ComboField;
+
+    case "localized":
+      return TextField;
 
     case "number":
       return NumberField;
