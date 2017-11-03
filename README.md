@@ -15,8 +15,6 @@ A mobile application built with react native for collecting data in the field.
 - [Installation on MacOS](docs/install-macos.md)
 - [Development scripts](docs/dev-scripts.md)
 - [Localization](docs/localization.md)
-- [Information how surveys are defined](docs/surveys.md)
-- [Information about Surveyor's use of presets](docs/presets.md)
 
 ## Contributing
 

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { SectionList, StyleSheet, TouchableOpacity, View } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Link } from "react-router-native";
+import _ from "lodash";
 
 import Text from "./text";
 import { baseStyles } from "../styles";
@@ -89,7 +90,7 @@ export default class CategoryList extends Component {
         renderSectionHeader={this.renderSectionHeader}
         sections={categories.map(({ list: data, name: key, surveyId }) => ({
           key,
-          data,
+          data: _.sortBy(data, [d => d.name]),
           renderItem: info => this.renderItem(surveyId, key, info)
         }))}
       />
