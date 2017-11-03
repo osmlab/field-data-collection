@@ -3,14 +3,14 @@
 The Observe project consists of two applications:
 
 - a **[mobile app](https://github.com/osmlab/field-data-collection)** for collecting data in the field
-- a **[desktop app]((https://github.com/osmlab/field-data-coordinator)** for defining surveys and areas of interest, and for aggregating the data collected by mobile apps
+- a **[desktop app](https://github.com/osmlab/field-data-coordinator)** for defining surveys and areas of interest, and for aggregating the data collected by mobile apps
 
 ## Install
 
 Install the apps by downloading the latest release for each from their GitHub repositories.
 
-- [mobile app](https://github.com/osmlab/field-data-collection/releases)
-- [desktop app](https://github.com/osmlab/field-data-coordinator/releases)
+- [mobile app](https://github.com/osmlab/field-data-collection/releases/latest)
+- [desktop app](https://github.com/osmlab/field-data-coordinator/releases/latest)
 
 ### Building the apps from source
 
