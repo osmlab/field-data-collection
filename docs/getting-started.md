@@ -34,18 +34,6 @@ To build the apps from source follow the instructions found in their respective 
 - Press the "Surveys" menu item
 - Press "Add new surveys"
 
-## Adding observations
-
--
--
--
-
-## Viewing observations
-
--
--
--
-
 ## Syncing data between desktop and mobile
 
 To sync data between the desktop and mobile apps we'll make sure the desktop app is running, then do the rest of the steps on the phone.
