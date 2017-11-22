@@ -111,9 +111,8 @@ class ViewOsmFeature extends Component {
     initializeObservation({
       lat: feature.lat,
       lon: feature.lon,
-      tags: {
-        "osm-p2p-id": feature.id
-      }
+      nodeId: feature.id,
+      tags: {}
     });
 
     history.push("/observation");

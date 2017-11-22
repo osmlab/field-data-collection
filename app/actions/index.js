@@ -395,11 +395,12 @@ export const setActiveObservation = observation => dispatch =>
     observation
   });
 
-export const updateObservation = observation => dispatch =>
+export const updateObservation = observation => dispatch => {
   dispatch({
     type: types.UPDATE_OBSERVATION,
     observation
   });
+};
 
 export const saveObservation = observation => (dispatch, getState) => {
   dispatch({

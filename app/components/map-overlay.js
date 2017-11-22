@@ -71,7 +71,7 @@ class MapOverlay extends Component {
     let { features, observations, pressedFeature } = nextProps;
     features.forEach(feature => {
       feature.observations = observations.filter(
-        obs => obs.tags["osm-p2p-id"] === feature.id
+        obs => obs.nodeId === feature.id
       );
       return feature;
     });
@@ -415,7 +415,8 @@ class MapOverlay extends Component {
                   this.props.initializeObservation({
                     lat: userLatitude,
                     lon: userLongitude,
-                    tags: { "osm-p2p-id": null }
+                    nodeId: null,
+                    tags: {}
                   });
                   history.push("/observation");
                 }

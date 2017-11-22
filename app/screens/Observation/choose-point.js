@@ -66,7 +66,7 @@ class ChoosePoint extends Component {
 
     features.forEach(feature => {
       feature.observations = observations.filter(
-        obs => obs.tags["osm-p2p-id"] === feature.id
+        obs => obs.nodeId === feature.id
       );
       return feature;
     });
@@ -244,7 +244,8 @@ class ChoosePoint extends Component {
                           initializeObservation({
                             lat: center.latitude,
                             lon: center.longitude,
-                            tags: { "osm-p2p-id": item.id }
+                            nodeId: item.id,
+                            tags: {}
                           });
 
                           history.push({
@@ -290,7 +291,8 @@ class ChoosePoint extends Component {
               initializeObservation({
                 lat: center.latitude,
                 lon: center.longitude,
-                tags: { "osm-p2p-id": null }
+                nodeId: null,
+                tags: {}
               });
 
               history.push("/observation");
