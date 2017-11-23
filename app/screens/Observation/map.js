@@ -137,7 +137,7 @@ class ObservationMapScreen extends Component {
 
       if (type === "observation") {
         const observation = observations.find(o => o.id === id);
-        const featureId = observation.tags["osm-p2p-id"];
+        const featureId = observation.nodeId;
         const feature = features.find(f => f.id === featureId);
         this.setState({
           pressedFeature: feature

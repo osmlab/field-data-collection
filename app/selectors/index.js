@@ -266,9 +266,7 @@ export const selectVisibleObservations = createSelector(
 );
 
 export const selectVisibleObservationsByNode = nodeId => {
-  return selectVisibleObservations().filter(
-    obs => obs.tags["osm-p2p-id"] === nodeId
-  );
+  return selectVisibleObservations().filter(obs => obs.nodeId === nodeId);
 };
 
 export const selectLoadingStatus = state => state.features.loading;

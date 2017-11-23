@@ -20,8 +20,6 @@ function osmp2p(createOsmDb) {
   var emitter = Object.assign(new EventEmitter(), {
     ready,
     createNode,
-    put,
-    del,
     createObservation,
     putObservation,
     delObservation,
@@ -47,21 +45,11 @@ function osmp2p(createOsmDb) {
     }
   }
 
-  function createNode(geojson, opts, cb) {
-    var doc = convert.toOSM(geojson, "node");
+  function createNode(doc, opts, cb) {
     var id = generatePlaceholderOsmId();
     if (!doc.tags) doc.tags = {};
     doc.tags["osm-p2p-id"] = id;
-    observationDb.put(id, doc, opts, cb);
-  }
-
-  function put(id, geojson, opts, cb) {
-    var doc = convert.toOSM(geojson);
-    observationDb.put(id, doc, opts, cb);
-  }
-
-  function del(id, opts, cb) {
-    observationDb.del(id, opts, cb);
+    osmOrgDb.put(id, doc, opts, cb);
   }
 
   function createObservation(doc, opts, cb) {
@@ -71,13 +59,20 @@ function osmp2p(createOsmDb) {
     }
 
     doc.tags = doc.tags || {};
-    const nodeId = doc.tags["osm-p2p-id"];
+    let nodeId = doc.nodeId;
 
     doc.tags.deviceId = DeviceInfo.getUniqueID();
     doc.timestamp = new Date().toISOString();
     doc.type = "observation";
 
-    observationDb.create(doc, opts, onObservationCreated);
+    if (nodeId) {
+      observationDb.create(doc, opts, onObservationCreated);
+    } else {
+      createNode({ lat: doc.lat, lon: doc.lon }, function(err, node, a, b, c) {
+        doc.nodeId = nodeId = node.value.k;
+        observationDb.create(doc, opts, onObservationCreated);
+      });
+    }
 
     function onObservationCreated(err, docId) {
       if (err) return cb(err);

@@ -6,7 +6,7 @@ module.exports = {
 function toOSM(feature, type) {
   var observation = {
     id: feature.id,
-    tags: feature.properties,
+    tags: feature.properties || {},
     timestamp: feature.timestamp || new Date().toISOString()
   };
 
